@@ -1,22 +1,26 @@
 import { NextResponse } from "next/server";
 
-const tierPriceMap: Record<string, string | undefined> = {
-  "Single Page": process.env.STRIPE_PRICE_SINGLE_PAGE,
-  "Multi Page": process.env.STRIPE_PRICE_MULTI_PAGE,
-  "Full Site": process.env.STRIPE_PRICE_FULL_SITE,
+// Public checkout price IDs — charged at checkout.
+// Single Page: full amount ($1,497). Multi Page & Full Site: 50% deposit only.
+const tierPriceIds: Record<string, string> = {
+  "Single Page": process.env.STRIPE_PRICE_SINGLE_PAGE || "price_1T9BVYPzPB6fxeLqyzhgqHGf",
+  "Multi Page": process.env.STRIPE_PRICE_MULTI_PAGE || "price_1T9BX1PzPB6fxeLqpugGa8S5",
+  "Full Site": process.env.STRIPE_PRICE_FULL_SITE || "price_1T9BXWPzPB6fxeLq8GeqcE9f",
 };
 
+// Fallback amounts (cents) for dev mode — match the public checkout prices.
+// Single Page: $1,497 full. Multi Page: $1,498.50 deposit. Full Site: $2,998.50 deposit.
 const tierFallbackAmounts: Record<string, number> = {
-  "Single Page": 49700,
-  "Multi Page": 149700,
-  "Full Site": 299700,
+  "Single Page": 149700,
+  "Multi Page": 149850,
+  "Full Site": 299850,
 };
 
 export async function POST(request: Request) {
   try {
     const { tier, email } = await request.json();
 
-    if (!tier || !tierFallbackAmounts[tier]) {
+    if (!tier || !tierPriceIds[tier]) {
       return NextResponse.json({ error: "Invalid tier" }, { status: 400 });
     }
 
@@ -28,11 +32,8 @@ export async function POST(request: Request) {
       const Stripe = (await import("stripe")).default;
       const stripe = new Stripe(stripeKey, { apiVersion: "2025-02-24.acacia" });
 
-      const priceId = tierPriceMap[tier];
-
-      // If you've created Products in Stripe Dashboard with Price IDs:
-      const sessionConfig: Record<string, unknown> = {
-        mode: "payment" as const,
+      const session = await stripe.checkout.sessions.create({
+        mode: "payment",
         success_url: `${siteUrl}/success?tier=${encodeURIComponent(tier)}&session_id={CHECKOUT_SESSION_ID}`,
         cancel_url: `${siteUrl}/#pricing`,
         customer_email: email || undefined,
@@ -40,35 +41,8 @@ export async function POST(request: Request) {
         payment_intent_data: {
           metadata: { tier, source: "tweakandbuild-quickbuild" },
         },
-      };
-
-      if (priceId && !priceId.startsWith("price_xxxx")) {
-        // Use pre-configured price from Stripe Dashboard
-        Object.assign(sessionConfig, {
-          line_items: [{ price: priceId, quantity: 1 }],
-        });
-      } else {
-        // Dynamic price (no Dashboard product needed)
-        Object.assign(sessionConfig, {
-          line_items: [
-            {
-              price_data: {
-                currency: "usd",
-                product_data: {
-                  name: `Quick Build: ${tier}`,
-                  description: `Tweak & Build — ${tier} package`,
-                },
-                unit_amount: tierFallbackAmounts[tier],
-              },
-              quantity: 1,
-            },
-          ],
-        });
-      }
-
-      const session = await stripe.checkout.sessions.create(
-        sessionConfig as Parameters<typeof stripe.checkout.sessions.create>[0]
-      );
+        line_items: [{ price: tierPriceIds[tier], quantity: 1 }],
+      });
 
       return NextResponse.json({ url: session.url });
     }
@@ -77,6 +51,7 @@ export async function POST(request: Request) {
     console.log("\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
     console.log(`💳 CHECKOUT (dev mode) — ${tier}`);
     console.log(`   Amount: $${(tierFallbackAmounts[tier] / 100).toFixed(2)}`);
+    console.log(`   Price ID: ${tierPriceIds[tier]}`);
     console.log(`   Email: ${email || "not provided"}`);
     console.log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n");
 

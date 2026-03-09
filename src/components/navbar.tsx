@@ -37,8 +37,8 @@ export function Navbar() {
             <Terminal size={13} className="text-surface-0 sm:hidden" />
             <Terminal size={14} className="hidden text-surface-0 sm:block" />
           </div>
-          <span className="font-display text-[15px] font-extrabold tracking-[-0.03em] text-white sm:text-[16px]">
-            tweak<span className="text-accent">&amp;</span>build
+          <span className="font-display text-[16px] font-extrabold tracking-[-0.03em] text-white sm:text-[17px]">
+            Tweak<span className="text-accent">&amp;</span>Build
           </span>
         </Link>
 
@@ -72,11 +72,6 @@ export function Navbar() {
                 {l.label}
               </Link>
             ))}
-          </div>
-          <div className="mt-4 border-t border-white/[0.05] pt-4">
-            <Link href="/contact" onClick={() => setOpen(false)} className="btn-v w-full justify-center">
-              Start a project <ArrowRight size={14} />
-            </Link>
           </div>
         </div>
       )}

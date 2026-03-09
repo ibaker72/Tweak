@@ -58,8 +58,8 @@ export function Footer() {
               <div className="flex h-8 w-8 items-center justify-center rounded-[10px] bg-accent">
                 <Terminal size={13} className="text-surface-0" />
               </div>
-              <span className="font-display text-[15px] font-extrabold text-white">
-                tweak<span className="text-accent">&amp;</span>build
+              <span className="font-display text-[17px] font-extrabold tracking-[-0.03em] text-white">
+                Tweak<span className="text-accent">&amp;</span>Build
               </span>
             </Link>
             <p className="mt-4 max-w-xs text-sm leading-relaxed text-dim">
