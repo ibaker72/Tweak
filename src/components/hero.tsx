@@ -29,15 +29,14 @@ export function Hero() {
       <div className="wrap relative flex min-h-[100dvh] flex-col justify-center pb-16 pt-24 lg:pb-24 lg:pt-28">
         {/* Top bar: status + availability */}
         <Reveal>
-          <div className="mb-8 flex flex-wrap items-center gap-3">
-            <div className="flex items-center gap-2 rounded-full border border-emerald-400/20 bg-emerald-400/[0.06] px-3.5 py-1.5">
+        <div className="mb-8">
+          <div className="inline-flex items-center gap-2 rounded-full border border-emerald-400/20 bg-emerald-400/[0.06] px-3.5 py-1.5">
               <span className="relative flex h-1.5 w-1.5">
                 <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-40" />
                 <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-emerald-400" />
               </span>
               <span className="font-mono text-[11px] font-medium text-emerald-400">Accepting projects</span>
             </div>
-            <span className="font-mono text-[11px] text-dim">2 spots open for March</span>
           </div>
         </Reveal>
 
