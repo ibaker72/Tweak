@@ -53,7 +53,7 @@ export default function ContactPage() {
         <div className="divider mt-12" />
 
         {/* Content grid */}
-        <div className="mt-14 grid gap-10 lg:grid-cols-2 lg:gap-12">
+        <div className="mt-14 grid items-start gap-10 lg:grid-cols-2 lg:gap-12">
           {/* Calendly */}
           <Reveal delay={0.08}>
             <div id="calendly" className="scroll-mt-24">
