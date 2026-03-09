@@ -118,7 +118,7 @@ export const tiers = [
   {
     name: "Single Page",
     price: "$1,497",
-    time: "3 day delivery",
+    time: "Typical turnaround: 1 week",
     payment: "Paid in full upfront",
     buttonLabel: "Get started",
     stripePriceId: "price_1T9BVYPzPB6fxeLqyzhgqHGf",
@@ -129,7 +129,7 @@ export const tiers = [
   {
     name: "Multi Page",
     price: "$2,997",
-    time: "7 day delivery",
+    time: "Typical turnaround: 2–3 weeks",
     payment: "50% upfront · 50% before launch",
     buttonLabel: "Pay deposit",
     stripePriceId: "price_1T9BX1PzPB6fxeLqpugGa8S5",
@@ -140,7 +140,7 @@ export const tiers = [
   {
     name: "Full Site",
     price: "$5,997",
-    time: "14 day delivery",
+    time: "Typical turnaround: 3–5 weeks",
     payment: "50% upfront · 50% before launch",
     buttonLabel: "Pay deposit",
     stripePriceId: "price_1T9BXWPzPB6fxeLq8GeqcE9f",
@@ -157,15 +157,15 @@ export const tiers = [
 
 export const testimonials = [
   {
-    quote: "They shipped our platform in 5 weeks and it looked like it had months of development behind it. Our investors were genuinely impressed at the demo.",
+    quote: "We needed a working platform for an investor demo and they delivered in under a week. It looked and felt like something that had been in development for months.",
     name: "David Morales",
     title: "CTO, LeadsAndSaaS",
     project: "SaaS Platform",
-    engagement: "5-week build",
-    result: "Shipped to investor demo on schedule",
+    engagement: "Sub-1-week build",
+    result: "Demo-ready for investor meeting",
   },
   {
-    quote: "We went from a 48 hour manual quoting process to instant online quotes. The impact on our conversion rate was immediate and dramatic.",
+    quote: "Our old quoting process was 48 hours of back-and-forth emails. Now customers get pricing in 60 seconds and check out on the spot. Orders jumped 35% the first month.",
     name: "Ryan Torres",
     title: "Founder, Create3DParts",
     project: "E-Commerce Platform",
@@ -173,12 +173,12 @@ export const testimonials = [
     result: "Quote time: 48hrs → 60sec",
   },
   {
-    quote: "Third agency we hired. First one that actually shipped on time, on budget, and without us having to chase for updates every week.",
+    quote: "We'd already burned through two agencies before finding Tweak & Build. They scoped it cleanly, hit every milestone, and we never had to chase for an update.",
     name: "Priya Patel",
     title: "Founder, GreenThread",
     project: "Landing Page + CRM",
     engagement: "3-week build",
-    result: "On time, on budget",
+    result: "Delivered on scope and budget",
   },
 ];
 
@@ -203,14 +203,14 @@ export const metrics = [
 
 export const recentLaunches = [
   { name: "Create3DParts.com", type: "E-Commerce", status: "live", result: "Orders up 35%" },
-  { name: "LeadsAndSaaS", type: "SaaS Platform", status: "live", result: "Shipped in 5 weeks" },
+  { name: "LeadsAndSaaS", type: "SaaS Platform", status: "live", result: "Shipped in under a week" },
   { name: "Meridian Health", type: "Web App", status: "shipped", result: "No-shows down 40%" },
 ];
 
 export const differentiators = [
   {
-    title: "Senior engineers only",
-    desc: "No juniors, no handoffs, no learning on your dime. Every project is built by engineers with 5+ years of production experience.",
+    title: "Senior-led execution",
+    desc: "No revolving door of junior devs. Your project is led by experienced engineers who've shipped real products — not managed from a distance.",
   },
   {
     title: "Fixed pricing, always",

@@ -2,6 +2,85 @@
 import { Reveal } from "./shared";
 import { Check } from "lucide-react";
 
+/* Minimal inline SVG icons for each stack tool — monochrome, tinted with brand color */
+function NextIcon({ color }: { color: string }) {
+  return (
+    <svg width="14" height="14" viewBox="0 0 180 180" fill="none">
+      <circle cx="90" cy="90" r="85" stroke={color} strokeWidth="10" opacity="0.7" />
+      <path d="M72 55v70l50-70" stroke={color} strokeWidth="10" strokeLinecap="round" strokeLinejoin="round" opacity="0.9" />
+    </svg>
+  );
+}
+function ReactIcon({ color }: { color: string }) {
+  return (
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
+      <circle cx="12" cy="12" r="2.2" fill={color} opacity="0.9" />
+      <ellipse cx="12" cy="12" rx="10" ry="4" stroke={color} strokeWidth="1.2" opacity="0.6" />
+      <ellipse cx="12" cy="12" rx="10" ry="4" stroke={color} strokeWidth="1.2" opacity="0.6" transform="rotate(60 12 12)" />
+      <ellipse cx="12" cy="12" rx="10" ry="4" stroke={color} strokeWidth="1.2" opacity="0.6" transform="rotate(120 12 12)" />
+    </svg>
+  );
+}
+function TSIcon({ color }: { color: string }) {
+  return (
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
+      <rect x="2" y="2" width="20" height="20" rx="3" stroke={color} strokeWidth="1.5" opacity="0.6" />
+      <text x="12" y="16.5" textAnchor="middle" fill={color} fontSize="11" fontWeight="700" fontFamily="system-ui" opacity="0.9">TS</text>
+    </svg>
+  );
+}
+function SupabaseIcon({ color }: { color: string }) {
+  return (
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
+      <path d="M13.5 21.5c-.4.5-1.2.1-1.1-.5l.8-8H5.8c-.8 0-1.2-1-.7-1.6L11 2.5c.4-.5 1.2-.1 1.1.5L11.3 11h7.4c.8 0 1.2 1 .7 1.6L13.5 21.5z" fill={color} opacity="0.7" />
+    </svg>
+  );
+}
+function StripeIcon({ color }: { color: string }) {
+  return (
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
+      <rect x="2" y="4" width="20" height="16" rx="3" stroke={color} strokeWidth="1.5" opacity="0.6" />
+      <path d="M12.5 9c-1.5-.5-3 0-3 1.5s1.2 1.5 2.5 2c1.3.5 2.5 1 2.5 2.5s-1.5 2-3 1.5" stroke={color} strokeWidth="1.5" strokeLinecap="round" opacity="0.9" />
+    </svg>
+  );
+}
+function OpenAIIcon({ color }: { color: string }) {
+  return (
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
+      <circle cx="12" cy="12" r="9" stroke={color} strokeWidth="1.5" opacity="0.6" />
+      <path d="M12 6v6l4 2" stroke={color} strokeWidth="1.5" strokeLinecap="round" opacity="0.9" />
+    </svg>
+  );
+}
+function NodeIcon({ color }: { color: string }) {
+  return (
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
+      <path d="M12 2L3 7v10l9 5 9-5V7l-9-5z" stroke={color} strokeWidth="1.5" opacity="0.6" />
+      <path d="M12 22V12M3 7l9 5 9-5" stroke={color} strokeWidth="1.2" opacity="0.4" />
+    </svg>
+  );
+}
+function VercelIcon({ color }: { color: string }) {
+  return (
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
+      <path d="M12 3L22 20H2L12 3z" fill={color} opacity="0.7" />
+    </svg>
+  );
+}
+function ShopifyIcon({ color }: { color: string }) {
+  return (
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
+      <path d="M15 4l1 5 4 1-9 12V12H7l8-8z" fill={color} opacity="0.7" />
+    </svg>
+  );
+}
+
+const iconMap: Record<string, React.ComponentType<{ color: string }>> = {
+  "Next.js": NextIcon, React: ReactIcon, TypeScript: TSIcon,
+  Supabase: SupabaseIcon, Stripe: StripeIcon, OpenAI: OpenAIIcon,
+  "Node.js": NodeIcon, Vercel: VercelIcon, Shopify: ShopifyIcon,
+};
+
 const techStack = [
   { name: "Next.js", color: "#fff" },
   { name: "React", color: "#61DAFB" },
@@ -16,8 +95,8 @@ const techStack = [
 
 const differentiators = [
   {
-    title: "Senior engineers only",
-    desc: "No juniors, no handoffs, no learning on your dime. Every project is built by engineers with 5+ years of production experience.",
+    title: "Senior-led execution",
+    desc: "No revolving door of junior devs. Your project is led by experienced engineers who've shipped real products — not managed from a distance.",
   },
   {
     title: "Fixed pricing, always",
@@ -71,15 +150,18 @@ export function TechShowcase() {
           <div className="mt-6 rounded-2xl border border-white/[0.06] bg-white/[0.015] p-6 shadow-[0_1px_0_rgba(255,255,255,0.02)_inset] sm:p-7">
             <div className="mb-4 font-mono text-[10px] uppercase tracking-[0.12em] text-dim">Our stack</div>
             <div className="flex flex-wrap gap-2">
-              {techStack.map((t) => (
-                <div
-                  key={t.name}
-                  className="flex items-center gap-2 rounded-full border border-white/[0.06] bg-white/[0.02] px-3.5 py-1.5 transition-all duration-200 hover:-translate-y-0.5 hover:border-white/[0.1]"
-                >
-                  <div className="h-1.5 w-1.5 rounded-full" style={{ background: t.color }} />
-                  <span className="font-mono text-[11px] font-medium text-white/40">{t.name}</span>
-                </div>
-              ))}
+              {techStack.map((t) => {
+                const Icon = iconMap[t.name];
+                return (
+                  <div
+                    key={t.name}
+                    className="flex items-center gap-2 rounded-full border border-white/[0.06] bg-white/[0.02] px-3.5 py-1.5 transition-all duration-200 hover:-translate-y-0.5 hover:border-white/[0.1]"
+                  >
+                    {Icon ? <Icon color={t.color} /> : <div className="h-1.5 w-1.5 rounded-full" style={{ background: t.color }} />}
+                    <span className="font-mono text-[11px] font-medium text-white/40">{t.name}</span>
+                  </div>
+                );
+              })}
             </div>
           </div>
         </Reveal>

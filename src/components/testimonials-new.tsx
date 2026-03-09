@@ -3,16 +3,16 @@ import { Reveal } from "./shared";
 
 const testimonials = [
   {
-    quote: "They shipped our platform in 5 weeks and it looked like it had months of development behind it. Our investors were genuinely impressed at the demo.",
+    quote: "We needed a working platform for an investor demo and they delivered in under a week. It looked and felt like something that had been in development for months.",
     name: "David Morales",
     title: "CTO, LeadsAndSaaS",
     project: "SaaS Platform",
-    engagement: "5-week build",
-    result: "Shipped to investor demo on schedule",
+    engagement: "Sub-1-week build",
+    result: "Demo-ready for investor meeting",
     featured: true,
   },
   {
-    quote: "We went from a 48 hour manual quoting process to instant online quotes. The impact on our conversion rate was immediate and dramatic.",
+    quote: "Our old quoting process was 48 hours of back-and-forth emails. Now customers get pricing in 60 seconds and check out on the spot. Orders jumped 35% the first month.",
     name: "Ryan Torres",
     title: "Founder, Create3DParts",
     project: "E-Commerce Platform",
@@ -21,12 +21,12 @@ const testimonials = [
     featured: false,
   },
   {
-    quote: "Third agency we hired. First one that actually shipped on time, on budget, and without us having to chase for updates every week.",
+    quote: "We'd already burned through two agencies before finding Tweak & Build. They scoped it cleanly, hit every milestone, and we never had to chase for an update.",
     name: "Priya Patel",
     title: "Founder, GreenThread",
     project: "Landing Page + CRM",
     engagement: "3-week build",
-    result: "On time, on budget",
+    result: "Delivered on scope and budget",
     featured: false,
   },
 ];

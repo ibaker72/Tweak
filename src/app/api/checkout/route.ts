@@ -16,6 +16,42 @@ const tierFallbackAmounts: Record<string, number> = {
   "Full Site": 299850,
 };
 
+const PRODUCTION_URL = "https://www.tweakandbuild.com";
+
+/**
+ * Resolve the base URL for checkout return links.
+ * Priority: NEXT_PUBLIC_SITE_URL env → request Origin/Host header → production hardcoded URL.
+ * localhost is only allowed when the Stripe key is absent or is a placeholder test key (dev mode).
+ */
+function resolveBaseUrl(request: Request, isDev: boolean): string {
+  const envUrl = process.env.NEXT_PUBLIC_SITE_URL;
+
+  // If env var is set and not localhost, use it directly
+  if (envUrl && !envUrl.includes("localhost")) {
+    return envUrl.replace(/\/$/, "");
+  }
+
+  // In dev mode, allow localhost
+  if (isDev) {
+    return envUrl || "http://localhost:3000";
+  }
+
+  // Production: try to derive from request headers, but never allow localhost
+  const origin = request.headers.get("origin");
+  if (origin && !origin.includes("localhost")) {
+    return origin.replace(/\/$/, "");
+  }
+
+  const host = request.headers.get("host");
+  if (host && !host.includes("localhost")) {
+    const proto = request.headers.get("x-forwarded-proto") || "https";
+    return `${proto}://${host}`;
+  }
+
+  // Ultimate fallback for production — never localhost
+  return PRODUCTION_URL;
+}
+
 export async function POST(request: Request) {
   try {
     const { tier, email } = await request.json();
@@ -25,12 +61,13 @@ export async function POST(request: Request) {
     }
 
     const stripeKey = process.env.STRIPE_SECRET_KEY;
-    const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
+    const isDev = !stripeKey || stripeKey.startsWith("sk_test_xxxx");
+    const siteUrl = resolveBaseUrl(request, isDev);
 
     // ── Production: real Stripe Checkout ──
-    if (stripeKey && !stripeKey.startsWith("sk_test_xxxx")) {
+    if (!isDev) {
       const Stripe = (await import("stripe")).default;
-      const stripe = new Stripe(stripeKey, { apiVersion: "2025-02-24.acacia" });
+      const stripe = new Stripe(stripeKey!, { apiVersion: "2025-02-24.acacia" });
 
       const session = await stripe.checkout.sessions.create({
         mode: "payment",

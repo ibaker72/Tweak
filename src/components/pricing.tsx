@@ -1,7 +1,7 @@
 "use client";
 import { useState } from "react";
 import Link from "next/link";
-import { ArrowRight, Check, Minus, Package, Code2, HelpCircle, MessageSquare, Upload, Send, Loader2, CreditCard, Wallet } from "lucide-react";
+import { ArrowRight, Check, Minus, Package, Code2, HelpCircle, MessageSquare, Upload, Send, Loader2, CreditCard, Wallet, Layers, Rocket } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Reveal } from "./shared";
 import { tiers, budgetOptions, timelineOptions } from "@/lib/data";
@@ -91,7 +91,27 @@ export function Pricing() {
                         </div>
                       </>
                     )}
-                    <h3 className="font-display text-[17px] font-bold text-white">{q.name}</h3>
+                    <div className="flex items-center gap-2.5">
+                      {q.name === "Multi Page" && (
+                        <div className="flex h-8 w-8 items-center justify-center rounded-lg border border-accent/20 bg-accent/[0.06]">
+                          <Layers size={14} className="text-accent" />
+                        </div>
+                      )}
+                      {q.name === "Full Site" && (
+                        <div className="flex h-8 w-8 items-center justify-center rounded-lg border border-cyan-400/20 bg-cyan-400/[0.06]">
+                          <Rocket size={14} className="text-cyan-400" />
+                        </div>
+                      )}
+                      <div>
+                        <h3 className="font-display text-[17px] font-bold text-white">{q.name}</h3>
+                        {q.name === "Multi Page" && (
+                          <p className="font-mono text-[10px] text-accent/60">Best for growing brands</p>
+                        )}
+                        {q.name === "Full Site" && (
+                          <p className="font-mono text-[10px] text-cyan-400/60">Flagship build</p>
+                        )}
+                      </div>
+                    </div>
                     <div className="mt-3 flex items-baseline gap-1.5">
                       <span className="font-display text-[42px] font-black tracking-tight text-white">{q.price}</span>
                       <span className="text-[13px] text-dim">flat rate</span>
