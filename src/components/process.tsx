@@ -88,7 +88,7 @@ export function Process() {
             {steps.map((step, i) => (
               <Reveal key={`d-${step.num}`} delay={0.3 + i * 0.08}>
                 <Tilt>
-                  <div className="h-full rounded-[18px] border border-white/[0.05] p-5" style={{ background: `linear-gradient(170deg, ${step.color}05, rgba(17,17,25,0.8))` }}>
+                  <div className="h-full rounded-[18px] border border-white/[0.05] p-5" style={{ background: `linear-gradient(170deg, ${step.color}05, rgba(14,14,24,0.9))` }}>
                     <p className="mb-3 text-[13px] leading-[1.7] text-body">{step.desc}</p>
                     <div className="flex items-center gap-1.5 rounded-lg border px-2.5 py-1" style={{ borderColor: `${step.color}15`, background: `${step.color}06` }}>
                       <div className="h-1 w-1 rounded-full" style={{ background: step.color }} />
@@ -105,7 +105,7 @@ export function Process() {
         <div className="space-y-3 lg:hidden">
           {steps.map((step, i) => (
             <Reveal key={step.num} delay={i * 0.08}>
-              <div className="relative overflow-hidden rounded-[18px] border border-white/[0.05] p-6" style={{ background: `linear-gradient(170deg, ${step.color}05, rgba(17,17,25,0.8))` }}>
+              <div className="relative overflow-hidden rounded-[18px] border border-white/[0.05] p-6" style={{ background: `linear-gradient(170deg, ${step.color}05, rgba(14,14,24,0.9))` }}>
                 <div className="absolute left-0 right-0 top-0 h-px" style={{ background: `linear-gradient(90deg, transparent, ${step.color}30, transparent)` }} />
                 <div className="mb-4 flex items-center gap-4">
                   <div className="flex h-11 w-11 items-center justify-center rounded-xl border" style={{ borderColor: `${step.color}20`, background: `${step.color}08` }}>

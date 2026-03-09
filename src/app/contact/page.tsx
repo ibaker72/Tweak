@@ -35,7 +35,7 @@ export default function ContactPage() {
           <Reveal delay={0.14}><div id="quote" className="scroll-mt-24">
             <h2 className="mb-2 font-display text-lg font-bold text-white">{tierParam ? `Quick Build: ${tierParam}` : "Submit a Project Inquiry"}</h2>
             <p className="mb-5 text-sm text-dim">{tierParam ? "Confirm your details and we'll send a project confirmation within 24 hours." : "Share your project details for a tailored proposal within 24 hours."}</p>
-            <div className="overflow-hidden rounded-[20px] border border-white/[0.06] p-7" style={{ background: "linear-gradient(170deg, #0C0C14, #111119)" }}>
+            <div className="overflow-hidden rounded-[20px] border border-white/[0.06] p-7" style={{ background: "linear-gradient(170deg, rgba(14,14,24,0.95), rgba(10,10,18,0.98))" }}>
               {status === "success" ? (
                 <div className="py-10 text-center">
                   <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-xl border border-v/[0.2] bg-v/[0.06]"><Check size={20} className="text-v-light" /></div>

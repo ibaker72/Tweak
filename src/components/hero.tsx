@@ -6,28 +6,37 @@ import { metrics } from "@/lib/data";
 
 /* ── Product mockup ── */
 function ProductScene({ compact = false }: { compact?: boolean }) {
-  const base = compact ? "max-w-[360px]" : "max-w-[500px]";
+  const base = compact ? "max-w-[360px]" : "max-w-[520px]";
   return (
     <div className={`relative w-full ${base}`}>
-      {/* Ambient glow — subtle, not flashy */}
-      {!compact && <div className="absolute -inset-20 rounded-full bg-[radial-gradient(ellipse_at_center,rgba(139,92,246,0.06),transparent_70%)] blur-[60px]" />}
+      {/* Ambient glow behind mockup */}
+      {!compact && (
+        <>
+          <div className="absolute -inset-16 rounded-full bg-[radial-gradient(ellipse_at_center,rgba(139,92,246,0.08),transparent_65%)] blur-[80px]" />
+          <div className="absolute -bottom-10 -right-10 h-[200px] w-[200px] rounded-full bg-[radial-gradient(circle,rgba(6,182,212,0.04),transparent_70%)] blur-[40px]" />
+        </>
+      )}
 
       {/* Browser window */}
       <div
-        className="relative overflow-hidden rounded-2xl border border-white/[0.08] shadow-[0_32px_80px_rgba(0,0,0,0.5),0_0_0_1px_rgba(255,255,255,0.02)]"
+        className="relative overflow-hidden rounded-2xl border shadow-[0_40px_100px_-20px_rgba(0,0,0,0.6),0_0_0_1px_rgba(255,255,255,0.04),0_0_60px_rgba(139,92,246,0.04)]"
         style={{
-          background: "linear-gradient(170deg, #0C0C14, #0F0F18)",
+          borderColor: "rgba(255,255,255,0.10)",
+          background: "linear-gradient(170deg, rgba(16,16,28,0.98), rgba(10,10,18,1))",
           animation: compact ? "none" : "heroFloat 8s ease-in-out infinite",
         }}
       >
-        {/* Browser chrome — minimal */}
-        <div className="flex items-center gap-2 border-b border-white/[0.05] px-4 py-2">
+        {/* Top highlight edge */}
+        <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/[0.08] to-transparent" />
+
+        {/* Browser chrome */}
+        <div className="flex items-center gap-2 border-b border-white/[0.06] px-4 py-2.5">
           <div className="flex gap-[5px]">
             {["#EF4444","#F59E0B","#22C55E"].map(c => (
-              <div key={c} className="h-2 w-2 rounded-full opacity-50" style={{ background: c }} />
+              <div key={c} className="h-[7px] w-[7px] rounded-full opacity-60" style={{ background: c }} />
             ))}
           </div>
-          <div className="ml-2 flex-1 rounded-md bg-white/[0.03] px-3 py-[3px]">
+          <div className="ml-2 flex-1 rounded-md border border-white/[0.04] bg-white/[0.03] px-3 py-[3px]">
             <span className="font-mono text-[10px] text-dim">app.clientproject.com</span>
           </div>
         </div>
@@ -37,12 +46,12 @@ function ProductScene({ compact = false }: { compact?: boolean }) {
           {/* App nav */}
           <div className="mb-4 flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <div className="h-5 w-5 rounded-md bg-gradient-to-br from-v/40 to-cyan/20" />
+              <div className="h-5 w-5 rounded-md bg-gradient-to-br from-v/50 to-cyan/30" />
               <span className="font-mono text-[10px] font-medium text-gray-400">Dashboard</span>
             </div>
             <div className="flex gap-1.5">
               {["Overview","Analytics","Settings"].map((t,i) => (
-                <span key={t} className={`rounded-md px-2 py-0.5 font-mono text-[9px] ${i === 0 ? "bg-v/[0.12] text-v-light" : "text-dim"}`}>{t}</span>
+                <span key={t} className={`rounded-md px-2 py-0.5 font-mono text-[9px] ${i === 0 ? "bg-v/[0.15] text-v-light" : "text-dim"}`}>{t}</span>
               ))}
             </div>
           </div>
@@ -54,25 +63,25 @@ function ProductScene({ compact = false }: { compact?: boolean }) {
               { l: "Visitors", v: "2,847", c: "+8.2%", col: "#06B6D4" },
               { l: "Conversions", v: "184", c: "+23%", col: "#A78BFA" },
             ].map(m => (
-              <div key={m.l} className={`rounded-xl border border-white/[0.05] bg-white/[0.02] ${compact ? "p-2" : "p-3"}`}>
+              <div key={m.l} className={`rounded-xl border border-white/[0.06] ${compact ? "p-2" : "p-3"}`} style={{ background: "rgba(255,255,255,0.02)" }}>
                 <div className="mb-1 font-mono text-[9px] text-dim">{m.l}</div>
                 <div className={`font-display font-bold text-white ${compact ? "text-sm" : "text-lg"}`}>{m.v}</div>
-                <div className="mt-0.5 font-mono text-[9px]" style={{ color: m.col }}>{m.c}</div>
+                <div className="mt-0.5 font-mono text-[9px] font-medium" style={{ color: m.col }}>{m.c}</div>
               </div>
             ))}
           </div>
 
           {/* Chart */}
-          <div className="rounded-xl border border-white/[0.04] bg-white/[0.01] p-3">
+          <div className="rounded-xl border border-white/[0.05] p-3" style={{ background: "rgba(255,255,255,0.01)" }}>
             <div className="mb-2 flex items-center justify-between">
               <span className="font-mono text-[9px] text-dim">Revenue / 12 months</span>
-              <span className="font-mono text-[9px] text-emerald-400">+34% YoY</span>
+              <span className="font-mono text-[9px] font-medium text-emerald-400">+34% YoY</span>
             </div>
             <div className="flex items-end gap-[3px]" style={{ height: compact ? 40 : 56 }}>
               {[30,42,38,55,50,62,58,72,68,82,78,92].map((h, i) => (
                 <div key={i} className="flex-1 rounded-sm" style={{
                   height: `${h}%`,
-                  background: `linear-gradient(180deg, rgba(139,92,246,${0.3 + (i/12)*0.5}), rgba(6,182,212,${0.1 + (i/12)*0.3}))`,
+                  background: `linear-gradient(180deg, rgba(139,92,246,${0.35 + (i/12)*0.55}), rgba(6,182,212,${0.12 + (i/12)*0.35}))`,
                 }} />
               ))}
             </div>
@@ -108,12 +117,19 @@ export function Hero() {
   return (
     <section className="relative overflow-hidden">
       <DotGrid />
-      {/* Gradient overlays — restrained */}
-      <div className="pointer-events-none absolute bottom-0 left-0 right-0 z-[2] h-[40%] bg-gradient-to-t from-surface-0 to-transparent" />
-      <div className="pointer-events-none absolute right-[-10%] top-[20%] z-[1] h-[500px] w-[500px] rounded-full bg-[radial-gradient(circle,rgba(139,92,246,0.05),transparent_70%)] blur-[80px]" />
+
+      {/* ── Cinematic background lighting ── */}
+      {/* Primary violet light source — top center */}
+      <div className="pointer-events-none absolute left-1/2 top-[-5%] z-[1] h-[600px] w-[800px] -translate-x-1/2 rounded-full bg-[radial-gradient(ellipse_at_center,rgba(139,92,246,0.07),transparent_60%)] blur-[100px]" />
+      {/* Secondary warm violet — right side */}
+      <div className="pointer-events-none absolute right-[-5%] top-[25%] z-[1] h-[400px] w-[400px] rounded-full bg-[radial-gradient(circle,rgba(124,58,237,0.05),transparent_65%)] blur-[60px]" />
+      {/* Deep cyan accent — lower left, barely visible */}
+      <div className="pointer-events-none absolute bottom-[10%] left-[-5%] z-[1] h-[300px] w-[300px] rounded-full bg-[radial-gradient(circle,rgba(6,182,212,0.03),transparent_70%)] blur-[50px]" />
+      {/* Bottom fade to surface */}
+      <div className="pointer-events-none absolute bottom-0 left-0 right-0 z-[2] h-[35%] bg-gradient-to-t from-surface-0 to-transparent" />
 
       <div className="wrap relative z-[3] pb-16 pt-28 sm:pb-20 sm:pt-36 lg:pb-24 lg:pt-[140px]">
-        <div className="grid items-center gap-12 lg:grid-cols-[1fr_500px] lg:gap-16">
+        <div className="grid items-center gap-12 lg:grid-cols-[1fr_520px] lg:gap-16">
           {/* Left: Copy */}
           <div>
             <Reveal>
@@ -123,10 +139,15 @@ export function Hero() {
             </Reveal>
 
             <Reveal delay={0.06}>
-              <h1 className="font-display text-[clamp(34px,7.5vw,56px)] font-black leading-[1.06] tracking-[-0.035em] text-white sm:text-[clamp(44px,5.5vw,68px)]">
-                We build the software{" "}
-                <span className="gradient-text">that grows your business.</span>
-              </h1>
+              <div className="relative">
+                {/* Ambient bloom behind headline gradient words */}
+                <div className="pointer-events-none absolute left-[-10%] top-[30%] h-[120px] w-[80%] rounded-full bg-[radial-gradient(ellipse_at_center,rgba(139,92,246,0.12),transparent_65%)] blur-[60px] sm:h-[140px]" />
+
+                <h1 className="relative font-display text-[clamp(34px,7.5vw,56px)] font-black leading-[1.06] tracking-[-0.035em] text-white sm:text-[clamp(44px,5.5vw,68px)]">
+                  We build the software{" "}
+                  <span className="gradient-text">that grows your business.</span>
+                </h1>
+              </div>
             </Reveal>
 
             <Reveal delay={0.14}>
@@ -146,7 +167,7 @@ export function Hero() {
               </div>
             </Reveal>
 
-            {/* Trust — editorial, not cliché */}
+            {/* Trust — editorial */}
             <Reveal delay={0.26}>
               <div className="mt-8 sm:mt-10">
                 <p className="text-[12px] text-dim">Trusted by</p>

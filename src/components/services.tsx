@@ -28,8 +28,9 @@ export function Services() {
             return (
               <Reveal key={sv.title} delay={i * 0.06}>
                 <Tilt className="h-full">
-                  <div className={`group relative flex h-full flex-col overflow-hidden rounded-[20px] border border-white/[0.05] bg-gradient-to-br ${sv.gradient} p-8 transition-all duration-300 hover:border-v/[0.12]`}>
-                    <div className="absolute left-8 right-8 top-0 h-px bg-gradient-to-r from-transparent via-v/[0.15] to-transparent" />
+                  <div className={`group relative flex h-full flex-col overflow-hidden rounded-[20px] border border-white/[0.06] bg-gradient-to-br ${sv.gradient} p-8 transition-all duration-300 hover:border-v/[0.12]`}
+                    style={{ boxShadow: "0 1px 0 0 rgba(255,255,255,0.03) inset, 0 20px 40px -12px rgba(0,0,0,0.35)" }}>
+                    <div className="absolute left-8 right-8 top-0 h-px bg-gradient-to-r from-transparent via-v/[0.12] to-transparent" />
 
                     <div className="mb-5 flex items-start justify-between">
                       <div className="flex h-12 w-12 items-center justify-center rounded-[14px] border border-v/[0.2] bg-gradient-to-br from-v/[0.1] to-cyan/[0.04] shadow-[0_0_24px_rgba(139,92,246,0.06)]">

@@ -85,7 +85,7 @@ export function Pricing() {
                       q.popular
                         ? "border-v bg-gradient-to-b from-v/[0.05] to-surface-1 shadow-[0_0_48px_rgba(139,92,246,0.06)]"
                         : "border-white/[0.06] hover:border-white/[0.1]"
-                    )} style={{ background: q.popular ? undefined : "linear-gradient(170deg, #0C0C14, #111119)" }}>
+                    )} style={{ background: q.popular ? undefined : "linear-gradient(170deg, rgba(14,14,24,0.95), rgba(10,10,18,0.98))" }}>
                       {q.popular && (
                         <div className="absolute -top-px left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full bg-gradient-to-r from-v to-v-deep px-4 py-1 text-[10px] font-bold tracking-wide text-white shadow-[0_4px_16px_rgba(139,92,246,0.3)]">
                           MOST POPULAR
@@ -151,7 +151,7 @@ export function Pricing() {
               </div>
 
               {/* Not sure form */}
-              <div className="relative mx-auto max-w-[580px] overflow-hidden rounded-[20px] border border-v/[0.1] p-8" style={{ background: "linear-gradient(170deg, #0C0C14, #111119)" }}>
+              <div className="relative mx-auto max-w-[580px] overflow-hidden rounded-[20px] border border-v/[0.1] p-8" style={{ background: "linear-gradient(170deg, rgba(14,14,24,0.95), rgba(10,10,18,0.98))" }}>
                 <div className="absolute left-8 right-8 top-0 h-px bg-gradient-to-r from-transparent via-v/20 to-transparent" />
                 <div className="mb-1 flex items-center gap-3">
                   <div className="flex h-9 w-9 items-center justify-center rounded-[10px] border border-cyan/[0.15] bg-cyan/[0.06]">
@@ -227,7 +227,7 @@ export function Pricing() {
                 </div>
 
                 {/* Milestone visual */}
-                <div className="mt-6 rounded-[16px] border border-white/[0.06] p-6" style={{ background: "linear-gradient(170deg, #0C0C14, #111119)" }}>
+                <div className="mt-6 rounded-[16px] border border-white/[0.06] p-6" style={{ background: "linear-gradient(170deg, rgba(14,14,24,0.95), rgba(10,10,18,0.98))" }}>
                   <div className="mb-4 flex items-center gap-2">
                     <Wallet size={14} className="text-v-light" />
                     <h4 className="font-display text-[14px] font-bold text-white">How projects are structured</h4>
@@ -258,7 +258,7 @@ export function Pricing() {
                 </div>
               </div>
 
-              <div className="overflow-hidden rounded-[20px] border border-white/[0.06] p-7" style={{ background: "linear-gradient(170deg, #0C0C14, #111119)" }}>
+              <div className="overflow-hidden rounded-[20px] border border-white/[0.06] p-7" style={{ background: "linear-gradient(170deg, rgba(14,14,24,0.95), rgba(10,10,18,0.98))" }}>
                 <h3 className="font-display text-[17px] font-bold text-white">Tell us about your project</h3>
                 <p className="mb-5 mt-1 text-[12px] text-dim">We respond within one business day.</p>
                 {status === "success" ? (

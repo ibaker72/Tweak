@@ -26,7 +26,7 @@ export function Projects() {
           {projects.map((p, i) => (
             <Reveal key={p.slug} delay={i * 0.06} className="w-[420px] flex-shrink-0">
               <Tilt className="h-full">
-                <Link href={`/work/${p.slug}`} className="group flex h-full flex-col overflow-hidden rounded-[20px] border border-white/[0.06] transition-all duration-300 hover:border-v/[0.15] hover:-translate-y-1" style={{ background: "linear-gradient(170deg, #0C0C14, #111119)" }}>
+                <Link href={`/work/${p.slug}`} className="group flex h-full flex-col overflow-hidden rounded-[20px] border border-white/[0.06] transition-all duration-300 hover:border-v/[0.12] hover:-translate-y-1 shadow-[0_1px_0_0_rgba(255,255,255,0.03)_inset,0_20px_40px_-12px_rgba(0,0,0,0.35)] hover:shadow-[0_1px_0_0_rgba(255,255,255,0.04)_inset,0_0_48px_rgba(139,92,246,0.04),0_24px_48px_-12px_rgba(0,0,0,0.45)]" style={{ background: "linear-gradient(170deg, rgba(14,14,24,0.95), rgba(10,10,18,0.98))" }}>
                   {/* Top gradient bar */}
                   <div className="h-[3px]" style={{ background: p.live ? "linear-gradient(90deg,#22C55E,#06B6D4,#8B5CF6)" : "linear-gradient(90deg,#8B5CF6,#06B6D4)" }} />
 

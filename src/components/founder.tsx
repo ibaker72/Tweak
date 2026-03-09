@@ -25,7 +25,7 @@ export function WhyUs() {
           {differentiators.map((d, i) => (
             <Reveal key={d.title} delay={i * 0.06}>
               <Tilt className="h-full">
-                <div className="flex h-full gap-4 rounded-[20px] border border-white/[0.05] p-7 transition-all duration-300 hover:border-v/[0.1]" style={{ background: "linear-gradient(170deg, #0C0C14, #111119)" }}>
+                <div className="flex h-full gap-4 rounded-[20px] border border-white/[0.06] p-7 transition-all duration-300 hover:border-v/[0.1] shadow-[0_1px_0_0_rgba(255,255,255,0.03)_inset,0_20px_40px_-12px_rgba(0,0,0,0.35)]" style={{ background: "linear-gradient(170deg, rgba(14,14,24,0.95), rgba(10,10,18,0.98))" }}>
                   <div className="mt-0.5 flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-lg border border-v/[0.2] bg-gradient-to-br from-v/[0.1] to-cyan/[0.04]">
                     <Check size={14} className="text-v-light" />
                   </div>
@@ -43,7 +43,7 @@ export function WhyUs() {
         <Reveal delay={0.3}>
           <div className="mx-auto max-w-[720px]">
             <Tilt>
-              <div className="relative overflow-hidden rounded-[24px] border border-white/[0.06] p-8 sm:p-10" style={{ background: "linear-gradient(170deg, #0C0C14, #111119)" }}>
+              <div className="relative overflow-hidden rounded-[24px] border border-white/[0.06] p-8 shadow-[0_1px_0_0_rgba(255,255,255,0.03)_inset,0_24px_48px_-12px_rgba(0,0,0,0.35)] sm:p-10" style={{ background: "linear-gradient(170deg, rgba(14,14,24,0.95), rgba(10,10,18,0.98))" }}>
                 <div className="absolute left-10 right-10 top-0 h-px bg-gradient-to-r from-transparent via-v/[0.2] to-transparent" />
 
                 <div className="flex flex-col items-center gap-6 sm:flex-row sm:items-start sm:gap-8">

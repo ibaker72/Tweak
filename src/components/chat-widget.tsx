@@ -64,7 +64,7 @@ export function ChatWidget() {
           ? "pointer-events-auto translate-y-0 opacity-100"
           : "pointer-events-none translate-y-3 opacity-0"
       )}>
-        <div className="overflow-hidden rounded-[20px] border border-white/[0.08] shadow-[0_24px_80px_rgba(0,0,0,0.5),0_0_40px_rgba(139,92,246,0.06)]" style={{ background: "linear-gradient(170deg, #0C0C14, #0F0F18)" }}>
+        <div className="overflow-hidden rounded-[20px] border border-white/[0.08] shadow-[0_24px_80px_rgba(0,0,0,0.5),0_0_40px_rgba(139,92,246,0.06)]" style={{ background: "linear-gradient(170deg, rgba(14,14,24,0.97), rgba(10,10,18,0.99))" }}>
           {/* Header */}
           <div className="border-b border-white/[0.06] px-6 pb-4 pt-5">
             <div className="flex items-start justify-between">
@@ -130,7 +130,7 @@ export function ChatWidget() {
         )}
         style={{
           background: open
-            ? "linear-gradient(135deg, #0C0C14, #111119)"
+            ? "linear-gradient(135deg, rgba(14,14,24,0.95), rgba(10,10,18,0.98))"
             : "linear-gradient(135deg, #8B5CF6, #7C3AED)",
         }}
         aria-label={open ? "Close contact panel" : "Open contact panel"}
