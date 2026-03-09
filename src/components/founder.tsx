@@ -47,8 +47,8 @@ export function WhyUs() {
 
                 <div className="flex flex-col items-center gap-6 sm:flex-row sm:items-start sm:gap-8">
                   <div className="flex-shrink-0">
-                    <div className="flex h-20 w-20 items-center justify-center rounded-2xl border border-v/[0.15] bg-v/[0.06]">
-                      <span className="font-display text-2xl font-black text-v-light">IB</span>
+                    <div className="flex h-20 w-20 items-center justify-center rounded-2xl border border-accent/[0.15] bg-accent/[0.06] shadow-[0_0_24px_rgba(200,255,0,0.06)]">
+                      <span className="font-display text-[22px] font-black tracking-[-0.03em] text-accent">T<span className="text-accent/60">&amp;</span>B</span>
                     </div>
                   </div>
                   <div className="text-center sm:text-left">

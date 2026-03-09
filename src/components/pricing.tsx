@@ -80,13 +80,16 @@ export function Pricing() {
                   <div key={q.name} className={cn(
                     "relative flex h-full flex-col rounded-2xl border-[1.5px] p-7 transition-all",
                     q.popular
-                      ? "border-accent bg-accent/[0.03]"
+                      ? "border-accent/80 bg-accent/[0.03] shadow-[0_0_40px_rgba(200,255,0,0.06)]"
                       : "border-white/[0.06] bg-white/[0.015] hover:border-white/[0.1]"
                   )}>
                     {q.popular && (
-                      <div className="absolute -top-px left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full bg-accent px-4 py-1 text-[10px] font-bold tracking-wide text-surface-0">
-                        MOST POPULAR
-                      </div>
+                      <>
+                        <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-accent/60 to-transparent" />
+                        <div className="absolute -top-px left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full bg-accent px-4 py-1.5 text-[10px] font-bold uppercase tracking-[0.08em] text-surface-0 shadow-[0_2px_12px_rgba(200,255,0,0.2)]">
+                          Most Popular
+                        </div>
+                      </>
                     )}
                     <h3 className="font-display text-[17px] font-bold text-white">{q.name}</h3>
                     <div className="mt-3 flex items-baseline gap-1.5">
@@ -95,7 +98,12 @@ export function Pricing() {
                     </div>
                     <div className="mb-4 mt-1 font-mono text-[11px] text-accent">{q.time}</div>
 
-                    <div className="mb-5 flex items-center gap-2 rounded-xl border border-white/[0.05] bg-white/[0.02] px-3 py-2">
+                    <div className={cn(
+                      "mb-5 flex items-center gap-2 rounded-xl border px-3 py-2",
+                      q.popular
+                        ? "border-accent/[0.12] bg-accent/[0.04]"
+                        : "border-white/[0.05] bg-white/[0.02]"
+                    )}>
                       <Wallet size={12} className="flex-shrink-0 text-accent" />
                       <span className="font-mono text-[10px] leading-tight text-gray-400">{q.payment}</span>
                     </div>
@@ -125,7 +133,7 @@ export function Pricing() {
                       {checkoutLoading === q.name ? (
                         <><Loader2 size={14} className="animate-spin" /> Processing...</>
                       ) : (
-                        <><CreditCard size={14} /> Get started</>
+                        <><CreditCard size={14} /> {q.buttonLabel}</>
                       )}
                     </button>
                   </div>

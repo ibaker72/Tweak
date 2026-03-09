@@ -117,32 +117,43 @@ export const services = [
 export const tiers = [
   {
     name: "Single Page",
-    price: "$497",
+    price: "$1,497",
     time: "3 day delivery",
-    payment: "Payment in full upfront",
+    payment: "Paid in full upfront",
+    buttonLabel: "Get started",
+    stripePriceId: "price_1T9BVYPzPB6fxeLqyzhgqHGf",
     features: ["1 responsive page", "Contact form", "SEO fundamentals", "Mobile optimized", "1 revision round"],
     excluded: ["CMS", "Multi-page", "E-commerce"],
     popular: false,
   },
   {
     name: "Multi Page",
-    price: "$1,497",
+    price: "$2,997",
     time: "7 day delivery",
-    payment: "60% upfront · 40% before launch",
+    payment: "50% upfront · 50% before launch",
+    buttonLabel: "Pay deposit",
+    stripePriceId: "price_1T9BX1PzPB6fxeLqpugGa8S5",
     features: ["Up to 5 pages", "CMS integration", "Lead capture forms", "Analytics setup", "2 revision rounds", "Basic SEO"],
     excluded: ["E-commerce", "Custom backend"],
     popular: true,
   },
   {
     name: "Full Site",
-    price: "$2,997",
+    price: "$5,997",
     time: "14 day delivery",
-    payment: "50% upfront · 25% at preview · 25% before launch",
+    payment: "50% upfront · 50% before launch",
+    buttonLabel: "Pay deposit",
+    stripePriceId: "price_1T9BXWPzPB6fxeLq8GeqcE9f",
     features: ["Up to 12 pages", "CMS + blog", "Advanced forms + SEO", "E-commerce ready", "3 revision rounds", "30 day support"],
     excluded: ["Custom SaaS logic", "AI integrations"],
     popular: false,
   },
 ];
+
+// ── Internal-only: remainder price IDs for manual invoicing after launch ──
+// These are NOT used in the public checkout flow.
+// Multi Page remainder (50%): price_1T9Bh8PzPB6fxeLq6BLPxA20
+// Full Site remainder (50%):   price_1T9BhuPzPB6fxeLq2OYoZ5PD
 
 export const testimonials = [
   {
@@ -239,7 +250,7 @@ export const faqs = [
   },
   {
     q: "How do payments work?",
-    a: "Quick Builds are paid upfront or split into two payments depending on the tier. Custom projects follow a milestone structure: 40% to begin, 30% at the midpoint, and 30% before final launch and handoff. You always know exactly what you owe and when.",
+    a: "The Single Page tier is paid in full upfront. Multi Page and Full Site tiers are split 50/50: half upfront to begin, half before launch. Custom projects follow a milestone structure: 40% to begin, 30% at the midpoint, and 30% before final launch and handoff. You always know exactly what you owe and when.",
   },
   {
     q: "When do I get the source code and files?",

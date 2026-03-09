@@ -53,8 +53,8 @@ export default function AboutPage() {
           <Reveal delay={0.25}>
             <div className="card mt-20 overflow-hidden rounded-2xl p-7 sm:p-8">
               <div className="flex items-start gap-5">
-                <div className="flex h-13 w-13 flex-shrink-0 items-center justify-center rounded-2xl border border-accent/[0.15] bg-accent/[0.06]" style={{ width: 52, height: 52 }}>
-                  <span className="font-display text-[16px] font-bold text-accent">IB</span>
+                <div className="flex flex-shrink-0 items-center justify-center rounded-2xl border border-accent/[0.15] bg-accent/[0.06] shadow-[0_0_20px_rgba(200,255,0,0.05)]" style={{ width: 52, height: 52 }}>
+                  <span className="font-display text-[15px] font-black tracking-[-0.03em] text-accent">T<span className="text-accent/60">&amp;</span>B</span>
                 </div>
                 <div>
                   <h3 className="font-display text-[17px] font-bold text-white">Iyad Baker</h3>
