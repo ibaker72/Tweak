@@ -15,7 +15,7 @@
 
 @layer components {
   /* ─── Layout ─── */
-  .wrap { @apply mx-auto max-w-page px-6 sm:px-8; }
+  .wrap { @apply mx-auto max-w-page px-5 sm:px-8; }
 
   /* ─── Nav ─── */
   .glass-nav {

@@ -31,12 +31,13 @@ export function Navbar() {
       "fixed inset-x-0 top-0 z-50 transition-all duration-300",
       scrolled ? "glass-nav border-b border-white/[0.06]" : "border-b border-transparent"
     )}>
-      <div className="wrap flex h-16 items-center justify-between">
-        <Link href="/" className="flex items-center gap-2.5">
-          <div className="flex h-8 w-8 items-center justify-center rounded-[10px] bg-accent">
-            <Terminal size={14} className="text-surface-0" />
+      <div className="wrap flex h-14 items-center justify-between sm:h-16">
+        <Link href="/" className="flex items-center gap-2">
+          <div className="flex h-7 w-7 items-center justify-center rounded-[8px] bg-accent sm:h-8 sm:w-8 sm:rounded-[10px]">
+            <Terminal size={13} className="text-surface-0 sm:hidden" />
+            <Terminal size={14} className="hidden text-surface-0 sm:block" />
           </div>
-          <span className="font-display text-[16px] font-extrabold tracking-[-0.03em] text-white">
+          <span className="font-display text-[15px] font-extrabold tracking-[-0.03em] text-white sm:text-[16px]">
             tweak<span className="text-accent">&amp;</span>build
           </span>
         </Link>
@@ -63,7 +64,7 @@ export function Navbar() {
       </div>
 
       {open && (
-        <div className="border-t border-white/[0.05] bg-surface-1/95 px-6 pb-6 pt-3 backdrop-blur-xl lg:hidden">
+        <div className="border-t border-white/[0.05] bg-surface-1/95 px-5 pb-5 pt-2 backdrop-blur-xl sm:px-6 sm:pb-6 sm:pt-3 lg:hidden">
           <div className="space-y-0.5">
             {links.map(l => (
               <Link key={l.href} href={l.href} onClick={() => setOpen(false)}

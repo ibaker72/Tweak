@@ -26,26 +26,26 @@ export function Hero() {
       {/* Top gradient wash */}
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_70%_50%_at_50%_-10%,rgba(200,255,0,0.035),transparent)]" />
 
-      <div className="wrap relative flex min-h-[100dvh] flex-col justify-center pb-16 pt-24 lg:pb-24 lg:pt-28">
+      <div className="wrap relative flex min-h-[100dvh] flex-col justify-center pb-12 pt-20 sm:pb-16 sm:pt-24 lg:pb-24 lg:pt-28">
         {/* Top bar: status + availability */}
         <Reveal>
-        <div className="mb-8">
-          <div className="inline-flex items-center gap-2 rounded-full border border-emerald-400/20 bg-emerald-400/[0.06] px-3.5 py-1.5">
+          <div className="mb-5 flex flex-wrap items-center gap-3 sm:mb-8">
+            <div className="flex items-center gap-2 rounded-full border border-emerald-400/20 bg-emerald-400/[0.06] px-3 py-1 sm:px-3.5 sm:py-1.5">
               <span className="relative flex h-1.5 w-1.5">
                 <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-40" />
                 <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-emerald-400" />
               </span>
-              <span className="font-mono text-[11px] font-medium text-emerald-400">Accepting projects</span>
+              <span className="font-mono text-[10px] font-medium text-emerald-400 sm:text-[11px]">Accepting projects</span>
             </div>
           </div>
         </Reveal>
 
         {/* Main headline area */}
-        <div className="grid gap-12 lg:grid-cols-[1fr,460px] lg:items-center lg:gap-16">
+        <div className="grid gap-10 sm:gap-12 lg:grid-cols-[1fr,460px] lg:items-center lg:gap-16">
           {/* Left: copy */}
           <div>
             <Reveal delay={0.05}>
-              <h1 className="font-display text-[clamp(40px,7vw,76px)] font-black leading-[0.94] tracking-[-0.045em] text-white">
+              <h1 className="font-display text-[clamp(36px,8.5vw,76px)] font-black leading-[0.94] tracking-[-0.045em] text-white sm:text-[clamp(40px,7vw,76px)]">
                 We build
                 <br />
                 <span className="text-accent">digital products</span>
@@ -55,7 +55,7 @@ export function Hero() {
             </Reveal>
 
             <Reveal delay={0.12}>
-              <p className="mt-7 max-w-[480px] text-[16px] leading-[1.75] text-body lg:text-[17px]">
+              <p className="mt-5 max-w-[480px] text-[15px] leading-[1.7] text-body sm:mt-7 sm:text-[16px] sm:leading-[1.75] lg:text-[17px]">
                 Tweak &amp; Build is a product engineering studio for founders and businesses
                 who need websites, web apps, and automation systems built fast, built right,
                 and built to convert.
@@ -63,11 +63,11 @@ export function Hero() {
             </Reveal>
 
             <Reveal delay={0.18}>
-              <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center">
-                <Link href="/contact" className="btn-v justify-center sm:justify-start">
-                  Start a project <ArrowRight size={15} />
+              <div className="mt-6 flex flex-col gap-2.5 sm:mt-8 sm:flex-row sm:items-center sm:gap-3">
+                <Link href="/contact" className="btn-v justify-center py-2.5 text-[13px] sm:py-3 sm:text-[14px] sm:justify-start">
+                  Start a project <ArrowRight size={14} />
                 </Link>
-                <Link href="#work" className="btn-o justify-center sm:justify-start">
+                <Link href="#work" className="btn-o justify-center py-2.5 text-[13px] sm:py-3 sm:text-[14px] sm:justify-start">
                   See our work
                 </Link>
               </div>
@@ -75,11 +75,11 @@ export function Hero() {
 
             {/* Client logos row */}
             <Reveal delay={0.24}>
-              <div className="mt-12 border-t border-white/[0.06] pt-7">
-                <p className="mb-3.5 font-mono text-[10px] uppercase tracking-[0.14em] text-dim">Shipped for</p>
-                <div className="flex flex-wrap items-center gap-x-7 gap-y-2">
+              <div className="mt-8 border-t border-white/[0.06] pt-5 sm:mt-12 sm:pt-7">
+                <p className="mb-3 font-mono text-[10px] uppercase tracking-[0.14em] text-dim sm:mb-3.5">Shipped for</p>
+                <div className="grid grid-cols-2 gap-x-6 gap-y-2 sm:flex sm:flex-wrap sm:items-center sm:gap-x-7 sm:gap-y-2">
                   {clientNames.map((name) => (
-                    <span key={name} className="font-display text-[13px] font-semibold text-white/30 transition-colors duration-200 hover:text-white/60">
+                    <span key={name} className="font-display text-[12px] font-semibold text-white/30 transition-colors duration-200 hover:text-white/60 sm:text-[13px]">
                       {name}
                     </span>
                   ))}

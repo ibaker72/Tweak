@@ -52,7 +52,7 @@ export function ChatWidget() {
       {/* Panel */}
       <div className={cn(
         "fixed z-[60] transition-all duration-300",
-        "inset-x-4 bottom-[76px] sm:inset-x-auto",
+        "inset-x-3 bottom-[60px] sm:inset-x-auto",
         "sm:bottom-[76px] sm:right-6 sm:left-auto sm:w-[320px]",
         open
           ? "pointer-events-auto translate-y-0 opacity-100"
@@ -120,18 +120,19 @@ export function ChatWidget() {
       <button
         onClick={() => setOpen(!open)}
         className={cn(
-          "fixed bottom-6 right-6 z-[60] flex items-center gap-2 rounded-full border px-4 py-2.5 transition-all duration-300 hover:-translate-y-0.5",
+          "fixed z-[60] flex items-center rounded-full border transition-all duration-300 hover:-translate-y-0.5",
+          "bottom-4 right-3 gap-1.5 px-3 py-2 sm:bottom-6 sm:right-6 sm:gap-2 sm:px-4 sm:py-2.5",
           open
             ? "border-white/[0.12] bg-surface-1 text-white shadow-xl shadow-black/30"
-            : "border-accent/[0.25] bg-accent text-surface-0 shadow-[0_8px_32px_rgba(200,255,0,0.15)]"
+            : "border-accent/[0.25] bg-accent text-surface-0 shadow-[0_8px_32px_rgba(200,255,0,0.12)] sm:shadow-[0_8px_32px_rgba(200,255,0,0.15)]"
         )}
         aria-label={open ? "Close contact panel" : "Open contact panel"}
       >
         {open ? (
-          <X size={16} />
+          <X size={15} className="sm:h-4 sm:w-4" />
         ) : (
           <>
-            <MessageCircle size={16} />
+            <MessageCircle size={15} className="sm:h-4 sm:w-4" />
             <span className="hidden text-[13px] font-bold sm:inline">Talk to us</span>
           </>
         )}
