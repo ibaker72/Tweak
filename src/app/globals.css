@@ -92,4 +92,35 @@
 
   /* ─── Dividers ─── */
   .divider { @apply h-px w-full; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.06), transparent); }
+
+  /* ─── Page header ─── */
+  .page-header {
+    @apply pb-10 pt-36 sm:pt-40;
+  }
+
+  /* ─── Legal / prose content ─── */
+  .legal-prose {
+    @apply text-[14px] leading-[1.85] text-body;
+  }
+  .legal-prose h2 {
+    @apply mb-3 mt-10 font-display text-[17px] font-bold tracking-[-0.01em] text-white first:mt-0;
+  }
+  .legal-prose p {
+    @apply mb-4 last:mb-0;
+  }
+  .legal-prose strong {
+    @apply font-semibold text-white;
+  }
+  .legal-prose a {
+    @apply text-accent/80 underline decoration-accent/20 underline-offset-2 transition-colors duration-200 hover:text-accent hover:decoration-accent/40;
+  }
+  .legal-prose ul, .legal-prose ol {
+    @apply mb-4 ml-5 space-y-1.5;
+  }
+  .legal-prose li {
+    @apply relative pl-1;
+  }
+  .legal-prose li::marker {
+    @apply text-white/20;
+  }
 }

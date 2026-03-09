@@ -22,8 +22,11 @@ export function FinalCTA() {
           <div className="mx-auto max-w-3xl text-center">
 
             <div className="mb-7 inline-flex items-center gap-2 rounded-full border border-accent/15 bg-accent/[0.05] px-4 py-1.5">
-                 <span className="h-1.5 w-1.5 rounded-full bg-accent" />
-                <span className="font-mono text-[11px] font-medium text-accent">Accepting projects</span>
+              <span className="relative flex h-1.5 w-1.5">
+                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-accent opacity-40" />
+                <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-accent" />
+              </span>
+              <span className="font-mono text-[11px] font-medium text-accent">Accepting projects</span>
             </div>
 
             <h2 className="font-display text-[clamp(34px,5.5vw,60px)] font-black leading-[0.95] tracking-[-0.045em] text-white">

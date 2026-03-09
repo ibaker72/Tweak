@@ -10,28 +10,24 @@ const actions = [
     label: "Start a project",
     desc: "Get a free proposal",
     href: "/contact",
-    color: "#8B5CF6",
   },
   {
     icon: HelpCircle,
     label: "Get pricing help",
     desc: "Quick Build or Custom?",
     href: "/#pricing",
-    color: "#06B6D4",
   },
   {
     icon: Calendar,
     label: "Book a call",
     desc: "30 min, no commitment",
     href: "/contact",
-    color: "#A78BFA",
   },
   {
     icon: Mail,
     label: "Email us",
     desc: "iyadbaker.dev@gmail.com",
     href: "mailto:iyadbaker.dev@gmail.com",
-    color: "#22C55E",
     external: true,
   },
 ];
@@ -48,7 +44,7 @@ export function ChatWidget() {
       {/* Backdrop for mobile */}
       {open && (
         <div
-          className="fixed inset-0 z-[59] bg-black/40 backdrop-blur-sm lg:hidden"
+          className="fixed inset-0 z-[59] bg-black/50 backdrop-blur-sm lg:hidden"
           onClick={() => setOpen(false)}
         />
       )}
@@ -56,64 +52,65 @@ export function ChatWidget() {
       {/* Panel */}
       <div className={cn(
         "fixed z-[60] transition-all duration-300",
-        // Mobile: centered bottom sheet
-        "inset-x-4 bottom-20 sm:inset-x-auto",
-        // Desktop: bottom right
-        "sm:bottom-20 sm:right-6 sm:left-auto sm:w-[340px]",
+        "inset-x-4 bottom-[76px] sm:inset-x-auto",
+        "sm:bottom-[76px] sm:right-6 sm:left-auto sm:w-[320px]",
         open
           ? "pointer-events-auto translate-y-0 opacity-100"
           : "pointer-events-none translate-y-3 opacity-0"
       )}>
-        <div className="overflow-hidden rounded-[20px] border border-white/[0.08] bg-surface-2 shadow-[0_24px_80px_rgba(0,0,0,0.5)]">
+        <div className="overflow-hidden rounded-2xl border border-white/[0.08] bg-surface-1 shadow-2xl shadow-black/40">
           {/* Header */}
-          <div className="border-b border-white/[0.06] px-6 pb-4 pt-5">
+          <div className="border-b border-white/[0.06] px-5 pb-4 pt-5">
             <div className="flex items-start justify-between">
               <div>
-                <h3 className="font-display text-[16px] font-bold text-white">Talk to the studio</h3>
-                <p className="mt-1 text-[12px] leading-[1.5] text-body">Questions about scope, pricing, or timeline?</p>
+                <h3 className="font-display text-[15px] font-bold text-white">Talk to the studio</h3>
+                <p className="mt-1 text-[12px] leading-[1.5] text-dim">Questions about scope, pricing, or timeline?</p>
               </div>
               <button
                 onClick={() => setOpen(false)}
-                className="flex h-7 w-7 items-center justify-center rounded-lg text-dim transition-colors hover:bg-white/[0.05] hover:text-white"
+                className="flex h-7 w-7 items-center justify-center rounded-[8px] text-dim transition-colors duration-200 hover:bg-white/[0.05] hover:text-white"
                 aria-label="Close"
               >
-                <X size={15} />
+                <X size={14} />
               </button>
             </div>
             <div className="mt-3 flex items-center gap-2">
-              <Clock size={11} className="text-cyan" />
-              <span className="font-mono text-[10px] text-cyan">Usually respond within a few hours</span>
+              <span className="relative flex h-1.5 w-1.5">
+                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-accent opacity-40" />
+                <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-accent" />
+              </span>
+              <span className="font-mono text-[10px] text-accent/70">Usually respond within a few hours</span>
             </div>
           </div>
 
           {/* Actions */}
-          <div className="p-3">
+          <div className="space-y-1 p-2.5">
             {actions.map(a => {
               const inner = (
-                <div className="group flex items-center gap-3.5 rounded-[14px] border border-white/[0.04] bg-white/[0.015] px-4 py-3.5 transition-all duration-200 hover:border-white/[0.08] hover:bg-white/[0.03]">
-                  <div className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-[10px] transition-colors" style={{ background: `${a.color}12`, border: `1px solid ${a.color}20` }}>
-                    <a.icon size={16} style={{ color: a.color }} />
+                <div className="group flex items-center gap-3 rounded-xl border border-white/[0.04] bg-white/[0.015] px-3.5 py-3 transition-all duration-200 hover:border-white/[0.08] hover:bg-white/[0.035]">
+                  <div className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-[10px] border border-accent/[0.12] bg-accent/[0.06]">
+                    <a.icon size={14} className="text-accent/70" />
                   </div>
-                  <div className="flex-1 min-w-0">
+                  <div className="min-w-0 flex-1">
                     <div className="text-[13px] font-semibold text-white">{a.label}</div>
                     <div className="text-[11px] text-dim">{a.desc}</div>
                   </div>
-                  <ArrowRight size={13} className="flex-shrink-0 text-dim opacity-0 transition-all duration-200 group-hover:translate-x-0.5 group-hover:text-white/60 group-hover:opacity-100" />
+                  <ArrowRight size={12} className="flex-shrink-0 text-dim opacity-0 transition-all duration-200 group-hover:translate-x-0.5 group-hover:text-white/50 group-hover:opacity-100" />
                 </div>
               );
 
               return a.external ? (
-                <a key={a.label} href={a.href} className="mb-1.5 block last:mb-0">{inner}</a>
+                <a key={a.label} href={a.href} className="block">{inner}</a>
               ) : (
-                <Link key={a.label} href={a.href} onClick={() => setOpen(false)} className="mb-1.5 block last:mb-0">{inner}</Link>
+                <Link key={a.label} href={a.href} onClick={() => setOpen(false)} className="block">{inner}</Link>
               );
             })}
           </div>
 
           {/* Footer */}
-          <div className="border-t border-white/[0.05] px-6 py-3">
-            <p className="text-center text-[10px] text-dim">
-              Best for quick questions about your project
+          <div className="border-t border-white/[0.05] px-5 py-2.5">
+            <p className="text-center font-mono text-[9px] uppercase tracking-[0.08em] text-white/20">
+              Tweak & Build Studio
             </p>
           </div>
         </div>
@@ -123,24 +120,19 @@ export function ChatWidget() {
       <button
         onClick={() => setOpen(!open)}
         className={cn(
-          "fixed bottom-6 right-6 z-[60] flex items-center gap-2.5 rounded-full border px-4 py-3 shadow-[0_8px_32px_rgba(0,0,0,0.4)] transition-all duration-300 hover:-translate-y-0.5",
+          "fixed bottom-6 right-6 z-[60] flex items-center gap-2 rounded-full border px-4 py-2.5 transition-all duration-300 hover:-translate-y-0.5",
           open
-            ? "border-white/[0.1] bg-surface-2 text-white"
-            : "border-v/[0.25] text-white"
+            ? "border-white/[0.12] bg-surface-1 text-white shadow-xl shadow-black/30"
+            : "border-accent/[0.25] bg-accent text-surface-0 shadow-[0_8px_32px_rgba(200,255,0,0.15)]"
         )}
-        style={{
-          background: open
-            ? "linear-gradient(135deg, rgba(14,14,24,0.95), rgba(10,10,18,0.98))"
-            : "linear-gradient(135deg, #8B5CF6, #7C3AED)",
-        }}
         aria-label={open ? "Close contact panel" : "Open contact panel"}
       >
         {open ? (
-          <X size={18} />
+          <X size={16} />
         ) : (
           <>
-            <MessageCircle size={18} />
-            <span className="hidden text-[13px] font-semibold sm:inline">Talk to us</span>
+            <MessageCircle size={16} />
+            <span className="hidden text-[13px] font-bold sm:inline">Talk to us</span>
           </>
         )}
       </button>
