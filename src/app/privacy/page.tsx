@@ -45,7 +45,7 @@ export default function PrivacyPage() {
               <p>We may update this policy. Changes will be posted here with an updated date.</p>
 
               <h2>8. Contact</h2>
-              <p>Questions? Email <a href="mailto:iyadbaker.dev@gmail.com">iyadbaker.dev@gmail.com</a>.</p>
+              <p>Questions? Email <a href="mailto:billing@tweakandbuild.com">hello@tweakandbuild.com</a>.</p>
             </div>
           </div>
         </div>

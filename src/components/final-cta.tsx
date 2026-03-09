@@ -66,10 +66,10 @@ export function FinalCTA() {
 
             <div className="mt-10">
               <a
-                href="mailto:iyadbaker.dev@gmail.com"
+                href="mailto:hello@tweakandbuild.com"
                 className="inline-flex items-center gap-2 text-[13px] text-dim transition-colors duration-200 hover:text-white"
               >
-                <Mail size={13} className="text-accent/60" /> iyadbaker.dev@gmail.com
+                <Mail size={13} className="text-accent/60" /> hello@tweakandbuild.com
               </a>
             </div>
           </div>

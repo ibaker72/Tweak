@@ -5,7 +5,7 @@ export async function POST(request: Request) {
     const body = await request.json();
     if (!body.name || !body.email || !body.message) return NextResponse.json({ error: "Missing fields" }, { status: 400 });
 
-    const to = process.env.CONTACT_TO_EMAIL || "iyadbaker.dev@gmail.com";
+    const to = process.env.CONTACT_TO_EMAIL || "hello@tweakandbuild.com";
     const key = process.env.RESEND_API_KEY;
 
     if (key && key !== "re_xxxxxxxxxxxx") {

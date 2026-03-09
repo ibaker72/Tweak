@@ -26,8 +26,8 @@ const actions = [
   {
     icon: Mail,
     label: "Email us",
-    desc: "iyadbaker.dev@gmail.com",
-    href: "mailto:iyadbaker.dev@gmail.com",
+    desc: "projects@tweakandbuild.com",
+    href: "mailto:projects@tweakandbuild.com",
     external: true,
   },
 ];

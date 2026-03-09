@@ -38,8 +38,8 @@ export default function ContactPage() {
               Book a strategy call or submit your project details. We respond within one business day.
             </p>
             <div className="mx-auto mt-6 flex flex-wrap items-center justify-center gap-5 text-[13px] text-dim">
-              <a href="mailto:iyadbaker.dev@gmail.com" className="flex items-center gap-2 transition-colors duration-200 hover:text-white">
-                <Mail size={13} className="text-accent/60" /> iyadbaker.dev@gmail.com
+              <a href="mailto:hello@tweakandbuild.com" className="flex items-center gap-2 transition-colors duration-200 hover:text-white">
+                <Mail size={13} className="text-accent/60" /> hello@tweakandbuild.com
               </a>
               <span className="hidden h-3 w-px bg-white/[0.08] sm:block" />
               <span className="flex items-center gap-2">

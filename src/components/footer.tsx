@@ -65,7 +65,7 @@ export function Footer() {
             <p className="mt-4 max-w-xs text-sm leading-relaxed text-dim">
               Product engineering studio. We build high-converting websites, web apps, and automation systems for founders who ship.
             </p>
-            <a href="mailto:iyadbaker.dev@gmail.com" className="mt-3 block text-sm text-dim transition-colors hover:text-accent">iyadbaker.dev@gmail.com</a>
+            <a href="mailto:hello@tweakandbuild.com" className="mt-3 block text-sm text-dim transition-colors hover:text-accent">hello@tweakandbuild.com</a>
           </div>
           {cols.map(c => (
             <div key={c.h}>

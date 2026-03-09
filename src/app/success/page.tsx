@@ -132,10 +132,10 @@ export default function SuccessPage() {
             <p className="text-[13px] text-dim">
               Prefer email?{" "}
               <a
-                href="mailto:iyadbaker.dev@gmail.com"
+                href="mailto:hello@tweakandbuild.com"
                 className="text-accent/80 transition-colors duration-200 hover:text-accent"
               >
-                iyadbaker.dev@gmail.com
+                hello@tweakandbuild.com
               </a>
             </p>
             <div className="mt-6 flex justify-center">
