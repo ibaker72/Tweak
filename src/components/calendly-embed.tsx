@@ -2,7 +2,7 @@
 import { useEffect } from "react";
 import { ExternalLink } from "lucide-react";
 
-const URL = process.env.NEXT_PUBLIC_CALENDLY_URL || "https://calendly.com/tweakandbuild";
+const URL = process.env.NEXT_PUBLIC_CALENDLY_URL || "https://calendly.com/tweakandbuild/project-intro-call";
 
 export function CalendlyEmbed() {
   useEffect(() => { const s = document.createElement("script"); s.src = "https://assets.calendly.com/assets/external/widget.js"; s.async = true; document.body.appendChild(s); return () => { document.body.removeChild(s); }; }, []);
