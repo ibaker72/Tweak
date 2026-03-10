@@ -1,7 +1,7 @@
 "use client";
 import { useState } from "react";
 import Link from "next/link";
-import { ArrowRight, Check, Minus, Package, Code2, HelpCircle, MessageSquare, Upload, Send, Loader2, CreditCard, Wallet, Layers, Rocket, FileText, Clock } from "lucide-react";
+import { ArrowRight, Check, Minus, Package, Code2, HelpCircle, MessageSquare, Upload, Send, Loader2, CreditCard, Wallet, Layers, Rocket, FileText, Clock, Shield } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Reveal } from "./shared";
 import { tiers, budgetOptions, timelineOptions } from "@/lib/data";
@@ -305,6 +305,9 @@ export function Pricing() {
                     <Check size={11} className="text-accent/50" />{t}
                   </span>
                 ))}
+                <span className="flex items-center gap-2 text-[12px] text-dim">
+                  <Shield size={11} className="text-accent/50" />Secure checkout · Flexible payment options available
+                </span>
               </div>
 
               {/* ── Recommendation form — designed closing module ── */}
