@@ -160,22 +160,11 @@ export function Pricing() {
                   const TierIcon = tierMeta.icon;
 
                   return (
-                    <div key={q.name} className={cn(
-                      "group relative flex h-full flex-col overflow-hidden rounded-[20px] border-[1.5px] transition-all duration-300",
-                      tierMeta.borderClass
-                    )}
-                    style={{ background: "rgba(255,255,255,0.012)" }}
-                    >
-                      {/* Top edge glow */}
-                      <div className={cn(
-                        "absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent to-transparent",
-                        tierMeta.topGlowClass
-                      )} />
-
-                      {/* Badge */}
+                    <div key={q.name} className={cn("relative", tierMeta.badgeLabel && "mt-3 md:mt-4")}>
+                      {/* Badge — outside the clipping container */}
                       {tierMeta.badgeLabel && (
                         <div className={cn(
-                          "absolute -top-px left-1/2 z-10 -translate-x-1/2 -translate-y-1/2 rounded-full px-4 py-1.5 text-[10px] font-bold uppercase tracking-[0.08em]",
+                          "absolute left-1/2 top-0 z-10 -translate-x-1/2 -translate-y-1/2 whitespace-nowrap rounded-full px-4 py-1.5 text-[10px] font-bold uppercase tracking-[0.08em]",
                           q.popular
                             ? "bg-accent text-surface-0 shadow-[0_2px_16px_rgba(200,255,0,0.25)]"
                             : "border border-white/[0.15] bg-[#0c0c14] text-white/60 shadow-[0_2px_12px_rgba(0,0,0,0.3)]"
@@ -184,10 +173,22 @@ export function Pricing() {
                         </div>
                       )}
 
+                      <div className={cn(
+                        "group relative flex h-full flex-col overflow-hidden rounded-[20px] border-[1.5px] transition-all duration-300",
+                        tierMeta.borderClass
+                      )}
+                      style={{ background: "rgba(255,255,255,0.012)" }}
+                      >
+                      {/* Top edge glow */}
+                      <div className={cn(
+                        "absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent to-transparent",
+                        tierMeta.topGlowClass
+                      )} />
+
                       {/* Header zone */}
                       <div className={cn(
-                        "relative px-7 pb-5 pt-8",
-                        tierMeta.badgeLabel && "pt-10"
+                        "relative px-7 pb-5",
+                        tierMeta.badgeLabel ? "pt-7" : "pt-8"
                       )}>
                         <div className={cn(
                           "pointer-events-none absolute inset-0 bg-gradient-to-b",
@@ -287,6 +288,7 @@ export function Pricing() {
                             )}
                           </button>
                         </div>
+                      </div>
                       </div>
                     </div>
                   );
