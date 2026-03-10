@@ -74,7 +74,7 @@ export function DotGrid() {
       for (let i = 0; i <= cols; i++) for (let j = 0; j <= rows; j++) {
         const x = i * sp, y = j * sp, dx = mx - x, dy = my - y, d = Math.sqrt(dx*dx+dy*dy), t = Math.max(0, 1 - d / 180), r = 0.6 + 2.4 * t * t;
         ctx.beginPath(); ctx.arc(x, y, r, 0, Math.PI * 2);
-        ctx.fillStyle = t > 0 ? `rgba(139,92,246,${0.08+0.45*t*t})` : "rgba(255,255,255,0.025)"; ctx.fill();
+        ctx.fillStyle = t > 0 ? `rgba(200,255,0,${0.08+0.45*t*t})` : "rgba(255,255,255,0.025)"; ctx.fill();
       }
       raf.current = requestAnimationFrame(draw);
     }
