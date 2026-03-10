@@ -1,7 +1,7 @@
 "use client";
 import { useState } from "react";
 import Link from "next/link";
-import { ArrowRight, Check, Minus, Package, Code2, HelpCircle, MessageSquare, Upload, Send, Loader2, CreditCard, Wallet, Layers, Rocket } from "lucide-react";
+import { ArrowRight, Check, Minus, Package, Code2, HelpCircle, MessageSquare, Upload, Send, Loader2, CreditCard, Wallet, Layers, Rocket, FileText, Clock } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Reveal } from "./shared";
 import { tiers, budgetOptions, timelineOptions } from "@/lib/data";
@@ -75,89 +75,221 @@ export function Pricing() {
         {tab === "quick" && (
           <Reveal delay={0.1}>
             <div className="mx-auto max-w-[1000px]">
-              <div className="mb-10 grid gap-4 md:grid-cols-3">
-                {tiers.map(q => (
-                  <div key={q.name} className={cn(
-                    "relative flex h-full flex-col rounded-2xl border-[1.5px] p-7 transition-all",
-                    q.popular
-                      ? "border-accent/80 bg-accent/[0.03] shadow-[0_0_40px_rgba(200,255,0,0.06)]"
-                      : "border-white/[0.06] bg-white/[0.015] hover:border-white/[0.1]"
-                  )}>
-                    {q.popular && (
-                      <>
-                        <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-accent/60 to-transparent" />
-                        <div className="absolute -top-px left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full bg-accent px-4 py-1.5 text-[10px] font-bold uppercase tracking-[0.08em] text-surface-0 shadow-[0_2px_12px_rgba(200,255,0,0.2)]">
-                          Most Popular
-                        </div>
-                      </>
-                    )}
-                    <div className="flex items-center gap-2.5">
-                      {q.name === "Multi Page" && (
-                        <div className="flex h-8 w-8 items-center justify-center rounded-lg border border-accent/20 bg-accent/[0.06]">
-                          <Layers size={14} className="text-accent" />
-                        </div>
-                      )}
-                      {q.name === "Full Site" && (
-                        <div className="flex h-8 w-8 items-center justify-center rounded-lg border border-cyan-400/20 bg-cyan-400/[0.06]">
-                          <Rocket size={14} className="text-cyan-400" />
-                        </div>
-                      )}
-                      <div>
-                        <h3 className="font-display text-[17px] font-bold text-white">{q.name}</h3>
-                        {q.name === "Multi Page" && (
-                          <p className="font-mono text-[10px] text-accent/60">Best for growing brands</p>
-                        )}
-                        {q.name === "Full Site" && (
-                          <p className="font-mono text-[10px] text-cyan-400/60">Flagship build</p>
-                        )}
-                      </div>
-                    </div>
-                    <div className="mt-3 flex items-baseline gap-1.5">
-                      <span className="font-display text-[42px] font-black tracking-tight text-white">{q.price}</span>
-                      <span className="text-[13px] text-dim">flat rate</span>
-                    </div>
-                    <div className="mb-4 mt-1 font-mono text-[11px] text-accent">{q.time}</div>
+              <div className="mb-10 grid gap-5 md:grid-cols-3">
+                {tiers.map(q => {
+                  /* Per-tier identity */
+                  const tierMeta = {
+                    "Single Page": {
+                      icon: FileText,
+                      iconColor: "text-white/70",
+                      iconBorder: "border-white/[0.10]",
+                      iconBg: "bg-white/[0.04]",
+                      sublabel: "Perfect for launches",
+                      sublabelColor: "text-white/30",
+                      accentColor: "white",
+                      headerGradient: "from-white/[0.03] to-transparent",
+                      badgeLabel: null,
+                    },
+                    "Multi Page": {
+                      icon: Layers,
+                      iconColor: "text-accent",
+                      iconBorder: "border-accent/20",
+                      iconBg: "bg-accent/[0.08]",
+                      sublabel: "Best for growing brands",
+                      sublabelColor: "text-accent/50",
+                      accentColor: "accent",
+                      headerGradient: "from-accent/[0.04] to-transparent",
+                      badgeLabel: "Most Popular",
+                    },
+                    "Full Site": {
+                      icon: Rocket,
+                      iconColor: "text-cyan-400",
+                      iconBorder: "border-cyan-400/20",
+                      iconBg: "bg-cyan-400/[0.08]",
+                      sublabel: "Flagship build",
+                      sublabelColor: "text-cyan-400/50",
+                      accentColor: "cyan",
+                      headerGradient: "from-cyan-400/[0.03] to-transparent",
+                      badgeLabel: "Premium",
+                    },
+                  }[q.name]!;
 
-                    <div className={cn(
-                      "mb-5 flex items-center gap-2 rounded-xl border px-3 py-2",
+                  const TierIcon = tierMeta.icon;
+
+                  return (
+                    <div key={q.name} className={cn(
+                      "group relative flex h-full flex-col overflow-hidden rounded-[20px] border-[1.5px] transition-all duration-300",
                       q.popular
-                        ? "border-accent/[0.12] bg-accent/[0.04]"
-                        : "border-white/[0.05] bg-white/[0.02]"
-                    )}>
-                      <Wallet size={12} className="flex-shrink-0 text-accent" />
-                      <span className="font-mono text-[10px] leading-tight text-gray-400">{q.payment}</span>
-                    </div>
+                        ? "border-accent/60 shadow-[0_0_50px_rgba(200,255,0,0.06),0_0_0_1px_rgba(200,255,0,0.03)_inset]"
+                        : q.name === "Full Site"
+                          ? "border-cyan-400/20 hover:border-cyan-400/35"
+                          : "border-white/[0.07] hover:border-white/[0.14]"
+                    )}
+                    style={{ background: "rgba(255,255,255,0.012)" }}
+                    >
+                      {/* Top edge glow */}
+                      <div className={cn(
+                        "absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent to-transparent",
+                        q.popular ? "via-accent/50" : q.name === "Full Site" ? "via-cyan-400/25" : "via-white/[0.08]"
+                      )} />
 
-                    <div className="flex-1 border-t border-white/[0.06] pt-5">
-                      {q.features.map(f => (
-                        <div key={f} className="flex items-start gap-2.5 py-[5px] text-[13px] text-gray-300">
-                          <Check size={13} className="mt-[3px] flex-shrink-0 text-accent" />{f}
+                      {/* Badge */}
+                      {tierMeta.badgeLabel && (
+                        <div className={cn(
+                          "absolute -top-px left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full px-4 py-1.5 text-[10px] font-bold uppercase tracking-[0.08em] shadow-lg",
+                          q.popular
+                            ? "bg-accent text-surface-0 shadow-[0_2px_16px_rgba(200,255,0,0.25)]"
+                            : "border border-cyan-400/30 bg-[#0c0c14] text-cyan-400 shadow-[0_2px_16px_rgba(34,211,238,0.12)]"
+                        )}>
+                          {tierMeta.badgeLabel}
                         </div>
-                      ))}
-                      <div className="mt-3 border-t border-white/[0.04] pt-3">
-                        {q.excluded.map(f => (
-                          <div key={f} className="flex items-start gap-2.5 py-[3px] text-[12px] text-dim">
-                            <Minus size={11} className="mt-[3px] flex-shrink-0 text-white/[0.12]" />{f}
+                      )}
+
+                      {/* Header zone */}
+                      <div className={cn(
+                        "relative px-7 pb-6 pt-8",
+                        tierMeta.badgeLabel && "pt-10"
+                      )}>
+                        {/* Subtle gradient bg for header */}
+                        <div className={cn(
+                          "pointer-events-none absolute inset-0 bg-gradient-to-b",
+                          tierMeta.headerGradient
+                        )} />
+
+                        <div className="relative">
+                          {/* Icon + title row */}
+                          <div className="flex items-center gap-3">
+                            <div className={cn(
+                              "flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl border",
+                              tierMeta.iconBorder,
+                              tierMeta.iconBg
+                            )}>
+                              <TierIcon size={16} className={tierMeta.iconColor} />
+                            </div>
+                            <div>
+                              <h3 className="font-display text-[18px] font-bold text-white">{q.name}</h3>
+                              <p className={cn("mt-0.5 font-mono text-[10px] tracking-wide", tierMeta.sublabelColor)}>
+                                {tierMeta.sublabel}
+                              </p>
+                            </div>
                           </div>
-                        ))}
+
+                          {/* Price */}
+                          <div className="mt-5 flex items-baseline gap-2">
+                            <span className="font-display text-[44px] font-black leading-none tracking-tight text-white">{q.price}</span>
+                            <span className="text-[12px] font-medium text-white/25">flat rate</span>
+                          </div>
+
+                          {/* Timeline */}
+                          <div className="mt-2 flex items-center gap-1.5">
+                            <Clock size={11} className={cn(
+                              q.popular ? "text-accent/50" : q.name === "Full Site" ? "text-cyan-400/40" : "text-white/20"
+                            )} />
+                            <span className={cn(
+                              "font-mono text-[11px]",
+                              q.popular ? "text-accent/70" : q.name === "Full Site" ? "text-cyan-400/50" : "text-white/30"
+                            )}>{q.time}</span>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Divider */}
+                      <div className="mx-7">
+                        <div className={cn(
+                          "h-px",
+                          q.popular
+                            ? "bg-gradient-to-r from-transparent via-accent/20 to-transparent"
+                            : q.name === "Full Site"
+                              ? "bg-gradient-to-r from-transparent via-cyan-400/10 to-transparent"
+                              : "bg-white/[0.06]"
+                        )} />
+                      </div>
+
+                      {/* Body zone */}
+                      <div className="flex flex-1 flex-col px-7 pb-7 pt-5">
+                        {/* Payment info */}
+                        <div className={cn(
+                          "mb-5 flex items-center gap-2.5 rounded-xl border px-3.5 py-2.5",
+                          q.popular
+                            ? "border-accent/[0.10] bg-accent/[0.03]"
+                            : q.name === "Full Site"
+                              ? "border-cyan-400/[0.08] bg-cyan-400/[0.02]"
+                              : "border-white/[0.05] bg-white/[0.02]"
+                        )}>
+                          <Wallet size={12} className={cn(
+                            "flex-shrink-0",
+                            q.popular ? "text-accent/60" : q.name === "Full Site" ? "text-cyan-400/50" : "text-white/25"
+                          )} />
+                          <span className="font-mono text-[10px] leading-tight text-gray-400">{q.payment}</span>
+                        </div>
+
+                        {/* Included features */}
+                        <div className="flex-1 space-y-0.5">
+                          <div className="mb-2.5 font-mono text-[9px] uppercase tracking-[0.1em] text-white/20">Included</div>
+                          {q.features.map(f => (
+                            <div key={f} className="flex items-start gap-2.5 py-[5px]">
+                              <div className={cn(
+                                "mt-[2px] flex h-[18px] w-[18px] flex-shrink-0 items-center justify-center rounded-[5px]",
+                                q.popular
+                                  ? "bg-accent/[0.08]"
+                                  : q.name === "Full Site"
+                                    ? "bg-cyan-400/[0.06]"
+                                    : "bg-white/[0.04]"
+                              )}>
+                                <Check size={10} className={cn(
+                                  q.popular ? "text-accent" : q.name === "Full Site" ? "text-cyan-400" : "text-white/40"
+                                )} />
+                              </div>
+                              <span className="text-[13px] leading-[1.5] text-gray-300">{f}</span>
+                            </div>
+                          ))}
+
+                          {/* Not included */}
+                          {q.excluded.length > 0 && (
+                            <div className="mt-3 border-t border-white/[0.04] pt-3">
+                              {q.excluded.map(f => (
+                                <div key={f} className="flex items-start gap-2.5 py-[3px]">
+                                  <div className="mt-[2px] flex h-[18px] w-[18px] flex-shrink-0 items-center justify-center rounded-[5px] bg-white/[0.02]">
+                                    <Minus size={9} className="text-white/[0.12]" />
+                                  </div>
+                                  <span className="text-[12px] text-dim">{f}</span>
+                                </div>
+                              ))}
+                            </div>
+                          )}
+                        </div>
+
+                        {/* CTA zone */}
+                        <div className={cn(
+                          "mt-7 rounded-xl border p-3",
+                          q.popular
+                            ? "border-accent/[0.08] bg-accent/[0.02]"
+                            : q.name === "Full Site"
+                              ? "border-cyan-400/[0.06] bg-cyan-400/[0.01]"
+                              : "border-white/[0.04] bg-white/[0.01]"
+                        )}>
+                          <button
+                            onClick={() => handleCheckout(q.name)}
+                            disabled={checkoutLoading === q.name}
+                            className={cn(
+                              "flex w-full items-center justify-center gap-2 rounded-[10px] py-3.5 text-[13px] font-bold transition-all disabled:opacity-60",
+                              q.popular
+                                ? "bg-accent text-surface-0 shadow-[0_1px_2px_rgba(0,0,0,0.15)] hover:-translate-y-0.5 hover:shadow-[0_8px_32px_rgba(200,255,0,0.2)]"
+                                : q.name === "Full Site"
+                                  ? "border border-cyan-400/25 bg-cyan-400/[0.06] text-cyan-400 hover:-translate-y-0.5 hover:border-cyan-400/40 hover:bg-cyan-400/[0.10]"
+                                  : "border border-white/[0.12] bg-white/[0.03] text-white hover:-translate-y-0.5 hover:border-white/[0.22] hover:bg-white/[0.06]"
+                            )}>
+                            {checkoutLoading === q.name ? (
+                              <><Loader2 size={14} className="animate-spin" /> Processing...</>
+                            ) : (
+                              <><CreditCard size={14} /> {q.buttonLabel}</>
+                            )}
+                          </button>
+                        </div>
                       </div>
                     </div>
-
-                    <button
-                      onClick={() => handleCheckout(q.name)}
-                      disabled={checkoutLoading === q.name}
-                      className={cn(
-                        "mt-6 flex items-center justify-center gap-2 rounded-full py-3 text-[13px] font-semibold transition-all disabled:opacity-60",
-                        q.popular ? "btn-v w-full !px-0" : "btn-o w-full !px-0"
-                      )}>
-                      {checkoutLoading === q.name ? (
-                        <><Loader2 size={14} className="animate-spin" /> Processing...</>
-                      ) : (
-                        <><CreditCard size={14} /> {q.buttonLabel}</>
-                      )}
-                    </button>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
 
               <div className="mb-10 flex flex-wrap items-center justify-center gap-x-8 gap-y-3">
