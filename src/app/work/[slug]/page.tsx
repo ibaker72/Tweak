@@ -84,7 +84,7 @@ export default function ProjectPage() {
         <Reveal delay={0.1}>
           <div className="mb-14 overflow-hidden rounded-2xl border border-white/[0.06] bg-gradient-to-br from-surface-2 to-surface-3">
             {project.image ? (
-              <div className="relative h-64 sm:h-80 lg:h-[420px]">
+              <div className="relative h-48 sm:h-72 lg:h-[420px]">
                 <Image
                   src={project.image}
                   alt={project.title}
@@ -104,30 +104,32 @@ export default function ProjectPage() {
         </Reveal>
 
         {project.gallery?.length ? (
-          <Reveal delay={0.12}>
-            <div className="mb-14">
-              <h2 className="font-display text-[17px] font-bold tracking-[-0.01em] text-white">
-                Screenshots
-              </h2>
-              <div className="mt-5 grid gap-5 md:grid-cols-2">
-                {project.gallery.map((src) => (
-                  <div
-                    key={src}
-                    className="overflow-hidden rounded-2xl border border-white/[0.06] bg-white/[0.02]"
-                  >
-                    <Image
-                      src={src}
-                      alt={`${project.title} screenshot`}
-                      width={1600}
-                      height={1000}
-                      className="h-auto w-full object-cover"
-                    />
-                  </div>
-                ))}
-              </div>
+  <Reveal delay={0.12}>
+    <div className="mb-14">
+      <h2 className="font-display text-[17px] font-bold tracking-[-0.01em] text-white">
+        Screenshots
+      </h2>
+
+      <div className="mt-5 grid gap-4 md:grid-cols-2 md:gap-5">
+        {project.gallery.map((src, i) => (
+          <div
+            key={src}
+            className="overflow-hidden rounded-2xl border border-white/[0.06] bg-white/[0.02]"
+          >
+            <div className="relative aspect-[16/10] w-full bg-black">
+              <Image
+                src={src}
+                alt={`${project.title} screenshot ${i + 1}`}
+                fill
+                className="object-contain"
+              />
             </div>
-          </Reveal>
-        ) : null}
+          </div>
+        ))}
+      </div>
+    </div>
+  </Reveal>
+) : null}
 
         <div className="grid gap-12 lg:grid-cols-3">
           <div className="space-y-12 lg:col-span-2">
