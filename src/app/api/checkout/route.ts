@@ -52,6 +52,14 @@ function resolveBaseUrl(request: Request, isDev: boolean): string {
   return PRODUCTION_URL;
 }
 
+// ── Stripe branding recommendations ──
+// 1. In your Stripe Dashboard → Settings → Branding, upload the Tweak&Build logo
+//    and set the brand color to #C8FF00 so the hosted checkout page matches.
+// 2. Set the accent/button color to #C8FF00 and icon background to #030305.
+// 3. Use a custom receipt template with the "Tweak & Build" name and support email.
+// 4. For Multi Page & Full Site (deposit tiers), set up Stripe Invoicing for the
+//    remaining balance follow-up so clients receive a branded invoice.
+
 export async function POST(request: Request) {
   try {
     const { tier, email } = await request.json();

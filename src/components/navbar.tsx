@@ -31,9 +31,9 @@ export function Navbar() {
       "fixed inset-x-0 top-0 z-50 transition-all duration-300",
       scrolled ? "glass-nav border-b border-white/[0.06]" : "border-b border-transparent"
     )}>
-      <div className="wrap flex h-14 items-center justify-between sm:h-16">
-        <Link href="/" className="flex items-center gap-2">
-          <div className="flex h-7 w-7 items-center justify-center rounded-[8px] bg-accent sm:h-8 sm:w-8 sm:rounded-[10px]">
+      <div className="wrap flex h-14 items-center justify-between sm:h-[60px]">
+        <Link href="/" className="flex items-center gap-2.5">
+          <div className="flex h-7 w-7 items-center justify-center rounded-[8px] bg-accent shadow-[0_1px_4px_rgba(200,255,0,0.12)] sm:h-8 sm:w-8 sm:rounded-[var(--brand-radius-sm)]">
             <Terminal size={13} className="text-surface-0 sm:hidden" />
             <Terminal size={14} className="hidden text-surface-0 sm:block" />
           </div>
@@ -48,8 +48,8 @@ export function Navbar() {
               {l.label}
             </Link>
           ))}
-          <div className="ml-3 h-5 w-px bg-white/[0.08]" />
-          <Link href="/contact" className="ml-3 inline-flex items-center gap-2 rounded-full bg-accent px-5 py-2 text-[13px] font-bold text-surface-0 transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[0_6px_24px_rgba(200,255,0,0.18)]">
+          <div className="ml-4 h-5 w-px bg-white/[0.08]" />
+          <Link href="/contact" className="btn-v ml-4 !gap-2 !px-5 !py-2 !text-[13px]">
             Start a project <ArrowRight size={12} />
           </Link>
         </nav>
@@ -72,6 +72,11 @@ export function Navbar() {
                 {l.label}
               </Link>
             ))}
+          </div>
+          <div className="mt-3 border-t border-white/[0.05] pt-4">
+            <Link href="/contact" onClick={() => setOpen(false)} className="btn-v w-full justify-center !py-2.5 !text-[14px]">
+              Start a project <ArrowRight size={13} />
+            </Link>
           </div>
         </div>
       )}

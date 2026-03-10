@@ -51,40 +51,43 @@ export function Footer() {
 
   return (
     <footer className="border-t border-white/[0.04]">
-      <div className="wrap py-14">
+      <div className="wrap py-14 sm:py-16">
         <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-4">
           <div className="lg:col-span-2">
             <Link href="/" className="flex items-center gap-2.5">
-              <div className="flex h-8 w-8 items-center justify-center rounded-[10px] bg-accent">
+              <div className="flex h-8 w-8 items-center justify-center rounded-[10px] bg-accent shadow-[0_1px_4px_rgba(200,255,0,0.12)]">
                 <Terminal size={13} className="text-surface-0" />
               </div>
               <span className="font-display text-[17px] font-extrabold tracking-[-0.03em] text-white">
                 Tweak<span className="text-accent">&amp;</span>Build
               </span>
             </Link>
-            <p className="mt-4 max-w-xs text-sm leading-relaxed text-dim">
-              Product engineering studio. We build high-converting websites, web apps, and automation systems for founders who ship.
+            <p className="mt-4 max-w-xs text-[13px] leading-[1.7] text-body">
+              Premium product engineering studio. We build high-converting websites, web apps, and automation systems for founders who ship.
             </p>
-            <a href="mailto:iyadbaker.dev@gmail.com" className="mt-3 block text-sm text-dim transition-colors hover:text-accent">iyadbaker.dev@gmail.com</a>
+            <a href="mailto:iyadbaker.dev@gmail.com" className="mt-3 inline-flex items-center gap-2 text-[13px] text-dim transition-colors hover:text-accent">
+              iyadbaker.dev@gmail.com
+            </a>
           </div>
           {cols.map(c => (
             <div key={c.h}>
               <h4 className="font-mono text-[10px] uppercase tracking-[0.12em] text-dim">{c.h}</h4>
               <ul className="mt-4 space-y-2.5">
                 {c.links.map(l => (
-                  <li key={l.l}><Link href={l.href} className="text-sm text-dim transition-colors hover:text-white">{l.l}</Link></li>
+                  <li key={l.l}><Link href={l.href} className="text-[13px] text-dim transition-colors hover:text-white">{l.l}</Link></li>
                 ))}
               </ul>
             </div>
           ))}
         </div>
-        <div className="mt-12 flex flex-col items-center justify-between gap-3 border-t border-white/[0.04] pt-8 sm:flex-row">
-          <div className="flex flex-wrap items-center gap-4">
-            <span className="text-xs text-dim">&copy; {new Date().getFullYear()} Bedrock Alliance LLC</span>
-            <Link href="/privacy" className="text-xs text-dim transition-colors hover:text-body">Privacy</Link>
-            <Link href="/terms" className="text-xs text-dim transition-colors hover:text-body">Terms</Link>
+        <div className="mt-12 flex flex-col items-center justify-between gap-4 border-t border-white/[0.04] pt-8 sm:flex-row">
+          <div className="flex flex-wrap items-center gap-x-4 gap-y-1">
+            <span className="font-mono text-[11px] text-dim">&copy; {new Date().getFullYear()} Bedrock Alliance LLC</span>
+            <span className="hidden h-3 w-px bg-white/[0.06] sm:inline-block" />
+            <Link href="/privacy" className="font-mono text-[11px] text-dim transition-colors hover:text-body">Privacy</Link>
+            <Link href="/terms" className="font-mono text-[11px] text-dim transition-colors hover:text-body">Terms</Link>
           </div>
-          <span className="text-xs text-dim">Engineered by Tweak &amp; Build</span>
+          <span className="font-mono text-[11px] text-dim">Engineered by Tweak<span className="text-accent/40">&amp;</span>Build</span>
         </div>
       </div>
     </footer>

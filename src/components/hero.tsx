@@ -7,7 +7,7 @@ const clientNames = ["Create3DParts", "LeadsAndSaaS", "Meridian Health", "Atlas 
 
 const liveProjects = [
   { name: "Create3DParts.com", tag: "E-Commerce", result: "+35% orders" },
-  { name: "LeadsAndSaaS", tag: "SaaS Platform", result: "Shipped in 5wk" },
+  { name: "LeadsAndSaaS", tag: "SaaS Platform", result: "Shipped in <1wk" },
   { name: "Meridian Health", tag: "Patient Portal", result: "-40% no-shows" },
 ];
 
