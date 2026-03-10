@@ -53,7 +53,7 @@ export const projects: Project[] = [
   "/proof/create3dparts/quote.png",
   "/proof/create3dparts/dashboard.png",
   "/proof/create3dparts/account-dashboard.png",
-  "/proof/create3dparts/dashboard-settings.png",
+  "/proof/create3dparts/material.png",
   "/proof/create3dparts/sign-in.png",
 ],
   },
