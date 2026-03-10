@@ -83,9 +83,9 @@ export function FeaturedWork() {
                           <span className="h-0.5 w-0.5 rounded-full bg-dim" />
                           <span className="font-mono text-[10px] text-dim">{project.year}</span>
                           {project.live && (
-                            <span className="flex items-center gap-1.5 rounded-full border border-emerald-400/20 bg-emerald-400/[0.06] px-2.5 py-0.5">
-                              <span className="h-1.5 w-1.5 rounded-full bg-emerald-400" />
-                              <span className="font-mono text-[9px] font-bold text-emerald-400">LIVE</span>
+                            <span className="flex items-center gap-1.5">
+                              <span className="relative flex h-1.5 w-1.5"><span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-accent/40" /><span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-accent/80" /></span>
+                              <span className="font-mono text-[9px] font-semibold tracking-[0.06em] text-accent/70">LIVE</span>
                             </span>
                           )}
                         </div>
