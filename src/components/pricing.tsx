@@ -144,7 +144,7 @@ export function Pricing() {
 
                 {/* "Most projects" badge — desktop: sits on the top border */}
                 {track.primary && (
-                  <div className="absolute -top-3 right-5 z-10 hidden sm:block">
+                  <div className="absolute -top-3 right-5 z-10 hidden md:block">
                     <span className="rounded-full border border-accent/25 bg-[#0c0c14] px-3 py-1 font-mono text-[9px] font-medium uppercase tracking-[0.08em] text-accent/80 shadow-[0_2px_8px_rgba(200,255,0,0.08)]">
                       Most projects
                     </span>
@@ -161,19 +161,17 @@ export function Pricing() {
                     {track.label}
                   </span>
 
-                  {/* "Most projects" badge — mobile: inline below label */}
-                  {track.primary && (
-                    <div className="mt-2 block sm:hidden">
-                      <span className="inline-flex rounded-full border border-accent/25 bg-accent/[0.06] px-3 py-1 font-mono text-[9px] font-medium uppercase tracking-[0.08em] text-accent/80">
+                  {/* Track name — with inline mobile badge for Custom Engineering */}
+                  <div className="mt-2 flex flex-wrap items-center gap-3">
+                    <h3 className="font-display text-[20px] font-bold text-white">
+                      {track.name}
+                    </h3>
+                    {track.primary && (
+                      <span className="rounded-full border border-accent/25 bg-accent/[0.06] px-2.5 py-0.5 font-mono text-[9px] font-medium uppercase tracking-[0.08em] text-accent/80 md:hidden">
                         Most projects
                       </span>
-                    </div>
-                  )}
-
-                  {/* Track name */}
-                  <h3 className="mt-2 font-display text-[20px] font-bold text-white">
-                    {track.name}
-                  </h3>
+                    )}
+                  </div>
 
                   {/* Price range — single line, sized to fit */}
                   <div className="mt-5 flex items-baseline">
