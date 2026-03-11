@@ -86,7 +86,8 @@ export function TrustStrip() {
               {industries.map((ind) => (
                 <span
                   key={ind}
-                  className="rounded-full border border-white/[0.06] bg-white/[0.02] px-3.5 py-1.5 text-[12px] font-medium text-white/50 transition-colors duration-200 hover:text-white/70"
+                  className="rounded-full border border-white/[0.06] bg-white/[0.02] px-3.5 py-[5px] text-[12px] font-medium text-white/45 transition-colors duration-200 hover:text-white/65"
+                  style={{ boxShadow: "inset 0 0.5px 0 rgba(255,255,255,0.04)" }}
                 >
                   {ind}
                 </span>

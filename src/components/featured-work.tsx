@@ -108,17 +108,23 @@ export function FeaturedWork() {
                               {project.year}
                             </span>
                             {project.live && (
-                              <span className="flex items-center gap-1.5 rounded-full border border-emerald-400/20 bg-emerald-400/[0.06] px-2.5 py-0.5">
+                              <span
+                                className="flex items-center gap-1.5 rounded-full border border-emerald-400/15 bg-emerald-400/[0.04] px-2.5 py-[3px]"
+                                style={{ boxShadow: "inset 0 0.5px 0 rgba(52,211,153,0.08)" }}
+                              >
                                 <span className="h-1.5 w-1.5 rounded-full bg-emerald-400" />
-                                <span className="font-mono text-[9px] font-bold text-emerald-400">
+                                <span className="font-mono text-[9px] font-medium tracking-[0.06em] text-emerald-400/90">
                                   LIVE
                                 </span>
                               </span>
                             )}
                             {"inDev" in project && project.inDev && (
-                              <span className="flex items-center gap-1.5 rounded-full border border-amber-400/20 bg-amber-400/[0.06] px-2.5 py-0.5">
+                              <span
+                                className="flex items-center gap-1.5 rounded-full border border-amber-400/15 bg-amber-400/[0.04] px-2.5 py-[3px]"
+                                style={{ boxShadow: "inset 0 0.5px 0 rgba(251,191,36,0.08)" }}
+                              >
                                 <span className="h-1.5 w-1.5 rounded-full bg-amber-400" />
-                                <span className="font-mono text-[9px] font-bold text-amber-400">
+                                <span className="font-mono text-[9px] font-medium tracking-[0.06em] text-amber-400/90">
                                   IN DEV
                                 </span>
                               </span>

@@ -31,12 +31,15 @@ export function Hero() {
         {/* Top bar: status + availability */}
         <Reveal>
           <div className="mb-6 sm:mb-8">
-            <div className="inline-flex items-center gap-1.5 rounded-full border border-emerald-400/15 bg-emerald-400/[0.04] px-2.5 py-1 sm:gap-2 sm:border-emerald-400/20 sm:bg-emerald-400/[0.06] sm:px-3.5 sm:py-1.5">
+            <div
+              className="inline-flex items-center gap-1.5 rounded-full border border-emerald-400/12 bg-emerald-400/[0.03] px-3 py-[5px] sm:gap-2 sm:border-emerald-400/15 sm:bg-emerald-400/[0.04] sm:px-3.5 sm:py-1.5"
+              style={{ boxShadow: "inset 0 0.5px 0 rgba(52,211,153,0.06), 0 1px 2px rgba(0,0,0,0.15)" }}
+            >
               <span className="relative flex h-1.5 w-1.5">
                 <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-40" />
                 <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-emerald-400" />
               </span>
-              <span className="font-mono text-[9px] font-medium text-emerald-400/80 sm:text-[11px] sm:text-emerald-400">{siteConfig.availability}</span>
+              <span className="font-mono text-[9px] font-medium tracking-[0.06em] text-emerald-400/80 sm:text-[10px] sm:text-emerald-400/90">{siteConfig.availability}</span>
             </div>
           </div>
         </Reveal>
@@ -125,7 +128,10 @@ export function Hero() {
                       <div className="min-w-0 flex-1">
                         <div className="flex items-center gap-2">
                           <span className="truncate text-[14px] font-semibold text-white sm:text-[13px]">{proj.name}</span>
-                          <span className="flex-shrink-0 rounded-full border border-white/[0.06] bg-white/[0.03] px-2.5 py-0.5 font-mono text-[9px] text-white/40">
+                          <span
+                            className="flex-shrink-0 rounded-full border border-white/[0.06] bg-white/[0.02] px-2.5 py-[3px] font-mono text-[9px] tracking-[0.03em] text-white/35"
+                            style={{ boxShadow: "inset 0 0.5px 0 rgba(255,255,255,0.04)" }}
+                          >
                             {proj.tag}
                           </span>
                         </div>

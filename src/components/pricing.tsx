@@ -124,9 +124,10 @@ export function Pricing() {
         <Reveal delay={0.06}>
           <div className="mx-auto mb-10 flex justify-center">
             <div
-              className="inline-flex rounded-full border border-white/[0.08] bg-white/[0.02] p-1"
+              className="inline-flex rounded-full border border-white/[0.06] bg-white/[0.015] p-[3px]"
               role="tablist"
               aria-label="Pricing view toggle"
+              style={{ boxShadow: "inset 0 1px 3px rgba(0,0,0,0.25), 0 0.5px 0 rgba(255,255,255,0.03)" }}
             >
               <button
                 role="tab"
@@ -134,11 +135,12 @@ export function Pricing() {
                 aria-controls="pricing-panel"
                 onClick={() => setActiveTab("pricing")}
                 className={cn(
-                  "relative rounded-full px-5 py-2 font-mono text-[11px] font-medium uppercase tracking-[0.1em] transition-all duration-200 sm:px-6 sm:py-2.5 sm:text-[12px]",
+                  "relative rounded-full px-5 py-[7px] font-mono text-[10px] font-medium uppercase tracking-[0.08em] transition-all duration-200 sm:px-6 sm:py-2 sm:text-[11px]",
                   activeTab === "pricing"
-                    ? "bg-accent text-surface-0 shadow-[0_1px_4px_rgba(200,255,0,0.15)]"
-                    : "text-white/40 hover:text-white/60",
+                    ? "bg-accent text-surface-0"
+                    : "text-white/35 hover:text-white/55",
                 )}
+                style={activeTab === "pricing" ? { boxShadow: "0 1px 3px rgba(0,0,0,0.2), inset 0 0.5px 0 rgba(255,255,255,0.15)" } : undefined}
               >
                 Pricing
               </button>
@@ -148,11 +150,12 @@ export function Pricing() {
                 aria-controls="calculator-panel"
                 onClick={() => setActiveTab("calculator")}
                 className={cn(
-                  "relative rounded-full px-5 py-2 font-mono text-[11px] font-medium uppercase tracking-[0.1em] transition-all duration-200 sm:px-6 sm:py-2.5 sm:text-[12px]",
+                  "relative rounded-full px-5 py-[7px] font-mono text-[10px] font-medium uppercase tracking-[0.08em] transition-all duration-200 sm:px-6 sm:py-2 sm:text-[11px]",
                   activeTab === "calculator"
-                    ? "bg-accent text-surface-0 shadow-[0_1px_4px_rgba(200,255,0,0.15)]"
-                    : "text-white/40 hover:text-white/60",
+                    ? "bg-accent text-surface-0"
+                    : "text-white/35 hover:text-white/55",
                 )}
+                style={activeTab === "calculator" ? { boxShadow: "0 1px 3px rgba(0,0,0,0.2), inset 0 0.5px 0 rgba(255,255,255,0.15)" } : undefined}
               >
                 Cost Calculator
               </button>
@@ -203,8 +206,11 @@ export function Pricing() {
 
                     {/* "Most projects" badge — absolutely centered on top edge at all breakpoints */}
                     {track.primary && (
-                      <div className="absolute -top-3 left-1/2 z-10 -translate-x-1/2">
-                        <span className="whitespace-nowrap rounded-full border border-accent/25 bg-[#0c0c14] px-3 py-1 font-mono text-[9px] font-medium uppercase tracking-[0.08em] text-accent/80 shadow-[0_2px_8px_rgba(200,255,0,0.08)]">
+                      <div className="absolute -top-[11px] left-1/2 z-10 -translate-x-1/2">
+                        <span
+                          className="whitespace-nowrap rounded-full border border-accent/20 bg-[#0a0a12] px-3 py-[3px] font-mono text-[9px] font-medium uppercase tracking-[0.06em] text-accent/70"
+                          style={{ boxShadow: "inset 0 0.5px 0 rgba(200,255,0,0.08), 0 1px 3px rgba(0,0,0,0.3)" }}
+                        >
                           Most projects
                         </span>
                       </div>
@@ -255,7 +261,8 @@ export function Pricing() {
                           {track.tags.map((tag) => (
                             <span
                               key={tag}
-                              className="rounded-full border border-white/[0.08] bg-white/[0.025] px-2.5 py-1 text-[11px] text-dim"
+                              className="rounded-full border border-white/[0.06] bg-white/[0.02] px-2.5 py-[3px] text-[10px] text-dim"
+                              style={{ boxShadow: "inset 0 0.5px 0 rgba(255,255,255,0.04)" }}
                             >
                               {tag}
                             </span>
@@ -385,7 +392,8 @@ export function Pricing() {
                   {["60-second estimate", "Instant price range", "Websites, apps, SaaS"].map((chip) => (
                     <span
                       key={chip}
-                      className="rounded-full border border-white/[0.08] bg-white/[0.025] px-3 py-1 font-mono text-[10px] tracking-[0.02em] text-dim"
+                      className="rounded-full border border-white/[0.06] bg-white/[0.02] px-2.5 py-[3px] font-mono text-[10px] tracking-[0.03em] text-white/35"
+                      style={{ boxShadow: "inset 0 0.5px 0 rgba(255,255,255,0.04)" }}
                     >
                       {chip}
                     </span>
