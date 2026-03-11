@@ -155,36 +155,32 @@ export const projects: Project[] = [
     year: "2024",
   },
   {
-    slug: "vow-studios",
-    title: "Vow Studios",
-    category: "Headless E-Commerce",
-    tagline: "Headless Shopify storefront with 3D product configurator",
+    slug: "kommison",
+    title: "Kommison.com",
+    category: "Affiliate & Commission Platform",
+    tagline: "Affiliate and commission management platform with real-time tracking, automated payouts, and multi-tier campaign analytics.",
     description:
-      "A headless Shopify storefront for fine jewelry with a WebGL ring configurator, real-time pricing, and Apple Pay checkout.",
+      "A full-stack affiliate and commission management platform that enables businesses to run, track, and optimize their affiliate programs. Kommison handles partner onboarding, link generation, real-time conversion tracking, multi-tier commission structures, and automated payouts — replacing spreadsheets and fragmented tools with a single unified system.",
     challenge:
-      "The existing Shopify theme was slow and generic. The client needed a custom product builder for ring configuration.",
+      "Affiliate program management is fragmented across spreadsheets, manual payout calculations, and disconnected tracking tools. Businesses running affiliate programs waste hours reconciling data and risk losing partners to delayed or inaccurate payments.",
     solution:
-      "We built a headless Next.js storefront powered by Shopify's Storefront API with a Three.js configurator and streamlined three-step checkout.",
+      "We're building Kommison as a purpose-built affiliate management platform with real-time conversion tracking via Supabase, automated commission calculations supporting flat-rate, percentage, and tiered structures, and instant payouts through Stripe Connect. The platform includes a partner dashboard for affiliates and an admin panel for program managers.",
     problem:
-      "Slow Shopify theme. 5s load. 72% mobile bounce. No product customization.",
+      "Affiliate management fragmented across spreadsheets and disconnected tools. Manual payouts, no real-time tracking.",
     solutionShort:
-      "Headless Next.js storefront with 3D configurator and Apple Pay.",
+      "Purpose-built affiliate platform with real-time tracking and automated payouts via Stripe Connect.",
     impactShort:
-      "Revenue up 180% in 90 days. Load time: 5.2s → 1.1s.",
-    impact: "Revenue up 180% in 90 days",
+      "In development. Payout automation: real-time.",
+    impact: "Payout automation: real-time",
     results: [
-      "Revenue increased 180% in 90 days",
-      "AOV up 35% via configurator upsells",
-      "Load time: 5.2s to 1.1s",
+      "Status: In development",
+      "Payout automation: Real-time",
     ],
-    stack: [
-      "Next.js",
-      "Shopify Storefront API",
-      "Three.js",
-      "TypeScript",
-      "Vercel Edge",
-    ],
-    year: "2024",
+    stack: ["Next.js", "TypeScript", "Supabase", "Stripe Connect"],
+    year: "2025",
+    live: false,
+    // TODO: Replace with Kommison.com screenshots when available
+    image: "/proof/create3dparts/dashboard.png",
   },
 ];
 

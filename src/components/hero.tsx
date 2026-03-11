@@ -4,7 +4,7 @@ import { ArrowRight, Circle } from "lucide-react";
 import { Reveal } from "./shared";
 import { siteConfig } from "@/lib/config";
 
-const clientNames = ["Create3DParts", "LeadsAndSaaS", "Meridian Health", "Atlas Freight", "Vow Studios"];
+const clientNames = ["Create3DParts", "LeadsAndSaaS", "Meridian Health", "Atlas Freight", "Kommison"];
 
 const liveProjects = [
   { name: "Create3DParts.com", tag: "E-Commerce", result: "+35% orders" },

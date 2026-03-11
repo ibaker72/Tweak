@@ -36,18 +36,20 @@ const featuredProjects = [
     image: "/proof/leadsandsaas/overview.png",
   },
   {
-    slug: "vow-studios",
-    title: "Vow Studios",
-    category: "Headless E-Commerce",
-    description: "Headless Shopify storefront with WebGL ring configurator, real-time pricing, and Apple Pay checkout.",
+    slug: "kommison",
+    title: "Kommison.com",
+    category: "Affiliate & Commission Platform",
+    description: "Affiliate and commission management platform with real-time tracking, automated payouts, and multi-tier campaign analytics.",
     metrics: [
-      { label: "Revenue", value: "+180% in 90 days" },
-      { label: "Load time", before: "5.2s", after: "1.1s" },
+      { label: "Status", value: "In development" },
+      { label: "Payout automation", value: "Real-time" },
     ],
-    stack: ["Next.js", "Shopify API", "Three.js", "Edge"],
+    stack: ["Next.js", "TypeScript", "Supabase", "Stripe Connect"],
     accent: "#06B6D4",
-    year: "2024",
+    year: "2025",
     live: false,
+    inDev: true,
+    // TODO: Replace with Kommison.com screenshots when available
     image: "/proof/create3dparts/dashboard.png",
   },
 ];
@@ -110,6 +112,14 @@ export function FeaturedWork() {
                                 <span className="h-1.5 w-1.5 rounded-full bg-emerald-400" />
                                 <span className="font-mono text-[9px] font-bold text-emerald-400">
                                   LIVE
+                                </span>
+                              </span>
+                            )}
+                            {"inDev" in project && project.inDev && (
+                              <span className="flex items-center gap-1.5 rounded-full border border-amber-400/20 bg-amber-400/[0.06] px-2.5 py-0.5">
+                                <span className="h-1.5 w-1.5 rounded-full bg-amber-400" />
+                                <span className="font-mono text-[9px] font-bold text-amber-400">
+                                  IN DEV
                                 </span>
                               </span>
                             )}
