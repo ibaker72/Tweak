@@ -354,12 +354,12 @@ export const bestFitClients = [
 
 export const faqs = [
   {
-    q: "What's the difference between Quick Build and Custom Project?",
-    a: "Quick Build is our flat-rate service for when you already have a design, wireframe, or clear description. We implement what you provide. Custom Project is for when you need strategy, UX, and engineering from scratch. Different starting points, same quality.",
+    q: "What's the difference between Rapid Build and Custom Engineering?",
+    a: "Rapid Build is our flat-rate service for when you have a design, wireframes, or a clear spec — we implement what you provide, typically in 1–3 weeks. Custom Engineering is for projects that need strategy, architecture, and full-cycle development from scratch. Different starting points, same quality and the same team.",
   },
   {
     q: "How do payments work?",
-    a: "The Single Page tier is paid in full upfront. Multi Page and Full Site tiers are split 50/50: half upfront to begin, half before launch. Custom projects follow a milestone structure: 40% to begin, 30% at the midpoint, and 30% before final launch and handoff. You always know exactly what you owe and when.",
+    a: "Rapid Builds under $5,000 are typically paid upfront. Larger Rapid Builds split 50/50. Custom Engineering projects follow milestone billing: 40% to begin, 30% at the midpoint, and 30% before final launch and handoff. Growth Retainers are billed monthly with no long-term contract. You always know exactly what you owe and when.",
   },
   {
     q: "When do I get the source code and files?",
@@ -367,27 +367,31 @@ export const faqs = [
   },
   {
     q: "What if I'm not sure which path fits?",
-    a: "Use the \"Not sure?\" form under Quick Build pricing or reach out through Custom Project. We'll route you to the right track within 24 hours.",
+    a: "Reach out through the contact page and tell us what you're building. We'll recommend the right track and send you a fixed quote within 72 hours.",
   },
   {
     q: "How fast can you start?",
-    a: "Quick Builds start within 48 hours. Custom projects kick off within 1 to 2 weeks of signing the proposal.",
+    a: "Rapid Builds start within 48 hours. Custom Engineering projects kick off within 1 to 2 weeks of signing the proposal.",
   },
   {
     q: "What happens after I submit an inquiry?",
-    a: "We respond within one business day — usually within a few hours. For Quick Builds, we confirm scope and send an invoice. For custom projects, we schedule a 30-minute strategy call to understand your goals before writing a proposal.",
+    a: "We respond within one business day — usually within a few hours. For Rapid Builds, we confirm scope and send an invoice. For Custom Engineering projects, we schedule a 30-minute strategy call to understand your goals before writing a proposal.",
   },
   {
     q: "How many revision rounds do I get?",
-    a: "Quick Builds include 1 to 3 revision rounds depending on the tier. Custom projects include revisions at each milestone checkpoint. We work iteratively with weekly demos so there are no surprises at the end.",
+    a: "Rapid Builds include 1–3 revision rounds depending on scope. Custom Engineering projects include revisions at each milestone checkpoint — we work iteratively with weekly demos so there are no surprises at the end. Growth Retainer clients get continuous iteration as part of the monthly engagement.",
   },
   {
-    q: "What does a custom project cost?",
-    a: "Custom engagements range from $5,000 to $25,000+ depending on scope. Fixed-price proposals always. No hourly billing, no estimate ranges that balloon later.",
+    q: "What does a Custom Engineering project typically cost?",
+    a: "Custom Engineering projects range from $8,000 to $30,000+ depending on scope and complexity. You'll receive a fixed-price proposal with every feature, milestone, and dollar defined before we write a single line of code. No hourly billing, no estimates that balloon later.",
+  },
+  {
+    q: "What's included in a Growth Retainer?",
+    a: "A dedicated monthly budget for ongoing development — feature builds, bug fixes, performance improvements, and priority support. We work in weekly iterations so you see continuous progress. No long-term contracts. Cancel anytime with 30 days notice.",
   },
   {
     q: "What happens after launch?",
-    a: "Every engagement includes post-launch support (14 to 30 days depending on scope). Monthly retainers available for ongoing development and iteration.",
+    a: "Every engagement includes post-launch support (14 to 30 days depending on scope). Growth Retainers are available for ongoing development and iteration.",
   },
   {
     q: "Who is this best for?",
