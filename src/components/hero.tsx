@@ -2,6 +2,7 @@
 import Link from "next/link";
 import { ArrowRight, Circle } from "lucide-react";
 import { Reveal } from "./shared";
+import { siteConfig } from "@/lib/config";
 
 const clientNames = ["Create3DParts", "LeadsAndSaaS", "Meridian Health", "Atlas Freight", "Vow Studios"];
 
@@ -35,7 +36,7 @@ export function Hero() {
                 <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-40" />
                 <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-emerald-400" />
               </span>
-              <span className="font-mono text-[9px] font-medium text-emerald-400/80 sm:text-[11px] sm:text-emerald-400">Accepting projects</span>
+              <span className="font-mono text-[9px] font-medium text-emerald-400/80 sm:text-[11px] sm:text-emerald-400">{siteConfig.availability}</span>
             </div>
           </div>
         </Reveal>

@@ -3,6 +3,7 @@ import "./globals.css";
 import { Navbar } from "@/components/navbar";
 import { Footer, BackToTop } from "@/components/footer";
 import { ChatWidget } from "@/components/chat-widget";
+import { ExitIntentPopup } from "@/components/marketing/exit-intent-popup";
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://www.tweakandbuild.com";
 
@@ -44,6 +45,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <main>{children}</main>
         <Footer />
         <BackToTop />
+        <ExitIntentPopup />
         <ChatWidget />
       </body>
     </html>

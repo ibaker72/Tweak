@@ -1,10 +1,64 @@
 "use client";
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { ChevronDown, ArrowUp, Terminal } from "lucide-react";
+import { ChevronDown, ArrowUp, Terminal, Send, Check, Loader2 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Reveal } from "./shared";
 import { faqs } from "@/lib/data";
+
+function FooterNewsletter() {
+  const [email, setEmail] = useState("");
+  const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
+
+  const subscribe = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return;
+    setStatus("loading");
+    try {
+      const res = await fetch("/api/subscribe", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, source: "footer" }),
+      });
+      if (res.ok) { setStatus("success"); setEmail(""); }
+      else setStatus("error");
+    } catch { setStatus("error"); }
+  };
+
+  return (
+    <div className="mb-10 rounded-2xl border border-white/[0.06] bg-white/[0.015] p-6 sm:p-8">
+      <div className="flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center">
+        <div>
+          <h3 className="font-display text-[15px] font-bold text-white">
+            Studio updates, case studies, and engineering insights.
+          </h3>
+          <p className="mt-1 text-[12px] text-dim">No spam, unsubscribe anytime.</p>
+        </div>
+        {status === "success" ? (
+          <div className="flex items-center gap-2">
+            <Check size={14} className="text-accent" />
+            <span className="text-[13px] text-accent">Subscribed!</span>
+          </div>
+        ) : (
+          <form onSubmit={subscribe} className="flex w-full gap-2.5 sm:w-auto">
+            <input
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="you@company.com"
+              className="field flex-1 sm:w-56"
+              required
+            />
+            <button type="submit" disabled={status === "loading"} className="btn-v flex-shrink-0 !px-5 !py-[11px] disabled:opacity-60">
+              {status === "loading" ? <Loader2 size={13} className="animate-spin" /> : <Send size={13} />}
+              <span className="hidden sm:inline text-[13px]">Subscribe</span>
+            </button>
+          </form>
+        )}
+      </div>
+    </div>
+  );
+}
 
 export function FAQ() {
   const [open, setOpen] = useState<number | null>(null);
@@ -47,12 +101,16 @@ export function Footer() {
   const cols = [
     { h: "Services", links: [{ l: "Web Applications", href: "/#services" }, { l: "Landing Pages", href: "/#services" }, { l: "E-Commerce", href: "/#services" }, { l: "Automation & AI", href: "/#services" }] },
     { h: "Company", links: [{ l: "Case Studies", href: "/work" }, { l: "About", href: "/about" }, { l: "Process", href: "/#process" }, { l: "Contact", href: "/contact" }] },
+    { h: "Resources", links: [{ l: "Blog", href: "/blog" }, { l: "Cost Calculator", href: "/tools/website-cost-calculator" }, { l: "Resources", href: "/resources" }, { l: "Compare", href: "/compare/tweak-and-build-vs-freelancer" }] },
   ];
 
   return (
     <footer className="border-t border-white/[0.04]">
       <div className="wrap py-14 sm:py-16">
-        <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-4">
+        {/* Newsletter row */}
+        <FooterNewsletter />
+
+        <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-5">
           <div className="lg:col-span-2">
             <Link href="/" className="flex items-center gap-2.5">
               <div className="flex h-8 w-8 items-center justify-center rounded-[10px] bg-accent shadow-[0_1px_4px_rgba(200,255,0,0.12)]">

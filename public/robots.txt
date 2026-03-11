@@ -1,3 +1,3 @@
 User-agent: *
 Allow: /
-Sitemap: https://tweakandbuild.com/sitemap.xml
+Sitemap: https://www.tweakandbuild.com/sitemap.xml
