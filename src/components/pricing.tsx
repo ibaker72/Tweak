@@ -1,6 +1,6 @@
 "use client";
 import Link from "next/link";
-import { ArrowRight, Lock, ShieldCheck, Code2, Clock, Zap, Layers, RefreshCcw, type LucideIcon } from "lucide-react";
+import { ArrowRight, Lock, ShieldCheck, Code2, Clock, Zap, Layers, RefreshCcw, Calculator, type LucideIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Reveal } from "./shared";
 
@@ -142,10 +142,10 @@ export function Pricing() {
                   )}
                 />
 
-                {/* "Most projects" badge — desktop: sits on the top border */}
+                {/* "Most projects" badge — desktop: centered on top border */}
                 {track.primary && (
-                  <div className="absolute -top-3 right-5 z-10 hidden md:block">
-                    <span className="rounded-full border border-accent/25 bg-[#0c0c14] px-3 py-1 font-mono text-[9px] font-medium uppercase tracking-[0.08em] text-accent/80 shadow-[0_2px_8px_rgba(200,255,0,0.08)]">
+                  <div className="absolute -top-3 left-1/2 z-10 hidden -translate-x-1/2 md:block">
+                    <span className="whitespace-nowrap rounded-full border border-accent/25 bg-[#0c0c14] px-3 py-1 font-mono text-[9px] font-medium uppercase tracking-[0.08em] text-accent/80 shadow-[0_2px_8px_rgba(200,255,0,0.08)]">
                       Most projects
                     </span>
                   </div>
@@ -286,18 +286,59 @@ export function Pricing() {
           </div>
         </Reveal>
 
-        {/* "Not sure where you fit?" CTA */}
+        {/* Cost Calculator — secondary decision path */}
         <Reveal delay={0.3}>
-          <div className="mx-auto mt-16 max-w-[480px] text-center">
-            <h3 className="font-display text-[22px] font-bold text-white">
-              Not sure where you fit?
-            </h3>
-            <p className="mt-3 text-[14px] leading-[1.7] text-body">
-              Tell us what you&apos;re building. We&apos;ll recommend the right track and send you a fixed quote within 72 hours.
-            </p>
-            <Link href="/contact" className="btn-v mt-6 inline-flex">
-              Start a conversation <ArrowRight size={13} />
-            </Link>
+          <div className="mx-auto mt-16 max-w-[620px]">
+            <div
+              className="relative rounded-[20px] border-[1.5px] border-white/10 px-8 py-10 text-center transition-all duration-300 hover:border-white/[0.18] sm:px-12 sm:py-12"
+              style={{ background: "rgba(255,255,255,0.012)" }}
+            >
+              {/* Top accent line */}
+              <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/[0.08] to-transparent" />
+
+              {/* Pill label */}
+              <span className="section-label">
+                <Calculator size={12} className="text-accent/70" />
+                Cost Calculator
+              </span>
+
+              {/* Heading */}
+              <h3 className="mt-5 font-display text-[clamp(20px,2.8vw,26px)] font-bold leading-[1.15] tracking-[-0.02em] text-white">
+                Estimate your project before you commit.
+              </h3>
+
+              {/* Supporting copy */}
+              <p className="mx-auto mt-3 max-w-[440px] text-[14px] leading-[1.7] text-body">
+                Answer a few quick questions to get an instant price range for your website, web app, e&#8209;commerce store, or SaaS product.
+              </p>
+
+              {/* Micro-feature chips */}
+              <div className="mx-auto mt-5 flex flex-wrap items-center justify-center gap-2">
+                {["60-second estimate", "Instant price range", "Websites, apps, SaaS"].map((chip) => (
+                  <span
+                    key={chip}
+                    className="rounded-full border border-white/[0.08] bg-white/[0.025] px-3 py-1 font-mono text-[10px] tracking-[0.02em] text-dim"
+                  >
+                    {chip}
+                  </span>
+                ))}
+              </div>
+
+              {/* CTA */}
+              <div className="mt-7">
+                <Link
+                  href="/tools/website-cost-calculator"
+                  className="btn-v inline-flex"
+                >
+                  Open Cost Calculator <ArrowRight size={13} />
+                </Link>
+              </div>
+
+              {/* Reassurance */}
+              <p className="mt-4 font-mono text-[10px] tracking-[0.04em] text-dim">
+                Instant estimate. No long form required.
+              </p>
+            </div>
           </div>
         </Reveal>
       </div>
