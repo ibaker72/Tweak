@@ -4,7 +4,29 @@ import { ArrowRight, Lock, ShieldCheck, Code2, Clock } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Reveal } from "./shared";
 
-const tracks = [
+interface TrackRef {
+  name: string;
+  type: string;
+  result: string;
+  href: string;
+}
+
+interface Track {
+  label: string;
+  name: string;
+  range: string;
+  rangeUnit: string | null;
+  subtext: string;
+  description: string;
+  tags: string[];
+  payment: string;
+  cta: string;
+  primary: boolean;
+  refs: TrackRef[] | null;
+  idealFor: string[] | null;
+}
+
+const tracks: Track[] = [
   {
     label: "For teams with a design or clear spec",
     name: "Rapid Build",
@@ -18,6 +40,7 @@ const tracks = [
     cta: "Get your fixed quote",
     primary: false,
     refs: null,
+    idealFor: ["Marketing sites & landing pages", "Portfolio & brand sites", "Redesigns with existing specs"],
   },
   {
     label: "For founders who need strategy + build",
@@ -45,6 +68,7 @@ const tracks = [
         href: "/work/leadsandsaas",
       },
     ],
+    idealFor: null,
   },
   {
     label: "For products that need ongoing iteration",
@@ -59,6 +83,7 @@ const tracks = [
     cta: "Explore a retainer",
     primary: false,
     refs: null,
+    idealFor: ["Post-launch SaaS products", "E-commerce stores scaling up", "Teams without a full-time dev"],
   },
 ];
 
@@ -86,8 +111,8 @@ export function Pricing() {
           </div>
         </Reveal>
 
-        {/* Three-track cards */}
-        <div className="mx-auto grid max-w-[1060px] gap-5 md:grid-cols-3">
+        {/* Three-track cards — items-stretch for equal height */}
+        <div className="mx-auto grid max-w-[1060px] items-stretch gap-5 md:grid-cols-3">
           {tracks.map((track, i) => (
             <Reveal key={track.name} delay={0.06 + i * 0.06}>
               <div
@@ -95,7 +120,7 @@ export function Pricing() {
                   "group relative flex h-full flex-col overflow-hidden rounded-[20px] border-[1.5px] transition-all duration-300",
                   track.primary
                     ? "border-accent/40 shadow-[0_0_40px_rgba(200,255,0,0.04),0_0_0_1px_rgba(200,255,0,0.02)_inset] hover:border-accent/55 hover:shadow-[0_0_50px_rgba(200,255,0,0.07)]"
-                    : "border-white/[0.08] hover:border-white/[0.16] hover:shadow-[0_8px_32px_rgba(0,0,0,0.15)]",
+                    : "border-white/10 hover:border-white/[0.18] hover:shadow-[0_8px_32px_rgba(0,0,0,0.15)]",
                 )}
                 style={{ background: track.primary ? "rgba(200,255,0,0.015)" : "rgba(255,255,255,0.012)" }}
               >
@@ -107,10 +132,10 @@ export function Pricing() {
                   )}
                 />
 
-                {/* "Most projects" label for primary */}
+                {/* "Most projects" badge — sits on the top border */}
                 {track.primary && (
-                  <div className="absolute right-4 top-4">
-                    <span className="rounded-full border border-accent/20 bg-accent/[0.08] px-3 py-1 font-mono text-[9px] font-medium uppercase tracking-[0.08em] text-accent/70">
+                  <div className="absolute -top-3 right-5 z-10">
+                    <span className="rounded-full border border-accent/25 bg-[#0c0c14] px-3 py-1 font-mono text-[9px] font-medium uppercase tracking-[0.08em] text-accent/80 shadow-[0_2px_8px_rgba(200,255,0,0.08)]">
                       Most projects
                     </span>
                   </div>
@@ -128,13 +153,13 @@ export function Pricing() {
                     {track.name}
                   </h3>
 
-                  {/* Price range — hero element */}
-                  <div className="mt-5">
-                    <span className="font-display text-[clamp(28px,4vw,36px)] font-black leading-none tracking-[-0.03em] text-white">
+                  {/* Price range — single line, sized to fit */}
+                  <div className="mt-5 flex items-baseline">
+                    <span className="whitespace-nowrap font-display text-[clamp(24px,3.2vw,32px)] font-black leading-none tracking-[-0.03em] text-white">
                       {track.range}
                     </span>
                     {track.rangeUnit && (
-                      <span className="ml-1 text-[14px] font-medium text-white/30">
+                      <span className="ml-1.5 text-[clamp(12px,1.5vw,15px)] font-medium text-white/30">
                         {track.rangeUnit}
                       </span>
                     )}
@@ -193,7 +218,23 @@ export function Pricing() {
                     </div>
                   )}
 
-                  {/* CTA */}
+                  {/* Ideal for section (Rapid Build & Growth Retainer) */}
+                  {track.idealFor && (
+                    <div className="mt-5">
+                      <span className="mb-2 block font-mono text-[9px] uppercase tracking-[0.1em] text-white/20">
+                        Ideal for
+                      </span>
+                      <div className="space-y-1">
+                        {track.idealFor.map((item) => (
+                          <p key={item} className="text-[12px] leading-[1.5] text-dim">
+                            {item}
+                          </p>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
+                  {/* CTA — pinned to bottom via mt-auto */}
                   <div className="mt-auto pt-6">
                     <Link
                       href="/contact"
@@ -213,9 +254,9 @@ export function Pricing() {
           ))}
         </div>
 
-        {/* Trust strip */}
+        {/* Trust strip — generous spacing above */}
         <Reveal delay={0.25}>
-          <div className="mx-auto mt-10 flex max-w-[900px] flex-wrap items-center justify-center gap-x-8 gap-y-3">
+          <div className="mx-auto mt-16 flex max-w-[900px] flex-wrap items-center justify-center gap-x-8 gap-y-3">
             {trustItems.map((item) => (
               <span key={item.text} className="flex items-center gap-2 text-[12px] text-dim">
                 <item.icon size={13} className="text-accent/50" />

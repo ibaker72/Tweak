@@ -304,8 +304,8 @@ export const techStack = [
 ];
 
 export const metrics = [
-  { value: "12+", label: "Projects shipped" },
-  { value: "$2M+", label: "Client revenue generated" },
+  { value: "48hrs → 60sec", label: "Quote-to-checkout" },
+  { value: "<1 week", label: "Fastest product shipped" },
   { value: "<4hr", label: "Avg. response time" },
   { value: "100%", label: "Code ownership" },
 ];
