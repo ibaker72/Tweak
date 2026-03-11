@@ -28,6 +28,7 @@ export default function WorkPage() {
                   <div className="flex items-center gap-2">
                     <span className="font-mono text-[10px] uppercase tracking-[0.08em] text-dim">{p.category}</span>
                     {p.live && <span className="rounded-md border border-accent/[0.2] bg-accent/[0.06] px-2 py-0.5 text-[9px] font-bold text-accent">LIVE</span>}
+                    {!p.live && p.slug === "kommison" && <span className="rounded-md border border-amber-400/[0.2] bg-amber-400/[0.06] px-2 py-0.5 text-[9px] font-bold text-amber-400">IN DEV</span>}
                   </div>
                   <h2 className="mt-1.5 font-display text-[18px] font-bold text-white transition-colors duration-200 group-hover:text-accent">{p.title}</h2>
                   <p className="mt-2 flex-1 text-[13px] leading-[1.7] text-body">{p.tagline}</p>

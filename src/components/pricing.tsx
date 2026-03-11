@@ -1,6 +1,6 @@
 "use client";
 import Link from "next/link";
-import { ArrowRight, Lock, ShieldCheck, Code2, Clock } from "lucide-react";
+import { ArrowRight, Lock, ShieldCheck, Code2, Clock, Zap, Layers, RefreshCcw, type LucideIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Reveal } from "./shared";
 
@@ -24,10 +24,12 @@ interface Track {
   primary: boolean;
   refs: TrackRef[] | null;
   idealFor: string[] | null;
+  icon: LucideIcon;
 }
 
 const tracks: Track[] = [
   {
+    icon: Zap,
     label: "For teams with a design or clear spec",
     name: "Rapid Build",
     range: "$2,500 – $8,000",
@@ -43,6 +45,7 @@ const tracks: Track[] = [
     idealFor: ["Marketing sites & landing pages", "Portfolio & brand sites", "Redesigns with existing specs"],
   },
   {
+    icon: Layers,
     label: "For founders who need strategy + build",
     name: "Custom Engineering",
     range: "$8,000 – $30,000+",
@@ -71,6 +74,7 @@ const tracks: Track[] = [
     idealFor: null,
   },
   {
+    icon: RefreshCcw,
     label: "For products that need ongoing iteration",
     name: "Growth Retainer",
     range: "$2,000 – $5,000",
@@ -124,6 +128,10 @@ export function Pricing() {
                 )}
                 style={{ background: track.primary ? "rgba(200,255,0,0.015)" : "rgba(255,255,255,0.012)" }}
               >
+                {/* Subtle gradient glow for Custom Engineering card */}
+                {track.primary && (
+                  <div className="pointer-events-none absolute -right-12 -top-12 h-48 w-48 rounded-full bg-[radial-gradient(circle,rgba(200,255,0,0.03)_0%,transparent_70%)]" />
+                )}
                 {/* Top accent line */}
                 <div
                   className={cn(
@@ -132,9 +140,9 @@ export function Pricing() {
                   )}
                 />
 
-                {/* "Most projects" badge — sits on the top border */}
+                {/* "Most projects" badge — desktop: sits on the top border */}
                 {track.primary && (
-                  <div className="absolute -top-3 right-5 z-10">
+                  <div className="absolute -top-3 right-5 z-10 hidden sm:block">
                     <span className="rounded-full border border-accent/25 bg-[#0c0c14] px-3 py-1 font-mono text-[9px] font-medium uppercase tracking-[0.08em] text-accent/80 shadow-[0_2px_8px_rgba(200,255,0,0.08)]">
                       Most projects
                     </span>
@@ -143,10 +151,22 @@ export function Pricing() {
 
                 {/* Card content */}
                 <div className="flex flex-1 flex-col px-7 pb-7 pt-7">
+                  {/* Icon */}
+                  <track.icon className="mb-4 h-8 w-8 text-neutral-500" strokeWidth={1.5} />
+
                   {/* Label */}
                   <span className="font-mono text-[10px] tracking-[0.04em] text-dim">
                     {track.label}
                   </span>
+
+                  {/* "Most projects" badge — mobile: inline below label */}
+                  {track.primary && (
+                    <div className="mt-2 block sm:hidden">
+                      <span className="inline-flex rounded-full border border-accent/25 bg-accent/[0.06] px-3 py-1 font-mono text-[9px] font-medium uppercase tracking-[0.08em] text-accent/80">
+                        Most projects
+                      </span>
+                    </div>
+                  )}
 
                   {/* Track name */}
                   <h3 className="mt-2 font-display text-[20px] font-bold text-white">
