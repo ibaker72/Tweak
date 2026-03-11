@@ -121,16 +121,18 @@ export function Pricing() {
             <Reveal key={track.name} delay={0.06 + i * 0.06}>
               <div
                 className={cn(
-                  "group relative flex h-full flex-col overflow-hidden rounded-[20px] border-[1.5px] transition-all duration-300",
+                  "group relative flex h-full flex-col overflow-visible rounded-[20px] border-[1.5px] transition-all duration-300",
                   track.primary
                     ? "border-accent/40 shadow-[0_0_40px_rgba(200,255,0,0.04),0_0_0_1px_rgba(200,255,0,0.02)_inset] hover:border-accent/55 hover:shadow-[0_0_50px_rgba(200,255,0,0.07)]"
                     : "border-white/10 hover:border-white/[0.18] hover:shadow-[0_8px_32px_rgba(0,0,0,0.15)]",
                 )}
                 style={{ background: track.primary ? "rgba(200,255,0,0.015)" : "rgba(255,255,255,0.012)" }}
               >
-                {/* Subtle gradient glow for Custom Engineering card */}
+                {/* Subtle gradient glow for Custom Engineering card — clipped to card bounds */}
                 {track.primary && (
-                  <div className="pointer-events-none absolute -right-12 -top-12 h-48 w-48 rounded-full bg-[radial-gradient(circle,rgba(200,255,0,0.03)_0%,transparent_70%)]" />
+                  <div className="pointer-events-none absolute inset-0 overflow-hidden rounded-[20px]">
+                    <div className="absolute -right-12 -top-12 h-48 w-48 rounded-full bg-[radial-gradient(circle,rgba(200,255,0,0.03)_0%,transparent_70%)]" />
+                  </div>
                 )}
                 {/* Top accent line */}
                 <div
