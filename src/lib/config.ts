@@ -3,7 +3,7 @@
 
 export const siteConfig = {
   /** Current availability message shown on the homepage */
-  availability: "Currently accepting 2 projects for Q2 2026",
+  availability: "Accepting Projects",
 
   /** Quarter label for urgency messaging */
   currentQuarter: "Q2 2026",
