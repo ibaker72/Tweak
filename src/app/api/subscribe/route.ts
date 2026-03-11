@@ -1,6 +1,4 @@
 import { NextRequest, NextResponse } from "next/server";
-import fs from "fs";
-import path from "path";
 
 // Simple in-memory rate limiter
 const rateLimit = new Map<string, { count: number; resetAt: number }>();
@@ -51,39 +49,47 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Valid email is required" }, { status: 400 });
   }
 
-  const subscriber = {
-    email,
-    source: source || "unknown",
-    subscribedAt: new Date().toISOString(),
-  };
-
-  // TODO: Replace with Mailchimp, ConvertKit, or Resend integration
-  // For now, store in a local JSON file
-  const dataDir = path.join(process.cwd(), "data");
-  const filePath = path.join(dataDir, "subscribers.json");
-
-  try {
-    if (!fs.existsSync(dataDir)) {
-      fs.mkdirSync(dataDir, { recursive: true });
-    }
-
-    let subscribers: typeof subscriber[] = [];
-    if (fs.existsSync(filePath)) {
-      const raw = fs.readFileSync(filePath, "utf8");
-      subscribers = JSON.parse(raw);
-    }
-
-    // Check for duplicate
-    if (subscribers.some((s) => s.email === email)) {
-      return NextResponse.json({ message: "Already subscribed" }, { status: 200 });
-    }
-
-    subscribers.push(subscriber);
-    fs.writeFileSync(filePath, JSON.stringify(subscribers, null, 2));
-  } catch (err) {
-    console.error("Failed to save subscriber:", err);
-    return NextResponse.json({ error: "Failed to save subscription" }, { status: 500 });
+  // TODO: Add LOOPS_API_KEY to Vercel Environment Variables (Settings → Environment Variables) before deploying
+  const apiKey = process.env.LOOPS_API_KEY;
+  if (!apiKey) {
+    console.error("LOOPS_API_KEY environment variable is not set");
+    return NextResponse.json({ error: "Server configuration error" }, { status: 500 });
   }
 
-  return NextResponse.json({ message: "Subscribed successfully" }, { status: 200 });
+  try {
+    const response = await fetch("https://app.loops.so/api/v1/contacts/create", {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${apiKey}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        email,
+        source: source || "website",
+        mailingLists: {
+          cmmlscebg1ri40izh2lqg7fxj: true,
+        },
+      }),
+    });
+
+    const data = await response.json();
+
+    // Loops returns success, or an error if contact already exists
+    // If contact already exists, that's fine — still a success from the user's perspective
+    if (response.ok || data.message?.includes("already")) {
+      return NextResponse.json({ message: "Subscribed successfully" }, { status: 200 });
+    }
+
+    console.error("Loops API error:", data);
+    return NextResponse.json(
+      { error: "Subscription failed. Please try again." },
+      { status: 500 },
+    );
+  } catch (error) {
+    console.error("Subscribe error:", error);
+    return NextResponse.json(
+      { error: "Something went wrong. Please try again." },
+      { status: 500 },
+    );
+  }
 }
