@@ -90,9 +90,9 @@ export function Process() {
                 <Tilt>
                   <div className="h-full rounded-[18px] border border-white/[0.05] p-5" style={{ background: `linear-gradient(170deg, ${step.color}05, rgba(14,14,24,0.9))` }}>
                     <p className="mb-3 text-[13px] leading-[1.7] text-body">{step.desc}</p>
-                    <div className="flex items-center gap-1.5 rounded-lg border px-2.5 py-1" style={{ borderColor: `${step.color}15`, background: `${step.color}06` }}>
+                    <div className="flex items-center gap-1.5 rounded-full border px-2.5 py-[3px]" style={{ borderColor: `${step.color}12`, background: `${step.color}04`, boxShadow: `inset 0 0.5px 0 ${step.color}0a` }}>
                       <div className="h-1 w-1 rounded-full" style={{ background: step.color }} />
-                      <span className="font-mono text-[9px]" style={{ color: step.color }}>{step.detail}</span>
+                      <span className="font-mono text-[9px] tracking-[0.03em]" style={{ color: step.color }}>{step.detail}</span>
                     </div>
                   </div>
                 </Tilt>
@@ -117,9 +117,9 @@ export function Process() {
                   </div>
                 </div>
                 <p className="mb-3 text-[13px] leading-[1.7] text-body">{step.desc}</p>
-                <div className="inline-flex items-center gap-1.5 rounded-lg border px-2.5 py-1" style={{ borderColor: `${step.color}15`, background: `${step.color}06` }}>
+                <div className="inline-flex items-center gap-1.5 rounded-full border px-2.5 py-[3px]" style={{ borderColor: `${step.color}12`, background: `${step.color}04`, boxShadow: `inset 0 0.5px 0 ${step.color}0a` }}>
                   <div className="h-1 w-1 rounded-full" style={{ background: step.color }} />
-                  <span className="font-mono text-[9px]" style={{ color: step.color }}>{step.detail}</span>
+                  <span className="font-mono text-[9px] tracking-[0.03em]" style={{ color: step.color }}>{step.detail}</span>
                 </div>
               </div>
             </Reveal>

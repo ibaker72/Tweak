@@ -35,7 +35,7 @@ export function Projects() {
                     <div>
                       <div className="flex items-center gap-2">
                         <span className="font-mono text-[10px] uppercase tracking-[0.08em] text-dim">{p.category}</span>
-                        {p.live && <span className="rounded-md border border-emerald-400/20 bg-emerald-400/10 px-2 py-0.5 text-[9px] font-bold text-emerald-400">LIVE</span>}
+                        {p.live && <span className="rounded-full border border-emerald-400/15 bg-emerald-400/[0.04] px-2.5 py-[3px] font-mono text-[9px] font-medium tracking-[0.06em] text-emerald-400/90" style={{ boxShadow: "inset 0 0.5px 0 rgba(52,211,153,0.08)" }}>LIVE</span>}
                       </div>
                       <h3 className="mt-1.5 font-display text-[22px] font-bold text-white transition-colors group-hover:text-v-light">{p.title}</h3>
                     </div>
@@ -67,7 +67,7 @@ export function Projects() {
                     {/* Stack */}
                     <div className="mt-auto flex flex-wrap gap-1.5">
                       {p.stack.slice(0, 4).map(t => (
-                        <span key={t} className="rounded-md border border-white/[0.05] bg-white/[0.02] px-2.5 py-0.5 font-mono text-[10px] text-dim">{t}</span>
+                        <span key={t} className="rounded-full border border-white/[0.06] bg-white/[0.02] px-2.5 py-[3px] font-mono text-[10px] tracking-[0.03em] text-white/35" style={{ boxShadow: "inset 0 0.5px 0 rgba(255,255,255,0.04)" }}>{t}</span>
                       ))}
                     </div>
                   </div>

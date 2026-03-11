@@ -24,7 +24,10 @@ export function BlogCard({ post, delay = 0 }: { post: BlogPost; delay?: number }
             )}
             <div className="absolute inset-0 bg-gradient-to-t from-surface-0/60 to-transparent" />
             {post.tags[0] && (
-              <span className="absolute left-4 top-4 rounded-full border border-accent/[0.2] bg-surface-0/80 px-3 py-1 font-mono text-[10px] text-accent/80 backdrop-blur-sm">
+              <span
+                className="absolute left-4 top-4 rounded-full border border-accent/15 bg-surface-0/80 px-2.5 py-[3px] font-mono text-[10px] tracking-[0.03em] text-accent/70 backdrop-blur-sm"
+                style={{ boxShadow: "inset 0 0.5px 0 rgba(200,255,0,0.06), 0 1px 3px rgba(0,0,0,0.25)" }}
+              >
                 {post.tags[0]}
               </span>
             )}
