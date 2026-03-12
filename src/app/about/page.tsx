@@ -58,8 +58,8 @@ export default function AboutPage() {
                 </div>
                 <div>
                   <h3 className="font-display text-[17px] font-bold text-white">Iyad Baker</h3>
-                  <p className="font-mono text-[11px] text-dim">Founder & Lead Engineer</p>
-                  <p className="mt-3 text-[13px] leading-[1.75] text-body">Full-stack engineer with deep experience across product development, growth engineering, and technical strategy. Background spanning e-commerce platforms, AI-powered SaaS tools, lead generation systems, and enterprise WordPress builds. Based in New Jersey, working with clients worldwide.</p>
+                  <p className="font-mono text-[11px] text-dim">Founder & Lead Product Engineer</p>
+                  <p className="mt-3 text-[13px] leading-[1.75] text-body">Product engineer with deep experience across product development, growth engineering, and technical strategy. Background spanning e-commerce platforms, AI-powered SaaS tools, lead generation systems, and enterprise WordPress builds. Based in New Jersey, working with clients worldwide.</p>
                 </div>
               </div>
             </div>
