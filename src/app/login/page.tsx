@@ -11,30 +11,63 @@ export default function LoginPage() {
   const [sent, setSent] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [cooldownSeconds, setCooldownSeconds] = useState(0);
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     setConfigError(params.get("error") === "config");
   }, []);
 
+  useEffect(() => {
+    if (cooldownSeconds <= 0) return;
+
+    const timer = window.setTimeout(() => {
+      setCooldownSeconds((prev) => Math.max(0, prev - 1));
+    }, 1000);
+
+    return () => window.clearTimeout(timer);
+  }, [cooldownSeconds]);
+
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    if (!email.trim()) return;
+    if (!email.trim() || cooldownSeconds > 0) return;
 
     setLoading(true);
     setError(null);
 
-    const supabase = createClient();
-    const { error: authError } = await supabase.auth.signInWithOtp({
-      email: email.trim(),
-      options: {
-        emailRedirectTo: `${window.location.origin}/auth/callback`,
-      },
-    });
+    let authError: { status?: number; message?: string } | null = null;
+
+    try {
+      const supabase = createClient();
+      const result = await supabase.auth.signInWithOtp({
+        email: email.trim(),
+        options: {
+          emailRedirectTo: `${window.location.origin}/auth/callback`,
+        },
+      });
+      authError = result.error;
+    } catch {
+      authError = {
+        message: "Portal authentication is not configured yet.",
+      };
+    }
 
     setLoading(false);
 
     if (authError) {
+      if (authError.status === 429) {
+        const retryMatch = authError.message?.match(/(\d+)\s*second/i);
+        const waitSeconds = retryMatch ? Number.parseInt(retryMatch[1], 10) : 60;
+        setCooldownSeconds(waitSeconds);
+        setError(`Too many attempts. Please wait ${waitSeconds}s before requesting another magic link.`);
+        return;
+      }
+
+      if (authError.message?.toLowerCase().includes("not configured")) {
+        setError("Portal authentication is not configured yet. Please contact support.");
+        return;
+      }
+
       setError("Something went wrong. Please try again.");
       return;
     }
@@ -99,11 +132,13 @@ export default function LoginPage() {
 
                 <button
                   type="submit"
-                  disabled={loading || !email.trim()}
+                  disabled={loading || !email.trim() || cooldownSeconds > 0}
                   className="btn-v w-full justify-center !py-3 !text-[13px] disabled:opacity-50"
                 >
                   {loading ? (
                     <Loader2 size={14} className="animate-spin" />
+                  ) : cooldownSeconds > 0 ? (
+                    <>Wait {cooldownSeconds}s</>
                   ) : (
                     <>Send magic link</>
                   )}
