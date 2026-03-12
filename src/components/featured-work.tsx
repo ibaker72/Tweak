@@ -159,14 +159,14 @@ export function FeaturedWork() {
                               {m.label}
                             </div>
                             {"before" in m ? (
-                              <div className="flex items-baseline gap-2 whitespace-nowrap text-5xl">
+                              <div className="flex items-baseline gap-2 whitespace-nowrap">
                                <span className="text-[14px] text-white/30 line-through">
                                  {m.before}
                                </span>
                                <span className="text-[13px] text-accent/60">
                                  &rarr;
                                </span>
-                               <span>
+                               <span className="font-display text-[26px] font-black tracking-[-0.02em] text-accent">
                                  {m.after}
                                </span>
                             </div>

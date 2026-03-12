@@ -62,7 +62,7 @@ export function BlogIndex({ posts, tags: _tags }: { posts: BlogPost[]; tags: str
 
         {/* Posts grid */}
         {visible.length > 0 ? (
-          <div className="grid gap-6 md:grid-cols-2">
+          <div className="grid auto-rows-fr gap-6 md:grid-cols-2">
             {visible.map((post, i) => (
               <BlogCard key={post.slug} post={post} delay={0.06 * i} />
             ))}

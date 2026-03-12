@@ -8,7 +8,7 @@ const services = [
     title: "Web Applications",
     tagline: "Full-stack products that run your business",
     desc: "SaaS dashboards, internal tools, client portals. Auth, payments, real-time data, and the custom logic that makes your product work.",
-    tags: ["Next.js", "React", "Supabase", "Stripe"],
+    tags: ["Next.js", "React", "Tailwind UI", "Supabase", "Stripe"],
     size: "large",
   },
   {
@@ -16,7 +16,7 @@ const services = [
     title: "Landing Pages & Funnels",
     tagline: "Pages that turn traffic into revenue",
     desc: "Conversion-engineered from the first pixel. Fast load, sharp messaging, strategic CTAs.",
-    tags: ["SEO", "A/B Testing", "Analytics"],
+    tags: ["Tailwind UI", "SEO", "A/B Testing", "Analytics"],
     size: "small",
   },
   {
@@ -60,9 +60,9 @@ export function ServicesNew() {
         </Reveal>
 
         {/* Bento grid */}
-        <div className="grid gap-4 sm:grid-cols-2">
+        <div className="grid auto-rows-fr gap-4 sm:grid-cols-2">
           {services.map((sv, i) => (
-            <Reveal key={sv.title} delay={i * 0.06}>
+            <Reveal key={sv.title} delay={i * 0.06} className="h-full">
               <div
                 className="group relative flex h-full flex-col overflow-hidden rounded-2xl border border-white/[0.06] bg-white/[0.015] p-7 shadow-[0_1px_0_rgba(255,255,255,0.02)_inset] transition-all duration-300 hover:border-white/[0.12] hover:bg-white/[0.025] lg:p-8"
               >
