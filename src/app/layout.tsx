@@ -1,11 +1,8 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
 import "./globals.css";
-import { Navbar } from "@/components/navbar";
-import { Footer, BackToTop } from "@/components/footer";
-import { ChatWidget } from "@/components/chat-widget";
-import { ExitIntentPopup } from "@/components/marketing/exit-intent-popup";
 import { ReferralTracker } from "@/components/referral-tracking";
+import { MarketingShell } from "@/components/marketing-shell";
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://www.tweakandbuild.com";
 
@@ -46,12 +43,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <Suspense fallback={null}>
           <ReferralTracker />
         </Suspense>
-        <Navbar />
-        <main>{children}</main>
-        <Footer />
-        <BackToTop />
-        <ExitIntentPopup />
-        <ChatWidget />
+        <MarketingShell>{children}</MarketingShell>
       </body>
     </html>
   );
