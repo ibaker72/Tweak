@@ -74,11 +74,19 @@ function ShopifyIcon({ color }: { color: string }) {
     </svg>
   );
 }
+function TailwindUIIcon({ color }: { color: string }) {
+  return (
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
+      <path d="M12 6C9.33 6 7.67 7.33 7 10c1-1.33 2.17-1.83 3.5-1.5.76.19 1.3.74 1.9 1.35C13.35 10.82 14.5 12 17 12c2.67 0 4.33-1.33 5-4-1 1.33-2.17 1.83-3.5 1.5-.76-.19-1.3-.74-1.9-1.35C15.65 7.18 14.5 6 12 6zM7 12c-2.67 0-4.33 1.33-5 4 1-1.33 2.17-1.83 3.5-1.5.76.19 1.3.74 1.9 1.35C8.35 16.82 9.5 18 12 18c2.67 0 4.33-1.33 5-4-1 1.33-2.17 1.83-3.5 1.5-.76-.19-1.3-.74-1.9-1.35C10.65 13.18 9.5 12 7 12z" fill={color} opacity="0.7" />
+    </svg>
+  );
+}
 
 const iconMap: Record<string, React.ComponentType<{ color: string }>> = {
   "Next.js": NextIcon, React: ReactIcon, TypeScript: TSIcon,
   Supabase: SupabaseIcon, Stripe: StripeIcon, OpenAI: OpenAIIcon,
   "Node.js": NodeIcon, Vercel: VercelIcon, Shopify: ShopifyIcon,
+  "Tailwind UI": TailwindUIIcon,
 };
 
 const techStack = [
@@ -91,6 +99,7 @@ const techStack = [
   { name: "Node.js", color: "#68A063" },
   { name: "Vercel", color: "#fff" },
   { name: "Shopify", color: "#7AB55C" },
+  { name: "Tailwind UI", color: "#38BDF8" },
 ];
 
 const differentiators = [
@@ -129,9 +138,9 @@ export function TechShowcase() {
         </Reveal>
 
         {/* Differentiators - 2x2 grid */}
-        <div className="grid gap-4 sm:grid-cols-2">
+        <div className="grid auto-rows-fr gap-4 sm:grid-cols-2">
           {differentiators.map((d, i) => (
-            <Reveal key={d.title} delay={i * 0.06}>
+            <Reveal key={d.title} delay={i * 0.06} className="h-full">
               <div className="flex h-full gap-4 rounded-2xl border border-white/[0.06] bg-white/[0.015] p-7 shadow-[0_1px_0_rgba(255,255,255,0.02)_inset] transition-all duration-300 hover:border-white/[0.12] hover:bg-white/[0.025]">
                 <div className="mt-0.5 flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-[8px] border border-accent/20 bg-accent/[0.06]">
                   <Check size={13} className="text-accent" />
@@ -148,8 +157,8 @@ export function TechShowcase() {
         {/* Tech stack bar */}
         <Reveal delay={0.3}>
           <div className="mt-6 rounded-2xl border border-white/[0.06] bg-white/[0.015] p-6 shadow-[0_1px_0_rgba(255,255,255,0.02)_inset] sm:p-7">
-            <div className="mb-4 font-mono text-[10px] uppercase tracking-[0.12em] text-dim">Our stack</div>
-            <div className="flex flex-wrap gap-2">
+            <div className="mb-4 text-center font-mono text-[10px] uppercase tracking-[0.12em] text-dim sm:text-left">Our stack</div>
+            <div className="flex flex-wrap justify-center gap-x-2 gap-y-2.5 sm:justify-start">
               {techStack.map((t) => {
                 const Icon = iconMap[t.name];
                 return (

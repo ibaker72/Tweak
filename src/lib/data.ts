@@ -190,7 +190,7 @@ export const services = [
     title: "Web Applications",
     tagline: "Full-stack products that run your business",
     desc: "From SaaS dashboards to internal tools. Auth, payments, real-time data, and the custom logic that makes your product actually work.",
-    tags: ["Next.js", "React", "Supabase", "Stripe"],
+    tags: ["Next.js", "React", "Tailwind UI", "Supabase", "Stripe"],
     gradient: "from-v/[0.08] to-cyan/[0.03]",
   },
   {
@@ -198,7 +198,7 @@ export const services = [
     title: "Landing Pages & Funnels",
     tagline: "Pages that turn traffic into revenue",
     desc: "Conversion-engineered from the first pixel. Fast load, sharp messaging, strategic CTAs. Built to make your ad spend work harder.",
-    tags: ["SEO", "A/B Testing", "Analytics", "Speed First"],
+    tags: ["Tailwind UI", "SEO", "A/B Testing", "Analytics"],
     gradient: "from-cyan/[0.06] to-v/[0.03]",
   },
   {
@@ -294,7 +294,6 @@ export const techStack = [
   { name: "Supabase", color: "#3ECF8E" },
   { name: "Stripe", color: "#635BFF" },
   { name: "OpenAI", color: "#10A37F" },
-  { name: "WordPress", color: "#21759B" },
   { name: "Node.js", color: "#68A063" },
   { name: "Vercel", color: "#fff" },
   { name: "Tailwind UI", color: "#38BDF8" },

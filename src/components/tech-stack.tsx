@@ -13,7 +13,7 @@ export function TechStack() {
           </div>
         </Reveal>
         <Reveal delay={0.1}>
-          <div className="flex flex-wrap justify-center gap-3">
+          <div className="flex flex-wrap justify-center gap-x-3 gap-y-3">
             {techStack.map((t) => (
               <div key={t.name}
                 className="flex cursor-default items-center gap-2.5 rounded-[14px] border border-white/[0.06] bg-white/[0.02] px-5 py-3.5 transition-all duration-300 hover:-translate-y-0.5"
