@@ -1,5 +1,5 @@
 "use client";
-import { Reveal } from "./shared";
+import { Reveal, Counter } from "./shared";
 
 const industries = [
   "E-Commerce",
@@ -12,26 +12,42 @@ const industries = [
 
 const metrics = [
   {
-    value: (
+    num: 48,
+    suffix: "hrs → 60sec",
+    display: (
       <>
-        <span className="text-neutral-500">48hrs</span>
-        <span className="text-accent"> → </span>
+        <span className="text-white/30">48hrs</span>
+        <span className="mx-2 text-accent/40">&rarr;</span>
         <span className="text-white">60sec</span>
       </>
     ),
     label: "Quoting process automated",
+    highlight: true,
   },
   {
-    value: <span className="text-white">&lt;1 week</span>,
+    num: 1,
+    suffix: "",
+    display: <span className="text-white">&lt;1 week</span>,
     label: "Fastest product shipped",
+    highlight: false,
   },
   {
-    value: <span className="text-white">&lt;4hr</span>,
+    num: 4,
+    suffix: "",
+    display: <span className="text-white">&lt;4hr</span>,
     label: "Average response time",
+    highlight: false,
   },
   {
-    value: <span className="text-white">100%</span>,
+    num: 100,
+    suffix: "",
+    display: (
+      <span className="text-white">
+        <Counter end={100} suffix="%" />
+      </span>
+    ),
     label: "Code ownership, always",
+    highlight: false,
   },
 ];
 
@@ -45,30 +61,29 @@ export function TrustStrip() {
         {/* Proven Results strip */}
         <Reveal>
           <div>
-            <p className="mb-6 text-center font-mono text-[10px] uppercase tracking-[0.14em] text-dim">
+            <p className="mb-8 text-center font-mono text-[10px] uppercase tracking-[0.16em] text-dim sm:mb-10">
               By the numbers
             </p>
-            <div className="rounded-xl border border-white/5">
+            <div className="overflow-hidden rounded-2xl border border-white/[0.06] bg-white/[0.01]" style={{ boxShadow: "0 1px 0 rgba(255,255,255,0.02) inset, 0 8px 32px rgba(0,0,0,0.15)" }}>
               <div className="grid grid-cols-2 md:grid-cols-4">
                 {metrics.map((m, i) => {
-                  // Mobile 2x2: items 0,1 get bottom border; items 0,2 get right border
-                  // Desktop 4-col: items 0,1,2 get right border
                   const classes = [
-                    "px-6 py-6 md:px-8 md:py-7",
-                    i % 2 === 0 ? "border-r border-white/5" : "",
-                    i < 2 ? "border-b border-white/5 md:border-b-0" : "",
+                    "px-6 py-7 md:px-8 md:py-9 transition-colors duration-300 hover:bg-white/[0.015]",
+                    i % 2 === 0 ? "border-r border-white/[0.05]" : "",
+                    i < 2 ? "border-b border-white/[0.05] md:border-b-0" : "",
                     i < 3 ? "md:border-r" : "md:border-r-0",
+                    m.highlight ? "relative" : "",
                   ].filter(Boolean).join(" ");
                   return (
-                  <div
-                    key={i}
-                    className={classes}
-                  >
-                    <div className="text-2xl font-bold leading-none tracking-tight md:text-3xl">
-                      {m.value}
+                    <div key={i} className={classes}>
+                      {m.highlight && (
+                        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(200,255,0,0.02),transparent_70%)]" />
+                      )}
+                      <div className="relative text-[26px] font-bold leading-none tracking-tight md:text-[30px]">
+                        {m.display}
+                      </div>
+                      <p className="mt-2.5 text-[13px] text-body/70">{m.label}</p>
                     </div>
-                    <p className="mt-2 text-sm text-neutral-400">{m.label}</p>
-                  </div>
                   );
                 })}
               </div>
@@ -77,16 +92,16 @@ export function TrustStrip() {
         </Reveal>
 
         {/* Industries */}
-        <Reveal delay={0.35}>
-          <div className="mt-12 border-t border-white/[0.06] pt-7">
-            <div className="flex flex-wrap items-center gap-2.5">
-              <span className="mr-1.5 font-mono text-[10px] uppercase tracking-[0.12em] text-dim">
+        <Reveal delay={0.3}>
+          <div className="mt-12 border-t border-white/[0.05] pt-8">
+            <div className="flex flex-wrap items-center justify-center gap-2.5 sm:justify-start">
+              <span className="mr-2 font-mono text-[10px] uppercase tracking-[0.12em] text-dim">
                 Industries:
               </span>
               {industries.map((ind) => (
                 <span
                   key={ind}
-                  className="rounded-full border border-white/[0.06] bg-white/[0.02] px-3.5 py-[5px] text-[12px] font-medium text-white/45 transition-colors duration-200 hover:text-white/65"
+                  className="rounded-full border border-white/[0.06] bg-white/[0.015] px-3.5 py-[6px] text-[12px] font-medium text-white/40 transition-all duration-200 hover:border-white/[0.1] hover:text-white/65"
                   style={{ boxShadow: "inset 0 0.5px 0 rgba(255,255,255,0.04)" }}
                 >
                   {ind}

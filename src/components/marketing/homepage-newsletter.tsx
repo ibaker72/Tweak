@@ -34,24 +34,24 @@ export function HomepageNewsletter() {
       <div className="absolute inset-0 border-y border-white/[0.04] bg-surface-1/50" />
       <div className="wrap relative">
         <Reveal>
-          <div className="mx-auto max-w-[520px] text-center">
-            <div className="mx-auto mb-5 flex h-12 w-12 items-center justify-center rounded-xl border border-accent/[0.15] bg-accent/[0.06]">
+          <div className="mx-auto max-w-[540px] text-center">
+            <div className="mx-auto mb-6 flex h-12 w-12 items-center justify-center rounded-xl border border-accent/[0.15] bg-accent/[0.05]">
               <Mail size={20} className="text-accent" />
             </div>
-            <h2 className="font-display text-[clamp(22px,3vw,32px)] font-extrabold tracking-[-0.02em] text-white">
+            <h2 className="font-display text-[clamp(24px,3.5vw,34px)] font-extrabold tracking-[-0.03em] text-white">
               Join 100+ founders getting weekly product insights.
             </h2>
-            <p className="mt-3 text-[14px] leading-[1.7] text-body">
+            <p className="mt-3 text-[14px] leading-[1.7] text-body sm:text-[15px]">
               Studio updates, case studies, and engineering insights. No spam, unsubscribe anytime.
             </p>
 
             {status === "success" ? (
-              <div className="mt-6 inline-flex items-center gap-2 rounded-full border border-accent/[0.2] bg-accent/[0.06] px-5 py-2.5">
+              <div className="mt-7 inline-flex items-center gap-2 rounded-full border border-accent/[0.2] bg-accent/[0.06] px-5 py-2.5">
                 <Check size={14} className="text-accent" />
                 <span className="text-[13px] font-medium text-accent">You&apos;re subscribed!</span>
               </div>
             ) : (
-              <form onSubmit={subscribe} className="mx-auto mt-6 flex max-w-[400px] gap-2.5">
+              <form onSubmit={subscribe} className="mx-auto mt-7 flex max-w-[400px] gap-2.5">
                 <input
                   suppressHydrationWarning
                   type="email"

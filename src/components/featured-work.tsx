@@ -49,26 +49,28 @@ const featuredProjects = [
     year: "2025",
     live: false,
     inDev: true,
-    // TODO: Replace with Kommison.com screenshots when available
     image: "/proof/create3dparts/dashboard.png",
   },
 ];
 
 export function FeaturedWork() {
   return (
-    <section id="work" className="relative py-24 sm:py-32">
+    <section id="work" className="relative py-28 sm:py-36">
       <div className="wrap">
         <Reveal>
-          <div className="mb-14 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+          <div className="mb-16 flex flex-col gap-4 sm:mb-20 sm:flex-row sm:items-end sm:justify-between">
             <div>
               <span className="section-label">Selected work</span>
-              <h2 className="mt-4 font-display text-[clamp(30px,4.5vw,48px)] font-extrabold leading-[1.06] tracking-[-0.035em] text-white">
+              <h2 className="mt-5 font-display text-[clamp(32px,5vw,52px)] font-extrabold leading-[1.04] tracking-[-0.04em] text-white">
                 Real projects.<br />Measurable outcomes.
               </h2>
+              <p className="mt-4 max-w-[420px] text-[15px] leading-[1.7] text-body">
+                Every build is measured by business impact, not just code quality.
+              </p>
             </div>
             <Link
               href="/work"
-              className="group flex items-center gap-2 self-start font-mono text-[11px] uppercase tracking-[0.12em] text-dim transition-colors duration-200 hover:text-white sm:self-auto"
+              className="group flex items-center gap-2 self-start rounded-full border border-white/[0.06] bg-white/[0.02] px-4 py-2 font-mono text-[11px] uppercase tracking-[0.12em] text-dim transition-all duration-200 hover:border-white/[0.12] hover:text-white sm:self-auto"
             >
               All case studies{" "}
               <ArrowUpRight
@@ -79,108 +81,109 @@ export function FeaturedWork() {
           </div>
         </Reveal>
 
-        <div className="space-y-5">
+        <div className="space-y-6 sm:space-y-8">
           {featuredProjects.map((project, i) => (
             <Reveal key={project.slug} delay={i * 0.08}>
               <Link href={`/work/${project.slug}`} className="group block">
-                <div className="overflow-hidden rounded-2xl border border-white/[0.06] bg-white/[0.015] shadow-[0_1px_0_rgba(255,255,255,0.02)_inset] transition-all duration-300 hover:border-white/[0.12] hover:bg-white/[0.025]">
-                  <div className="grid gap-0 lg:grid-cols-[1.15fr,0.85fr]">
-                    {/* Left: image + project info */}
-                    <div className="flex flex-col justify-between">
-                      <div className="relative h-56 overflow-hidden border-b border-white/[0.06] sm:h-64">
-                        <Image
-                          src={project.image}
-                          alt={project.title}
-                          fill
-                          className="object-cover object-top transition-transform duration-500 group-hover:scale-[1.02]"
-                        />
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
+                <div
+                  className="overflow-hidden rounded-2xl border border-white/[0.06] transition-all duration-500 hover:border-white/[0.14] sm:rounded-3xl"
+                  style={{
+                    background: "rgba(255,255,255,0.012)",
+                    boxShadow: "0 1px 0 rgba(255,255,255,0.02) inset, 0 8px 32px rgba(0,0,0,0.1)",
+                  }}
+                >
+                  {/* Image section - larger and more dramatic */}
+                  <div className="relative h-64 overflow-hidden sm:h-80 lg:h-[380px]">
+                    <Image
+                      src={project.image}
+                      alt={project.title}
+                      fill
+                      className="object-cover object-top transition-transform duration-700 group-hover:scale-[1.03]"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-surface-0 via-surface-0/40 to-transparent" />
+
+                    {/* Floating badges on image */}
+                    <div className="absolute right-5 top-5 flex items-center gap-2 sm:right-7 sm:top-7">
+                      {project.live && (
+                        <span
+                          className="flex items-center gap-1.5 rounded-full border border-emerald-400/20 bg-surface-0/80 px-3 py-[5px] backdrop-blur-sm"
+                          style={{ boxShadow: "0 2px 8px rgba(0,0,0,0.3)" }}
+                        >
+                          <span className="h-1.5 w-1.5 rounded-full bg-emerald-400" />
+                          <span className="font-mono text-[9px] font-medium tracking-[0.06em] text-emerald-400/90">LIVE</span>
+                        </span>
+                      )}
+                      {"inDev" in project && project.inDev && (
+                        <span
+                          className="flex items-center gap-1.5 rounded-full border border-amber-400/20 bg-surface-0/80 px-3 py-[5px] backdrop-blur-sm"
+                          style={{ boxShadow: "0 2px 8px rgba(0,0,0,0.3)" }}
+                        >
+                          <span className="h-1.5 w-1.5 rounded-full bg-amber-400" />
+                          <span className="font-mono text-[9px] font-medium tracking-[0.06em] text-amber-400/90">IN DEV</span>
+                        </span>
+                      )}
+                    </div>
+                  </div>
+
+                  {/* Content below image */}
+                  <div className="grid gap-0 lg:grid-cols-[1.2fr,0.8fr]">
+                    <div className="p-7 sm:p-9 lg:p-10">
+                      <div className="mb-4 flex flex-wrap items-center gap-2.5">
+                        <span className="font-mono text-[10px] uppercase tracking-[0.1em] text-dim">
+                          {project.category}
+                        </span>
+                        <span className="h-0.5 w-0.5 rounded-full bg-dim" />
+                        <span className="font-mono text-[10px] text-dim">
+                          {project.year}
+                        </span>
                       </div>
 
-                      <div className="p-8 lg:p-10">
-                        <div>
-                          <div className="mb-5 flex flex-wrap items-center gap-3">
-                            <span className="font-mono text-[10px] uppercase tracking-[0.1em] text-dim">
-                              {project.category}
-                            </span>
-                            <span className="h-0.5 w-0.5 rounded-full bg-dim" />
-                            <span className="font-mono text-[10px] text-dim">
-                              {project.year}
-                            </span>
-                            {project.live && (
-                              <span
-                                className="flex items-center gap-1.5 rounded-full border border-emerald-400/15 bg-emerald-400/[0.04] px-2.5 py-[3px]"
-                                style={{ boxShadow: "inset 0 0.5px 0 rgba(52,211,153,0.08)" }}
-                              >
-                                <span className="h-1.5 w-1.5 rounded-full bg-emerald-400" />
-                                <span className="font-mono text-[9px] font-medium tracking-[0.06em] text-emerald-400/90">
-                                  LIVE
-                                </span>
-                              </span>
-                            )}
-                            {"inDev" in project && project.inDev && (
-                              <span
-                                className="flex items-center gap-1.5 rounded-full border border-amber-400/15 bg-amber-400/[0.04] px-2.5 py-[3px]"
-                                style={{ boxShadow: "inset 0 0.5px 0 rgba(251,191,36,0.08)" }}
-                              >
-                                <span className="h-1.5 w-1.5 rounded-full bg-amber-400" />
-                                <span className="font-mono text-[9px] font-medium tracking-[0.06em] text-amber-400/90">
-                                  IN DEV
-                                </span>
-                              </span>
-                            )}
-                          </div>
+                      <h3 className="font-display text-[28px] font-bold tracking-[-0.03em] text-white transition-colors duration-300 group-hover:text-accent sm:text-[32px] lg:text-[36px]">
+                        {project.title}
+                      </h3>
 
-                          <h3 className="font-display text-[26px] font-bold tracking-[-0.03em] text-white transition-colors duration-200 group-hover:text-accent lg:text-[30px]">
-                            {project.title}
-                          </h3>
+                      <p className="mt-3 max-w-[460px] text-[14px] leading-[1.75] text-body sm:text-[15px]">
+                        {project.description}
+                      </p>
 
-                          <p className="mt-3 max-w-[420px] text-[14px] leading-[1.75] text-body">
-                            {project.description}
-                          </p>
-                        </div>
+                      <div className="mt-6 flex flex-wrap gap-1.5 sm:mt-8">
+                        {project.stack.map((t) => (
+                          <span key={t} className="tag">{t}</span>
+                        ))}
+                      </div>
 
-                        <div className="mt-8 flex flex-wrap gap-1.5">
-                          {project.stack.map((t) => (
-                            <span key={t} className="tag">
-                              {t}
-                            </span>
-                          ))}
-                        </div>
+                      <div className="mt-6 flex items-center gap-2 font-mono text-[11px] text-dim opacity-0 transition-all duration-300 group-hover:translate-x-1 group-hover:text-accent group-hover:opacity-100 sm:mt-8">
+                        View case study <ArrowUpRight size={12} />
                       </div>
                     </div>
 
                     {/* Right: metrics panel */}
-                    <div className="border-t border-white/[0.04] bg-white/[0.01] p-8 lg:border-l lg:border-t-0 lg:p-10">
-                      <div className="flex h-full flex-col justify-center gap-7">
+                    <div className="border-t border-white/[0.04] bg-white/[0.008] p-7 sm:p-9 lg:border-l lg:border-t-0 lg:p-10">
+                      <div className="flex h-full flex-col justify-center gap-8 lg:gap-10">
                         {project.metrics.map((m) => (
                           <div key={m.label}>
-                            <div className="mb-2.5 font-mono text-[10px] uppercase tracking-[0.12em] text-dim">
+                            <div className="mb-2 font-mono text-[10px] uppercase tracking-[0.12em] text-dim">
                               {m.label}
                             </div>
                             {"before" in m ? (
-                              <div className="flex items-baseline gap-2 whitespace-nowrap">
-                               <span className="text-[14px] text-white/30 line-through">
-                                 {m.before}
-                               </span>
-                               <span className="text-[13px] text-accent/60">
-                                 &rarr;
-                               </span>
-                               <span className="font-display text-[26px] font-black tracking-[-0.02em] text-accent">
-                                 {m.after}
-                               </span>
-                            </div>
+                              <div className="flex items-baseline gap-2.5 whitespace-nowrap">
+                                <span className="text-[14px] text-white/25 line-through">
+                                  {m.before}
+                                </span>
+                                <span className="text-[13px] text-accent/40">
+                                  &rarr;
+                                </span>
+                                <span className="font-display text-[30px] font-black tracking-[-0.02em] text-accent sm:text-[34px]">
+                                  {m.after}
+                                </span>
+                              </div>
                             ) : (
-                              <div className="font-display text-[26px] font-black tracking-[-0.02em] text-accent">
+                              <div className="font-display text-[28px] font-black tracking-[-0.02em] text-accent sm:text-[32px]">
                                 {m.value}
                               </div>
                             )}
                           </div>
                         ))}
-
-                        <div className="mt-auto flex items-center gap-2 pt-4 font-mono text-[11px] text-dim opacity-0 transition-all duration-300 group-hover:translate-x-1 group-hover:opacity-100">
-                          View case study <ArrowUpRight size={12} />
-                        </div>
                       </div>
                     </div>
                   </div>

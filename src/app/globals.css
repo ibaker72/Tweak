@@ -40,8 +40,8 @@
   .glass-nav {
     backdrop-filter: blur(24px) saturate(1.5);
     -webkit-backdrop-filter: blur(24px) saturate(1.5);
-    background: rgba(3,3,5,0.88);
-    box-shadow: 0 1px 0 rgba(255,255,255,0.03) inset, 0 8px 32px rgba(0,0,0,0.35);
+    background: rgba(3,3,5,0.82);
+    box-shadow: 0 1px 0 rgba(255,255,255,0.04) inset, 0 8px 40px rgba(0,0,0,0.4);
   }
 
   /* ─── Typography ─── */
@@ -64,11 +64,11 @@
   .btn-v {
     @apply inline-flex items-center gap-2.5 rounded-full px-7 py-3 text-[14px] font-bold text-surface-0 transition-all duration-200 relative overflow-hidden;
     background: var(--brand-accent);
-    box-shadow: 0 1px 2px rgba(0,0,0,0.15);
+    box-shadow: 0 1px 2px rgba(0,0,0,0.15), 0 0 0 1px rgba(200,255,0,0.15);
   }
   .btn-v:hover {
     @apply -translate-y-0.5;
-    box-shadow: 0 8px 32px rgba(var(--brand-accent-rgb), 0.2), 0 2px 8px rgba(var(--brand-accent-rgb), 0.12);
+    box-shadow: 0 8px 32px rgba(var(--brand-accent-rgb), 0.2), 0 2px 8px rgba(var(--brand-accent-rgb), 0.12), 0 0 0 1px rgba(200,255,0,0.25);
   }
   .btn-v:active { @apply translate-y-0; box-shadow: 0 1px 2px rgba(0,0,0,0.15); }
 

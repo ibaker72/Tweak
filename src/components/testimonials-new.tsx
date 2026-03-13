@@ -36,43 +36,56 @@ export function TestimonialsNew() {
   const rest = testimonials.slice(1);
 
   return (
-    <section className="relative py-24 sm:py-32">
+    <section className="relative py-28 sm:py-36">
       <div className="wrap">
         <Reveal>
-          <div className="mb-14">
+          <div className="mb-16 sm:mb-20">
             <span className="section-label">Client proof</span>
-            <h2 className="mt-4 font-display text-[clamp(30px,4vw,48px)] font-extrabold leading-[1.06] tracking-[-0.035em] text-white">
+            <h2 className="mt-5 font-display text-[clamp(32px,4.5vw,52px)] font-extrabold leading-[1.04] tracking-[-0.04em] text-white">
               What clients say.
             </h2>
+            <p className="mt-4 max-w-[400px] text-[15px] leading-[1.7] text-body">
+              Real results from real founders. Not curated. Not rewritten.
+            </p>
           </div>
         </Reveal>
 
-        <div className="grid gap-4 lg:grid-cols-[1.15fr,1fr]">
-          {/* Featured testimonial */}
+        <div className="grid gap-5 lg:grid-cols-[1.15fr,1fr]">
+          {/* Featured testimonial - large editorial quote */}
           <Reveal delay={0.06}>
-            <div className="flex h-full flex-col justify-between rounded-2xl border border-accent/[0.10] bg-accent/[0.02] p-8 lg:p-10">
+            <div
+              className="flex h-full flex-col justify-between rounded-2xl border border-accent/[0.10] p-8 lg:p-10"
+              style={{
+                background: "rgba(200,255,0,0.015)",
+                boxShadow: "0 1px 0 rgba(200,255,0,0.03) inset, 0 8px 32px rgba(0,0,0,0.1)",
+              }}
+            >
               <div>
-                <div className="mb-6 flex flex-wrap items-center gap-2">
+                <div className="mb-7 flex flex-wrap items-center gap-2">
                   <span className="rounded-full border border-white/[0.08] bg-white/[0.03] px-3 py-1 font-mono text-[10px] text-white/50">
                     {featured.engagement}
                   </span>
-                  <span className="rounded-full border border-accent/[0.12] bg-accent/[0.05] px-3 py-1 font-mono text-[10px] text-accent/80">
+                  <span className="rounded-full border border-accent/[0.12] bg-accent/[0.05] px-3 py-1 font-mono text-[10px] font-medium text-accent/80">
                     {featured.result}
                   </span>
                 </div>
-                <p className="text-[19px] font-medium leading-[1.65] text-white lg:text-[21px]">
-                  &ldquo;{featured.quote}&rdquo;
+
+                {/* Large quote mark */}
+                <div className="mb-4 font-display text-[48px] leading-none text-accent/15">&ldquo;</div>
+
+                <p className="text-[20px] font-medium leading-[1.65] text-white sm:text-[22px] lg:text-[24px]">
+                  {featured.quote}
                 </p>
               </div>
 
-              <div className="mt-8 flex items-center gap-4 border-t border-white/[0.06] pt-6">
-                <div className="flex h-11 w-11 items-center justify-center rounded-full bg-accent/[0.08]">
-                  <span className="font-display text-[12px] font-bold text-accent">
+              <div className="mt-10 flex items-center gap-4 border-t border-white/[0.06] pt-7">
+                <div className="flex h-12 w-12 items-center justify-center rounded-full border border-accent/15 bg-accent/[0.06]">
+                  <span className="font-display text-[13px] font-bold text-accent">
                     {featured.name.split(" ").map((n: string) => n[0]).join("")}
                   </span>
                 </div>
                 <div>
-                  <p className="font-display text-[14px] font-bold text-white">{featured.name}</p>
+                  <p className="font-display text-[15px] font-bold text-white">{featured.name}</p>
                   <p className="font-mono text-[11px] text-dim">{featured.title}</p>
                 </div>
                 <span className="ml-auto hidden rounded-full border border-white/[0.06] bg-white/[0.02] px-3 py-1 font-mono text-[10px] text-dim sm:inline-block">
@@ -83,11 +96,17 @@ export function TestimonialsNew() {
           </Reveal>
 
           {/* Supporting testimonials */}
-          <div className="flex flex-col gap-4">
+          <div className="flex flex-col gap-5">
             {rest.map((t, i) => (
               <Reveal key={t.name} delay={0.12 + i * 0.08}>
-                <div className="flex h-full flex-col rounded-2xl border border-white/[0.06] bg-white/[0.015] p-7 shadow-[0_1px_0_rgba(255,255,255,0.02)_inset] transition-all duration-300 hover:border-white/[0.12]">
-                  <div className="mb-4 flex flex-wrap items-center gap-2">
+                <div
+                  className="flex h-full flex-col rounded-2xl border border-white/[0.06] p-7 transition-all duration-300 hover:border-white/[0.12] lg:p-8"
+                  style={{
+                    background: "rgba(255,255,255,0.012)",
+                    boxShadow: "0 1px 0 rgba(255,255,255,0.02) inset",
+                  }}
+                >
+                  <div className="mb-5 flex flex-wrap items-center gap-2">
                     <span className="rounded-full border border-white/[0.08] bg-white/[0.03] px-3 py-1 font-mono text-[10px] text-white/50">
                       {t.engagement}
                     </span>
@@ -96,16 +115,16 @@ export function TestimonialsNew() {
                     </span>
                   </div>
 
-                  <p className="flex-1 text-[14px] leading-[1.75] text-gray-300">&ldquo;{t.quote}&rdquo;</p>
+                  <p className="flex-1 text-[15px] leading-[1.75] text-gray-300 sm:text-[16px]">&ldquo;{t.quote}&rdquo;</p>
 
-                  <div className="mt-5 flex items-center gap-3 border-t border-white/[0.05] pt-5">
-                    <div className="flex h-9 w-9 items-center justify-center rounded-full border border-white/[0.08] bg-white/[0.025]">
-                      <span className="font-display text-[10px] font-bold text-white/60">
+                  <div className="mt-6 flex items-center gap-3 border-t border-white/[0.05] pt-6">
+                    <div className="flex h-10 w-10 items-center justify-center rounded-full border border-white/[0.08] bg-white/[0.02]">
+                      <span className="font-display text-[11px] font-bold text-white/50">
                         {t.name.split(" ").map((n: string) => n[0]).join("")}
                       </span>
                     </div>
                     <div>
-                      <p className="font-display text-[13px] font-bold text-white">{t.name}</p>
+                      <p className="font-display text-[14px] font-bold text-white">{t.name}</p>
                       <p className="font-mono text-[10px] text-dim">{t.title}</p>
                     </div>
                   </div>
