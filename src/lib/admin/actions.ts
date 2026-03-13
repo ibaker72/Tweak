@@ -1,12 +1,14 @@
 "use server";
 
 import { createClient } from "@/lib/supabase/server";
+import { createServiceClient } from "@/lib/supabase/service";
 import { revalidatePath } from "next/cache";
 import type {
   ProjectStatus,
   MilestoneStatus,
   TaskType,
   ApprovalStatus,
+  MemberRole,
 } from "@/lib/portal/types";
 
 /* ─── Helpers ─── */
@@ -230,4 +232,91 @@ export async function removeProjectMember(memberId: string, projectId: string) {
 
   if (error) throw new Error(error.message);
   revalidatePath(`/admin/projects/${projectId}`);
+}
+
+/* ─── Client Invite ─── */
+
+export async function inviteClientToProject(
+  projectId: string,
+  fields: { email: string; full_name?: string; member_role?: MemberRole }
+): Promise<{ status: "invited" | "attached"; message: string }> {
+  await requireAdmin();
+  const serviceClient = createServiceClient();
+  const email = fields.email.trim().toLowerCase();
+  const memberRole = fields.member_role || "client";
+
+  // Check if user already exists in profiles (by email)
+  const { data: existingProfile } = await serviceClient
+    .from("profiles")
+    .select("id, full_name, email")
+    .eq("email", email)
+    .single();
+
+  if (existingProfile) {
+    // User exists — check if already a member
+    const { data: existingMember } = await serviceClient
+      .from("project_members")
+      .select("id")
+      .eq("project_id", projectId)
+      .eq("user_id", existingProfile.id)
+      .single();
+
+    if (existingMember) {
+      return { status: "attached", message: `${email} is already a member of this project` };
+    }
+
+    // Add membership directly
+    const { error: memberError } = await serviceClient
+      .from("project_members")
+      .insert({
+        project_id: projectId,
+        user_id: existingProfile.id,
+        member_role: memberRole,
+      });
+
+    if (memberError) throw new Error(memberError.message);
+    revalidatePath(`/admin/projects/${projectId}`);
+    revalidatePath("/admin/clients");
+    return { status: "attached", message: `${existingProfile.full_name || email} added to project` };
+  }
+
+  // User does not exist — invite via Supabase auth
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
+
+  const { data: inviteData, error: inviteError } = await serviceClient.auth.admin.inviteUserByEmail(email, {
+    data: {
+      full_name: fields.full_name || "",
+      invited_to_project: projectId,
+      member_role: memberRole,
+    },
+    redirectTo: `${siteUrl}/auth/callback?next=/client-portal`,
+  });
+
+  if (inviteError) throw new Error(inviteError.message);
+
+  // The handle_new_user trigger creates the profile.
+  // Now add membership for the newly created user.
+  if (inviteData?.user) {
+    // Update profile name if provided
+    if (fields.full_name) {
+      await serviceClient
+        .from("profiles")
+        .update({ full_name: fields.full_name })
+        .eq("id", inviteData.user.id);
+    }
+
+    const { error: memberError } = await serviceClient
+      .from("project_members")
+      .insert({
+        project_id: projectId,
+        user_id: inviteData.user.id,
+        member_role: memberRole,
+      });
+
+    if (memberError) throw new Error(memberError.message);
+  }
+
+  revalidatePath(`/admin/projects/${projectId}`);
+  revalidatePath("/admin/clients");
+  return { status: "invited", message: `Invite sent to ${email}` };
 }

@@ -99,6 +99,26 @@ export async function getProjectMembers(projectId: string): Promise<(ProjectMemb
   return (data ?? []) as (ProjectMember & { profile?: Profile | null })[];
 }
 
+export async function getEligibleMembers(projectId: string): Promise<Profile[]> {
+  const supabase = await createClient();
+
+  // Get current member user_ids
+  const { data: existing } = await supabase
+    .from("project_members")
+    .select("user_id")
+    .eq("project_id", projectId);
+
+  const memberIds = new Set((existing ?? []).map((r) => (r as { user_id: string }).user_id));
+
+  // Get all profiles and filter out existing members
+  const { data: profiles } = await supabase
+    .from("profiles")
+    .select("*")
+    .order("full_name", { ascending: true });
+
+  return ((profiles ?? []) as Profile[]).filter((p) => !memberIds.has(p.id));
+}
+
 export async function getProjectMilestones(projectId: string): Promise<ProjectMilestone[]> {
   const supabase = await createClient();
   const { data } = await supabase

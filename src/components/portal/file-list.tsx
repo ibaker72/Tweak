@@ -4,6 +4,7 @@ import {
   FileImage,
   File,
   Figma,
+  Download,
 } from "lucide-react";
 import type { ProjectFile } from "@/lib/portal/types";
 
@@ -35,9 +36,12 @@ export function FileList({ files, compact = false }: FileListProps) {
       {displayed.map((f) => {
         const Icon = getFileIcon(f.file_type);
         return (
-          <div
+          <a
             key={f.id}
-            className="flex items-center gap-3 rounded-lg border border-white/[0.04] bg-white/[0.01] px-3 py-2.5 transition-colors hover:border-white/[0.08]"
+            href={`/api/files/download?path=${encodeURIComponent(f.file_path)}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center gap-3 rounded-lg border border-white/[0.04] bg-white/[0.01] px-3 py-2.5 transition-colors hover:border-white/[0.08] group"
           >
             <div className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-lg bg-white/[0.03]">
               <Icon size={14} className="text-dim" />
@@ -55,7 +59,8 @@ export function FileList({ files, compact = false }: FileListProps) {
                 })}
               </p>
             </div>
-          </div>
+            <Download size={12} className="flex-shrink-0 text-dim opacity-0 transition-opacity group-hover:opacity-100" />
+          </a>
         );
       })}
     </div>

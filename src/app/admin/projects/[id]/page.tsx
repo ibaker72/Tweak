@@ -16,6 +16,7 @@ import { EmptyState } from "@/components/portal/empty-state";
 import {
   getProjectById,
   getProjectMembers,
+  getEligibleMembers,
   getProjectMilestones,
   getProjectUpdates,
   getProjectTasks,
@@ -24,7 +25,10 @@ import {
 } from "@/lib/admin/queries";
 import { ProjectEditForm } from "./project-edit-form";
 import { MembersSection } from "./members-section";
+import { AddMemberForm } from "./add-member-form";
 import { MilestoneForm } from "./milestone-form";
+import { FileUploadForm } from "./file-upload-form";
+import { InviteClientForm } from "./invite-client-form";
 import { UpdateForm } from "./update-form";
 import { TaskForm } from "./task-form";
 import { ApprovalForm } from "./approval-form";
@@ -40,8 +44,9 @@ export default async function AdminProjectDetailPage({
   const project = await getProjectById(id);
   if (!project) notFound();
 
-  const [members, milestones, updates, tasks, files, approvals] = await Promise.all([
+  const [members, eligibleUsers, milestones, updates, tasks, files, approvals] = await Promise.all([
     getProjectMembers(id),
+    getEligibleMembers(id),
     getProjectMilestones(id),
     getProjectUpdates(id),
     getProjectTasks(id),
@@ -81,13 +86,16 @@ export default async function AdminProjectDetailPage({
         </div>
       </div>
 
-      {/* Edit project */}
-      <ProjectEditForm project={project} />
+      {/* Actions */}
+      <div className="flex flex-wrap items-center gap-3">
+        <ProjectEditForm project={project} />
+        <InviteClientForm projectId={id} />
+      </div>
 
       {/* Two-column layout */}
       <div className="grid gap-6 lg:grid-cols-2">
         {/* Members */}
-        <PortalCard title="Members" icon={<Users size={14} />}>
+        <PortalCard title="Members" icon={<Users size={14} />} action={<AddMemberForm projectId={id} eligibleUsers={eligibleUsers} />}>
           <MembersSection projectId={id} members={members} />
         </PortalCard>
 
@@ -188,7 +196,7 @@ export default async function AdminProjectDetailPage({
       </div>
 
       {/* Files */}
-      <PortalCard title="Files" icon={<FileText size={14} />}>
+      <PortalCard title="Files" icon={<FileText size={14} />} action={<FileUploadForm projectId={id} />}>
         {files.length === 0 ? (
           <EmptyState icon={<FileText size={18} />} title="No files" description="Files will appear here when added" />
         ) : (
