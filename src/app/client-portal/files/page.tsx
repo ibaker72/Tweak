@@ -4,6 +4,7 @@ import { ArrowLeft, FolderOpen, FileText } from "lucide-react";
 import { createClient } from "@/lib/supabase/server";
 import { getUserProjects, getProjectFiles } from "@/lib/portal/queries";
 import { FileList } from "@/components/portal/file-list";
+import { ClientUpload } from "@/components/portal/client-upload";
 import { EmptyState } from "@/components/portal/empty-state";
 import type { Metadata } from "next";
 
@@ -46,16 +47,19 @@ export default async function FilesPage({ searchParams }: PageProps) {
           <ArrowLeft size={12} />
           Dashboard
         </Link>
-        <div className="flex items-center gap-3">
-          <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-white/[0.03]">
-            <FolderOpen size={16} className="text-dim" />
+        <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+          <div className="flex items-center gap-3">
+            <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-white/[0.03]">
+              <FolderOpen size={16} className="text-dim" />
+            </div>
+            <div>
+              <h1 className="font-display text-[22px] font-bold tracking-[-0.02em] text-white">
+                Project Files
+              </h1>
+              <p className="font-mono text-[11px] text-dim">{activeProject.name}</p>
+            </div>
           </div>
-          <div>
-            <h1 className="font-display text-[22px] font-bold tracking-[-0.02em] text-white">
-              Project Files
-            </h1>
-            <p className="font-mono text-[11px] text-dim">{activeProject.name}</p>
-          </div>
+          <ClientUpload projectId={activeProject.id} />
         </div>
       </div>
 
@@ -80,7 +84,7 @@ export default async function FilesPage({ searchParams }: PageProps) {
           <EmptyState
             icon={<FileText size={18} />}
             title="No files yet"
-            description="Project files will appear here when your team uploads them."
+            description="Project files will appear here when uploaded. You can also upload files to share with your team."
           />
         </div>
       )}

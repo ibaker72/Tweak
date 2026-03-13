@@ -8,6 +8,7 @@ import {
   ListTodo,
   FileText,
   CheckSquare,
+  Send,
 } from "lucide-react";
 import { PortalCard } from "@/components/portal/portal-card";
 import { StatusBadge } from "@/components/portal/status-badge";
@@ -22,6 +23,7 @@ import {
   getProjectTasks,
   getProjectFiles,
   getProjectApprovals,
+  getProjectInvites,
 } from "@/lib/admin/queries";
 import { ProjectEditForm } from "./project-edit-form";
 import { MembersSection } from "./members-section";
@@ -29,11 +31,13 @@ import { AddMemberForm } from "./add-member-form";
 import { MilestoneForm } from "./milestone-form";
 import { FileUploadForm } from "./file-upload-form";
 import { InviteClientForm } from "./invite-client-form";
+import { InvitesSection } from "./invites-section";
 import { UpdateForm } from "./update-form";
 import { TaskForm } from "./task-form";
 import { ApprovalForm } from "./approval-form";
 import { TaskRow } from "./task-row";
 import { ApprovalRow } from "./approval-row";
+import { FileRow } from "./file-row";
 
 export default async function AdminProjectDetailPage({
   params,
@@ -44,7 +48,7 @@ export default async function AdminProjectDetailPage({
   const project = await getProjectById(id);
   if (!project) notFound();
 
-  const [members, eligibleUsers, milestones, updates, tasks, files, approvals] = await Promise.all([
+  const [members, eligibleUsers, milestones, updates, tasks, files, approvals, invites] = await Promise.all([
     getProjectMembers(id),
     getEligibleMembers(id),
     getProjectMilestones(id),
@@ -52,7 +56,11 @@ export default async function AdminProjectDetailPage({
     getProjectTasks(id),
     getProjectFiles(id),
     getProjectApprovals(id),
+    getProjectInvites(id),
   ]);
+
+  const pendingInvites = invites.filter((i) => i.status === "pending");
+  const pendingApprovals = approvals.filter((a) => a.status === "pending");
 
   return (
     <div className="space-y-6">
@@ -99,33 +107,46 @@ export default async function AdminProjectDetailPage({
           <MembersSection projectId={id} members={members} />
         </PortalCard>
 
-        {/* Milestones */}
+        {/* Invites */}
         <PortalCard
-          title="Milestones"
-          icon={<Milestone size={14} />}
-          action={<MilestoneForm projectId={id} />}
+          title="Invites"
+          icon={<Send size={14} />}
+          action={pendingInvites.length > 0 ? (
+            <span className="rounded-full bg-gold/10 px-2 py-[2px] font-mono text-[10px] text-gold">
+              {pendingInvites.length} pending
+            </span>
+          ) : null}
         >
-          {milestones.length === 0 ? (
-            <EmptyState icon={<Milestone size={18} />} title="No milestones" description="Add milestones to track progress" />
-          ) : (
-            <div className="space-y-2">
-              {milestones.map((m) => (
-                <div key={m.id} className="flex items-center justify-between rounded-lg border border-white/[0.04] bg-white/[0.01] px-3 py-2.5">
-                  <div className="min-w-0 flex-1">
-                    <p className="truncate text-[12px] font-medium text-white">{m.title}</p>
-                    {m.due_date && (
-                      <p className="mt-0.5 font-mono text-[10px] text-dim">
-                        Due {new Date(m.due_date).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}
-                      </p>
-                    )}
-                  </div>
-                  <StatusBadge status={m.status} type="milestone" />
-                </div>
-              ))}
-            </div>
-          )}
+          <InvitesSection projectId={id} invites={invites} />
         </PortalCard>
       </div>
+
+      {/* Milestones */}
+      <PortalCard
+        title="Milestones"
+        icon={<Milestone size={14} />}
+        action={<MilestoneForm projectId={id} />}
+      >
+        {milestones.length === 0 ? (
+          <EmptyState icon={<Milestone size={18} />} title="No milestones" description="Add milestones to track progress" />
+        ) : (
+          <div className="grid gap-2 sm:grid-cols-2">
+            {milestones.map((m) => (
+              <div key={m.id} className="flex items-center justify-between rounded-lg border border-white/[0.04] bg-white/[0.01] px-3 py-2.5">
+                <div className="min-w-0 flex-1">
+                  <p className="truncate text-[12px] font-medium text-white">{m.title}</p>
+                  {m.due_date && (
+                    <p className="mt-0.5 font-mono text-[10px] text-dim">
+                      Due {new Date(m.due_date).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}
+                    </p>
+                  )}
+                </div>
+                <StatusBadge status={m.status} type="milestone" />
+              </div>
+            ))}
+          </div>
+        )}
+      </PortalCard>
 
       {/* Updates */}
       <PortalCard
@@ -181,7 +202,16 @@ export default async function AdminProjectDetailPage({
         <PortalCard
           title="Approvals"
           icon={<CheckSquare size={14} />}
-          action={<ApprovalForm projectId={id} />}
+          action={
+            <div className="flex items-center gap-2">
+              {pendingApprovals.length > 0 && (
+                <span className="rounded-full bg-gold/10 px-2 py-[2px] font-mono text-[10px] text-gold">
+                  {pendingApprovals.length} pending
+                </span>
+              )}
+              <ApprovalForm projectId={id} />
+            </div>
+          }
         >
           {approvals.length === 0 ? (
             <EmptyState icon={<CheckSquare size={18} />} title="No approvals" description="Create an approval request" />
@@ -196,23 +226,17 @@ export default async function AdminProjectDetailPage({
       </div>
 
       {/* Files */}
-      <PortalCard title="Files" icon={<FileText size={14} />} action={<FileUploadForm projectId={id} />}>
+      <PortalCard
+        title={`Files${files.length > 0 ? ` (${files.length})` : ""}`}
+        icon={<FileText size={14} />}
+        action={<FileUploadForm projectId={id} />}
+      >
         {files.length === 0 ? (
-          <EmptyState icon={<FileText size={18} />} title="No files" description="Files will appear here when added" />
+          <EmptyState icon={<FileText size={18} />} title="No files" description="Upload files for this project" />
         ) : (
           <div className="space-y-2">
             {files.map((f) => (
-              <div key={f.id} className="flex items-center gap-3 rounded-lg border border-white/[0.04] bg-white/[0.01] px-3 py-2.5">
-                <div className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-lg bg-white/[0.04] text-dim">
-                  <FileText size={13} />
-                </div>
-                <div className="min-w-0 flex-1">
-                  <p className="truncate text-[12px] font-medium text-white">{f.file_name}</p>
-                  <p className="font-mono text-[10px] text-dim">
-                    {f.file_type ?? "file"} · {new Date(f.created_at).toLocaleDateString("en-US", { month: "short", day: "numeric" })}
-                  </p>
-                </div>
-              </div>
+              <FileRow key={f.id} file={f} projectId={id} />
             ))}
           </div>
         )}

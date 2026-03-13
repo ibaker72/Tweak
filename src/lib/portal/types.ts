@@ -81,6 +81,7 @@ export interface ProjectFile {
   file_name: string;
   file_path: string;
   file_type: string | null;
+  file_size: number | null;
   uploaded_by: string | null;
   created_at: string;
 }
@@ -91,8 +92,25 @@ export interface ProjectApproval {
   title: string;
   description: string | null;
   status: ApprovalStatus;
+  response_note: string | null;
   approved_by: string | null;
   approved_at: string | null;
+  created_at: string;
+}
+
+export type InviteStatus = "pending" | "accepted" | "cancelled";
+
+export interface ProjectInvite {
+  id: string;
+  project_id: string;
+  email: string;
+  full_name: string | null;
+  member_role: MemberRole;
+  status: InviteStatus;
+  invited_by: string | null;
+  invited_at: string;
+  accepted_at: string | null;
+  last_sent_at: string;
   created_at: string;
 }
 

@@ -23,6 +23,13 @@ function getFileIcon(fileType: string | null) {
   return Icon ?? File;
 }
 
+function formatSize(bytes: number | null) {
+  if (!bytes) return null;
+  if (bytes < 1024) return `${bytes} B`;
+  if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(0)} KB`;
+  return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
+}
+
 interface FileListProps {
   files: ProjectFile[];
   compact?: boolean;
@@ -52,7 +59,8 @@ export function FileList({ files, compact = false }: FileListProps) {
               </p>
               <p className="font-mono text-[10px] text-dim">
                 {f.file_type?.toUpperCase()}
-                {" \u00b7 "}
+                {formatSize(f.file_size) && ` · ${formatSize(f.file_size)}`}
+                {" · "}
                 {new Date(f.created_at).toLocaleDateString("en-US", {
                   month: "short",
                   day: "numeric",

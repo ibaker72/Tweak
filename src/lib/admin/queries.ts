@@ -8,6 +8,7 @@ import type {
   ProjectTask,
   ProjectFile,
   ProjectApproval,
+  ProjectInvite,
 } from "@/lib/portal/types";
 
 /* ─── Dashboard Aggregates ─── */
@@ -254,4 +255,27 @@ export async function getAllApprovals(): Promise<(ProjectApproval & { project?: 
     .order("created_at", { ascending: false });
 
   return (data ?? []) as (ProjectApproval & { project?: Pick<Project, "id" | "name"> | null })[];
+}
+
+/* ─── Project Invites ─── */
+
+export async function getProjectInvites(projectId: string): Promise<(ProjectInvite & { inviter?: Pick<Profile, "id" | "full_name" | "email"> | null })[]> {
+  const supabase = await createClient();
+  const { data } = await supabase
+    .from("project_invites")
+    .select("*, inviter:profiles!project_invites_invited_by_fkey(id, full_name, email)")
+    .eq("project_id", projectId)
+    .order("created_at", { ascending: false });
+
+  return (data ?? []) as (ProjectInvite & { inviter?: Pick<Profile, "id" | "full_name" | "email"> | null })[];
+}
+
+export async function getAllInvites(): Promise<(ProjectInvite & { project?: Pick<Project, "id" | "name"> | null })[]> {
+  const supabase = await createClient();
+  const { data } = await supabase
+    .from("project_invites")
+    .select("*, project:projects!project_invites_project_id_fkey(id, name)")
+    .order("created_at", { ascending: false });
+
+  return (data ?? []) as (ProjectInvite & { project?: Pick<Project, "id" | "name"> | null })[];
 }
