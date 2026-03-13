@@ -38,6 +38,13 @@ export async function updateSession(request: NextRequest) {
     return NextResponse.redirect(url);
   }
 
+  // Redirect unauthenticated users away from admin routes
+  if (!user && pathname.startsWith("/admin")) {
+    const url = request.nextUrl.clone();
+    url.pathname = "/login";
+    return NextResponse.redirect(url);
+  }
+
   // Redirect authenticated users away from login
   if (user && pathname === "/login") {
     const url = request.nextUrl.clone();
