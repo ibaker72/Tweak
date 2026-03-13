@@ -64,7 +64,7 @@ export default async function ApprovalsPage({ searchParams }: PageProps) {
                 </span>
                 Awaiting Review ({pending.length})
               </h2>
-              <ApprovalList approvals={pending} />
+              <ApprovalList approvals={pending} interactive />
             </div>
           )}
 

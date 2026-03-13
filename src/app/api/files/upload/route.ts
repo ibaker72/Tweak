@@ -13,16 +13,14 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Not authenticated" }, { status: 401 });
   }
 
-  // Role check — admin/team only
+  // Check role
   const { data: profile } = await supabase
     .from("profiles")
     .select("role")
     .eq("id", user.id)
     .single();
 
-  if (!profile || (profile.role !== "admin" && profile.role !== "team")) {
-    return NextResponse.json({ error: "Access denied" }, { status: 403 });
-  }
+  const isAdmin = profile?.role === "admin" || profile?.role === "team";
 
   const formData = await request.formData();
   const file = formData.get("file") as File | null;
@@ -30,6 +28,20 @@ export async function POST(request: Request) {
 
   if (!file || !projectId) {
     return NextResponse.json({ error: "File and project_id required" }, { status: 400 });
+  }
+
+  // If not admin/team, verify project membership
+  if (!isAdmin) {
+    const { data: membership } = await supabase
+      .from("project_members")
+      .select("id")
+      .eq("project_id", projectId)
+      .eq("user_id", user.id)
+      .single();
+
+    if (!membership) {
+      return NextResponse.json({ error: "Access denied" }, { status: 403 });
+    }
   }
 
   if (file.size > MAX_SIZE) {
@@ -53,12 +65,13 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: uploadError.message }, { status: 500 });
   }
 
-  // Insert metadata row
+  // Insert metadata row with file_size
   const { error: dbError } = await supabase.from("project_files").insert({
     project_id: projectId,
     file_name: file.name,
     file_path: storagePath,
     file_type: ext || null,
+    file_size: file.size,
     uploaded_by: user.id,
   });
 

@@ -27,6 +27,7 @@ export default async function AdminFilesPage() {
           file_name: f.file_name,
           file_type: f.file_type,
           file_path: f.file_path,
+          file_size: f.file_size,
           created_at: f.created_at,
           project_id: f.project_id,
           projectName: (f.project as { id: string; name: string } | null)?.name ?? null,

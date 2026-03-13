@@ -22,7 +22,7 @@ export function InviteClientForm({ projectId }: { projectId: string }) {
           member_role: (fd.get("member_role") as "client" | "team") || "client",
         });
 
-        if (res.status === "attached" && res.message.includes("already")) {
+        if (res.status === "already_member") {
           setResult({ type: "info", message: res.message });
         } else {
           setResult({ type: "success", message: res.message });
