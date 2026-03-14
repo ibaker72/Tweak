@@ -4,5 +4,4 @@
 export const siteConfig = {
   /** Current availability message shown on the homepage */
   availability: "Accepting Projects",
-
 };
