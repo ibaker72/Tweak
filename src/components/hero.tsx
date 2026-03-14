@@ -91,7 +91,7 @@ function TypingCode() {
       clearTimeout(holdTimer);
       clearTimeout(nextSceneTimer);
     };
-  }, [sceneIndex, currentScene]);
+  }, [sceneIndex]);
 
   return (
     <div className="font-mono text-[11px] leading-[2] sm:text-[12px]">
