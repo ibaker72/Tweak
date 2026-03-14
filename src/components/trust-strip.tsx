@@ -15,9 +15,7 @@ const metrics = [
     num: 48,
     suffix: "hrs → 60sec",
     display: (
-      <>
-        <span className="text-white/30">48hrs</span>
-        <span className="mx-2 text-accent/40">&rarr;</span>
+      <>    
         <span className="text-white">60sec</span>
       </>
     ),
