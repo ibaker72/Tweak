@@ -105,7 +105,7 @@ export async function POST(req: NextRequest) {
 
     // 2) Send checklist email with Resend
     const resendResult = await resend.emails.send({
-      from: "Tweak & Build <hello@tweakandbuild.com>",
+      from: "Tweak & Build <portal@updates.tweakandbuild.com>",
       to: email,
       subject: "Your Website Launch Checklist",
       replyTo: "hello@tweakandbuild.com",
