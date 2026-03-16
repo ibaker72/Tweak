@@ -11,16 +11,16 @@ interface FindingItemProps {
 }
 
 const severityConfig = {
-  critical: { icon: AlertCircle, color: "text-red-400", bg: "bg-red-500/10", badge: "bg-red-500/20 text-red-400", label: "Critical" },
-  important: { icon: AlertTriangle, color: "text-amber-400", bg: "bg-amber-500/10", badge: "bg-amber-500/20 text-amber-400", label: "Important" },
-  minor: { icon: AlertTriangle, color: "text-gray-400", bg: "bg-white/[0.04]", badge: "bg-white/[0.08] text-gray-400", label: "Minor" },
+  critical: { icon: AlertCircle, color: "text-red-400", bg: "bg-red-500/10", badge: "bg-red-500/20 text-red-300 border border-red-500/20", label: "Critical" },
+  important: { icon: AlertTriangle, color: "text-amber-400", bg: "bg-amber-500/10", badge: "bg-amber-500/20 text-amber-300 border border-amber-500/20", label: "Important" },
+  minor: { icon: AlertTriangle, color: "text-gray-400", bg: "bg-white/[0.06]", badge: "bg-white/[0.08] text-gray-300 border border-white/[0.08]", label: "Minor" },
   positive: { icon: CheckCircle, color: "text-emerald-400", bg: "bg-emerald-500/10", badge: "", label: "" },
 };
 
 const effortConfig: Record<string, { color: string; label: string }> = {
-  quick: { color: "bg-emerald-500/20 text-emerald-400", label: "Quick fix" },
-  moderate: { color: "bg-amber-500/20 text-amber-400", label: "Moderate effort" },
-  strategic: { color: "bg-blue-500/20 text-blue-400", label: "Strategic" },
+  quick: { color: "bg-emerald-500/20 text-emerald-300 border border-emerald-500/20", label: "Quick fix" },
+  moderate: { color: "bg-amber-500/20 text-amber-300 border border-amber-500/20", label: "Moderate effort" },
+  strategic: { color: "bg-blue-500/20 text-blue-300 border border-blue-500/20", label: "Strategic" },
 };
 
 export function AuditFindingItem({ title, description, severity, effort, blurred, onClickBlurred }: FindingItemProps) {

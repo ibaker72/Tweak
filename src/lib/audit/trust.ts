@@ -38,8 +38,8 @@ export function analyzeTrust(input: AuditInput): CategoryResult {
   if (!hasTestimonials) {
     score -= 15;
     issues.push({
-      title: "No testimonials or reviews visible",
-      description: "Your page doesn't appear to show any customer testimonials or reviews. Real feedback from past clients is one of the strongest trust signals you can have — visitors want to know others have had a good experience before committing.",
+      title: "No testimonials or reviews detected",
+      description: "We didn't detect customer testimonials or reviews on the page we scanned. Real feedback from past clients is one of the strongest trust signals — visitors want to know others have had a good experience before reaching out.",
       severity: "important",
       effort: "moderate",
       category: cat,
@@ -70,8 +70,8 @@ export function analyzeTrust(input: AuditInput): CategoryResult {
   if (!hasAddress) {
     score -= 10;
     issues.push({
-      title: "No physical address found",
-      description: "Visitors can't find a physical address on your page. For many people, knowing where a business is located is an important trust factor — especially for local service providers.",
+      title: "No visible business address detected",
+      description: "We couldn't detect a visible business address on the page we scanned. Adding your city/state or business location can strengthen trust and local SEO.",
       severity: "important",
       effort: "quick",
       category: cat,
@@ -141,8 +141,8 @@ export function analyzeTrust(input: AuditInput): CategoryResult {
   if (socialLinks.length === 0) {
     score -= 5;
     issues.push({
-      title: "No social media links",
-      description: "Your page doesn't link to any social media profiles. Social presence helps visitors verify your business is active and legitimate, and gives them another way to engage with your brand.",
+      title: "No social media links detected",
+      description: "We didn't find links to social media profiles on this page. Social presence helps visitors verify your business is active and gives them another way to engage with your brand.",
       severity: "minor",
       effort: "quick",
       category: cat,
@@ -195,8 +195,8 @@ export function analyzeTrust(input: AuditInput): CategoryResult {
   if (!hasBadges) {
     score -= 5;
     issues.push({
-      title: "No trust badges or certifications",
-      description: "Your page doesn't display any certifications, awards, or trust badges. These visual cues can significantly boost visitor confidence — even simple ones like 'Satisfaction Guaranteed' or industry certifications help.",
+      title: "No trust badges or certifications detected",
+      description: "We didn't detect certifications, awards, or trust badges on this page. These visual cues can significantly boost visitor confidence — even simple ones like industry certifications or guarantees help.",
       severity: "minor",
       effort: "moderate",
       category: cat,

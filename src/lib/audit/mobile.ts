@@ -50,8 +50,8 @@ export function analyzeMobile(input: AuditInput): CategoryResult {
   if (!isResponsive) {
     score -= 20;
     issues.push({
-      title: "No responsive design indicators found",
-      description: "Your page doesn't appear to use responsive design techniques. This likely means it looks broken or awkward on phones and tablets — a problem since over half of all web traffic now comes from mobile devices.",
+      title: "No responsive design indicators detected",
+      description: "We didn't detect responsive design techniques in the page source we scanned. This may mean the page has layout issues on phones and tablets — worth verifying since over half of all web traffic comes from mobile devices.",
       severity: "critical",
       effort: "strategic",
       category: cat,

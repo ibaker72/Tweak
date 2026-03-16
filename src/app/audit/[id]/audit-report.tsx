@@ -8,6 +8,7 @@ import {
   Check,
   AlertCircle,
   Linkedin,
+  AlertTriangle,
 } from "lucide-react";
 import { AuditLoadingState } from "@/components/audit/loading-state";
 import { AuditScoreGauge } from "@/components/audit/score-gauge";
@@ -123,6 +124,10 @@ export function AuditReport({ id }: { id: string }) {
   const domain = result.domain || new URL(data.url).hostname;
   const scannedDate = result.scannedAt ? new Date(result.scannedAt).toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" }) : "";
 
+  // Issue counts for top-level context
+  const priorityIssueCount = issues.filter((i) => i.severity === "critical" || i.severity === "important").length;
+  const quickWinCount = quickWins.length;
+
   // Gated content logic
   const PUBLIC_SHOW = 3;
   const PUBLIC_QUICKWINS = 2;
@@ -132,6 +137,8 @@ export function AuditReport({ id }: { id: string }) {
 
   const visibleIssues = unlocked ? issues : issues.slice(0, PUBLIC_SHOW);
   const gatedIssues = !unlocked && issues.length > PUBLIC_SHOW ? issues.slice(PUBLIC_SHOW) : [];
+
+  const totalGated = (strengths.length - PUBLIC_SHOW) + (issues.length - PUBLIC_SHOW);
 
   // Quick wins grouped by effort
   const fastFixes = quickWins.filter((q) => q.effort === "quick");
@@ -151,6 +158,20 @@ export function AuditReport({ id }: { id: string }) {
           <div className="text-center lg:text-left">
             <p className="text-[13px] text-dim">Website Audit for:</p>
             <p className="mt-1 font-mono text-lg font-semibold text-white">{domain}</p>
+            {/* Issue count indicators */}
+            <div className="mt-3 flex flex-wrap items-center gap-2">
+              {priorityIssueCount > 0 && (
+                <span className="inline-flex items-center gap-1.5 rounded-full bg-amber-500/15 px-3 py-1 text-[11px] font-medium text-amber-400">
+                  <AlertTriangle size={11} />
+                  {priorityIssueCount} priority {priorityIssueCount === 1 ? "issue" : "issues"}
+                </span>
+              )}
+              {quickWinCount > 0 && (
+                <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-500/15 px-3 py-1 text-[11px] font-medium text-emerald-400">
+                  ⚡ {quickWinCount} quick {quickWinCount === 1 ? "win" : "wins"}
+                </span>
+              )}
+            </div>
           </div>
 
           <AuditScoreGauge score={result.overallScore} size={160} />
@@ -166,15 +187,19 @@ export function AuditReport({ id }: { id: string }) {
             </div>
           </div>
         </div>
-        {scannedDate && (
-          <div className="mt-6 flex flex-wrap items-center justify-center gap-x-4 gap-y-1 border-t border-white/[0.06] pt-5">
-            <span className="text-[11px] text-dim">Scanned {scannedDate}</span>
-            <span className="hidden h-3 w-px bg-white/[0.06] sm:inline-block" />
+        <div className="mt-6 border-t border-white/[0.06] pt-5">
+          <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-1">
+            {scannedDate && <span className="text-[11px] text-dim">Scanned {scannedDate}</span>}
+            {scannedDate && <span className="hidden h-3 w-px bg-white/[0.06] sm:inline-block" />}
             <span className="text-[11px] text-dim">
               Powered by <span className="text-accent/60">TweakAndBuild</span>
             </span>
           </div>
-        )}
+          {/* Methodology note */}
+          <p className="mt-3 text-center text-[11px] leading-[1.6] text-dim/70">
+            This audit is based on automated checks of your site&apos;s public structure, content signals, and technical fundamentals. Some findings may benefit from manual review.
+          </p>
+        </div>
       </motion.section>
 
       {/* B) Category Score Cards */}
@@ -228,7 +253,7 @@ export function AuditReport({ id }: { id: string }) {
                   onClick={() => setGateOpen(true)}
                   className="btn-v z-10"
                 >
-                  Unlock {strengths.length - PUBLIC_SHOW} more findings
+                  Unlock Full Report
                 </button>
               </div>
             </div>
@@ -268,7 +293,7 @@ export function AuditReport({ id }: { id: string }) {
                   onClick={() => setGateOpen(true)}
                   className="btn-v z-10"
                 >
-                  Unlock {issues.length - PUBLIC_SHOW} more findings
+                  Unlock Full Report
                 </button>
               </div>
             </div>
@@ -294,7 +319,7 @@ export function AuditReport({ id }: { id: string }) {
               ))}
               {!unlocked && fastFixes.length > PUBLIC_QUICKWINS && (
                 <button onClick={() => setGateOpen(true)} className="text-[13px] text-accent/70 hover:text-accent transition-colors">
-                  + {fastFixes.length - PUBLIC_QUICKWINS} more — unlock with email
+                  + {fastFixes.length - PUBLIC_QUICKWINS} more — unlock full report
                 </button>
               )}
             </div>
@@ -313,7 +338,7 @@ export function AuditReport({ id }: { id: string }) {
               ))}
               {!unlocked && highImpact.length > PUBLIC_QUICKWINS && (
                 <button onClick={() => setGateOpen(true)} className="text-[13px] text-accent/70 hover:text-accent transition-colors">
-                  + {highImpact.length - PUBLIC_QUICKWINS} more — unlock with email
+                  + {highImpact.length - PUBLIC_QUICKWINS} more — unlock full report
                 </button>
               )}
             </div>
@@ -332,7 +357,7 @@ export function AuditReport({ id }: { id: string }) {
               ))}
               {!unlocked && strategic.length > PUBLIC_QUICKWINS && (
                 <button onClick={() => setGateOpen(true)} className="text-[13px] text-accent/70 hover:text-accent transition-colors">
-                  + {strategic.length - PUBLIC_QUICKWINS} more — unlock with email
+                  + {strategic.length - PUBLIC_QUICKWINS} more — unlock full report
                 </button>
               )}
             </div>

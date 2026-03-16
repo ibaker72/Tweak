@@ -179,8 +179,8 @@ export function analyzeSEO(input: AuditInput): CategoryResult {
     if (altPercent < 50) {
       score -= 10;
       issues.push({
-        title: "Most images lack descriptive text",
-        description: `Only ${altPercent}% of your images have alt text. Search engines can't 'see' images — they rely on alt text to understand them. Missing alt text means missed keyword opportunities and poor accessibility.`,
+        title: "Most images appear to lack descriptive text",
+        description: `Only ${altPercent}% of your images have alt text based on our scan. Search engines rely on alt text to understand images — missing it means missed keyword opportunities and reduced accessibility.`,
         severity: "important",
         effort: "moderate",
         category: cat,
@@ -200,8 +200,8 @@ export function analyzeSEO(input: AuditInput): CategoryResult {
   if (schema.length === 0) {
     score -= 10;
     issues.push({
-      title: "No structured data found",
-      description: "Your page doesn't include Schema.org structured data. Adding it helps search engines understand your business type, services, and reviews, potentially earning you rich snippets that stand out in search results.",
+      title: "No structured data detected",
+      description: "We didn't detect Schema.org markup on this page. Adding basic structured data can help search engines understand your business and improve search visibility with rich snippets.",
       severity: "important",
       effort: "moderate",
       category: cat,

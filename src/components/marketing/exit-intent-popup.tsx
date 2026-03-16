@@ -1,9 +1,11 @@
 "use client";
 import { useState, useEffect, useCallback } from "react";
-import { X, Send, Check, Loader2, FileCheck } from "lucide-react";
+import { X, Send, Check, Loader2, FileCheck, BarChart3, ArrowRight } from "lucide-react";
+import Link from "next/link";
 
 export function ExitIntentPopup() {
   const [visible, setVisible] = useState(false);
+  const [mode, setMode] = useState<"choice" | "checklist">("choice");
   const [email, setEmail] = useState("");
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
 
@@ -120,6 +122,56 @@ export function ExitIntentPopup() {
                 Check your inbox for the checklist.
               </p>
             </div>
+          ) : mode === "choice" ? (
+            <>
+              <h3 className="font-display text-[20px] leading-tight font-bold text-white sm:text-[22px]">
+                Want a faster way to improve your website?
+              </h3>
+              <p className="mt-2 text-[14px] text-body">
+                Choose what fits best:
+              </p>
+
+              <div className="mt-5 space-y-3">
+                {/* Option 1: Run audit */}
+                <Link
+                  href="/audit"
+                  onClick={dismiss}
+                  className="group flex items-start gap-4 rounded-xl border border-white/[0.08] bg-white/[0.02] p-4 transition-all hover:border-accent/20 hover:bg-accent/[0.03]"
+                >
+                  <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl bg-accent/10">
+                    <BarChart3 size={18} className="text-accent" />
+                  </div>
+                  <div className="flex-1">
+                    <p className="text-[15px] font-semibold text-white">Run Free Audit</p>
+                    <p className="mt-0.5 text-[12px] leading-[1.6] text-body">
+                      Get scores, findings, and quick wins for your site in minutes.
+                    </p>
+                  </div>
+                  <ArrowRight size={14} className="mt-3 flex-shrink-0 text-dim transition-colors group-hover:text-accent" />
+                </Link>
+
+                {/* Option 2: Get checklist */}
+                <button
+                  onClick={() => setMode("checklist")}
+                  className="group flex w-full items-start gap-4 rounded-xl border border-white/[0.08] bg-white/[0.02] p-4 text-left transition-all hover:border-accent/20 hover:bg-accent/[0.03]"
+                >
+                  <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl bg-accent/10">
+                    <FileCheck size={18} className="text-accent" />
+                  </div>
+                  <div className="flex-1">
+                    <p className="text-[15px] font-semibold text-white">Get the Website Checklist</p>
+                    <p className="mt-0.5 text-[12px] leading-[1.6] text-body">
+                      27 things to verify before pushing live — SEO, performance, and more.
+                    </p>
+                  </div>
+                  <ArrowRight size={14} className="mt-3 flex-shrink-0 text-dim transition-colors group-hover:text-accent" />
+                </button>
+              </div>
+
+              <p className="mt-4 text-center text-[11px] text-dim">
+                Both are free. No spam, ever.
+              </p>
+            </>
           ) : (
             <>
               <div className="mb-6 flex items-center gap-3">
@@ -131,16 +183,12 @@ export function ExitIntentPopup() {
                     Free Guide
                   </p>
                   <h3 className="font-display text-[18px] font-bold text-white">
-                    Before you go
+                    Website Launch Checklist
                   </h3>
                 </div>
               </div>
 
-              <h4 className="font-display text-[20px] leading-tight font-bold text-white sm:text-[22px]">
-                Get our Website Launch Checklist
-              </h4>
-
-              <p className="mt-2 text-[13px] leading-[1.7] text-body sm:text-[14px]">
+              <p className="text-[13px] leading-[1.7] text-body sm:text-[14px]">
                 27 things to verify before pushing live. SEO, performance,
                 security, accessibility — everything in one checklist.
               </p>
@@ -176,9 +224,12 @@ export function ExitIntentPopup() {
                 </p>
               )}
 
-              <p className="mt-3 text-center text-[11px] text-dim">
-                No spam, ever. Unsubscribe anytime.
-              </p>
+              <button
+                onClick={() => setMode("choice")}
+                className="mt-3 block w-full text-center text-[11px] text-dim hover:text-white transition-colors"
+              >
+                &larr; Back to options
+              </button>
             </>
           )}
         </div>
