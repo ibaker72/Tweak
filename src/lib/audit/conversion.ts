@@ -171,8 +171,8 @@ export function analyzeConversion(input: AuditInput): CategoryResult {
   if (!hasProof) {
     score -= 10;
     issues.push({
-      title: "No visible social proof",
-      description: "Your page doesn't appear to show testimonials, reviews, or client mentions. Social proof is one of the most powerful conversion tools — visitors are far more likely to take action when they see others have had a positive experience.",
+      title: "No visible social proof detected",
+      description: "We didn't detect testimonials, reviews, or client mentions on the page we scanned. Social proof is one of the most powerful conversion tools — visitors are far more likely to take action when they see others have had a positive experience.",
       severity: "important",
       effort: "moderate",
       category: cat,

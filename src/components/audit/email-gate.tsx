@@ -85,10 +85,10 @@ export function AuditEmailGate({ open, onClose, auditId, onSuccess }: AuditEmail
             </div>
 
             <h3 className="font-display text-xl font-bold text-white">
-              Unlock Your Full Audit Report
+              Unlock Full Report
             </h3>
             <p className="mt-2 text-[14px] leading-[1.7] text-body">
-              Enter your email to see all findings, the full fix roadmap, and every recommendation.
+              See all findings, quick wins, and your full priority roadmap.
             </p>
 
             <form onSubmit={submit} className="mt-6 space-y-3">

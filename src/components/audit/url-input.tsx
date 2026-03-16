@@ -98,7 +98,7 @@ export function AuditURLInput() {
       )}
 
       <p className="mt-4 text-center text-[12px] text-dim">
-        We scan your homepage in real time. No login needed.
+        Free instant audit. No signup required.
       </p>
     </form>
   );

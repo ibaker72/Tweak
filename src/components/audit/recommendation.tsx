@@ -61,8 +61,7 @@ export function AuditRecommendation({ recommendations, biggestOpportunity }: Aud
 
         <div className="mt-8 rounded-xl bg-accent/[0.06] px-5 py-4">
           <p className="text-[13px] leading-[1.7] text-body">
-            <span className="font-semibold text-white">Estimated Impact:</span>{" "}
-            Better conversion readiness, stronger search visibility, higher trust with visitors.
+            These are the first changes we&apos;d prioritize to improve trust, search visibility, and conversion readiness.
           </p>
         </div>
       </motion.section>

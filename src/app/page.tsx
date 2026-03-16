@@ -9,6 +9,7 @@ import { Pricing } from "@/components/pricing";
 import { FinalCTA } from "@/components/final-cta";
 import { FAQ } from "@/components/footer";
 import { HomepageNewsletter } from "@/components/marketing/homepage-newsletter";
+import { HomepageAuditCTA } from "@/components/marketing/homepage-audit-cta";
 import { PartnerMention } from "@/components/partner-mention";
 import { OrganizationJsonLd, FAQJsonLd } from "@/components/seo/json-ld";
 import { faqs } from "@/lib/data";
@@ -25,6 +26,7 @@ export default function Home() {
       <TechShowcase />
       <ProcessNew />
       <TestimonialsNew />
+      <HomepageAuditCTA />
       <HomepageNewsletter />
       <Pricing />
       <FAQ />

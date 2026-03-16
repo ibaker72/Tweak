@@ -1,4 +1,4 @@
-import type { AuditInput, AuditResult, FindingItem } from "./types";
+import type { AuditInput, AuditResult, CategoryResult, FindingItem } from "./types";
 import { analyzePerformance } from "./performance";
 import { analyzeSEO } from "./seo";
 import { analyzeConversion } from "./conversion";
@@ -16,6 +16,43 @@ const WEIGHTS = {
   mobile: 0.15,
   accessibility: 0.1,
 };
+
+/**
+ * Apply ceiling logic so scores feel more calibrated and believable.
+ * Target distribution: 50-65 average, 66-79 solid, 80-89 strong, 90+ rare.
+ */
+function calibrateScore(cat: CategoryResult): number {
+  const criticalCount = cat.issues.filter((i) => i.severity === "critical").length;
+  const importantCount = cat.issues.filter((i) => i.severity === "important").length;
+  const minorCount = cat.issues.filter((i) => i.severity === "minor").length;
+  const totalIssues = cat.issues.length;
+
+  let score = cat.score;
+
+  // If any critical issue exists, cap around high 70s
+  if (criticalCount > 0) {
+    score = Math.min(score, 78);
+    // Multiple critical issues push it lower
+    if (criticalCount >= 2) score = Math.min(score, 68);
+  }
+
+  // If multiple important issues, soft cap around 88
+  if (importantCount >= 2) {
+    score = Math.min(score, 88);
+  }
+
+  // If any issue at all, soft cap at 95 — perfect scores should be extremely rare
+  if (totalIssues > 0) {
+    score = Math.min(score, 95);
+  }
+
+  // Additional calibration: many minor issues still indicate room to improve
+  if (minorCount >= 3) {
+    score = Math.min(score, 90);
+  }
+
+  return Math.max(0, score);
+}
 
 export function runAudit(input: AuditInput): AuditResult {
   const url = input.url;
@@ -36,7 +73,12 @@ export function runAudit(input: AuditInput): AuditResult {
 
   const categories = { performance, seo, conversion, trust, mobile, accessibility };
 
-  // Generate summaries
+  // Apply score calibration so results feel more grounded
+  for (const cat of Object.values(categories)) {
+    cat.score = calibrateScore(cat);
+  }
+
+  // Generate summaries (after calibration so tier is correct)
   for (const [key, cat] of Object.entries(categories)) {
     cat.summary = generateSummary(key, cat);
   }
