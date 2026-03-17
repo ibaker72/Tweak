@@ -3,7 +3,17 @@ import type { AuditInput, CategoryResult, FindingItem } from "./types";
 
 const CTA_WORDS = ["get", "start", "book", "call", "free", "schedule", "contact", "try", "sign up", "request", "claim", "download", "join", "subscribe", "buy", "order", "hire", "quote"];
 
-export function analyzeConversion(input: AuditInput): CategoryResult {
+/**
+ * Optional cross-category context passed from the aggregate layer
+ * to ground conversion scores against broader site quality.
+ */
+export interface ConversionContext {
+  trustScore?: number;
+  seoScore?: number;
+  totalPriorityIssues?: number; // critical + important issues across all categories
+}
+
+export function analyzeConversion(input: AuditInput, ctx?: ConversionContext): CategoryResult {
   const $ = cheerio.load(input.html);
   const strengths: FindingItem[] = [];
   const issues: FindingItem[] = [];
@@ -207,6 +217,43 @@ export function analyzeConversion(input: AuditInput): CategoryResult {
   }
 
   score = Math.max(0, Math.min(100, score));
+
+  // ── Cross-category guardrails ──
+  // Conversion shouldn't feel elite when the broader site clearly isn't.
+  if (ctx) {
+    const hasOwnCriticalOrImportant = issues.some(
+      (i) => i.severity === "critical" || i.severity === "important"
+    );
+
+    // If conversion itself has critical/important issues, cap at 88
+    if (hasOwnCriticalOrImportant && score > 88) {
+      score = 88;
+    }
+
+    // If trust or SEO is materially weak (<60), cap conversion at 85
+    if (
+      ((ctx.trustScore !== undefined && ctx.trustScore < 60) ||
+        (ctx.seoScore !== undefined && ctx.seoScore < 60)) &&
+      score > 85
+    ) {
+      score = 85;
+    }
+
+    // If 3+ priority issues site-wide, cap conversion at 88
+    if ((ctx.totalPriorityIssues ?? 0) >= 3 && score > 88) {
+      score = 88;
+    }
+
+    // 95+ should be very rare — require zero conversion issues AND strong trust+SEO
+    if (score >= 95) {
+      const trustOk = (ctx.trustScore ?? 100) >= 75;
+      const seoOk = (ctx.seoScore ?? 100) >= 75;
+      const fewSiteIssues = (ctx.totalPriorityIssues ?? 0) < 2;
+      if (!(trustOk && seoOk && fewSiteIssues && issues.length === 0)) {
+        score = Math.min(score, 92);
+      }
+    }
+  }
 
   return {
     score,

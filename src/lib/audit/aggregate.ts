@@ -1,7 +1,7 @@
 import type { AuditInput, AuditResult, CategoryResult, FindingItem } from "./types";
 import { analyzePerformance } from "./performance";
 import { analyzeSEO } from "./seo";
-import { analyzeConversion } from "./conversion";
+import { analyzeConversion, type ConversionContext } from "./conversion";
 import { analyzeTrust } from "./trust";
 import { analyzeMobile } from "./mobile";
 import { analyzeAccessibility } from "./accessibility";
@@ -63,13 +63,27 @@ export function runAudit(input: AuditInput): AuditResult {
     domain = url;
   }
 
-  // Run all analyzers
+  // Run non-conversion analyzers first so we can feed context into conversion
   const performance = analyzePerformance(input);
   const seo = analyzeSEO(input);
-  const conversion = analyzeConversion(input);
   const trust = analyzeTrust(input);
   const mobile = analyzeMobile(input);
   const accessibility = analyzeAccessibility(input);
+
+  // Count priority issues (critical + important) across other categories
+  const otherCats = [performance, seo, trust, mobile, accessibility];
+  const totalPriorityIssues = otherCats.reduce(
+    (sum, c) => sum + c.issues.filter((i) => i.severity === "critical" || i.severity === "important").length,
+    0
+  );
+
+  // Run conversion with cross-category context for grounded scoring
+  const conversionCtx: ConversionContext = {
+    trustScore: trust.score,
+    seoScore: seo.score,
+    totalPriorityIssues,
+  };
+  const conversion = analyzeConversion(input, conversionCtx);
 
   const categories = { performance, seo, conversion, trust, mobile, accessibility };
 

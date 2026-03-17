@@ -24,7 +24,7 @@
 }
 
 @layer base {
-  html { scroll-behavior: smooth; scroll-padding-top: 80px; }
+  html { scroll-behavior: smooth; scroll-padding-top: 88px; }
   body { @apply bg-surface-0 font-body text-body antialiased; overflow-x: hidden; }
   ::selection { background: rgba(var(--brand-accent-rgb), 0.18); color: #fff; }
   ::-webkit-scrollbar { width: 4px; height: 4px; }
@@ -40,8 +40,8 @@
   .glass-nav {
     backdrop-filter: blur(24px) saturate(1.5);
     -webkit-backdrop-filter: blur(24px) saturate(1.5);
-    background: rgba(3,3,5,0.82);
-    box-shadow: 0 1px 0 rgba(255,255,255,0.04) inset, 0 8px 40px rgba(0,0,0,0.4);
+    background: rgba(3,3,5,0.92);
+    box-shadow: 0 1px 0 rgba(255,255,255,0.04) inset, 0 8px 40px rgba(0,0,0,0.5);
   }
 
   /* ─── Typography ─── */

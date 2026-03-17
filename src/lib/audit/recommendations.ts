@@ -32,6 +32,54 @@ function rewriteAsRecommendation(issue: FindingItem): string {
   return rewriteMap[issue.title] || `Address: ${issue.title.toLowerCase()} to improve ${issue.category} performance`;
 }
 
+// ── Theme clustering ──
+// Issues that share a root theme get collapsed into one stronger recommendation.
+// Each cluster maps keyword patterns → a single curated recommendation string.
+const themeClusters: { keywords: string[]; recommendation: string }[] = [
+  {
+    keywords: ["alt text", "alternative text", "image alt", "descriptive image"],
+    recommendation: "Add descriptive alt text to all images — this single fix improves both SEO indexing and accessibility",
+  },
+  {
+    keywords: ["lazy loading", "image dimensions", "images missing explicit dimensions", "images may not scale", "responsive image"],
+    recommendation: "Optimize image loading and rendering with lazy loading, explicit dimensions, and responsive sizing",
+  },
+  {
+    keywords: ["meta description", "page title", "structured data", "schema", "metadata"],
+    recommendation: "Strengthen search visibility fundamentals — craft compelling title/description tags and add structured data",
+  },
+  {
+    keywords: ["testimonial", "social proof", "reviews", "client"],
+    recommendation: "Add client testimonials and social proof to build visitor confidence at key decision points",
+  },
+  {
+    keywords: ["mobile viewport", "responsive design", "fixed-width", "small text"],
+    recommendation: "Fix mobile experience gaps so your site works flawlessly on every screen size",
+  },
+  {
+    keywords: ["compression", "page size", "external scripts", "script"],
+    recommendation: "Reduce page weight by enabling compression, consolidating scripts, and trimming unnecessary assets",
+  },
+  {
+    keywords: ["contact method", "phone number", "email", "contact form", "address"],
+    recommendation: "Make it effortless for prospects to reach you — add prominent contact options and business details",
+  },
+  {
+    keywords: ["privacy policy", "trust badge", "certification", "about page"],
+    recommendation: "Strengthen trust signals with a privacy policy link, about page, and relevant credentials",
+  },
+];
+
+function getThemeKey(issue: FindingItem): string | null {
+  const text = (issue.title + " " + issue.description).toLowerCase();
+  for (let i = 0; i < themeClusters.length; i++) {
+    if (themeClusters[i].keywords.some((kw) => text.includes(kw))) {
+      return String(i);
+    }
+  }
+  return null;
+}
+
 const categoryLabels: Record<string, string> = {
   performance: "site speed and performance",
   seo: "search engine visibility",
@@ -77,16 +125,33 @@ export function generateRecommendations(result: AuditResult): {
     return b.weight - a.weight;
   });
 
-  // Pick top 3-5 for recommendations
-  const seen = new Set<string>();
+  // Pick top 3-5 recommendations, clustering related issues into one item
+  const seenThemes = new Set<string>();
+  const seenTexts = new Set<string>();
   const recommendations: string[] = [];
+
   for (const issue of allIssues) {
-    const rec = rewriteAsRecommendation(issue);
-    if (!seen.has(rec)) {
-      seen.add(rec);
-      recommendations.push(rec);
-    }
     if (recommendations.length >= 5) break;
+
+    const themeKey = getThemeKey(issue);
+
+    if (themeKey !== null) {
+      // This issue belongs to a theme cluster — use the cluster recommendation
+      if (seenThemes.has(themeKey)) continue; // already represented
+      seenThemes.add(themeKey);
+      const clusterRec = themeClusters[Number(themeKey)].recommendation;
+      if (!seenTexts.has(clusterRec)) {
+        seenTexts.add(clusterRec);
+        recommendations.push(clusterRec);
+      }
+    } else {
+      // Standalone issue — use the rewrite map
+      const rec = rewriteAsRecommendation(issue);
+      if (!seenTexts.has(rec)) {
+        seenTexts.add(rec);
+        recommendations.push(rec);
+      }
+    }
   }
 
   // Biggest opportunity = lowest-scoring category
