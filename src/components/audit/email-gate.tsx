@@ -34,24 +34,26 @@ export function AuditEmailGate({ open, onClose, auditId, onSuccess }: AuditEmail
           email,
           auditRequestId: auditId,
           businessName: businessName || undefined,
-          source: "audit_gate",
+          source: "audit_unlock",
         }),
       });
 
       if (res.ok) {
-        setStatus("success");
+        // Only unlock after confirmed backend save
         localStorage.setItem(`audit_unlocked_${auditId}`, "true");
+        setStatus("success");
         setTimeout(() => {
           onSuccess();
           onClose();
-        }, 1000);
+        }, 1500);
       } else {
+        const data = await res.json().catch(() => ({}));
         setStatus("error");
-        setErrorMsg("Something went wrong. Please try again.");
+        setErrorMsg(data?.error || "Something went wrong. Please try again.");
       }
     } catch {
       setStatus("error");
-      setErrorMsg("Something went wrong. Please try again.");
+      setErrorMsg("Connection failed. Please check your internet and try again.");
     }
   };
 
@@ -121,9 +123,15 @@ export function AuditEmailGate({ open, onClose, auditId, onSuccess }: AuditEmail
               </button>
             </form>
 
-            <p className="mt-4 text-center text-[11px] text-dim">
-              No spam. Just your report and one follow-up.
-            </p>
+            {status === "success" ? (
+              <p className="mt-4 text-center text-[12px] text-accent/70">
+                Full report unlocked. We&apos;ve noted your details for follow-up.
+              </p>
+            ) : (
+              <p className="mt-4 text-center text-[11px] text-dim">
+                No spam. Just your report and one follow-up.
+              </p>
+            )}
           </motion.div>
         </motion.div>
       )}

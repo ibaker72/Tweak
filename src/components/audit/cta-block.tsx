@@ -74,7 +74,7 @@ function FixPlanDialog({ open, onClose, auditId }: { open: boolean; onClose: () 
           businessName: name || undefined,
           message: message || undefined,
           auditRequestId: auditId || undefined,
-          source: "fix_plan_request",
+          source: "audit_fix_plan",
         }),
       });
 
