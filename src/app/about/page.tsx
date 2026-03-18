@@ -108,7 +108,7 @@ export default function AboutPage() {
             width={220}
             height={340}
             priority
-            className="h-auto w-full object-cover md:w-[140px]"
+            className="h-auto w-[105px] object-cover sm:w-[120px] md:w-[140px]"
           />
         </div>
       </div>
