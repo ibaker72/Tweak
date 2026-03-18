@@ -120,7 +120,7 @@ export default function AboutPage() {
                     Iyad Baker
                   </h3>
 
-                  <p className="mt-3 max-w-[280px] font-mono text-[10px] uppercase tracking-[0.18em] text-dim sm:text-[11px] md:max-w-none">
+                  <p className="mt-3 font-mono text-[10px] uppercase tracking-[0.18em] text-dim sm:text-[11px] md:max-w-none">
                     Founder & Lead Product Engineer
                   </p>
 
