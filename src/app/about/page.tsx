@@ -101,7 +101,7 @@ export default function AboutPage() {
             <div className="card mt-20 overflow-hidden rounded-[24px] p-5 sm:p-7 md:p-8">
               <div className="flex flex-col items-start gap-5 sm:gap-6 md:flex-row md:items-center md:gap-8">
                 <div className="w-full md:w-auto">
-                  <div className="mx-auto w-[132px] sm:w-[150px] md:mx-0 md:w-[160px]">
+                  <div className="mx-auto w-[124px] sm:w-[145px] md:mx-0 md:w-[160px]">
                     <div className="overflow-hidden rounded-[20px] border border-white/10 shadow-[0_12px_32px_rgba(0,0,0,0.35)]">
                       <Image
                         src="/iyad-baker.webp"
@@ -115,7 +115,7 @@ export default function AboutPage() {
                   </div>
                 </div>
 
-                <div className="w-full min-w-0 text-left">
+                <div className="w-full min-w-0 text-center md:text-left">
                   <h3 className="font-display text-[34px] font-bold leading-[0.95] tracking-[-0.04em] text-white sm:text-[38px] md:text-[22px] md:leading-tight">
                     Iyad Baker
                   </h3>
