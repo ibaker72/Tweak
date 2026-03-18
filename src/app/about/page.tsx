@@ -98,31 +98,33 @@ export default function AboutPage() {
           </div>
 
           <Reveal delay={0.25}>
-            <div className="card mt-20 rounded-2xl p-5 sm:p-7 md:p-8">
-              <div className="grid grid-cols-[96px_minmax(0,1fr)] gap-4 sm:grid-cols-[112px_minmax(0,1fr)] sm:gap-5 md:grid-cols-[140px_minmax(0,1fr)] md:gap-7">
-                <div className="self-start">
-                  <div className="overflow-hidden rounded-2xl border border-white/10 shadow-[0_12px_32px_rgba(0,0,0,0.35)]">
-                    <Image
-                      src="/iyad-baker.webp"
-                      alt="Iyad Baker, Founder and Lead Product Engineer at Tweak & Build"
-                      width={220}
-                      height={340}
-                      priority
-                      className="h-auto w-full object-cover"
-                    />
+            <div className="card mt-20 overflow-hidden rounded-[24px] p-5 sm:p-7 md:p-8">
+              <div className="flex flex-col items-start gap-5 sm:gap-6 md:flex-row md:items-center md:gap-8">
+                <div className="w-full md:w-auto">
+                  <div className="mx-auto w-[132px] sm:w-[150px] md:mx-0 md:w-[160px]">
+                    <div className="overflow-hidden rounded-[20px] border border-white/10 shadow-[0_12px_32px_rgba(0,0,0,0.35)]">
+                      <Image
+                        src="/iyad-baker.webp"
+                        alt="Iyad Baker, Founder and Lead Product Engineer at Tweak & Build"
+                        width={220}
+                        height={340}
+                        priority
+                        className="h-auto w-full object-cover"
+                      />
+                    </div>
                   </div>
                 </div>
 
-                <div className="min-w-0 self-center">
-                  <h3 className="font-display text-[30px] font-bold leading-none tracking-[-0.03em] text-white sm:text-[34px] md:text-[20px] md:leading-tight">
+                <div className="w-full min-w-0 text-left">
+                  <h3 className="font-display text-[34px] font-bold leading-[0.95] tracking-[-0.04em] text-white sm:text-[38px] md:text-[22px] md:leading-tight">
                     Iyad Baker
                   </h3>
 
-                  <p className="mt-2 font-mono text-[10px] uppercase tracking-[0.16em] text-dim sm:text-[11px] md:text-[11px]">
+                  <p className="mt-3 max-w-[280px] font-mono text-[10px] uppercase tracking-[0.18em] text-dim sm:text-[11px] md:max-w-none">
                     Founder & Lead Product Engineer
                   </p>
 
-                  <p className="mt-4 text-[15px] leading-[1.9] text-body sm:text-[15px] md:mt-5 md:text-[15px] md:leading-[1.8]">
+                  <p className="mt-5 max-w-none text-[16px] leading-[1.8] text-body sm:text-[17px] md:text-[15px] md:leading-[1.85]">
                     I build high-performance websites, internal tools, and
                     growth systems for businesses that need more than just
                     design. My work combines product thinking, engineering, and
