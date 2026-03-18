@@ -98,45 +98,45 @@ export default function AboutPage() {
           </div>
 
           <Reveal delay={0.25}>
-  <div className="card mt-20 overflow-hidden rounded-2xl p-7 sm:p-8">
-    <div className="flex flex-col gap-6 sm:gap-7 md:flex-row md:items-center">
-      <div className="flex-shrink-0 self-start">
-        <div className="overflow-hidden rounded-2xl border border-white/10 shadow-[0_12px_32px_rgba(0,0,0,0.35)]">
-          <Image
-            src="/iyad-baker.webp"
-            alt="Iyad Baker, Founder and Lead Product Engineer at Tweak & Build"
-            width={220}
-            height={340}
-            priority
-            className="h-auto w-[105px] object-cover sm:w-[120px] md:w-[140px]"
-          />
-        </div>
-      </div>
+            <div className="card mt-20 rounded-2xl p-5 sm:p-7 md:p-8">
+              <div className="grid grid-cols-[96px_minmax(0,1fr)] gap-4 sm:grid-cols-[112px_minmax(0,1fr)] sm:gap-5 md:grid-cols-[140px_minmax(0,1fr)] md:gap-7">
+                <div className="self-start">
+                  <div className="overflow-hidden rounded-2xl border border-white/10 shadow-[0_12px_32px_rgba(0,0,0,0.35)]">
+                    <Image
+                      src="/iyad-baker.webp"
+                      alt="Iyad Baker, Founder and Lead Product Engineer at Tweak & Build"
+                      width={220}
+                      height={340}
+                      priority
+                      className="h-auto w-full object-cover"
+                    />
+                  </div>
+                </div>
 
-      <div className="min-w-0">
-        <div>
-          <h3 className="font-display text-[20px] font-bold text-white">
-            Iyad Baker
-          </h3>
-          <p className="mt-1 font-mono text-[11px] text-dim">
-            Founder & Lead Product Engineer
-          </p>
-        </div>
+                <div className="min-w-0 self-center">
+                  <h3 className="font-display text-[30px] font-bold leading-none tracking-[-0.03em] text-white sm:text-[34px] md:text-[20px] md:leading-tight">
+                    Iyad Baker
+                  </h3>
 
-        <p className="mt-5 text-[14px] leading-[1.8] text-body sm:text-[15px]">
-          I build high-performance websites, internal tools, and growth systems
-          for businesses that need more than just design. My work combines
-          product thinking, engineering, and conversion-focused execution — from
-          marketing sites to custom SaaS platforms.
-        </p>
-      </div>
-    </div>
-  </div>
-</Reveal>
+                  <p className="mt-2 font-mono text-[10px] uppercase tracking-[0.16em] text-dim sm:text-[11px] md:text-[11px]">
+                    Founder & Lead Product Engineer
+                  </p>
+
+                  <p className="mt-4 text-[15px] leading-[1.9] text-body sm:text-[15px] md:mt-5 md:text-[15px] md:leading-[1.8]">
+                    I build high-performance websites, internal tools, and
+                    growth systems for businesses that need more than just
+                    design. My work combines product thinking, engineering, and
+                    conversion-focused execution — from marketing sites to
+                    custom SaaS platforms.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </Reveal>
 
           <Reveal delay={0.3}>
             <div
-              className="mt-16 rounded-2xl border border-white/[0.06] bg-white/[0.015] p-10 text-center"
+              className="mt-16 rounded-2xl border border-white/[0.06] bg-white/[0.015] p-8 text-center sm:p-10"
               style={{ boxShadow: "0 1px 0 rgba(255,255,255,0.02) inset" }}
             >
               <h3 className="font-display text-[20px] font-bold tracking-[-0.02em] text-white">
