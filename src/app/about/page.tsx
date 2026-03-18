@@ -100,7 +100,7 @@ export default function AboutPage() {
           <Reveal delay={0.25}>
   <div className="card mt-20 overflow-hidden rounded-2xl p-7 sm:p-8">
     <div className="flex flex-col gap-6 sm:gap-7 md:flex-row md:items-center">
-      <div className="flex-shrink-0">
+      <div className="flex-shrink-0 self-start">
         <div className="overflow-hidden rounded-2xl border border-white/10 shadow-[0_12px_32px_rgba(0,0,0,0.35)]">
           <Image
             src="/iyad-baker.webp"
