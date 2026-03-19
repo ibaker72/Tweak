@@ -1,10 +1,18 @@
 "use client";
 
+import dynamic from "next/dynamic";
 import { usePathname } from "next/navigation";
 import { Navbar } from "@/components/navbar";
 import { Footer, BackToTop } from "@/components/footer";
-import { ChatWidget } from "@/components/chat-widget";
-import { ExitIntentPopup } from "@/components/marketing/exit-intent-popup";
+
+const ChatWidget = dynamic(
+  () => import("@/components/chat-widget").then((m) => m.ChatWidget),
+  { ssr: false }
+);
+const ExitIntentPopup = dynamic(
+  () => import("@/components/marketing/exit-intent-popup").then((m) => m.ExitIntentPopup),
+  { ssr: false }
+);
 
 const EXCLUDED_PREFIXES = ["/client-portal", "/admin", "/login", "/reset-password"];
 

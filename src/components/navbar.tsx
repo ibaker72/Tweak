@@ -21,7 +21,10 @@ export function Navbar() {
   const path = usePathname();
 
   useEffect(() => {
-    const fn = () => setScrolled(window.scrollY > 40);
+    const fn = () => {
+      const isScrolled = window.scrollY > 40;
+      setScrolled((prev) => (prev === isScrolled ? prev : isScrolled));
+    };
     window.addEventListener("scroll", fn, { passive: true });
     return () => window.removeEventListener("scroll", fn);
   }, []);
@@ -29,10 +32,7 @@ export function Navbar() {
   useEffect(() => setOpen(false), [path]);
 
   return (
-    <header className={cn(
-      "fixed inset-x-0 top-0 z-50 transition-all duration-500",
-      scrolled ? "top-0" : "top-0"
-    )}>
+    <header className="fixed inset-x-0 top-0 z-50">
       <div className={cn(
         "mx-auto transition-all duration-500",
         scrolled
@@ -75,23 +75,28 @@ export function Navbar() {
       {/* Mobile menu */}
       <div
         className={cn(
-          "overflow-hidden transition-all duration-300 lg:hidden",
-          open ? "max-h-[420px] opacity-100" : "max-h-0 opacity-0"
+          "grid transition-[grid-template-rows] duration-300 ease-out lg:hidden",
+          open ? "grid-rows-[1fr]" : "grid-rows-[0fr]"
         )}
       >
-        <div className="border-t border-white/[0.05] bg-surface-0/98 px-5 pb-6 pt-3 backdrop-blur-2xl sm:px-6">
-          <div className="space-y-0.5">
-            {links.map(l => (
-              <Link key={l.href} href={l.href} onClick={() => setOpen(false)}
-                className="block rounded-xl px-4 py-3.5 text-[15px] font-medium text-white/60 transition-colors hover:bg-white/[0.03] hover:text-white">
-                {l.label}
+        <div className="overflow-hidden">
+          <div className={cn(
+            "border-t border-white/[0.05] bg-surface-0/98 px-5 pb-6 pt-3 backdrop-blur-md transition-opacity duration-200 sm:px-6",
+            open ? "opacity-100" : "opacity-0"
+          )}>
+            <div className="space-y-0.5">
+              {links.map(l => (
+                <Link key={l.href} href={l.href} onClick={() => setOpen(false)}
+                  className="block rounded-xl px-4 py-3.5 text-[15px] font-medium text-white/60 transition-colors hover:bg-white/[0.03] hover:text-white">
+                  {l.label}
+                </Link>
+              ))}
+            </div>
+            <div className="mt-4 border-t border-white/[0.05] pt-5">
+              <Link href="/contact" onClick={() => setOpen(false)} className="btn-v w-full justify-center !py-3 !text-[14px]">
+                Start a project <ArrowRight size={13} />
               </Link>
-            ))}
-          </div>
-          <div className="mt-4 border-t border-white/[0.05] pt-5">
-            <Link href="/contact" onClick={() => setOpen(false)} className="btn-v w-full justify-center !py-3 !text-[14px]">
-              Start a project <ArrowRight size={13} />
-            </Link>
+            </div>
           </div>
         </div>
       </div>

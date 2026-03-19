@@ -27,8 +27,6 @@ function isValidEmail(email: string): boolean {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 }
 
-const resend = new Resend(process.env.RESEND_API_KEY);
-
 export async function POST(req: NextRequest) {
   const forwardedFor = req.headers.get("x-forwarded-for");
   const ip =
@@ -104,6 +102,7 @@ export async function POST(req: NextRequest) {
     }
 
     // 2) Send checklist email with Resend
+    const resend = new Resend(resendApiKey);
     const resendResult = await resend.emails.send({
       from: "Tweak & Build <portal@updates.tweakandbuild.com>",
       to: email,

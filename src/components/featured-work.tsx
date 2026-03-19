@@ -98,6 +98,8 @@ export function FeaturedWork() {
                       src={project.image}
                       alt={project.title}
                       fill
+                      sizes="(max-width: 768px) 100vw, (max-width: 1320px) 90vw, 1320px"
+                      priority={i === 0}
                       className="object-cover object-top transition-transform duration-700 group-hover:scale-[1.03]"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-surface-0 via-surface-0/40 to-transparent" />

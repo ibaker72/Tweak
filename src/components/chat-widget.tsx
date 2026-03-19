@@ -1,7 +1,7 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import Link from "next/link";
-import { MessageCircle, X, ArrowRight, Mail, Calendar, HelpCircle, Clock } from "lucide-react";
+import { MessageCircle, X, ArrowRight, Mail, Calendar, HelpCircle } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const actions = [
@@ -34,10 +34,6 @@ const actions = [
 
 export function ChatWidget() {
   const [open, setOpen] = useState(false);
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => setMounted(true), []);
-  if (!mounted) return null;
 
   return (
     <>

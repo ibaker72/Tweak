@@ -35,11 +35,11 @@ export function ExitIntentPopup() {
     if (window.innerWidth >= 1024) {
       desktopTimer = setTimeout(() => {
         document.addEventListener("mouseleave", handleMouseLeave);
-      }, 5000);
+      }, 8000);
     } else {
       mobileTimer = setTimeout(() => {
         showPopup();
-      }, 5000);
+      }, 30000);
     }
 
     return () => {

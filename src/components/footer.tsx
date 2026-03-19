@@ -159,11 +159,20 @@ export function Footer() {
 
 export function BackToTop() {
   const [v, setV] = useState(false);
-  useEffect(() => { const fn = () => setV(window.scrollY > 500); window.addEventListener("scroll", fn, { passive: true }); return () => window.removeEventListener("scroll", fn); }, []);
-  if (!v) return null;
+  useEffect(() => {
+    const fn = () => {
+      const show = window.scrollY > 500;
+      setV((prev) => (prev === show ? prev : show));
+    };
+    window.addEventListener("scroll", fn, { passive: true });
+    return () => window.removeEventListener("scroll", fn);
+  }, []);
   return (
-    <button suppressHydrationWarning onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-      className="fixed bottom-6 left-6 z-40 flex h-10 w-10 items-center justify-center rounded-full border border-white/[0.08] bg-surface-2/90 text-dim shadow-lg backdrop-blur-sm transition-all hover:border-accent/[0.3] hover:text-accent"
+    <button onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+      className={cn(
+        "fixed bottom-6 left-6 z-40 flex h-10 w-10 items-center justify-center rounded-full border border-white/[0.08] bg-surface-2/90 text-dim shadow-lg backdrop-blur-sm transition-all hover:border-accent/[0.3] hover:text-accent",
+        v ? "translate-y-0 opacity-100" : "pointer-events-none translate-y-4 opacity-0"
+      )}
       aria-label="Back to top">
       <ArrowUp size={16} />
     </button>
