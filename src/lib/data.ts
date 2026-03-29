@@ -387,7 +387,11 @@ export const faqs = [
   },
   {
     q: "What happens after launch?",
-    a: "Every engagement includes post-launch support (14 to 30 days depending on scope). Growth Retainers are available for ongoing development and iteration.",
+    a: "Every engagement includes post-launch support (14 to 30 days depending on scope). Growth Retainers are available for ongoing development and iteration. For businesses that want more traffic and conversions, our Growth Engine provides ongoing SEO, landing page expansion, and conversion optimization on a monthly basis.",
+  },
+  {
+    q: "What's included in the Growth Engine?",
+    a: "The Growth Engine is a monthly engagement focused on driving qualified traffic and improving conversion. It includes SEO foundation and technical fixes, landing page expansion, content and keyword strategy, conversion rate optimization, analytics and reporting, local search visibility, and ongoing growth experiments. It's strategy-led and measured monthly - not a set-it-and-forget-it SEO package.",
   },
   {
     q: "Who is this best for?",
