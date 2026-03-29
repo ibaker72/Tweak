@@ -378,10 +378,7 @@ export function Pricing() {
                           Growth Engine
                         </h3>
                         <p className="mt-3 text-[14px] leading-[1.75] text-body sm:text-[15px]">
-                          Your site is live — now turn it into a lead-generating growth asset. Ongoing search visibility, landing page expansion, performance insights, and conversion improvements. Strategy-led, technically executed, measured monthly.
-                        </p>
-                        <p className="mt-3 font-mono text-[11px] leading-[1.6] text-dim">
-                          Available after launch or as a standalone growth engagement.
+                          Your site is live — now make it work harder. Ongoing SEO, landing pages, conversion optimization, and growth experiments on a predictable monthly budget.
                         </p>
                       </div>
 
@@ -407,19 +404,15 @@ export function Pricing() {
                     {/* Includes grid */}
                     <div className="mt-6">
                       <span className="mb-3 block font-mono text-[9px] uppercase tracking-[0.1em] text-white/20">
-                        What&apos;s included
+                        Typically includes
                       </span>
                       <div className="flex flex-wrap gap-1.5">
                         {[
-                          "SEO foundation & technical fixes",
-                          "Landing page expansion",
+                          "SEO & technical optimization",
+                          "Landing page creation & expansion",
                           "Conversion rate optimization",
-                          "Analytics & monthly reporting",
-                          "Keyword & content strategy",
-                          "Local search visibility",
-                          "Internal linking & site structure",
-                          "CTA & funnel iteration",
-                          "Monthly growth experiments",
+                          "Analytics, reporting & growth experiments",
+                          "Content & keyword strategy",
                         ].map((item) => (
                           <span
                             key={item}
@@ -432,33 +425,19 @@ export function Pricing() {
                       </div>
                     </div>
 
-                    {/* Bottom row: Ideal for + CTA */}
-                    <div className="mt-7 flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">
-                      <div>
-                        <span className="mb-2 block font-mono text-[9px] uppercase tracking-[0.1em] text-white/20">
-                          Built for
-                        </span>
-                        <div className="flex flex-wrap gap-x-5 gap-y-1">
-                          {[
-                            "Service businesses that need more inbound leads",
-                            "Local brands building search visibility",
-                            "Companies investing in long-term acquisition",
-                          ].map((item) => (
-                            <p key={item} className="text-[12px] leading-[1.5] text-dim">
-                              {item}
-                            </p>
-                          ))}
-                        </div>
-                      </div>
+                    {/* Billing note */}
+                    <p className="mt-4 font-mono text-[10px] leading-[1.6] text-dim">
+                      Billed monthly. Minimum 3-month commitment.
+                    </p>
 
-                      <div className="flex-shrink-0">
-                        <Link
-                          href="/contact"
-                          className="flex w-full items-center justify-center gap-2 rounded-xl border border-accent/[0.2] bg-accent/[0.04] px-7 py-3.5 text-[13px] font-bold text-accent transition-all duration-200 hover:-translate-y-0.5 hover:border-accent/[0.35] hover:bg-accent/[0.07] hover:shadow-[0_8px_32px_rgba(200,255,0,0.08)] sm:w-auto"
-                        >
-                          Explore growth options <ArrowRight size={13} />
-                        </Link>
-                      </div>
+                    {/* CTA */}
+                    <div className="mt-7 flex sm:justify-end">
+                      <Link
+                        href="/contact"
+                        className="flex w-full items-center justify-center gap-2 rounded-xl border border-accent/[0.2] bg-accent/[0.04] px-7 py-3.5 text-[13px] font-bold text-accent transition-all duration-200 hover:-translate-y-0.5 hover:border-accent/[0.35] hover:bg-accent/[0.07] hover:shadow-[0_8px_32px_rgba(200,255,0,0.08)] sm:w-auto"
+                      >
+                        Explore growth options <ArrowRight size={13} />
+                      </Link>
                     </div>
                   </div>
                 </div>
