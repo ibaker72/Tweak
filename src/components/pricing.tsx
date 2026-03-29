@@ -1,7 +1,7 @@
 "use client";
 import { useState } from "react";
 import Link from "next/link";
-import { ArrowRight, Lock, ShieldCheck, Code2, Clock, Zap, Layers, RefreshCcw, Calculator, type LucideIcon } from "lucide-react";
+import { ArrowRight, Lock, ShieldCheck, Code2, Clock, Zap, Layers, RefreshCcw, Calculator, TrendingUp, type LucideIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Reveal } from "./shared";
 
@@ -347,8 +347,126 @@ export function Pricing() {
               ))}
             </div>
 
+            {/* ── Growth Engine block ── */}
+            <Reveal delay={0.22}>
+              <div className="mx-auto mt-10 max-w-[1100px] sm:mt-14">
+                <div
+                  className="group relative overflow-hidden rounded-[20px] border-[1.5px] border-accent/[0.12] transition-all duration-300 hover:border-accent/[0.22]"
+                  style={{
+                    background: "rgba(200,255,0,0.008)",
+                    boxShadow: "0 0 60px rgba(200,255,0,0.02), 0 1px 0 rgba(255,255,255,0.02) inset, 0 16px 48px rgba(0,0,0,0.1)",
+                  }}
+                >
+                  {/* Top accent line */}
+                  <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-accent/30 to-transparent" />
+
+                  {/* Subtle radial glow */}
+                  <div className="pointer-events-none absolute inset-0 overflow-hidden rounded-[20px]">
+                    <div className="absolute -left-20 -top-20 h-60 w-60 rounded-full bg-[radial-gradient(circle,rgba(200,255,0,0.025)_0%,transparent_70%)]" />
+                    <div className="absolute -bottom-16 -right-16 h-48 w-48 rounded-full bg-[radial-gradient(circle,rgba(200,255,0,0.015)_0%,transparent_70%)]" />
+                  </div>
+
+                  <div className="relative px-7 py-8 sm:px-10 sm:py-10">
+                    {/* Post-launch label */}
+                    <div className="mb-6 flex flex-col gap-5 sm:flex-row sm:items-start sm:justify-between">
+                      <div className="max-w-[520px]">
+                        <span className="section-label">
+                          <TrendingUp size={12} className="text-accent/70" />
+                          Post-Launch Growth
+                        </span>
+                        <h3 className="mt-5 font-display text-[clamp(22px,3vw,32px)] font-bold leading-[1.12] tracking-[-0.03em] text-white">
+                          Growth Engine
+                        </h3>
+                        <p className="mt-3 text-[14px] leading-[1.75] text-body sm:text-[15px]">
+                          Your site is live — now turn it into a lead-generating growth asset. Ongoing search visibility, landing page expansion, performance insights, and conversion improvements. Strategy-led, technically executed, measured monthly.
+                        </p>
+                        <p className="mt-3 font-mono text-[11px] leading-[1.6] text-dim">
+                          Available after launch or as a standalone growth engagement.
+                        </p>
+                      </div>
+
+                      {/* Price block */}
+                      <div className="flex-shrink-0 sm:text-right">
+                        <div className="flex items-baseline gap-1.5 sm:justify-end">
+                          <span className="whitespace-nowrap font-display text-[clamp(24px,3.2vw,32px)] font-black leading-none tracking-[-0.03em] text-white">
+                            $2,000 – $4,500
+                          </span>
+                          <span className="text-[clamp(12px,1.5vw,15px)] font-medium text-white/30">
+                            /month
+                          </span>
+                        </div>
+                        <p className="mt-2 font-mono text-[11px] text-dim">
+                          Monthly · Minimum 3-month engagement
+                        </p>
+                      </div>
+                    </div>
+
+                    {/* Divider */}
+                    <div className="h-px w-full bg-gradient-to-r from-transparent via-white/[0.06] to-transparent" />
+
+                    {/* Includes grid */}
+                    <div className="mt-6">
+                      <span className="mb-3 block font-mono text-[9px] uppercase tracking-[0.1em] text-white/20">
+                        What&apos;s included
+                      </span>
+                      <div className="flex flex-wrap gap-1.5">
+                        {[
+                          "SEO foundation & technical fixes",
+                          "Landing page expansion",
+                          "Conversion rate optimization",
+                          "Analytics & monthly reporting",
+                          "Keyword & content strategy",
+                          "Local search visibility",
+                          "Internal linking & site structure",
+                          "CTA & funnel iteration",
+                          "Monthly growth experiments",
+                        ].map((item) => (
+                          <span
+                            key={item}
+                            className="rounded-full border border-accent/[0.08] bg-accent/[0.02] px-2.5 py-[3px] text-[10px] text-dim"
+                            style={{ boxShadow: "inset 0 0.5px 0 rgba(200,255,0,0.04)" }}
+                          >
+                            {item}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* Bottom row: Ideal for + CTA */}
+                    <div className="mt-7 flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">
+                      <div>
+                        <span className="mb-2 block font-mono text-[9px] uppercase tracking-[0.1em] text-white/20">
+                          Built for
+                        </span>
+                        <div className="flex flex-wrap gap-x-5 gap-y-1">
+                          {[
+                            "Service businesses that need more inbound leads",
+                            "Local brands building search visibility",
+                            "Companies investing in long-term acquisition",
+                          ].map((item) => (
+                            <p key={item} className="text-[12px] leading-[1.5] text-dim">
+                              {item}
+                            </p>
+                          ))}
+                        </div>
+                      </div>
+
+                      <div className="flex-shrink-0">
+                        <Link
+                          href="/contact"
+                          className="flex w-full items-center justify-center gap-2 rounded-xl border border-accent/[0.2] bg-accent/[0.04] px-7 py-3.5 text-[13px] font-bold text-accent transition-all duration-200 hover:-translate-y-0.5 hover:border-accent/[0.35] hover:bg-accent/[0.07] hover:shadow-[0_8px_32px_rgba(200,255,0,0.08)] sm:w-auto"
+                        >
+                          Explore growth options <ArrowRight size={13} />
+                        </Link>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </Reveal>
+
             {/* Trust strip */}
-            <Reveal delay={0.25}>
+            <Reveal delay={0.3}>
               <div className="mx-auto mt-16 flex max-w-[900px] flex-wrap items-center justify-center gap-x-8 gap-y-3 sm:mt-20">
                 {trustItems.map((item) => (
                   <span key={item.text} className="flex items-center gap-2 text-[12px] text-dim">
