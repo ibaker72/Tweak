@@ -7,7 +7,6 @@ import { ProcessNew } from "@/components/process-new";
 import { TestimonialsNew } from "@/components/testimonials-new";
 import { Pricing } from "@/components/pricing";
 import { FinalCTA } from "@/components/final-cta";
-import { FAQ } from "@/components/footer";
 import { HomepageNewsletter } from "@/components/marketing/homepage-newsletter";
 import { HomepageAuditCTA } from "@/components/marketing/homepage-audit-cta";
 import { PartnerMention } from "@/components/partner-mention";
@@ -29,7 +28,6 @@ export default function Home() {
       <HomepageAuditCTA />
       <HomepageNewsletter />
       <Pricing />
-      <FAQ />
       <FinalCTA />
       <PartnerMention />
     </>

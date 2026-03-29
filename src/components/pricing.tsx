@@ -1,532 +1,386 @@
 "use client";
+
 import { useState } from "react";
 import Link from "next/link";
-import { ArrowRight, Lock, ShieldCheck, Code2, Clock, Zap, Layers, RefreshCcw, Calculator, TrendingUp, type LucideIcon } from "lucide-react";
+import { ArrowRight, Check, ChevronDown, Clock3, Code2, Gauge, Layers3, Lock, Rocket, Sparkles, TrendingUp, Wrench } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Reveal } from "./shared";
 
-interface TrackRef {
+type Offer = {
+  id: "rapid-build" | "custom-engineering" | "growth-retainer" | "growth-engine";
+  eyebrow: string;
   name: string;
-  type: string;
-  result: string;
-  href: string;
-}
-
-interface Track {
-  label: string;
-  name: string;
-  range: string;
-  rangeUnit: string | null;
-  subtext: string;
-  description: string;
-  tags: string[];
-  payment: string;
+  displayName?: string;
+  price: string;
+  unit?: string;
+  valueProp: string;
+  idealFor: string;
+  includes: string[];
+  billing: string;
   cta: string;
-  primary: boolean;
-  refs: TrackRef[] | null;
-  idealFor: string[] | null;
-  icon: LucideIcon;
-}
-
-const tracks: Track[] = [
-  {
-    icon: Zap,
-    label: "For teams with a design or clear spec",
-    name: "Rapid Build",
-    range: "$2,500 – $8,000",
-    rangeUnit: null,
-    subtext: "Fixed rate · Typical turnaround: 1–3 weeks",
-    description:
-      "You bring the design, wireframes, or a detailed brief. We build it - fast, responsive, and production-ready. Flat rate locked before we start.",
-    tags: ["Page count", "CMS integration", "E-commerce", "Third-party integrations", "Revision rounds"],
-    payment: "Paid upfront or 50/50 split depending on scope.",
-    cta: "Get your fixed quote",
-    primary: false,
-    refs: null,
-    idealFor: ["Marketing sites & landing pages", "Portfolio & brand sites", "Redesigns with existing specs"],
-  },
-  {
-    icon: Layers,
-    label: "For founders who need strategy + build",
-    name: "Custom Engineering",
-    range: "$8,000 – $30,000+",
-    rangeUnit: null,
-    subtext: "Milestone billing · Typical timeline: 3–8 weeks",
-    description:
-      "Full-cycle product engineering - from discovery and architecture through development, QA, and launch. We challenge assumptions, optimize for conversion, and deliver a product that performs.",
-    tags: ["Product complexity", "Custom features", "API integrations", "AI / automation", "Design from scratch"],
-    payment: "Milestone-based: 40% to start · 30% midpoint · 30% before launch.",
-    cta: "Book a strategy call",
-    primary: true,
-    refs: [
-      {
-        name: "Create3DParts",
-        type: "E-Commerce Platform",
-        result: "Quote time: 48hrs → 60sec",
-        href: "/work/create3dparts",
-      },
-      {
-        name: "LeadsAndSaaS",
-        type: "SaaS Platform",
-        result: "Shipped in under 1 week",
-        href: "/work/leadsandsaas",
-      },
-    ],
-    idealFor: null,
-  },
-  {
-    icon: RefreshCcw,
-    label: "For products that need ongoing iteration",
-    name: "Growth Retainer",
-    range: "$2,000 – $5,000",
-    rangeUnit: "/month",
-    subtext: "Monthly · Cancel anytime",
-    description:
-      "Your product launched - now it needs to grow. Ongoing development, feature additions, performance optimization, and priority support on a predictable monthly budget.",
-    tags: ["Feature development", "Bug fixes & maintenance", "Performance optimization", "Priority support", "Weekly iterations"],
-    payment: "Billed monthly. No long-term contracts.",
-    cta: "Explore a retainer",
-    primary: false,
-    refs: null,
-    idealFor: ["Post-launch SaaS products", "E-commerce stores scaling up", "Teams without a full-time dev"],
-  },
-];
+  featured?: boolean;
+  accent?: "build" | "growth";
+};
 
 const trustItems = [
-  { icon: Lock, text: "Fixed pricing on every engagement" },
-  { icon: ShieldCheck, text: "Milestone refund guarantee" },
-  { icon: Code2, text: "Full code ownership on delivery" },
-  { icon: Clock, text: "Response in under 4 hours" },
+  { icon: Lock, text: "Fixed pricing where possible" },
+  { icon: Layers3, text: "Milestone billing on larger builds" },
+  { icon: Code2, text: "Full code ownership" },
+  { icon: Clock3, text: "Fast response times" },
 ];
 
-type PricingTab = "pricing" | "calculator";
+const buildOffers: Offer[] = [
+  {
+    id: "custom-engineering",
+    eyebrow: "Flagship engagement",
+    name: "Custom Engineering",
+    price: "$8,000 – $30,000+",
+    valueProp: "Strategy, architecture, and full-cycle delivery for complex products.",
+    idealFor: "Founders building new platforms, complex MVPs, or major product rebuilds.",
+    includes: ["Discovery and technical planning", "Architecture and full-stack build", "QA, launch support, and handoff docs"],
+    billing: "Milestone billing: 40% start · 30% midpoint · 30% before launch.",
+    cta: "Book a strategy call",
+    featured: true,
+    accent: "build",
+  },
+  {
+    id: "rapid-build",
+    eyebrow: "Fixed-scope implementation",
+    name: "Rapid Build",
+    price: "$2,500 – $8,000",
+    valueProp: "Fast implementation when scope is clear and decisions are ready.",
+    idealFor: "Landing pages, marketing sites, and redesigns with approved direction.",
+    includes: ["Production-ready frontend and integrations", "Responsive QA and performance pass", "Focused revision rounds by scope"],
+    billing: "Paid upfront or 50/50 split, depending on total scope.",
+    cta: "Get a fixed quote",
+    accent: "build",
+  },
+];
 
-export function Pricing() {
-  const [activeTab, setActiveTab] = useState<PricingTab>("pricing");
+const growthOffers: Offer[] = [
+  {
+    id: "growth-engine",
+    eyebrow: "Acquisition + conversion",
+    name: "Growth Engine",
+    price: "$2,000 – $4,500",
+    unit: "/month",
+    valueProp: "An ongoing growth system built around SEO, funnels, and experimentation.",
+    idealFor: "Teams that need more qualified traffic, stronger conversion, and clearer reporting.",
+    includes: ["SEO foundation and technical fixes", "Landing page expansion and CRO", "Analytics, experiments, and monthly insights"],
+    billing: "Monthly engagement with a 3-month minimum for measurable compounding.",
+    cta: "Explore growth options",
+    accent: "growth",
+  },
+  {
+    id: "growth-retainer",
+    eyebrow: "Product engineering support",
+    name: "Growth Retainer",
+    displayName: "Engineering Retainer",
+    price: "$2,000 – $5,000",
+    unit: "/month",
+    valueProp: "Dedicated product iteration capacity after launch.",
+    idealFor: "Post-launch teams that need dependable engineering velocity each week.",
+    includes: ["Feature development and product improvements", "Bug fixes, maintenance, and optimization", "Priority support with weekly shipping cadence"],
+    billing: "Monthly billing, no long-term contract. Adjust scope as priorities change.",
+    cta: "Start a retainer",
+    accent: "build",
+  },
+];
+
+const outcomes = [
+  {
+    name: "Create3DParts",
+    summary: "Quote workflow compressed from 48 hours to 60 seconds.",
+    metric: "Orders up 35% in month one",
+    href: "/work/create3dparts",
+  },
+  {
+    name: "LeadsAndSaaS",
+    summary: "Multi-tenant platform shipped in under one week.",
+    metric: "Lead response dropped to 15 minutes",
+    href: "/work/leadsandsaas",
+  },
+];
+
+const pricingFaqs = [
+  {
+    q: "What’s the difference between Rapid Build and Custom Engineering?",
+    a: "Rapid Build is fixed-scope implementation when you already have direction and assets. Custom Engineering includes discovery, architecture, and full-cycle delivery for higher complexity products.",
+  },
+  {
+    q: "What’s the difference between Engineering Retainer and Growth Engine?",
+    a: "Engineering Retainer is product and code velocity: features, fixes, performance, and support. Growth Engine focuses on acquisition and conversion: SEO, landing page expansion, CRO, and growth experiments.",
+  },
+  {
+    q: "How does billing work?",
+    a: "Rapid Build is fixed-rate. Custom Engineering uses milestone billing. Retainer and Growth Engine are monthly engagements with clear scopes and reporting.",
+  },
+  {
+    q: "How fast can you start?",
+    a: "Rapid Build work typically starts within 48 hours of scope lock. Custom Engineering usually starts within 1–2 weeks after proposal approval.",
+  },
+  {
+    q: "What happens after launch?",
+    a: "You can move into Engineering Retainer for product iteration or Growth Engine for traffic and conversion compounding, depending on your immediate priority.",
+  },
+];
+
+function PricingCard({ offer }: { offer: Offer }) {
+  const [firstInclude, ...otherIncludes] = offer.includes;
 
   return (
-    <section id="pricing" className="relative py-28 sm:py-36">
+    <article
+      className={cn(
+        "group relative flex h-full flex-col overflow-hidden rounded-[22px] border p-6 sm:p-7",
+        "transition-all duration-300",
+        offer.featured
+          ? "border-accent/30 bg-[rgba(200,255,0,0.03)] shadow-[0_0_0_1px_rgba(200,255,0,0.08)_inset,0_14px_42px_rgba(0,0,0,0.25)]"
+          : "border-white/[0.08] bg-white/[0.015] shadow-[0_1px_0_rgba(255,255,255,0.02)_inset,0_10px_32px_rgba(0,0,0,0.15)]",
+      )}
+    >
+      {offer.featured && (
+        <div className="pointer-events-none absolute inset-0">
+          <div className="absolute -right-14 -top-14 h-52 w-52 rounded-full bg-[radial-gradient(circle,rgba(200,255,0,0.09),transparent_70%)]" />
+        </div>
+      )}
+
+      <div className="relative">
+        <p className="font-mono text-[10px] uppercase tracking-[0.12em] text-accent/80">{offer.eyebrow}</p>
+        <h3 className="mt-3 font-display text-[clamp(24px,3.2vw,30px)] font-bold tracking-[-0.02em] text-white">{offer.displayName ?? offer.name}</h3>
+
+        <div className="mt-5 flex items-end gap-2">
+          <span className="font-display text-[clamp(30px,4vw,38px)] font-black leading-none tracking-[-0.04em] text-white">{offer.price}</span>
+          {offer.unit && <span className="pb-1 font-mono text-[12px] text-white/45">{offer.unit}</span>}
+        </div>
+
+        <p className="mt-3 text-[14px] leading-[1.7] text-body">{offer.valueProp}</p>
+      </div>
+
+      <div className="mt-7 space-y-6">
+        <div>
+          <p className="font-mono text-[10px] uppercase tracking-[0.11em] text-white/35">Ideal for</p>
+          <p className="mt-2 text-[13px] leading-[1.7] text-white/70">{offer.idealFor}</p>
+        </div>
+
+        <div>
+          <p className="font-mono text-[10px] uppercase tracking-[0.11em] text-white/35">What’s included</p>
+          <div className="mt-2.5 flex flex-wrap gap-2">
+            <span className="rounded-full border border-white/[0.1] bg-white/[0.03] px-2.5 py-[4px] text-[11px] text-white/80">{firstInclude}</span>
+            {otherIncludes.map((item) => (
+              <span key={item} className="rounded-full border border-white/[0.08] bg-white/[0.02] px-2.5 py-[4px] text-[11px] text-dim">
+                {item}
+              </span>
+            ))}
+          </div>
+        </div>
+
+        <p className="font-mono text-[11px] leading-[1.65] text-dim">{offer.billing}</p>
+      </div>
+
+      <div className="mt-auto pt-8">
+        <Link
+          href="/contact"
+          className={cn(
+            "inline-flex w-full items-center justify-center gap-2 rounded-xl py-3.5 text-[13px] font-semibold transition-all duration-200",
+            offer.featured
+              ? "bg-accent text-surface-0 hover:-translate-y-0.5 hover:shadow-[0_10px_34px_rgba(200,255,0,0.18)]"
+              : "border border-white/[0.14] bg-white/[0.03] text-white hover:-translate-y-0.5 hover:border-white/[0.22] hover:bg-white/[0.05]",
+          )}
+        >
+          {offer.cta} <ArrowRight size={13} />
+        </Link>
+      </div>
+    </article>
+  );
+}
+
+function PricingGroup({ title, offers, delay = 0 }: { title: string; offers: Offer[]; delay?: number }) {
+  return (
+    <Reveal delay={delay}>
+      <section className="mt-12 sm:mt-16">
+        <div className="mb-5 flex items-center justify-between">
+          <p className="text-[13px] font-medium tracking-[0.02em] text-white/78 sm:text-[14px]">{title}</p>
+          <div className="hidden h-px flex-1 bg-gradient-to-r from-white/[0.08] to-transparent sm:ml-6 sm:block" />
+        </div>
+        <div className="grid gap-4 md:grid-cols-2 md:gap-5">
+          {offers.map((offer, index) => (
+            <Reveal key={offer.id} delay={delay + 0.04 * (index + 1)}>
+              <PricingCard offer={offer} />
+            </Reveal>
+          ))}
+        </div>
+      </section>
+    </Reveal>
+  );
+}
+
+function PricingFAQ() {
+  const [open, setOpen] = useState<number>(0);
+
+  return (
+    <section className="mt-16 sm:mt-20">
+      <Reveal>
+        <div className="mx-auto max-w-[880px]">
+          <p className="font-mono text-[10px] uppercase tracking-[0.14em] text-accent/80">FAQ</p>
+          <h3 className="mt-3 font-display text-[clamp(24px,3vw,34px)] font-bold tracking-[-0.03em] text-white">Questions before you commit</h3>
+          <div className="mt-6 space-y-2.5">
+            {pricingFaqs.map((item, i) => {
+              const isOpen = i === open;
+
+              return (
+                <div
+                  key={item.q}
+                  className={cn(
+                    "overflow-hidden rounded-2xl border bg-white/[0.012] transition-colors duration-200",
+                    isOpen ? "border-accent/20" : "border-white/[0.07] hover:border-white/[0.12]",
+                  )}
+                >
+                  <button
+                    onClick={() => setOpen(isOpen ? -1 : i)}
+                    className="flex w-full items-center justify-between gap-3 px-5 py-4 text-left sm:px-6 sm:py-5"
+                    aria-expanded={isOpen}
+                  >
+                    <span className="text-[14px] font-semibold leading-[1.5] text-white sm:text-[15px]">{item.q}</span>
+                    <ChevronDown className={cn("h-4 w-4 flex-shrink-0 text-dim transition-transform duration-250", isOpen && "rotate-180 text-accent")} />
+                  </button>
+                  <div className="grid transition-[grid-template-rows] duration-300" style={{ gridTemplateRows: isOpen ? "1fr" : "0fr" }}>
+                    <p className="overflow-hidden px-5 pb-5 text-[14px] leading-[1.75] text-body sm:px-6">{item.a}</p>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </Reveal>
+    </section>
+  );
+}
+
+export function Pricing() {
+  return (
+    <section id="pricing" className="relative py-24 sm:py-32">
       <div className="wrap">
-        {/* Section heading */}
         <Reveal>
-          <div className="mx-auto mb-10 max-w-[600px] text-center">
-            <span className="section-label">Pricing</span>
-            <h2 className="mt-5 font-display text-[clamp(28px,4vw,48px)] font-extrabold leading-[1.06] tracking-[-0.04em] text-white">
-              Investment
+          <div className="mx-auto max-w-[760px] text-center">
+            <span className="section-label">Investment</span>
+            <h2 className="mt-6 font-display text-[clamp(32px,5vw,58px)] font-extrabold leading-[1.03] tracking-[-0.045em] text-white">
+              Choose the engagement that fits your stage
             </h2>
-            <p className="mt-4 text-[15px] leading-[1.7] text-body sm:text-[16px]">
-              Transparent pricing for every stage. Fixed quotes, milestone billing, and a refund guarantee on every engagement.
+            <p className="mx-auto mt-5 max-w-[720px] text-[15px] leading-[1.75] text-body sm:text-[16px]">
+              From fixed-scope launches to ongoing engineering and growth, every engagement is structured for clarity, speed, and measurable outcomes.
             </p>
           </div>
         </Reveal>
 
-        {/* Segmented pill toggle */}
-        <Reveal delay={0.06}>
-          <div className="mx-auto mb-12 flex justify-center">
-            <div
-              className="inline-flex rounded-full border border-white/[0.06] bg-white/[0.015] p-[3px]"
-              role="tablist"
-              aria-label="Pricing view toggle"
-              style={{ boxShadow: "inset 0 1px 3px rgba(0,0,0,0.25), 0 0.5px 0 rgba(255,255,255,0.03)" }}
-            >
-              <button
-                suppressHydrationWarning
-                role="tab"
-                aria-selected={activeTab === "pricing"}
-                aria-controls="pricing-panel"
-                onClick={() => setActiveTab("pricing")}
-                className={cn(
-                  "relative rounded-full px-5 py-[7px] font-mono text-[10px] font-medium uppercase tracking-[0.08em] transition-all duration-200 sm:px-6 sm:py-2 sm:text-[11px]",
-                  activeTab === "pricing"
-                    ? "bg-accent text-surface-0"
-                    : "text-white/35 hover:text-white/55",
-                )}
-                style={activeTab === "pricing" ? { boxShadow: "0 1px 3px rgba(0,0,0,0.2), inset 0 0.5px 0 rgba(255,255,255,0.15)" } : undefined}
-              >
-                Pricing
-              </button>
-              <button
-                suppressHydrationWarning
-                role="tab"
-                aria-selected={activeTab === "calculator"}
-                aria-controls="calculator-panel"
-                onClick={() => setActiveTab("calculator")}
-                className={cn(
-                  "relative rounded-full px-5 py-[7px] font-mono text-[10px] font-medium uppercase tracking-[0.08em] transition-all duration-200 sm:px-6 sm:py-2 sm:text-[11px]",
-                  activeTab === "calculator"
-                    ? "bg-accent text-surface-0"
-                    : "text-white/35 hover:text-white/55",
-                )}
-                style={activeTab === "calculator" ? { boxShadow: "0 1px 3px rgba(0,0,0,0.2), inset 0 0.5px 0 rgba(255,255,255,0.15)" } : undefined}
-              >
-                Cost Calculator
-              </button>
-            </div>
+        <Reveal delay={0.05}>
+          <div className="mx-auto mt-8 grid max-w-[980px] gap-2 rounded-2xl border border-white/[0.08] bg-white/[0.012] p-3 sm:mt-10 sm:grid-cols-2 lg:grid-cols-4">
+            {trustItems.map((item) => (
+              <div key={item.text} className="flex items-center gap-2 rounded-xl border border-white/[0.06] bg-white/[0.015] px-3 py-2">
+                <item.icon size={13} className="text-accent/60" />
+                <span className="text-[12px] text-white/70">{item.text}</span>
+              </div>
+            ))}
           </div>
         </Reveal>
 
-        {/* Shared content area */}
-        <div className="relative">
-          {/* ── PRICING VIEW ── */}
-          <div
-            id="pricing-panel"
-            role="tabpanel"
-            aria-labelledby="pricing-tab"
-            className={cn(
-              "transition-all duration-300",
-              activeTab === "pricing"
-                ? "opacity-100"
-                : "pointer-events-none absolute inset-0 opacity-0",
-            )}
-          >
-            {/* Three-track cards */}
-            <div className="mx-auto grid max-w-[1100px] items-stretch gap-5 md:grid-cols-3 md:gap-6">
-              {tracks.map((track, i) => (
-                <Reveal key={track.name} delay={0.06 + i * 0.06}>
-                  <div
-                    className={cn(
-                      "group relative flex h-full flex-col overflow-visible rounded-[20px] border-[1.5px] transition-all duration-300",
-                      track.primary
-                        ? "border-accent/40 hover:border-accent/55"
-                        : "border-white/[0.08] hover:border-white/[0.16]",
-                    )}
-                    style={{
-                      background: track.primary ? "rgba(200,255,0,0.015)" : "rgba(255,255,255,0.012)",
-                      boxShadow: track.primary
-                        ? "0 0 40px rgba(200,255,0,0.04), 0 0 0 1px rgba(200,255,0,0.02) inset, 0 16px 48px rgba(0,0,0,0.12)"
-                        : "0 1px 0 rgba(255,255,255,0.02) inset, 0 8px 32px rgba(0,0,0,0.08)",
-                    }}
-                  >
-                    {/* Subtle gradient glow for Custom Engineering card */}
-                    {track.primary && (
-                      <div className="pointer-events-none absolute inset-0 overflow-hidden rounded-[20px]">
-                        <div className="absolute -right-12 -top-12 h-48 w-48 rounded-full bg-[radial-gradient(circle,rgba(200,255,0,0.03)_0%,transparent_70%)]" />
-                      </div>
-                    )}
-                    {/* Top accent line */}
-                    <div
-                      className={cn(
-                        "absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent to-transparent",
-                        track.primary ? "via-accent/50" : "via-white/[0.08]",
-                      )}
-                    />
+        <PricingGroup title="For launches, redesigns, and new products" offers={buildOffers} delay={0.08} />
+        <PricingGroup title="For post-launch optimization and ongoing momentum" offers={growthOffers} delay={0.14} />
 
-                    {/* "Most projects" badge */}
-                    {track.primary && (
-                      <div className="absolute -top-[13px] left-1/2 z-10 -translate-x-1/2">
-                        <span
-                          className="whitespace-nowrap rounded-full border border-accent/25 bg-[#0a0a12] px-4 py-[5px] font-mono text-[10px] font-semibold uppercase tracking-[0.06em] text-accent/80"
-                          style={{ boxShadow: "inset 0 0.5px 0 rgba(200,255,0,0.1), 0 2px 6px rgba(0,0,0,0.35)" }}
-                        >
-                          Most projects
-                        </span>
-                      </div>
-                    )}
-
-                    {/* Card content */}
-                    <div className={cn(
-                      "flex flex-1 flex-col px-7 pb-7",
-                      track.primary ? "pt-10" : "pt-7",
-                    )}>
-                      {/* Icon */}
-                      <div className="mb-5 flex h-10 w-10 items-center justify-center rounded-xl border border-white/[0.06] bg-white/[0.02]">
-                        <track.icon className="h-5 w-5 text-white/30" strokeWidth={1.5} />
-                      </div>
-
-                      {/* Label */}
-                      <span className="font-mono text-[10px] tracking-[0.04em] text-dim">
-                        {track.label}
-                      </span>
-
-                      {/* Track name */}
-                      <div className="mt-2">
-                        <h3 className="font-display text-[21px] font-bold text-white">
-                          {track.name}
-                        </h3>
-                      </div>
-
-                      {/* Price range */}
-                      <div className="mt-5 flex items-baseline">
-                        <span className="whitespace-nowrap font-display text-[clamp(24px,3.2vw,32px)] font-black leading-none tracking-[-0.03em] text-white">
-                          {track.range}
-                        </span>
-                        {track.rangeUnit && (
-                          <span className="ml-1.5 text-[clamp(12px,1.5vw,15px)] font-medium text-white/30">
-                            {track.rangeUnit}
-                          </span>
-                        )}
-                      </div>
-                      <p className="mt-2 font-mono text-[11px] text-dim">{track.subtext}</p>
-
-                      {/* Description */}
-                      <p className="mt-5 text-[13px] leading-[1.75] text-body">{track.description}</p>
-
-                      {/* Scope tags */}
-                      <div className="mt-6">
-                        <span className="mb-2.5 block font-mono text-[9px] uppercase tracking-[0.1em] text-white/20">
-                          {track.name === "Growth Retainer" ? "Typically includes" : "What determines your price"}
-                        </span>
-                        <div className="flex flex-wrap gap-1.5">
-                          {track.tags.map((tag) => (
-                            <span
-                              key={tag}
-                              className="rounded-full border border-white/[0.06] bg-white/[0.02] px-2.5 py-[3px] text-[10px] text-dim"
-                              style={{ boxShadow: "inset 0 0.5px 0 rgba(255,255,255,0.04)" }}
-                            >
-                              {tag}
-                            </span>
-                          ))}
-                        </div>
-                      </div>
-
-                      {/* Payment note */}
-                      <p className="mt-4 font-mono text-[10px] leading-[1.6] text-dim">
-                        {track.payment}
-                      </p>
-
-                      {/* Mini case study refs (Custom Engineering only) */}
-                      {track.refs && (
-                        <div className="mt-5 space-y-2">
-                          {track.refs.map((ref) => (
-                            <Link
-                              key={ref.name}
-                              href={ref.href}
-                              className="group/ref flex items-center justify-between rounded-xl border border-white/[0.06] bg-white/[0.02] px-3.5 py-2.5 transition-all hover:border-accent/[0.15] hover:bg-accent/[0.02]"
-                            >
-                              <div className="min-w-0">
-                                <span className="block text-[12px] font-semibold text-white">
-                                  {ref.name}
-                                  <span className="ml-1.5 font-normal text-dim">— {ref.type}</span>
-                                </span>
-                                <span className="block font-mono text-[10px] text-accent/60">
-                                  {ref.result}
-                                </span>
-                              </div>
-                              <ArrowRight
-                                size={11}
-                                className="ml-2 flex-shrink-0 text-dim transition-all group-hover/ref:translate-x-0.5 group-hover/ref:text-accent"
-                              />
-                            </Link>
-                          ))}
-                        </div>
-                      )}
-
-                      {/* Ideal for section */}
-                      {track.idealFor && (
-                        <div className="mt-5">
-                          <span className="mb-2 block font-mono text-[9px] uppercase tracking-[0.1em] text-white/20">
-                            Ideal for
-                          </span>
-                          <div className="space-y-1.5">
-                            {track.idealFor.map((item) => (
-                              <p key={item} className="text-[12px] leading-[1.5] text-dim">
-                                {item}
-                              </p>
-                            ))}
-                          </div>
-                        </div>
-                      )}
-
-                      {/* CTA */}
-                      <div className="mt-auto pt-7">
-                        <Link
-                          href="/contact"
-                          className={cn(
-                            "flex w-full items-center justify-center gap-2 rounded-xl py-3.5 text-[13px] font-bold transition-all duration-200",
-                            track.primary
-                              ? "bg-accent text-surface-0 shadow-[0_1px_2px_rgba(0,0,0,0.15),0_0_0_1px_rgba(200,255,0,0.15)] hover:-translate-y-0.5 hover:shadow-[0_8px_32px_rgba(200,255,0,0.2)]"
-                              : "border border-white/[0.12] bg-white/[0.03] text-white hover:-translate-y-0.5 hover:border-white/[0.2] hover:bg-white/[0.06]",
-                          )}
-                        >
-                          {track.cta} <ArrowRight size={13} />
-                        </Link>
-                      </div>
-                    </div>
-                  </div>
-                </Reveal>
-              ))}
-            </div>
-
-            {/* ── Growth Engine block ── */}
-            <Reveal delay={0.22}>
-              <div className="mx-auto mt-10 max-w-[1100px] sm:mt-14">
-                <div
-                  className="group relative overflow-hidden rounded-[20px] border-[1.5px] border-accent/[0.12] transition-all duration-300 hover:border-accent/[0.22]"
-                  style={{
-                    background: "rgba(200,255,0,0.008)",
-                    boxShadow: "0 0 60px rgba(200,255,0,0.02), 0 1px 0 rgba(255,255,255,0.02) inset, 0 16px 48px rgba(0,0,0,0.1)",
-                  }}
-                >
-                  {/* Top accent line */}
-                  <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-accent/30 to-transparent" />
-
-                  {/* Subtle radial glow */}
-                  <div className="pointer-events-none absolute inset-0 overflow-hidden rounded-[20px]">
-                    <div className="absolute -left-20 -top-20 h-60 w-60 rounded-full bg-[radial-gradient(circle,rgba(200,255,0,0.025)_0%,transparent_70%)]" />
-                    <div className="absolute -bottom-16 -right-16 h-48 w-48 rounded-full bg-[radial-gradient(circle,rgba(200,255,0,0.015)_0%,transparent_70%)]" />
-                  </div>
-
-                  <div className="relative px-7 py-8 sm:px-10 sm:py-10">
-                    {/* Post-launch label */}
-                    <div className="mb-6 flex flex-col gap-5 sm:flex-row sm:items-start sm:justify-between">
-                      <div className="max-w-[520px]">
-                        <span className="section-label">
-                          <TrendingUp size={12} className="text-accent/70" />
-                          Post-Launch Growth
-                        </span>
-                        <h3 className="mt-5 font-display text-[clamp(22px,3vw,32px)] font-bold leading-[1.12] tracking-[-0.03em] text-white">
-                          Growth Engine
-                        </h3>
-                        <p className="mt-3 text-[14px] leading-[1.75] text-body sm:text-[15px]">
-                          Your site is live — now make it work harder. Ongoing SEO, landing pages, conversion optimization, and growth experiments on a predictable monthly budget.
-                        </p>
-                      </div>
-
-                      {/* Price block */}
-                      <div className="flex-shrink-0 sm:text-right">
-                        <div className="flex items-baseline gap-1.5 sm:justify-end">
-                          <span className="whitespace-nowrap font-display text-[clamp(24px,3.2vw,32px)] font-black leading-none tracking-[-0.03em] text-white">
-                            $2,000 – $4,500
-                          </span>
-                          <span className="text-[clamp(12px,1.5vw,15px)] font-medium text-white/30">
-                            /month
-                          </span>
-                        </div>
-                        <p className="mt-2 font-mono text-[11px] text-dim">
-                          Monthly · Minimum 3-month engagement
-                        </p>
-                      </div>
-                    </div>
-
-                    {/* Divider */}
-                    <div className="h-px w-full bg-gradient-to-r from-transparent via-white/[0.06] to-transparent" />
-
-                    {/* Includes grid */}
-                    <div className="mt-6">
-                      <span className="mb-3 block font-mono text-[9px] uppercase tracking-[0.1em] text-white/20">
-                        Typically includes
-                      </span>
-                      <div className="flex flex-wrap gap-1.5">
-                        {[
-                          "SEO & technical optimization",
-                          "Landing page creation & expansion",
-                          "Conversion rate optimization",
-                          "Analytics, reporting & growth experiments",
-                          "Content & keyword strategy",
-                        ].map((item) => (
-                          <span
-                            key={item}
-                            className="rounded-full border border-accent/[0.08] bg-accent/[0.02] px-2.5 py-[3px] text-[10px] text-dim"
-                            style={{ boxShadow: "inset 0 0.5px 0 rgba(200,255,0,0.04)" }}
-                          >
-                            {item}
-                          </span>
-                        ))}
-                      </div>
-                    </div>
-
-                    {/* Billing note */}
-                    <p className="mt-4 font-mono text-[10px] leading-[1.6] text-dim">
-                      Billed monthly. Minimum 3-month commitment.
-                    </p>
-
-                    {/* CTA */}
-                    <div className="mt-7 flex sm:justify-end">
-                      <Link
-                        href="/contact"
-                        className="flex w-full items-center justify-center gap-2 rounded-xl border border-accent/[0.2] bg-accent/[0.04] px-7 py-3.5 text-[13px] font-bold text-accent transition-all duration-200 hover:-translate-y-0.5 hover:border-accent/[0.35] hover:bg-accent/[0.07] hover:shadow-[0_8px_32px_rgba(200,255,0,0.08)] sm:w-auto"
-                      >
-                        Explore growth options <ArrowRight size={13} />
-                      </Link>
-                    </div>
-                  </div>
+        <Reveal delay={0.2}>
+          <section className="mt-14 sm:mt-18">
+            <div className="rounded-[24px] border border-white/[0.08] bg-[linear-gradient(180deg,rgba(255,255,255,0.02),rgba(255,255,255,0.01))] p-7 sm:p-8">
+              <div className="flex flex-col gap-5 md:flex-row md:items-end md:justify-between">
+                <div className="max-w-[620px]">
+                  <p className="font-mono text-[10px] uppercase tracking-[0.13em] text-accent/80">Estimator</p>
+                  <h3 className="mt-3 font-display text-[clamp(24px,3.2vw,34px)] font-bold tracking-[-0.03em] text-white">Need a tighter number? Estimate your project before you commit.</h3>
+                  <p className="mt-3 text-[14px] leading-[1.75] text-body sm:text-[15px]">
+                    Use the calculator to get an instant range for websites, product builds, e-commerce, and SaaS work. It’s fast, practical, and designed to help you plan.
+                  </p>
                 </div>
+                <Link href="/tools/website-cost-calculator" className="btn-v w-full justify-center md:w-auto">
+                  Open cost calculator <ArrowRight size={13} />
+                </Link>
               </div>
-            </Reveal>
-
-            {/* Trust strip */}
-            <Reveal delay={0.3}>
-              <div className="mx-auto mt-16 flex max-w-[900px] flex-wrap items-center justify-center gap-x-8 gap-y-3 sm:mt-20">
-                {trustItems.map((item) => (
-                  <span key={item.text} className="flex items-center gap-2 text-[12px] text-dim">
-                    <item.icon size={13} className="text-accent/50" />
-                    {item.text}
+              <div className="mt-5 flex flex-wrap gap-2">
+                {[
+                  "60-second estimate",
+                  "No long form",
+                  "Websites, SaaS, e-commerce",
+                ].map((chip) => (
+                  <span key={chip} className="rounded-full border border-white/[0.07] bg-white/[0.02] px-2.5 py-[3px] text-[10px] text-dim">
+                    {chip}
                   </span>
                 ))}
               </div>
-            </Reveal>
-          </div>
+            </div>
+          </section>
+        </Reveal>
 
-          {/* ── CALCULATOR VIEW ── */}
-          <div
-            id="calculator-panel"
-            role="tabpanel"
-            aria-labelledby="calculator-tab"
-            className={cn(
-              "transition-all duration-300",
-              activeTab === "calculator"
-                ? "opacity-100"
-                : "pointer-events-none absolute inset-0 opacity-0",
-            )}
-          >
-            <div className="mx-auto max-w-[640px]">
-              <div
-                className="relative overflow-hidden rounded-2xl border-[1.5px] border-white/[0.08] px-8 py-10 text-center sm:rounded-3xl sm:px-12 sm:py-12"
-                style={{
-                  background: "rgba(255,255,255,0.012)",
-                  boxShadow: "0 1px 0 rgba(255,255,255,0.02) inset, 0 8px 32px rgba(0,0,0,0.1)",
-                }}
-              >
-                {/* Top accent line */}
-                <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/[0.08] to-transparent" />
-
-                {/* Pill label */}
-                <span className="section-label">
-                  <Calculator size={12} className="text-accent/70" />
-                  Cost Calculator
-                </span>
-
-                {/* Heading */}
-                <h3 className="mt-6 font-display text-[clamp(22px,3vw,28px)] font-bold leading-[1.15] tracking-[-0.02em] text-white">
-                  Estimate your project before you commit.
-                </h3>
-
-                {/* Supporting copy */}
-                <p className="mx-auto mt-4 max-w-[440px] text-[14px] leading-[1.7] text-body sm:text-[15px]">
-                  Answer a few quick questions to get an instant price range for your website, web app, e&#8209;commerce store, or SaaS product.
-                </p>
-
-                {/* Micro-feature chips */}
-                <div className="mx-auto mt-6 flex flex-wrap items-center justify-center gap-2">
-                  {["60-second estimate", "Instant price range", "Websites, apps, SaaS"].map((chip) => (
-                    <span
-                      key={chip}
-                      className="rounded-full border border-white/[0.06] bg-white/[0.02] px-2.5 py-[3px] font-mono text-[10px] tracking-[0.03em] text-white/35"
-                      style={{ boxShadow: "inset 0 0.5px 0 rgba(255,255,255,0.04)" }}
-                    >
-                      {chip}
-                    </span>
-                  ))}
-                </div>
-
-                {/* CTA */}
-                <div className="mt-8">
+        <Reveal delay={0.24}>
+          <section className="mt-10">
+            <div className="rounded-2xl border border-white/[0.08] bg-white/[0.012] p-6 sm:p-7">
+              <div className="mb-5 flex items-center justify-between gap-4">
+                <p className="font-mono text-[10px] uppercase tracking-[0.13em] text-accent/80">Selected outcomes</p>
+                <span className="text-[11px] text-white/40">Real shipped work</span>
+              </div>
+              <div className="grid gap-3 md:grid-cols-2">
+                {outcomes.map((item) => (
                   <Link
-                    href="/tools/website-cost-calculator"
-                    className="btn-v inline-flex"
+                    key={item.name}
+                    href={item.href}
+                    className="group rounded-xl border border-white/[0.08] bg-white/[0.015] px-4 py-3 transition-all duration-200 hover:border-accent/20 hover:bg-accent/[0.02]"
                   >
-                    Open Cost Calculator <ArrowRight size={13} />
+                    <p className="text-[14px] font-semibold text-white">{item.name}</p>
+                    <p className="mt-1 text-[13px] leading-[1.6] text-body">{item.summary}</p>
+                    <p className="mt-2 inline-flex items-center gap-1 text-[11px] font-medium text-accent/80">{item.metric} <ArrowRight size={11} className="transition-transform group-hover:translate-x-0.5" /></p>
                   </Link>
-                </div>
-
-                {/* Reassurance */}
-                <p className="mt-5 font-mono text-[10px] tracking-[0.04em] text-dim">
-                  Instant estimate. No long form required.
-                </p>
+                ))}
               </div>
             </div>
-          </div>
-        </div>
+          </section>
+        </Reveal>
+
+        <Reveal delay={0.28}>
+          <section className="mt-10 rounded-2xl border border-white/[0.07] bg-white/[0.01] p-5 sm:p-6">
+            <div className="mb-5 flex items-center gap-2">
+              <Sparkles size={13} className="text-accent/70" />
+              <p className="font-mono text-[10px] uppercase tracking-[0.13em] text-accent/80">How engagements work</p>
+            </div>
+            <div className="grid gap-3 md:grid-cols-3">
+              {[
+                { step: "01", title: "Strategy / scope", icon: Rocket },
+                { step: "02", title: "Proposal / pricing", icon: Gauge },
+                { step: "03", title: "Build / iterate / grow", icon: Wrench },
+              ].map((item) => (
+                <div key={item.step} className="rounded-xl border border-white/[0.06] bg-white/[0.015] px-4 py-4">
+                  <div className="flex items-center gap-2">
+                    <item.icon size={13} className="text-accent/70" />
+                    <span className="font-mono text-[10px] text-dim">STEP {item.step}</span>
+                  </div>
+                  <p className="mt-2 text-[14px] font-medium text-white/85">{item.title}</p>
+                </div>
+              ))}
+            </div>
+          </section>
+        </Reveal>
+
+        <PricingFAQ />
+
+        <Reveal delay={0.32}>
+          <section className="mt-14 rounded-2xl border border-accent/20 bg-accent/[0.03] px-6 py-9 text-center sm:mt-16 sm:px-8">
+            <p className="font-display text-[clamp(24px,3vw,34px)] font-bold tracking-[-0.03em] text-white">Not sure which engagement fits? Book a strategy call.</p>
+            <p className="mx-auto mt-3 max-w-[640px] text-[14px] leading-[1.75] text-body sm:text-[15px]">We’ll align scope, budget, and sequencing so you know exactly what to build first.</p>
+            <div className="mt-7 flex flex-col justify-center gap-3 sm:flex-row">
+              <Link href="/contact" className="btn-v w-full justify-center sm:w-auto">Book strategy call <ArrowRight size={13} /></Link>
+              <Link href="/work" className="btn-o w-full justify-center sm:w-auto">View case studies</Link>
+            </div>
+            <div className="mt-7 flex flex-wrap items-center justify-center gap-x-5 gap-y-2 text-[12px] text-white/55">
+              <span className="inline-flex items-center gap-1.5"><Check size={12} className="text-accent/70" /> Senior engineers only</span>
+              <span className="inline-flex items-center gap-1.5"><Check size={12} className="text-accent/70" /> Clear milestones</span>
+              <span className="inline-flex items-center gap-1.5"><Check size={12} className="text-accent/70" /> Full ownership</span>
+            </div>
+          </section>
+        </Reveal>
       </div>
     </section>
   );
