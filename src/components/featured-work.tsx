@@ -49,10 +49,10 @@ const featuredProjects: FeaturedProject[] = [
     slug: "voltgrid",
 title: "VoltGrid",
 status: "LIVE",
-industry: "Browser Game · 2025",
+industry: "Mobile Game · 2025",
 tagline: "Fast-paced arcade gameplay with electric visuals and full-screen action.",
 description:
-  "Arcade-style browser game designed and built with responsive full-screen gameplay, energetic visual feedback, and a polished, mobile-friendly game experience.",
+  "Arcade-style mobile game designed and built with responsive full-screen gameplay, energetic visual feedback, and a polished, mobile-friendly game experience.",
 metrics: ["Gameplay: Full-screen", "Experience: Mobile-friendly"],
 stack: ["Next.js", "TypeScript", "Canvas", "Tailwind CSS"],
 image: "/proof/voltgrid/cover.png",
