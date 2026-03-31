@@ -1,71 +1,11 @@
 "use client";
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { ChevronDown, ArrowUp, Terminal, Send, Check, Loader2 } from "lucide-react";
+import { ChevronDown, ArrowUp, Terminal } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Reveal } from "./shared";
 import { faqs } from "@/lib/data";
 
-function FooterNewsletter() {
-  const [email, setEmail] = useState("");
-  const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
-
-  const subscribe = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return;
-    setStatus("loading");
-    try {
-      const res = await fetch("/api/subscribe", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, source: "footer" }),
-      });
-      if (res.ok) { setStatus("success"); setEmail(""); }
-      else setStatus("error");
-    } catch { setStatus("error"); }
-  };
-
-  return (
-    <div
-      className="mb-12 rounded-2xl border border-white/[0.06] p-6 sm:p-8"
-      style={{
-        background: "rgba(255,255,255,0.012)",
-        boxShadow: "0 1px 0 rgba(255,255,255,0.02) inset",
-      }}
-    >
-      <div className="flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center">
-        <div>
-          <h3 className="font-display text-[15px] font-bold text-white sm:text-[16px]">
-            Studio updates, case studies, and engineering insights.
-          </h3>
-          <p className="mt-1 text-[12px] text-dim">No spam, unsubscribe anytime.</p>
-        </div>
-        {status === "success" ? (
-          <div className="flex items-center gap-2">
-            <Check size={14} className="text-accent" />
-            <span className="text-[13px] text-accent">Subscribed!</span>
-          </div>
-        ) : (
-          <form onSubmit={subscribe} className="flex w-full gap-2.5 sm:w-auto">
-            <input
-              suppressHydrationWarning
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder="you@company.com"
-              className="field flex-1 sm:w-56"
-              required
-            />
-            <button suppressHydrationWarning type="submit" disabled={status === "loading"} className="btn-v flex-shrink-0 !px-5 !py-[11px] disabled:opacity-60">
-              {status === "loading" ? <Loader2 size={13} className="animate-spin" /> : <Send size={13} />}
-              <span className="hidden text-[13px] sm:inline">Subscribe</span>
-            </button>
-          </form>
-        )}
-      </div>
-    </div>
-  );
-}
 
 export function FAQ() {
   const [open, setOpen] = useState<number | null>(null);
@@ -114,9 +54,6 @@ export function Footer() {
   return (
     <footer className="border-t border-white/[0.04]">
       <div className="wrap py-16 sm:py-20">
-        {/* Newsletter row */}
-        <FooterNewsletter />
-
         <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-5">
           <div className="lg:col-span-2">
             <Link href="/" className="flex items-center gap-2.5">

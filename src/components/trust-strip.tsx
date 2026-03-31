@@ -1,6 +1,8 @@
 "use client";
 import { Reveal, Counter } from "./shared";
 
+const clientNames = ["Create3DParts", "LeadsAndSaaS", "Meridian Health", "Atlas Freight", "Kommison"];
+
 const industries = [
   "E-Commerce",
   "SaaS",
@@ -15,7 +17,7 @@ const metrics = [
     num: 48,
     suffix: "hrs → 60sec",
     display: (
-      <>    
+      <>
         <span className="text-white">60sec</span>
       </>
     ),
@@ -51,15 +53,34 @@ const metrics = [
 
 export function TrustStrip() {
   return (
-    <section className="relative py-20 sm:py-28">
+    <section className="relative py-14 sm:py-16">
       {/* Full-width background break */}
       <div className="absolute inset-0 border-y border-white/[0.04] bg-surface-1/50" />
 
       <div className="wrap relative">
-        {/* Proven Results strip */}
+        {/* Row 1: Social proof logos */}
         <Reveal>
+          <div className="mb-8">
+            <p className="mb-4 text-center font-mono text-[9px] uppercase tracking-[0.16em] text-dim sm:mb-5 sm:text-[10px]">
+              Trusted by founders at
+            </p>
+            <div className="flex flex-wrap items-center justify-center gap-x-2 gap-y-2 sm:gap-x-3">
+              {clientNames.map((name) => (
+                <span
+                  key={name}
+                  className="inline-flex items-center justify-center rounded-full border border-white/[0.05] bg-white/[0.015] px-4 py-2 font-display text-[12px] font-semibold text-white/25 transition-all duration-300 hover:border-white/[0.1] hover:text-white/50 sm:px-5 sm:py-2 sm:text-[13px]"
+                >
+                  {name}
+                </span>
+              ))}
+            </div>
+          </div>
+        </Reveal>
+
+        {/* Row 2: Stats */}
+        <Reveal delay={0.1}>
           <div>
-            <p className="mb-8 text-center font-mono text-[10px] uppercase tracking-[0.16em] text-dim sm:mb-10">
+            <p className="mb-4 text-center font-mono text-[10px] uppercase tracking-[0.16em] text-dim">
               By the numbers
             </p>
             <div className="overflow-hidden rounded-2xl border border-white/[0.06] bg-white/[0.01]" style={{ boxShadow: "0 1px 0 rgba(255,255,255,0.02) inset, 0 8px 32px rgba(0,0,0,0.15)" }}>
@@ -89,23 +110,21 @@ export function TrustStrip() {
           </div>
         </Reveal>
 
-        {/* Industries */}
-        <Reveal delay={0.3}>
-          <div className="mt-12 border-t border-white/[0.05] pt-8">
-            <div className="flex flex-wrap items-center justify-center gap-2.5 sm:justify-start">
-              <span className="mr-2 font-mono text-[10px] uppercase tracking-[0.12em] text-dim">
-                Industries:
+        {/* Row 3: Industries as compact pill row */}
+        <Reveal delay={0.2}>
+          <div className="mt-6 flex flex-wrap items-center justify-center gap-2.5 sm:justify-start">
+            <span className="mr-2 font-mono text-[10px] uppercase tracking-[0.12em] text-dim">
+              Industries:
+            </span>
+            {industries.map((ind) => (
+              <span
+                key={ind}
+                className="rounded-full border border-white/[0.06] bg-white/[0.015] px-3.5 py-[6px] text-[12px] font-medium text-white/40 transition-all duration-200 hover:border-white/[0.1] hover:text-white/65"
+                style={{ boxShadow: "inset 0 0.5px 0 rgba(255,255,255,0.04)" }}
+              >
+                {ind}
               </span>
-              {industries.map((ind) => (
-                <span
-                  key={ind}
-                  className="rounded-full border border-white/[0.06] bg-white/[0.015] px-3.5 py-[6px] text-[12px] font-medium text-white/40 transition-all duration-200 hover:border-white/[0.1] hover:text-white/65"
-                  style={{ boxShadow: "inset 0 0.5px 0 rgba(255,255,255,0.04)" }}
-                >
-                  {ind}
-                </span>
-              ))}
-            </div>
+            ))}
           </div>
         </Reveal>
       </div>
