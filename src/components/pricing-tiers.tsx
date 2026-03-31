@@ -178,7 +178,7 @@ export function PricingTiers() {
               </span>
 
               <h2 className="mt-6 max-w-[16ch] text-balance font-display text-[36px] font-semibold leading-[1.08] text-white sm:text-[44px] lg:text-[54px]">
-                Structured engagements for teams that need outcomes.
+                Pricing.
               </h2>
 
               <p className="mt-5 max-w-2xl text-[16px] leading-relaxed text-white/70 sm:text-[18px]">
