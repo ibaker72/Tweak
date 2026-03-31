@@ -1,247 +1,179 @@
 "use client";
 
-import { useMemo, useState, type KeyboardEvent } from "react";
 import Link from "next/link";
-import { ArrowRight, Check } from "lucide-react";
+import { Check, ArrowRight } from "lucide-react";
+import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { Reveal } from "./shared";
-import {
-  pricingCategories,
-  pricingTiers,
-  type PricingCategory,
-  type PricingCategoryId,
-  type PricingTier,
-} from "@/lib/pricing-data";
 
-function PricingCard({ tier, index }: { tier: PricingTier; index: number }) {
-  const isPopular = tier.popular;
+type StudioTier = {
+  name: string;
+  price: string;
+  subheader: string;
+  features: string[];
+  ctaLabel: string;
+  ctaHref: string;
+  featured?: boolean;
+  badge?: string;
+};
 
+const studioPricingTiers: StudioTier[] = [
+  {
+    name: "Landing Pages & WaaS",
+    price: "$1,500/mo or $2,500 fixed",
+    subheader: "High-converting entry points and ongoing web partnerships.",
+    features: [
+      "Conversion-first layout",
+      "Next.js implementation",
+      "Technical SEO setup",
+      "Continuous design sprints",
+    ],
+    ctaLabel: "Start Building",
+    ctaHref: "/contact?tier=Landing%20Pages%20%26%20WaaS",
+  },
+  {
+    name: "SaaS Development",
+    price: "Milestone-Based",
+    subheader: "For founders launching complete, scalable software products.",
+    features: [
+      "Full-stack MVPs",
+      "Auth & Payment Integration",
+      "Database Architecture",
+      "Admin Dashboards",
+    ],
+    ctaLabel: "Book a Strategy Call",
+    ctaHref: "/contact?tier=SaaS%20Development",
+  },
+  {
+    name: "Custom Engineering",
+    price: "Custom Scope",
+    subheader: "Complex system builds, AI workflows, and dedicated senior delivery.",
+    features: [
+      "Complex Web Apps",
+      "Custom APIs & Integrations",
+      "AI & Automation Workflows",
+      "100% Code Ownership",
+    ],
+    ctaLabel: "Discuss Custom Engineering",
+    ctaHref: "/contact?tier=Custom%20Engineering",
+    featured: true,
+    badge: "Recommended",
+  },
+  {
+    name: "SEO & Growth",
+    price: "Monthly Retainer",
+    subheader: "Search and growth systems that compound pipeline and demand.",
+    features: [
+      "Technical SEO Audits",
+      "Content Strategy",
+      "Conversion Rate Optimization (CRO)",
+      "Engineering Iterations",
+    ],
+    ctaLabel: "Scale Your Product",
+    ctaHref: "/contact?tier=SEO%20%26%20Growth",
+  },
+];
+
+function TierFeatureItem({ text, featured }: { text: string; featured?: boolean }) {
   return (
-    <Reveal delay={index * 0.08}>
-      <article
+    <li className="flex items-start gap-2.5 text-sm leading-relaxed text-zinc-300">
+      <Check className={cn("mt-0.5 h-4 w-4 shrink-0", featured ? "text-lime-300" : "text-zinc-500")} strokeWidth={2.2} />
+      <span>{text}</span>
+    </li>
+  );
+}
+
+function TierCard({ tier, index }: { tier: StudioTier; index: number }) {
+  return (
+    <Reveal delay={index * 0.06}>
+      <motion.article
         aria-label={`${tier.name} pricing`}
+        whileHover={{ y: -6 }}
+        transition={{ duration: 0.24, ease: "easeOut" }}
         className={cn(
-          "group relative flex h-full flex-col overflow-hidden rounded-2xl border p-6 sm:p-7",
-          "transition-all duration-300 ease-out will-change-transform",
-          "hover:-translate-y-1 hover:border-white/20",
-          isPopular
-            ? "border-accent/30 bg-[linear-gradient(170deg,rgba(200,255,0,0.08),rgba(255,255,255,0.02)_38%,rgba(255,255,255,0.01)_100%)] shadow-[0_20px_70px_rgba(200,255,0,0.05)]"
-            : "border-white/10 bg-[linear-gradient(170deg,rgba(255,255,255,0.05),rgba(255,255,255,0.015)_45%,rgba(255,255,255,0.01)_100%)]",
+          "group relative flex h-full flex-col overflow-hidden rounded-2xl border p-8",
+          "bg-white/[0.02] backdrop-blur-md",
+          "transition-all duration-300",
+          tier.featured
+            ? "border-lime-400/50 shadow-[0_0_0_1px_rgba(163,230,53,0.25),0_28px_80px_rgba(163,230,53,0.12)] lg:scale-105"
+            : "border-white/10 hover:border-white/25",
         )}
       >
-        {isPopular && (
-          <span className="absolute right-5 top-5 rounded-full border border-accent/35 bg-accent/8 px-2.5 py-1 font-mono text-[10px] font-semibold uppercase tracking-[0.12em] text-accent">
-            Most Popular
+        {tier.badge && (
+          <span className="absolute left-8 top-6 inline-flex rounded-full border border-lime-300/40 bg-lime-300/10 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.12em] text-lime-200">
+            {tier.badge}
           </span>
         )}
 
-        <p className="font-mono text-[11px] uppercase tracking-[0.14em] text-white/55">{tier.kicker}</p>
-        <h3 className="mt-3 max-w-[18ch] text-balance font-display text-[27px] font-semibold leading-[1.12] text-white">
-          {tier.name}
-        </h3>
-
-        <div className="mt-5 flex items-end gap-1.5">
-          <span className="font-display text-[40px] font-semibold leading-none tracking-tight text-white">{tier.price}</span>
-          {tier.priceSuffix && <span className="pb-1 text-sm text-white/70">{tier.priceSuffix}</span>}
+        <div className={cn(tier.badge ? "pt-7" : "pt-1")}>
+          <h3 className="text-2xl font-semibold tracking-tight text-white">{tier.name}</h3>
+          <p className="mt-4 text-2xl font-semibold leading-tight text-white">{tier.price}</p>
+          <p className="mt-3 text-sm leading-relaxed text-zinc-400">{tier.subheader}</p>
         </div>
 
-        <p className="mt-4 max-w-[36ch] text-[15px] leading-relaxed text-white/72">{tier.summary}</p>
-
-        <ul className="mt-6 flex-1 space-y-3.5 border-t border-white/10 pt-6">
-          {tier.highlights.map((item) => (
-            <li key={item} className="flex items-start gap-2.5 text-[14px] leading-relaxed text-white/76">
-              <Check className="mt-0.5 h-4 w-4 shrink-0 text-accent" strokeWidth={2.2} />
-              <span>{item}</span>
-            </li>
+        <ul className="mt-7 flex-1 space-y-3 border-t border-white/10 pt-6">
+          {tier.features.map((feature) => (
+            <TierFeatureItem key={feature} text={feature} featured={tier.featured} />
           ))}
         </ul>
-
-        <dl className="mt-7 grid gap-2.5 border-t border-white/10 pt-5 text-[12px] text-white/68 sm:grid-cols-3 sm:gap-2">
-          {tier.meta.map((item) => (
-            <div
-              key={item.label}
-              className="rounded-xl border border-white/10 bg-white/[0.02] px-3 py-2.5 sm:min-h-[68px]"
-            >
-              <dt className="font-mono text-[10px] uppercase tracking-[0.11em] text-white/45">{item.label}</dt>
-              <dd className="mt-1 text-[12px] leading-snug text-white/80">{item.value}</dd>
-            </div>
-          ))}
-        </dl>
 
         <Link
           href={tier.ctaHref}
           className={cn(
-            "mt-7 inline-flex w-full items-center justify-center gap-2 rounded-xl px-5 py-3 text-[14px] font-semibold transition-all duration-200",
-            "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/55 focus-visible:ring-offset-2 focus-visible:ring-offset-[#0b0b0c]",
-            isPopular
-              ? "bg-accent text-surface-0 hover:bg-accent/90"
-              : "border border-white/15 bg-white/[0.03] text-white hover:border-white/25 hover:bg-white/[0.06]",
+            "mt-8 inline-flex w-full items-center justify-center gap-2 rounded-xl px-4 py-3 text-sm font-semibold transition-all duration-200",
+            "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-lime-300/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#0a0a0a]",
+            tier.featured
+              ? "bg-lime-300 text-zinc-950 hover:bg-lime-200"
+              : "border border-white/15 bg-white/[0.03] text-zinc-200 hover:border-white/30 hover:bg-white/[0.06]",
           )}
         >
           {tier.ctaLabel}
           <ArrowRight className="h-4 w-4" />
         </Link>
-      </article>
+      </motion.article>
     </Reveal>
   );
 }
 
-function PricingTabs({
-  categories,
-  activeTab,
-  onTabChange,
-}: {
-  categories: PricingCategory[];
-  activeTab: PricingCategoryId;
-  onTabChange: (tab: PricingCategoryId) => void;
-}) {
-
-  const onKeyDown = (event: KeyboardEvent<HTMLButtonElement>, index: number) => {
-    if (!["ArrowRight", "ArrowLeft", "Home", "End"].includes(event.key)) {
-      return;
-    }
-
-    event.preventDefault();
-
-    if (event.key === "Home") {
-      onTabChange(categories[0].id);
-      return;
-    }
-
-    if (event.key === "End") {
-      onTabChange(categories[categories.length - 1].id);
-      return;
-    }
-
-    const direction = event.key === "ArrowRight" ? 1 : -1;
-    const nextIndex = (index + direction + categories.length) % categories.length;
-    onTabChange(categories[nextIndex].id);
-  };
-
-  return (
-    <div
-      role="tablist"
-      aria-label="Pricing categories"
-      className="grid w-full grid-cols-1 gap-2 rounded-2xl border border-white/10 bg-white/[0.02] p-2 sm:grid-cols-3"
-    >
-      {categories.map((category, index) => {
-        const isActive = activeTab === category.id;
-
-        return (
-          <button
-            key={category.id}
-            id={`pricing-tab-${category.id}`}
-            role="tab"
-            aria-selected={isActive}
-            aria-controls={`pricing-panel-${category.id}`}
-            tabIndex={isActive ? 0 : -1}
-            onClick={() => onTabChange(category.id)}
-            onKeyDown={(event) => onKeyDown(event, index)}
-            className={cn(
-              "rounded-xl px-4 py-3 text-left transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/50",
-              isActive
-                ? "bg-accent/12 text-white shadow-[inset_0_0_0_1px_rgba(200,255,0,0.35)]"
-                : "text-white/65 hover:bg-white/[0.035] hover:text-white/85",
-            )}
-          >
-            <p className="text-[14px] font-semibold leading-none">{category.label}</p>
-            <p className="mt-1 text-[12px] leading-relaxed text-white/55">{category.description}</p>
-          </button>
-        );
-      })}
-    </div>
-  );
-}
-
 export function PricingTiers() {
-  const [activeCategory, setActiveCategory] = useState<PricingCategoryId>("launch");
-
-  const visibleTiers = useMemo(
-    () => pricingTiers.filter((tier) => tier.categoryId === activeCategory),
-    [activeCategory],
-  );
-
-  const isSingleCardLayout = visibleTiers.length === 1;
-
   return (
-    <section id="pricing" className="relative overflow-hidden py-24 sm:py-28 lg:py-32">
-      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_45%_28%,rgba(200,255,0,0.08),transparent_45%)]" />
+    <section id="pricing" className="relative overflow-hidden bg-[#0a0a0a] py-24 sm:py-28 lg:py-32">
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_50%_18%,rgba(163,230,53,0.11),transparent_40%)]" />
 
       <div className="wrap relative">
-        <div className="mx-auto max-w-6xl">
+        <div className="mx-auto max-w-7xl">
           <Reveal>
-            <div className="max-w-3xl">
-              <span className="inline-flex items-center gap-2 rounded-full border border-white/12 bg-white/[0.02] px-3 py-1 font-mono text-[10px] uppercase tracking-[0.14em] text-white/70">
-                Pricing
-                <span className="h-1 w-1 rounded-full bg-accent/80" />
-                Senior delivery. Clear scope.
+            <div className="mx-auto max-w-3xl text-center">
+              <span className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.03] px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.14em] text-zinc-300">
+                Premium Pricing
+                <span className="h-1.5 w-1.5 rounded-full bg-lime-300" />
+                Built for serious operators
               </span>
-
-              <h2 className="mt-6 max-w-[16ch] text-balance font-display text-[36px] font-semibold leading-[1.08] text-white sm:text-[44px] lg:text-[54px]">
-                Pricing.
+              <h2 className="mt-6 text-balance text-4xl font-semibold tracking-tight text-white sm:text-5xl">
+                Product engineering tiers designed for scale.
               </h2>
-
-              <p className="mt-5 max-w-2xl text-[16px] leading-relaxed text-white/70 sm:text-[18px]">
-                Choose the engagement style that matches your stage. Every project includes upfront scope,
-                delivery cadence, and direct access to senior engineering.
-              </p>
-
-              <p className="mt-4 text-[13px] font-medium text-white/55">
-                Typical onboarding starts within 5 business days after scope alignment.
+              <p className="mt-5 text-pretty text-base leading-relaxed text-zinc-400 sm:text-lg">
+                Compare every engagement model at a glance. No tabs, no hidden options—just clear scope,
+                senior execution, and escalation paths as your product grows.
               </p>
             </div>
           </Reveal>
 
-          <Reveal delay={0.08}>
-            <div className="mt-10">
-              <PricingTabs
-                categories={pricingCategories}
-                activeTab={activeCategory}
-                onTabChange={setActiveCategory}
-              />
-            </div>
-          </Reveal>
-
-          <div
-            id={`pricing-panel-${activeCategory}`}
-            role="tabpanel"
-            aria-labelledby={`pricing-tab-${activeCategory}`}
-            className="mt-8"
-          >
-            <div
-              className={cn(
-                "grid gap-4 sm:gap-5 lg:gap-6",
-                isSingleCardLayout
-                  ? "grid-cols-1 lg:grid-cols-1"
-                  : "grid-cols-1 md:grid-cols-2",
-              )}
-            >
-              {visibleTiers.map((tier, index) => (
-                <PricingCard key={tier.id} tier={tier} index={index} />
-              ))}
-            </div>
+          <div className="mt-12 grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-4 lg:items-stretch">
+            {studioPricingTiers.map((tier, index) => (
+              <TierCard key={tier.name} tier={tier} index={index} />
+            ))}
           </div>
 
-          <Reveal delay={0.16}>
-            <div className="mt-10 flex flex-col gap-4 rounded-2xl border border-white/12 bg-white/[0.02] px-5 py-5 sm:flex-row sm:items-center sm:justify-between sm:px-6">
-              <p className="text-[15px] text-white/72">Need something custom?</p>
-              <div className="flex flex-wrap items-center gap-x-5 gap-y-2 text-[14px]">
-                <Link
-                  href="/contact"
-                  className="group inline-flex items-center gap-1.5 font-medium text-white transition-colors hover:text-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/50"
-                >
-                  Let&apos;s talk
-                  <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" />
-                </Link>
-                <span className="hidden h-4 w-px bg-white/15 sm:block" />
-                <Link
-                  href="/tools/cost-calculator"
-                  className="group inline-flex items-center gap-1.5 font-medium text-white transition-colors hover:text-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/50"
-                >
-                  Try our cost calculator
-                  <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" />
-                </Link>
-              </div>
+          <Reveal delay={0.12}>
+            <div className="mx-auto mt-12 max-w-4xl rounded-2xl border border-white/10 bg-white/[0.02] px-6 py-8 text-center backdrop-blur-md sm:px-10">
+              <p className="text-lg leading-relaxed text-zinc-200 sm:text-xl">
+                &ldquo;We needed a working platform for an investor demo and they delivered in under a week. It looked
+                and felt like something that had been in development for months.&rdquo;
+              </p>
+              <p className="mt-4 text-sm font-medium uppercase tracking-[0.08em] text-zinc-400">
+                David Morales — CTO
+              </p>
             </div>
           </Reveal>
         </div>
