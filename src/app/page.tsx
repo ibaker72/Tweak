@@ -5,7 +5,7 @@ import { TrustStrip } from "@/components/trust-strip";
 import { TechShowcase } from "@/components/tech-showcase";
 import { ProcessNew } from "@/components/process-new";
 import { TestimonialsNew } from "@/components/testimonials-new";
-import { Pricing } from "@/components/pricing";
+import { PricingTiers } from "@/components/pricing-tiers";
 import { FinalCTA } from "@/components/final-cta";
 import { HomepageNewsletter } from "@/components/marketing/homepage-newsletter";
 import { HomepageAuditCTA } from "@/components/marketing/homepage-audit-cta";
@@ -27,7 +27,7 @@ export default function Home() {
       <TestimonialsNew />
       <HomepageAuditCTA />
       <HomepageNewsletter />
-      <Pricing />
+      <PricingTiers />
       <FinalCTA />
       <PartnerMention />
     </>
