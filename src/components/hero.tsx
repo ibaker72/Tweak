@@ -1,284 +1,110 @@
 "use client";
-import { useState, useEffect } from "react";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { Reveal } from "./shared";
 import { siteConfig } from "@/lib/config";
 
 const clientNames = ["Create3DParts", "LeadsAndSaaS", "Meridian Health", "Atlas Freight", "Kommison"];
-
-const liveProjects = [
-  { name: "Create3DParts.com", tag: "E-Commerce", result: "+35% orders" },
-  { name: "LeadsAndSaaS", tag: "SaaS Platform", result: "Shipped in <1wk" },
-  { name: "Kommison", tag: "Referral Platform", result: "In Development" },
-];
-
-function TypingCode() {
-  const scenes = [
-    [
-      'const product = await build({',
-      '  client: "your-startup",',
-      '  quality: "production",',
-      '  timeline: "weeks-not-months",',
-      '  ownership: 1.0,',
-      '});',
-      '',
-      '// → deployed to production ✓',
-    ],
-    [
-      'const launch = await optimize({',
-      '  speed: "fast",',
-      '  ux: "premium",',
-      '  seo: "structured",',
-      '  conversions: "tracked",',
-      '});',
-      '',
-      '// → metrics improving ✓',
-    ],
-    [
-      'const system = await automate({',
-      '  leads: "captured",',
-      '  followUp: "instant",',
-      '  handoff: "clean",',
-      '  reporting: "live",',
-      '});',
-      '',
-      '// → ops running smoother ✓',
-    ],
-  ];
-
-  const [sceneIndex, setSceneIndex] = useState(0);
-  const [visibleLines, setVisibleLines] = useState(0);
-  const [isResetting, setIsResetting] = useState(false);
-  const [cursorVisible, setCursorVisible] = useState(true);
-
-  const currentScene = scenes[sceneIndex];
-
-  useEffect(() => {
-    const cursorTimer = setInterval(() => {
-      setCursorVisible((prev) => !prev);
-    }, 500);
-
-    return () => clearInterval(cursorTimer);
-  }, []);
-
-  useEffect(() => {
-    setVisibleLines(0);
-    setIsResetting(false);
-
-    const lineTimers: NodeJS.Timeout[] = [];
-
-    currentScene.forEach((_, i) => {
-      lineTimers.push(
-        setTimeout(() => {
-          setVisibleLines(i + 1);
-        }, 250 + i * 220)
-      );
-    });
-
-    const totalTypingTime = 250 + currentScene.length * 220;
-
-    const holdTimer = setTimeout(() => {
-      setIsResetting(true);
-    }, totalTypingTime + 1600);
-
-    const nextSceneTimer = setTimeout(() => {
-      setSceneIndex((prev) => (prev + 1) % scenes.length);
-    }, totalTypingTime + 2100);
-
-    return () => {
-      lineTimers.forEach(clearTimeout);
-      clearTimeout(holdTimer);
-      clearTimeout(nextSceneTimer);
-    };
-  }, [sceneIndex]);
-
-  return (
-    <div className="font-mono text-[11px] leading-[2] sm:text-[12px]">
-      {currentScene.map((line, i) => {
-        const isComment = line.startsWith("//");
-        const isKeyLine =
-          line.includes('client:') ||
-          line.includes('quality:') ||
-          line.includes('timeline:') ||
-          line.includes('ownership:') ||
-          line.includes('speed:') ||
-          line.includes('ux:') ||
-          line.includes('seo:') ||
-          line.includes('conversions:') ||
-          line.includes('leads:') ||
-          line.includes('followUp:') ||
-          line.includes('handoff:') ||
-          line.includes('reporting:');
-
-        const colorClass = isComment
-          ? "text-emerald-400/60"
-          : isKeyLine
-            ? "text-accent/70"
-            : "text-white/70";
-
-        const showCursor = i === visibleLines - 1 && !isResetting;
-
-        return (
-          <div
-            key={`${sceneIndex}-${i}`}
-            className={`${colorClass} transition-all duration-300`}
-            style={{
-              opacity: i < visibleLines ? (isResetting ? 0 : 1) : 0,
-              transform:
-                i < visibleLines
-                  ? isResetting
-                    ? "translateY(-4px)"
-                    : "translateY(0)"
-                  : "translateY(6px)",
-            }}
-          >
-            {line || "\u00A0"}
-            {showCursor ? (
-              <span className="ml-0.5 inline-block text-accent/80">
-                {cursorVisible ? "▋" : " "}
-              </span>
-            ) : null}
-          </div>
-        );
-      })}
-    </div>
-  );
-}
+const servicePills = ["Websites", "Web Apps", "Automation"];
 
 export function Hero() {
   return (
-    <section className="relative min-h-[100dvh] overflow-hidden">
+    <section className="relative min-h-[100dvh] overflow-hidden bg-black">
+      {/* Background video */}
+      <div className="absolute inset-0">
+        <video
+          autoPlay
+          muted
+          loop
+          playsInline
+          preload="metadata"
+          aria-hidden="true"
+          className="h-full w-full object-cover object-center"
+        >
+          <source src="/hero.mp4" type="video/mp4" />
+        </video>
+      </div>
+
+      {/* Overlays */}
+      <div className="pointer-events-none absolute inset-0 bg-black/72" />
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(0,0,0,0.18),rgba(0,0,0,0.84)_72%)]" />
+      <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-black/35 via-black/45 to-black/80" />
+
+      {/* Texture */}
       <div
-        className="pointer-events-none absolute inset-0 opacity-[0.02]"
+        className="pointer-events-none absolute inset-0 opacity-[0.04]"
         style={{
           backgroundImage:
             "linear-gradient(rgba(255,255,255,0.06) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.06) 1px, transparent 1px)",
           backgroundSize: "72px 72px",
         }}
       />
-      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_70%_50%_at_50%_-10%,rgba(200,255,0,0.04),transparent)]" />
-      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_40%_40%_at_80%_80%,rgba(200,255,0,0.015),transparent)]" />
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_70%_50%_at_50%_-10%,rgba(200,255,0,0.06),transparent)]" />
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_40%_40%_at_80%_80%,rgba(200,255,0,0.02),transparent)]" />
 
-      <div className="wrap relative flex min-h-[100dvh] flex-col justify-center pb-10 pt-24 sm:pb-16 sm:pt-24 lg:pb-24 lg:pt-28">
-        <Reveal>
-          <div className="mb-8 sm:mb-10">
-            <div
-              className="inline-flex items-center gap-2 rounded-full border border-emerald-400/12 bg-emerald-400/[0.03] px-3.5 py-[6px] sm:border-emerald-400/15 sm:bg-emerald-400/[0.04] sm:px-4 sm:py-1.5"
-              style={{ boxShadow: "inset 0 0.5px 0 rgba(52,211,153,0.06), 0 1px 2px rgba(0,0,0,0.15)" }}
-            >
-              <span className="relative flex h-1.5 w-1.5">
-                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-40" />
-                <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-emerald-400" />
-              </span>
-              <span className="font-mono text-[10px] font-medium tracking-[0.06em] text-emerald-400/80 sm:text-[11px] sm:text-emerald-400/90">
-                {siteConfig.availability}
-              </span>
+      <div className="wrap relative z-10 flex min-h-[100dvh] flex-col justify-center pb-12 pt-24 sm:pb-16 sm:pt-24 lg:pb-20 lg:pt-28">
+        <div className="max-w-[900px]">
+          <Reveal>
+            <div className="mb-8 sm:mb-10">
+              <div
+                className="inline-flex items-center gap-2 rounded-full border border-emerald-400/12 bg-emerald-400/[0.03] px-3.5 py-[6px] backdrop-blur-sm sm:border-emerald-400/15 sm:bg-emerald-400/[0.04] sm:px-4 sm:py-1.5"
+                style={{ boxShadow: "inset 0 0.5px 0 rgba(52,211,153,0.06), 0 1px 2px rgba(0,0,0,0.15)" }}
+              >
+                <span className="relative flex h-1.5 w-1.5">
+                  <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-40" />
+                  <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-emerald-400" />
+                </span>
+                <span className="font-mono text-[10px] font-medium tracking-[0.06em] text-emerald-400/80 sm:text-[11px] sm:text-emerald-400/90">
+                  {siteConfig.availability}
+                </span>
+              </div>
             </div>
-          </div>
-        </Reveal>
+          </Reveal>
 
-        <div className="grid gap-12 sm:gap-14 lg:grid-cols-[1fr,480px] lg:items-center lg:gap-20">
-          <div>
-            <Reveal delay={0.05}>
-              <h1 className="font-display text-[clamp(44px,11vw,80px)] font-black leading-[0.9] tracking-[-0.045em] text-white sm:text-[clamp(42px,7vw,80px)] sm:leading-[0.92] sm:tracking-[-0.05em]">
-                We build
-                <br />
-                <span className="gradient-text">digital products</span>
-                <br />
-                that perform.
-              </h1>
-            </Reveal>
+          <Reveal delay={0.05}>
+            <h1 className="max-w-[820px] font-display text-[clamp(54px,12vw,118px)] font-black leading-[0.88] tracking-[-0.055em] text-white sm:text-[clamp(68px,10vw,118px)]">
+              Look
+              <br />
+              <span className="gradient-text">Sharper.</span>
+            </h1>
+          </Reveal>
 
-            <Reveal delay={0.12}>
-              <p className="mt-6 max-w-[360px] text-[15px] leading-[1.7] text-body/90 sm:mt-8 sm:max-w-[480px] sm:text-[17px] sm:leading-[1.75] sm:text-body lg:text-[18px]">
-                Product engineering studio for founders who need websites, web apps, and automation systems built fast, built right, and built to convert.
-              </p>
-            </Reveal>
+          <Reveal delay={0.12}>
+            <p className="mt-6 max-w-[640px] text-[16px] leading-[1.8] text-white/72 sm:mt-7 sm:text-[18px] lg:text-[19px]">
+              Product engineering studio for founders who need websites, web apps, and automation systems built fast, built right, and built to convert.
+            </p>
+          </Reveal>
 
-            <Reveal delay={0.18}>
-              <div className="mt-8 flex gap-3 sm:mt-10 sm:flex-row sm:items-center">
-                <Link href="/contact" className="btn-v justify-center px-6 py-3 text-[13px] sm:px-8 sm:py-3.5 sm:text-[14px]">
-                  Start a project <ArrowRight size={14} />
-                </Link>
-                <Link href="#work" className="btn-o justify-center px-6 py-3 text-[13px] sm:px-7 sm:py-3.5 sm:text-[14px]">
-                  See our work
-                </Link>
-              </div>
-            </Reveal>
+          <Reveal delay={0.16}>
+            <div className="mt-7 flex flex-wrap gap-2.5 sm:mt-8">
+              {servicePills.map((pill) => (
+                <span
+                  key={pill}
+                  className="inline-flex items-center rounded-full border border-white/[0.08] bg-white/[0.03] px-4 py-2 text-[11px] font-medium tracking-[0.08em] text-white/60 backdrop-blur-sm sm:text-[12px]"
+                >
+                  {pill}
+                </span>
+              ))}
+            </div>
+          </Reveal>
 
-          </div>
-
-          <Reveal delay={0.15}>
-            <div className="relative">
-              <div className="pointer-events-none absolute -inset-8 rounded-3xl bg-[radial-gradient(ellipse_at_center,rgba(200,255,0,0.03),transparent_70%)]" />
-
-              <div className="relative overflow-hidden rounded-2xl border border-white/[0.10] bg-surface-1 shadow-[0_16px_64px_rgba(0,0,0,0.4),0_0_0_1px_rgba(255,255,255,0.03)_inset] sm:rounded-2xl">
-                <div className="flex items-center justify-between border-b border-white/[0.06] px-5 py-3 sm:px-6 sm:py-3.5">
-                  <div className="flex items-center gap-2.5">
-                    <div className="flex gap-1.5">
-                      <div className="h-2.5 w-2.5 rounded-full bg-white/[0.06]" />
-                      <div className="h-2.5 w-2.5 rounded-full bg-white/[0.06]" />
-                      <div className="h-2.5 w-2.5 rounded-full bg-accent/30" />
-                    </div>
-                    <span className="ml-2 font-mono text-[11px] font-medium text-white/40">tweak-studio</span>
-                  </div>
-                  <div className="flex items-center gap-1.5">
-                    <span className="relative flex h-1.5 w-1.5">
-                      <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-accent opacity-30" />
-                      <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-accent" />
-                    </span>
-                    <span className="font-mono text-[10px] text-accent/60">Live</span>
-                  </div>
-                </div>
-
-                <div className="border-b border-white/[0.04] px-5 py-5 sm:px-6 sm:py-6">
-                  <TypingCode />
-                </div>
-
-                <div className="divide-y divide-white/[0.04]">
-                  {liveProjects.map((proj, i) => (
-                    <div
-                      key={proj.name}
-                      className="group flex items-center gap-3.5 px-5 py-4 transition-colors duration-200 hover:bg-white/[0.02] sm:gap-4 sm:px-6"
-                    >
-                      <div className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-lg bg-accent/[0.08] font-mono text-[11px] font-bold text-accent/80 sm:h-10 sm:w-10">
-                        {String(i + 1).padStart(2, "0")}
-                      </div>
-                      <div className="min-w-0 flex-1">
-                        <div className="flex items-center gap-2">
-                          <span className="truncate text-[13px] font-semibold text-white sm:text-[14px]">{proj.name}</span>
-                          <span className="flex-shrink-0 rounded-full border border-white/[0.06] bg-white/[0.02] px-2 py-[2px] font-mono text-[9px] tracking-[0.03em] text-white/30">
-                            {proj.tag}
-                          </span>
-                        </div>
-                        <div className="mt-1 font-mono text-[11px] text-accent/60">{proj.result}</div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-
-                <div className="grid grid-cols-3 border-t border-white/[0.06] bg-white/[0.01]">
-                  {[
-                    { val: "12+", label: "Shipped" },
-                    { val: "<4hr", label: "Response" },
-                    { val: "100%", label: "Ownership" },
-                  ].map((stat, i) => (
-                    <div key={stat.label} className={`px-5 py-4 sm:px-6 ${i < 2 ? "border-r border-white/[0.04]" : ""}`}>
-                      <div className="font-display text-[18px] font-black tracking-[-0.02em] text-white sm:text-[20px]">
-                        {stat.val}
-                      </div>
-                      <div className="mt-0.5 font-mono text-[9px] uppercase tracking-[0.1em] text-dim">{stat.label}</div>
-                    </div>
-                  ))}
-                </div>
-              </div>
+          <Reveal delay={0.2}>
+            <div className="mt-9 flex flex-col gap-3 sm:mt-10 sm:flex-row sm:items-center">
+              <Link href="/contact" className="btn-v justify-center px-6 py-3 text-[13px] sm:px-8 sm:py-3.5 sm:text-[14px]">
+                Start a project <ArrowRight size={14} />
+              </Link>
+              <Link
+                href="#work"
+                className="btn-o justify-center px-6 py-3 text-[13px] backdrop-blur-sm sm:px-7 sm:py-3.5 sm:text-[14px]"
+              >
+                See our work
+              </Link>
             </div>
           </Reveal>
         </div>
 
         <Reveal delay={0.3}>
-          <div className="mt-16 border-t border-white/[0.04] pt-8 sm:mt-20 sm:pt-10">
+          <div className="mt-16 border-t border-white/[0.05] pt-8 sm:mt-20 sm:pt-10">
             <p className="mb-4 text-center font-mono text-[9px] uppercase tracking-[0.16em] text-dim sm:mb-5 sm:text-[10px]">
               Trusted by founders at
             </p>
