@@ -2,7 +2,7 @@
 
 import { KeyboardEvent, useMemo, useState } from "react";
 import Link from "next/link";
-import { ArrowRight, Check, ChevronDown, Clock3, Code2, Layers3, Lock } from "lucide-react";
+import { ArrowRight, Check, ChevronDown } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Reveal } from "./shared";
 
@@ -34,13 +34,6 @@ type PricingTab = {
     ctaHref: string;
   };
 };
-
-const trustItems = [
-  { icon: Lock, text: "Fixed pricing where possible" },
-  { icon: Layers3, text: "Milestone billing on larger builds" },
-  { icon: Code2, text: "Full code ownership" },
-  { icon: Clock3, text: "Fast response times" },
-];
 
 const pricingTabs: PricingTab[] = [
   {
@@ -434,30 +427,24 @@ export function Pricing() {
     <section id="pricing" className="relative py-16 sm:py-20">
       <div className="wrap">
         <Reveal>
-          <div className="mx-auto max-w-[760px] text-center">
-            <span className="section-label">Investment</span>
-            <h2 className="mt-4 font-display text-[clamp(30px,4.7vw,52px)] font-extrabold leading-[1.03] tracking-[-0.045em] text-white">
-              Choose the engagement that fits your stage
+          <div className="mx-auto max-w-[700px] text-center">
+            <span className="inline-flex rounded-full border border-white/[0.1] bg-white/[0.02] px-3 py-1 font-mono text-[10px] uppercase tracking-[0.12em] text-white/70">
+              Pricing
+            </span>
+            <h2 className="mx-auto mt-4 max-w-[16ch] text-balance font-display text-[clamp(30px,4.4vw,48px)] font-extrabold leading-[1.06] tracking-[-0.04em] text-white">
+              Clear pricing for every stage
             </h2>
-            <p className="mx-auto mt-3 max-w-[700px] text-[14px] leading-[1.65] text-body sm:text-[15px]">
-              From fixed-scope launches to growth systems, every engagement is structured for clarity, speed, and measurable outcomes.
+            <p className="mx-auto mt-3 max-w-[60ch] text-[14px] leading-[1.6] text-body sm:text-[15px]">
+              Choose launch work, custom engineering, or monthly growth support. Every option comes with clear scope, fixed pricing where possible, and direct access to the team.
+            </p>
+            <p className="mx-auto mt-3 max-w-[52ch] text-[12px] leading-[1.55] text-white/58 sm:text-[13px]">
+              Most projects start within 5 business days, with clear timing and next steps from day one.
             </p>
           </div>
         </Reveal>
 
-        <Reveal delay={0.04}>
-          <div className="mx-auto mt-4 flex max-w-[920px] flex-wrap items-center justify-center gap-2">
-            {trustItems.map((item) => (
-              <span key={item.text} className="inline-flex items-center gap-1.5 rounded-full border border-white/[0.08] bg-white/[0.015] px-3 py-1.5 text-[11px] text-white/70">
-                <item.icon size={12} className="text-accent/65" />
-                {item.text}
-              </span>
-            ))}
-          </div>
-        </Reveal>
-
         <Reveal delay={0.08}>
-          <div className="mx-auto mt-6 max-w-[1040px]">
+          <div className="mx-auto mt-5 max-w-[1040px] sm:mt-6">
             <PricingTabs tabs={pricingTabs} activeTab={activeTab} onTabChange={setActiveTab} />
             <PricingTabPanel tab={currentTab} />
             <PricingProofStrip />
