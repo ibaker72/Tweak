@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { ArrowRight, Blocks, Check, Network, Rocket, TrendingUp } from "lucide-react";
+import { ArrowRight, Blocks, Check, Cpu, Rocket, TrendingUp } from "lucide-react";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { Reveal } from "./shared";
@@ -17,20 +17,18 @@ type StudioTier = {
   featured?: boolean;
   badge?: string;
   icon: LucideIcon;
-  accentDotClass: string;
   accentTextClass: string;
   accentBorderClass: string;
   accentBorderHoverClass: string;
   accentIconBgClass: string;
-  accentStrokeGlowClass: string;
   accentCheckClass: string;
   ctaClass: string;
 };
 
 const studioPricingTiers: StudioTier[] = [
   {
-    name: "Landing Pages",
-    price: "$1,500/mo or $2,500 fixed",
+    name: "Landing Pages & WaaS",
+    price: "$1,500/mo or $2,500",
     subheader: "High-converting entry points and ongoing web partnerships.",
     features: [
       "Conversion-first layout",
@@ -41,19 +39,17 @@ const studioPricingTiers: StudioTier[] = [
     ctaLabel: "Start Building",
     ctaHref: "/contact?tier=Landing%20Pages%20%26%20WaaS",
     icon: Rocket,
-    accentDotClass: "bg-teal-300",
-    accentTextClass: "text-teal-200",
+    accentTextClass: "text-teal-400",
     accentBorderClass: "border-teal-400/30",
     accentBorderHoverClass: "group-hover:border-teal-400/80",
-    accentIconBgClass: "bg-teal-300/10",
-    accentStrokeGlowClass: "shadow-[0_0_10px_rgba(45,212,191,0.12)]",
-    accentCheckClass: "text-teal-300",
+    accentIconBgClass: "bg-teal-400/10",
+    accentCheckClass: "text-teal-400",
     ctaClass:
-      "border border-teal-300/25 bg-teal-300/8 text-teal-100 hover:border-teal-200/40 hover:bg-teal-300/15",
+      "border border-teal-400/30 bg-white/[0.03] text-teal-100 hover:border-teal-400/60 hover:bg-white/[0.05]",
   },
   {
     name: "SaaS Development",
-    price: "Milestone-Based",
+    price: "Starts at $10,000",
     subheader: "For founders launching complete, scalable software products.",
     features: [
       "Full-stack MVPs",
@@ -64,19 +60,17 @@ const studioPricingTiers: StudioTier[] = [
     ctaLabel: "Book a Strategy Call",
     ctaHref: "/contact?tier=SaaS%20Development",
     icon: Blocks,
-    accentDotClass: "bg-indigo-300",
-    accentTextClass: "text-indigo-200",
+    accentTextClass: "text-indigo-400",
     accentBorderClass: "border-indigo-400/30",
     accentBorderHoverClass: "group-hover:border-indigo-400/80",
-    accentIconBgClass: "bg-indigo-300/10",
-    accentStrokeGlowClass: "shadow-[0_0_10px_rgba(129,140,248,0.12)]",
-    accentCheckClass: "text-indigo-300",
+    accentIconBgClass: "bg-indigo-400/10",
+    accentCheckClass: "text-indigo-400",
     ctaClass:
-      "border border-indigo-300/25 bg-indigo-300/8 text-indigo-100 hover:border-indigo-200/40 hover:bg-indigo-300/15",
+      "border border-indigo-400/30 bg-white/[0.03] text-indigo-100 hover:border-indigo-400/60 hover:bg-white/[0.05]",
   },
   {
     name: "Custom Engineering",
-    price: "Custom Scope",
+    price: "Starts at $25,000",
     subheader: "Complex system builds, AI workflows, and dedicated senior delivery.",
     features: [
       "Complex Web Apps",
@@ -87,20 +81,18 @@ const studioPricingTiers: StudioTier[] = [
     ctaLabel: "Discuss Custom Engineering",
     ctaHref: "/contact?tier=Custom%20Engineering",
     featured: true,
-    badge: "Recommended",
-    icon: Network,
-    accentDotClass: "bg-lime-300",
-    accentTextClass: "text-lime-200",
-    accentBorderClass: "border-lime-400/55",
-    accentBorderHoverClass: "group-hover:border-lime-400/90",
-    accentIconBgClass: "bg-lime-300/10",
-    accentStrokeGlowClass: "shadow-[0_0_12px_rgba(163,230,53,0.16)]",
-    accentCheckClass: "text-lime-300",
-    ctaClass: "bg-lime-300 text-zinc-950 hover:bg-lime-200",
+    badge: "RECOMMENDED",
+    icon: Cpu,
+    accentTextClass: "text-lime-400",
+    accentBorderClass: "border-lime-400/30",
+    accentBorderHoverClass: "group-hover:border-lime-400/80",
+    accentIconBgClass: "bg-lime-400/10",
+    accentCheckClass: "text-lime-400",
+    ctaClass: "bg-lime-400 text-zinc-950 hover:bg-lime-300 font-bold",
   },
   {
-    name: "Growth",
-    price: "Monthly Retainer",
+    name: "SEO & Growth",
+    price: "Starts at $3,000/mo",
     subheader: "Search and growth systems that compound pipeline and demand.",
     features: [
       "Technical SEO Audits",
@@ -111,15 +103,13 @@ const studioPricingTiers: StudioTier[] = [
     ctaLabel: "Scale Your Product",
     ctaHref: "/contact?tier=SEO%20%26%20Growth",
     icon: TrendingUp,
-    accentDotClass: "bg-amber-300",
-    accentTextClass: "text-amber-200",
+    accentTextClass: "text-amber-400",
     accentBorderClass: "border-amber-400/30",
     accentBorderHoverClass: "group-hover:border-amber-400/80",
-    accentIconBgClass: "bg-amber-300/10",
-    accentStrokeGlowClass: "shadow-[0_0_10px_rgba(251,191,36,0.12)]",
-    accentCheckClass: "text-amber-300",
+    accentIconBgClass: "bg-amber-400/10",
+    accentCheckClass: "text-amber-400",
     ctaClass:
-      "border border-amber-300/25 bg-amber-300/8 text-amber-100 hover:border-amber-200/40 hover:bg-amber-300/15",
+      "border border-amber-400/30 bg-white/[0.03] text-amber-100 hover:border-amber-400/60 hover:bg-white/[0.05]",
   },
 ];
 
@@ -145,7 +135,6 @@ function TierCard({ tier, index }: { tier: StudioTier; index: number }) {
           "bg-white/[0.02] backdrop-blur-md transition-all duration-300 hover:-translate-y-1",
           tier.accentBorderClass,
           tier.accentBorderHoverClass,
-          tier.accentStrokeGlowClass,
           tier.featured && "lg:scale-[1.03]",
         )}
       >
@@ -155,17 +144,21 @@ function TierCard({ tier, index }: { tier: StudioTier; index: number }) {
           </span>
         )}
 
-        <div className="relative z-10 flex flex-col h-full">
+        <div className="relative z-10 flex h-full flex-col">
           <div className="flex items-start gap-3">
-            <span className={cn("inline-flex h-11 w-11 items-center justify-center rounded-xl border border-white/10", tier.accentIconBgClass)}>
+            <span
+              className={cn(
+                "inline-flex h-11 w-11 items-center justify-center rounded-xl border border-white/10",
+                tier.accentIconBgClass,
+              )}
+            >
               <TierIcon className={cn("h-5 w-5", tier.accentTextClass)} strokeWidth={2} />
             </span>
-            <div className={cn("mt-2 h-1.5 w-1.5 rounded-full", tier.accentDotClass)} />
           </div>
 
           <div className={cn("space-y-3", tier.badge ? "mt-4" : "mt-5")}>
             <h3 className="text-2xl font-bold tracking-tight text-white">{tier.name}</h3>
-            <p className="text-3xl font-bold leading-tight text-white">{tier.price}</p>
+            <p className="mt-4 mb-2 text-3xl font-bold leading-tight text-white">{tier.price}</p>
             <p className="text-sm leading-relaxed text-zinc-400">{tier.subheader}</p>
           </div>
 
