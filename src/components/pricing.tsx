@@ -120,16 +120,11 @@ const pricingTabs: PricingTab[] = [
 
 function CheckIcon() {
   return (
-    <svg
-      aria-hidden="true"
-      viewBox="0 0 24 24"
-      className="mt-0.5 h-4 w-4 flex-shrink-0 text-lime-400"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2.2"
-    >
-      <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
-    </svg>
+    <span className="mt-0.5 inline-flex h-4 w-4 flex-shrink-0 items-center justify-center rounded-full bg-[#ccff00]/15 ring-1 ring-[#ccff00]/40 shadow-[0_0_12px_rgba(204,255,0,0.35)]">
+      <svg aria-hidden="true" viewBox="0 0 24 24" className="h-3 w-3 text-[#ccff00]" fill="none" stroke="currentColor" strokeWidth="2.4">
+        <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+      </svg>
+    </span>
   );
 }
 
@@ -155,12 +150,12 @@ export function Pricing() {
 
         <Reveal delay={0.08}>
           <div className="mx-auto mt-8 max-w-5xl">
-            <div className="mx-auto flex w-full max-w-2xl rounded-2xl border border-zinc-800 bg-zinc-900/70 p-1.5">
+            <div className="mx-auto flex w-full max-w-2xl rounded-full bg-zinc-800/50 p-1 ring-1 ring-white/5">
               <div className="relative grid w-full grid-cols-2 gap-1">
                 <span
                   aria-hidden="true"
                   className={cn(
-                    "pointer-events-none absolute inset-y-0 w-[calc(50%-2px)] rounded-xl bg-zinc-800 shadow-[inset_0_1px_0_rgba(255,255,255,0.08)] transition-all duration-300",
+                    "pointer-events-none absolute inset-y-0 w-[calc(50%-2px)] rounded-full bg-zinc-700/80 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_10px_30px_rgba(0,0,0,0.35)] transition-all duration-500 [transition-timing-function:cubic-bezier(0.22,1,0.36,1)]",
                     activeTab === "business-growth" ? "left-0" : "left-1/2",
                   )}
                 />
@@ -172,7 +167,7 @@ export function Pricing() {
                       type="button"
                       onClick={() => setActiveTab(tab.id)}
                       className={cn(
-                        "relative z-10 rounded-xl px-4 py-2.5 text-sm font-medium transition-all duration-300",
+                        "relative z-10 rounded-full px-4 py-2.5 text-sm font-medium transition-all duration-300",
                         isActive ? "text-white" : "text-zinc-400 hover:text-zinc-200",
                       )}
                     >
@@ -184,12 +179,12 @@ export function Pricing() {
             </div>
 
             <div className="mt-8 text-center">
-              <p className="font-mono text-[11px] uppercase tracking-[0.14em] text-lime-400/80">{currentTab.eyebrow}</p>
-              <h3 className="mt-2 text-2xl font-semibold tracking-tight text-white sm:text-3xl">{currentTab.title}</h3>
+              <p className="mx-auto inline-flex items-center rounded-md border border-[#ccff00]/30 bg-[#ccff00]/10 px-3 py-1 text-[11px] tracking-tight text-[#ccff00]">{currentTab.eyebrow}</p>
+              <h3 className="mt-3 text-2xl font-semibold tracking-tight text-white sm:text-3xl">{currentTab.title}</h3>
               <p className="mx-auto mt-3 max-w-2xl text-sm leading-6 text-zinc-400">{currentTab.blurb}</p>
             </div>
 
-            <div className="mt-8 grid gap-5 md:grid-cols-2">
+            <div className="mt-8 grid gap-6 md:grid-cols-2 md:items-stretch">
               {currentTab.plans.map((plan) => {
                 const isPopular = Boolean(plan.highlight);
 
@@ -197,14 +192,20 @@ export function Pricing() {
                   <article
                     key={plan.name}
                     className={cn(
-                      "relative flex h-full flex-col rounded-2xl border bg-zinc-900/50 p-6 transition-all duration-300 hover:-translate-y-1",
+                      "relative isolate flex h-full flex-col overflow-hidden rounded-2xl bg-gradient-to-b from-zinc-900/70 to-zinc-900/40 p-6 backdrop-blur-md ring-1 ring-white/10 transition-all duration-300 hover:-translate-y-1 hover:ring-white/20",
                       isPopular
-                        ? "border-lime-400/70 shadow-[0_0_0_1px_rgba(163,230,53,0.35),0_0_40px_-10px_rgba(163,230,53,0.35)] hover:border-lime-300"
-                        : "border-zinc-800 hover:border-zinc-600",
+                        ? "shadow-[0_0_0_1px_rgba(255,255,255,0.08)]"
+                        : "shadow-[0_0_0_1px_rgba(255,255,255,0.04)]",
                     )}
                   >
+                    {isPopular && (
+                      <span
+                        aria-hidden="true"
+                        className="pointer-events-none absolute -top-20 left-1/2 -z-10 h-56 w-56 -translate-x-1/2 rounded-full bg-[#ccff00]/10 blur-3xl"
+                      />
+                    )}
                     {plan.badge && (
-                      <span className="absolute -top-3 right-5 rounded-full border border-lime-300/40 bg-lime-400/15 px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.14em] text-lime-300">
+                      <span className="absolute right-5 top-5 rounded-md border border-[#ccff00]/30 bg-[#ccff00]/10 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.14em] text-[#ccff00]">
                         {plan.badge}
                       </span>
                     )}
@@ -212,7 +213,7 @@ export function Pricing() {
                     <div>
                       <p className="text-sm font-medium text-zinc-200">{plan.name}</p>
                       <div className="mt-4 flex items-end gap-1">
-                        <p className="text-4xl font-bold tracking-tight text-white sm:text-5xl">{plan.price}</p>
+                        <p className="text-4xl font-semibold tracking-tighter text-white sm:text-5xl">{plan.price}</p>
                         {plan.cadence && <p className="pb-1 text-sm text-zinc-400">{plan.cadence}</p>}
                       </div>
                       <p className="mt-4 text-sm leading-6 text-zinc-400">{plan.description}</p>
@@ -220,7 +221,7 @@ export function Pricing() {
 
                     <ul className="mt-6 space-y-3">
                       {plan.features.map((feature) => (
-                        <li key={feature} className="flex items-start gap-3 text-sm leading-6 text-zinc-300">
+                        <li key={feature} className="flex items-start gap-3 text-sm leading-6 text-zinc-400">
                           <CheckIcon />
                           <span>{feature}</span>
                         </li>
@@ -233,8 +234,8 @@ export function Pricing() {
                         className={cn(
                           "inline-flex w-full items-center justify-center gap-2 rounded-xl px-4 py-3 text-sm font-semibold transition-all duration-300",
                           isPopular
-                            ? "bg-lime-400 text-zinc-950 hover:bg-lime-300"
-                            : "border border-zinc-700 bg-transparent text-zinc-100 hover:border-lime-400/60 hover:bg-lime-400 hover:text-zinc-950",
+                            ? "bg-[#ccff00] text-zinc-950 hover:bg-[#d8ff33] hover:shadow-[0_0_15px_rgba(204,255,0,0.4)]"
+                            : "border border-zinc-700 bg-transparent text-zinc-100 hover:border-[#ccff00]/60 hover:bg-[#ccff00] hover:text-zinc-950 hover:shadow-[0_0_15px_rgba(204,255,0,0.4)]",
                         )}
                       >
                         {plan.ctaLabel}
