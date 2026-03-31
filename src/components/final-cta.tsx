@@ -20,7 +20,9 @@ export function FinalCTA() {
       <div className="wrap">
         <Reveal>
           <div className="mx-auto max-w-[720px] text-center">
-            <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-accent/15 bg-accent/[0.05] px-4 py-1.5 sm:mb-8">
+            
+            {/* Centered Pill */}
+            <div className="mb-6 mx-auto flex w-fit items-center justify-center gap-2 rounded-full border border-accent/15 bg-accent/[0.05] px-4 py-1.5 sm:mb-8">
               <span className="relative flex h-1.5 w-1.5">
                 <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-accent opacity-40" />
                 <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-accent" />

@@ -43,55 +43,61 @@ const deliveryTraits = [
 
 export function ServicesNew() {
   return (
-    <section id="services" className="relative py-28 sm:py-36">
-      <div className="wrap">
+    <section id="services" className="relative py-20 sm:py-28">
+      <div className="wrap relative z-10">
         <Reveal>
-          <div className="mb-16 sm:mb-20">
-            <span className="section-label">What we build</span>
-            <h2 className="mt-5 max-w-[560px] font-display text-[clamp(32px,4.5vw,52px)] font-extrabold leading-[1.04] tracking-[-0.04em] text-white">
-              Four disciplines.{" "}
-              <span className="text-body">One team that delivers all of them.</span>
+          {/* Centered Header Block */}
+          <div className="mx-auto mb-12 flex max-w-[680px] flex-col items-center text-center sm:mb-16">
+            <span className="mb-3 font-mono text-[10px] font-semibold uppercase tracking-widest text-accent sm:text-[11px]">
+              What We Build
+            </span>
+            <h2 className="font-display text-[clamp(32px,4vw,48px)] font-bold leading-[1.1] tracking-tight text-white">
+              Four disciplines. <span className="text-white/40">One team that delivers all of them.</span>
             </h2>
           </div>
         </Reveal>
 
         {/* Bento grid */}
-        <div className="grid auto-rows-fr gap-4 sm:grid-cols-2 sm:gap-5">
+        <div className="mx-auto max-w-5xl grid auto-rows-fr gap-4 sm:grid-cols-2 sm:gap-5">
           {services.map((sv, i) => (
             <Reveal key={sv.title} delay={i * 0.06} className="h-full">
               <div
-                className="group relative flex h-full flex-col overflow-hidden rounded-2xl border border-white/[0.06] p-7 transition-all duration-300 hover:border-white/[0.12] lg:p-9"
+                className="group relative flex h-full flex-col overflow-hidden rounded-[20px] border border-white/[0.08] bg-white/[0.01] p-7 transition-all duration-300 hover:border-white/[0.15] hover:bg-white/[0.02] lg:p-9"
                 style={{
-                  background: "rgba(255,255,255,0.012)",
                   boxShadow: "0 1px 0 rgba(255,255,255,0.02) inset",
                 }}
               >
-                {/* Subtle hover glow */}
-                <div className="pointer-events-none absolute inset-0 rounded-2xl bg-[radial-gradient(ellipse_at_top_right,rgba(200,255,0,0.015),transparent_60%)] opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
+                {/* Subtle hover glow matching standard pricing cards */}
+                <div className="pointer-events-none absolute inset-0 rounded-[20px] bg-[radial-gradient(ellipse_at_top_right,rgba(255,255,255,0.03),transparent_60%)] opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
 
                 {/* Icon + title row */}
                 <div className="relative mb-6 flex items-start gap-4">
-                  <div className="flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-xl border border-accent/15 bg-accent/[0.05]">
-                    <sv.icon size={18} className="text-accent" />
+                  <div className="flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-xl border border-white/[0.1] bg-white/[0.03] shadow-sm transition-colors duration-300 group-hover:border-white/[0.15] group-hover:bg-white/[0.06]">
+                    <sv.icon size={18} className="text-white/70 transition-colors duration-300 group-hover:text-white/90" />
                   </div>
                   <div>
-                    <h3 className="font-display text-[19px] font-bold tracking-[-0.02em] text-white">{sv.title}</h3>
-                    <p className="mt-1 font-mono text-[10px] text-accent/50">{sv.tagline}</p>
+                    <h3 className="font-display text-[20px] font-bold tracking-tight text-white sm:text-[22px]">{sv.title}</h3>
+                    <p className="mt-1 font-mono text-[10px] font-medium uppercase tracking-[0.1em] text-accent/80">{sv.tagline}</p>
                   </div>
                 </div>
 
-                <p className="relative mb-7 flex-1 text-[13px] leading-[1.85] text-body sm:text-[14px]">{sv.desc}</p>
+                <p className="relative mb-8 flex-1 text-[13.5px] leading-[1.65] text-white/70">{sv.desc}</p>
 
-                <div className="relative flex flex-wrap gap-1.5">
+                <div className="relative mt-auto flex flex-wrap gap-2 border-t border-white/[0.06] pt-6 transition-colors duration-300 group-hover:border-white/[0.08]">
                   {sv.tags.map((t) => (
-                    <span key={t} className="tag">{t}</span>
+                    <span 
+                      key={t} 
+                      className="inline-flex items-center rounded-md border border-white/10 bg-white/[0.03] px-2.5 py-1 font-mono text-[10px] text-white/60"
+                    >
+                      {t}
+                    </span>
                   ))}
                 </div>
 
                 {/* Hover arrow */}
                 <ArrowRight
                   size={14}
-                  className="absolute right-7 top-7 text-dim opacity-0 transition-all duration-200 group-hover:translate-x-1 group-hover:text-accent group-hover:opacity-100 lg:right-9 lg:top-9"
+                  className="absolute right-7 top-7 text-white/30 opacity-0 transition-all duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-accent group-hover:opacity-100 lg:right-9 lg:top-9"
                 />
               </div>
             </Reveal>
@@ -99,11 +105,11 @@ export function ServicesNew() {
         </div>
 
         {/* Delivery strip */}
-        <Reveal delay={0.3}>
-          <div className="mt-12 flex flex-wrap items-center justify-center gap-x-8 gap-y-3 sm:gap-x-10">
+        <Reveal delay={0.15}>
+          <div className="mt-14 flex flex-wrap items-center justify-center gap-x-6 gap-y-3 sm:gap-x-8">
             {deliveryTraits.map((trait) => (
-              <span key={trait} className="flex items-center gap-2 text-[12px] text-dim">
-                <Check size={10} className="text-accent/50" />
+              <span key={trait} className="flex items-center gap-2 rounded-full border border-white/[0.06] bg-white/[0.015] px-3.5 py-1.5 text-[11px] font-medium text-white/50">
+                <Check size={10} className="text-accent/80" strokeWidth={3} />
                 {trait}
               </span>
             ))}

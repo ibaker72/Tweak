@@ -80,26 +80,28 @@ export function FeaturedWork() {
 
       <div className="wrap relative">
         <Reveal>
-          <div className="mb-7 flex flex-col gap-5 md:mb-8 md:flex-row md:items-end md:justify-between">
-            <div className="max-w-[740px]">
-              <span className="section-label">Selected Work</span>
-              <h2 className="section-title mt-3">Real projects. Measurable outcomes.</h2>
-              <p className="mt-3 max-w-[560px] text-[14px] leading-[1.6] text-body sm:text-[15px]">
-                Product engineering engagements focused on measurable business lift, delivered with production-grade precision.
-              </p>
-            </div>
+          <div className="mx-auto mb-10 flex max-w-[680px] flex-col items-center text-center sm:mb-14">
+  <span className="mb-3 font-mono text-[10px] font-semibold uppercase tracking-widest text-accent sm:text-[11px]">
+    Selected Work
+  </span>
+  <h2 className="font-display text-[clamp(32px,4vw,48px)] font-bold leading-[1.1] tracking-tight text-white">
+    Real projects. Measurable outcomes.
+  </h2>
+  <p className="mt-4 mb-6 max-w-[560px] text-[14.5px] leading-[1.6] text-white/60 sm:text-[15.5px]">
+    Product engineering engagements focused on measurable business lift, delivered with production-grade precision.
+  </p>
 
-            <Link
-              href="/work"
-              className="group inline-flex w-fit items-center gap-2 rounded-full border border-white/[0.1] bg-white/[0.03] px-4 py-2 font-mono text-[11px] uppercase tracking-[0.1em] text-white/85 transition-all duration-300 hover:-translate-y-0.5 hover:border-accent/30 hover:text-white"
-            >
-              All case studies
-              <ArrowUpRight
-                size={12}
-                className="transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
-              />
-            </Link>
-          </div>
+  <Link
+    href="/work"
+    className="group inline-flex w-fit items-center gap-2 rounded-full border border-white/[0.1] bg-white/[0.03] px-5 py-2.5 font-mono text-[11px] font-semibold uppercase tracking-[0.1em] text-white/85 transition-all duration-300 hover:-translate-y-0.5 hover:border-accent/30 hover:text-white"
+  >
+    All case studies
+    <ArrowUpRight
+      size={12}
+      className="transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
+    />
+  </Link>
+</div>
         </Reveal>
 
         <div className="-mx-5 flex snap-x snap-mandatory gap-3 overflow-x-auto px-5 pb-2 pt-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden md:hidden">

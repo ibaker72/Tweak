@@ -29,6 +29,9 @@ export function Hero() {
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(0,0,0,0.18),rgba(0,0,0,0.84)_72%)]" />
       <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-black/35 via-black/45 to-black/80" />
 
+      {/* NEW: Text Contrast Vignette (Dark glow directly behind the text) */}
+      <div className="pointer-events-none absolute inset-0 z-[5] bg-[radial-gradient(ellipse_60%_50%_at_50%_50%,rgba(0,0,0,0.4),transparent)]" />
+
       {/* Texture */}
       <div
         className="pointer-events-none absolute inset-0 opacity-[0.04]"
@@ -42,7 +45,9 @@ export function Hero() {
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_40%_40%_at_80%_80%,rgba(200,255,0,0.02),transparent)]" />
 
       <div className="wrap relative z-10 flex min-h-[100dvh] flex-col justify-center pb-12 pt-24 sm:pb-16 sm:pt-24 lg:pb-20 lg:pt-28">
-        <div className="max-w-[900px]">
+        
+        {/* CHANGED: Added mx-auto, flex-col, items-center, and text-center to lock everything to the middle */}
+        <div className="mx-auto flex max-w-[900px] flex-col items-center text-center">
           <Reveal>
             <div className="mb-8 sm:mb-10">
               <div
@@ -61,21 +66,24 @@ export function Hero() {
           </Reveal>
 
           <Reveal delay={0.05}>
-            <h1 className="max-w-[820px] font-display text-[clamp(54px,12vw,118px)] font-black leading-[0.88] tracking-[-0.055em] text-white sm:text-[clamp(68px,10vw,118px)]">
-              Look
-              <br />
-              <span className="gradient-text">Sharper.</span>
+            {/* CHANGED: Hid the <br/> on mobile using 'sm:hidden' so it's a 1-liner on desktop */}
+            <h1 className="max-w-[800px] font-display text-[clamp(54px,12vw,118px)] font-black leading-[0.88] tracking-[-0.055em] text-white sm:text-[clamp(68px,10vw,118px)]">
+              Ship
+              <br className="sm:hidden" />
+              <span className="gradient-text sm:ml-4">your vision.</span>
             </h1>
           </Reveal>
 
           <Reveal delay={0.12}>
-            <p className="mt-6 max-w-[640px] text-[16px] leading-[1.8] text-white/72 sm:mt-7 sm:text-[18px] lg:text-[19px]">
+            {/* CHANGED: Added mx-auto to center the paragraph block */}
+            <p className="mx-auto mt-6 max-w-[640px] text-[16px] leading-[1.8] text-white/72 sm:mt-7 sm:text-[18px] lg:text-[19px]">
               Product engineering studio for founders who need websites, web apps, and automation systems built fast, built right, and built to convert.
             </p>
           </Reveal>
 
           <Reveal delay={0.16}>
-            <div className="mt-7 flex flex-wrap gap-2.5 sm:mt-8">
+            {/* CHANGED: Added justify-center to the pills */}
+            <div className="mt-7 flex flex-wrap justify-center gap-2.5 sm:mt-8">
               {servicePills.map((pill) => (
                 <span
                   key={pill}
@@ -88,7 +96,8 @@ export function Hero() {
           </Reveal>
 
           <Reveal delay={0.2}>
-            <div className="mt-9 flex flex-col gap-3 sm:mt-10 sm:flex-row sm:items-center">
+            {/* CHANGED: Ensure the button group is centered */}
+            <div className="mt-9 flex w-full flex-col justify-center gap-3 sm:mt-10 sm:w-auto sm:flex-row sm:items-center">
               <Link href="/contact" className="btn-v justify-center px-6 py-3 text-[13px] sm:px-8 sm:py-3.5 sm:text-[14px]">
                 Start a project <ArrowRight size={14} />
               </Link>
