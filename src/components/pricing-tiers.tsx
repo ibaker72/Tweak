@@ -301,6 +301,7 @@ export function PricingTiers() {
                     <button
                       key={tab.id}
                       type="button"
+                      suppressHydrationWarning
                       role="tab"
                       aria-selected={isActive}
                       aria-pressed={isActive}
