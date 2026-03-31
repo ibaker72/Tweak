@@ -1,59 +1,82 @@
 "use client";
+
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowUpRight } from "lucide-react";
+import { ArrowUpRight, ChevronDown } from "lucide-react";
+import { useState } from "react";
 import { Reveal } from "./shared";
 
-const featuredProjects = [
+type FeaturedProject = {
+  slug: string;
+  title: string;
+  status: "LIVE" | "IN DEV";
+  industry: string;
+  tagline: string;
+  description: string;
+  metrics: [string, string];
+  stack: string[];
+  image: string;
+  href: string;
+};
+
+const featuredProjects: FeaturedProject[] = [
   {
     slug: "create3dparts",
     title: "Create3DParts.com",
-    category: "E-Commerce Platform",
-    description: "Real-time 3D printing quoting engine with instant pricing and Stripe checkout. Replaced a 48-hour manual process.",
-    metrics: [
-      { label: "Quote time", before: "48 hrs", after: "60 sec" },
-      { label: "Orders", value: "+35% month one" },
-    ],
+    status: "LIVE",
+    industry: "E-Commerce Platform · 2025",
+    tagline: "Real-time 3D printing quoting engine with instant pricing.",
+    description:
+      "Real-time 3D printing quoting engine with instant pricing and Stripe checkout. Replaced a 48-hour manual process.",
+    metrics: ["Quote time: 48hrs → 60sec", "Orders: +35% month one"],
     stack: ["Next.js", "TypeScript", "Stripe", "AWS S3"],
-    accent: "#C8FF00",
-    year: "2025",
-    live: true,
     image: "/proof/create3dparts/home.png",
+    href: "/work/create3dparts",
   },
   {
     slug: "leadsandsaas",
     title: "LeadsAndSaaS",
-    category: "SaaS Platform",
-    description: "Multi-tenant platform consolidating agent management, asset storage, and lead distribution into one product.",
-    metrics: [
-      { label: "Lead response", before: "4 hrs", after: "15 min" },
-      { label: "Onboarding", before: "3 days", after: "4 hours" },
-    ],
+    status: "LIVE",
+    industry: "SaaS Platform · 2025",
+    tagline: "Multi-tenant platform for agent management and lead distribution.",
+    description:
+      "Multi-tenant platform consolidating agent management, asset storage, and lead distribution into one product.",
+    metrics: ["Lead response: 4hrs → 15min", "Onboarding: 3 days → 4hrs"],
     stack: ["Next.js", "Supabase", "OpenAI", "Vercel"],
-    accent: "#8B5CF6",
-    year: "2025",
-    live: true,
     image: "/proof/leadsandsaas/overview.png",
+    href: "/work/leadsandsaas",
   },
   {
     slug: "kommison",
     title: "Kommison.com",
-    category: "Affiliate & Commission Platform",
-    description: "Affiliate and commission management platform with real-time tracking, automated payouts, and multi-tier campaign analytics.",
-    metrics: [
-      { label: "Status", value: "In development" },
-      { label: "Payout automation", value: "Real-time" },
-    ],
+    status: "IN DEV",
+    industry: "Affiliate & Commission Platform · 2025",
+    tagline: "Commission tracking with automated payouts and campaign analytics.",
+    description:
+      "Affiliate and commission management platform with real-time tracking, automated payouts, and multi-tier campaign analytics.",
+    metrics: ["Status: In development", "Payout automation: Real-time"],
     stack: ["Next.js", "TypeScript", "Supabase", "Stripe Connect"],
-    accent: "#06B6D4",
-    year: "2025",
-    live: false,
-    inDev: true,
     image: "/proof/create3dparts/dashboard.png",
+    href: "/work/kommison",
+  },
+  {
+    slug: "speedwaymotorsllc",
+    title: "SpeedwayMotorsLLC.com",
+    status: "LIVE",
+    industry: "Automotive Dealership · 2025",
+    tagline: "Full dealership website with inventory management and financing tools.",
+    description:
+      "Modern dealership website for Speedway Motors LLC featuring real-time inventory sync, online financing applications, and lead capture optimized for local SEO.",
+    metrics: ["Online leads: +40%", "Inventory sync: Real-time"],
+    stack: ["Next.js", "TypeScript", "Supabase", "Vercel"],
+    image: "/proof/leadsandsaas/agents.png",
+    href: "/work/speedwaymotorsllc",
   },
 ];
 
 export function FeaturedWork() {
+  const [expandedCard, setExpandedCard] = useState<string | null>(null);
+
   return (
     <section id="work" className="relative py-28 sm:py-36">
       <div className="wrap">
@@ -81,118 +104,116 @@ export function FeaturedWork() {
           </div>
         </Reveal>
 
-        <div className="space-y-6 sm:space-y-8">
-          {featuredProjects.map((project, i) => (
-            <Reveal key={project.slug} delay={i * 0.08}>
-              <Link href={`/work/${project.slug}`} className="group block">
-                <div
-                  className="overflow-hidden rounded-2xl border border-white/[0.06] transition-all duration-500 hover:border-white/[0.14] sm:rounded-3xl"
-                  style={{
-                    background: "rgba(255,255,255,0.012)",
-                    boxShadow: "0 1px 0 rgba(255,255,255,0.02) inset, 0 8px 32px rgba(0,0,0,0.1)",
-                  }}
-                >
-                  {/* Image section - larger and more dramatic */}
-                  <div className="relative h-64 overflow-hidden sm:h-80 lg:h-[380px]">
-                    <Image
-                      src={project.image}
-                      alt={project.title}
-                      fill
-                      sizes="(max-width: 768px) 100vw, (max-width: 1320px) 90vw, 1320px"
-                      priority={i === 0}
-                      className="object-cover object-top transition-transform duration-700 group-hover:scale-[1.03]"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-surface-0 via-surface-0/40 to-transparent" />
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-5 lg:gap-6">
+          {featuredProjects.map((project, i) => {
+            const isExpanded = expandedCard === project.slug;
+            const isLive = project.status === "LIVE";
 
-                    {/* Floating badges on image */}
-                    <div className="absolute right-5 top-5 flex items-center gap-2 sm:right-7 sm:top-7">
-                      {project.live && (
-                        <span
-                          className="flex items-center gap-1.5 rounded-full border border-emerald-400/20 bg-surface-0/80 px-3 py-[5px] backdrop-blur-sm"
-                          style={{ boxShadow: "0 2px 8px rgba(0,0,0,0.3)" }}
-                        >
-                          <span className="h-1.5 w-1.5 rounded-full bg-emerald-400" />
-                          <span className="font-mono text-[9px] font-medium tracking-[0.06em] text-emerald-400/90">LIVE</span>
-                        </span>
-                      )}
-                      {"inDev" in project && project.inDev && (
-                        <span
-                          className="flex items-center gap-1.5 rounded-full border border-amber-400/20 bg-surface-0/80 px-3 py-[5px] backdrop-blur-sm"
-                          style={{ boxShadow: "0 2px 8px rgba(0,0,0,0.3)" }}
-                        >
-                          <span className="h-1.5 w-1.5 rounded-full bg-amber-400" />
-                          <span className="font-mono text-[9px] font-medium tracking-[0.06em] text-amber-400/90">IN DEV</span>
-                        </span>
-                      )}
-                    </div>
+            return (
+              <Reveal key={project.slug} delay={i * 0.08}>
+                <article className="group relative h-[300px] overflow-hidden rounded-2xl border border-white/[0.07] bg-surface-0/50 sm:rounded-3xl md:h-[360px] lg:h-[400px]">
+                  <Image
+                    src={project.image}
+                    alt={project.title}
+                    fill
+                    sizes="(max-width: 768px) 100vw, (max-width: 1320px) 45vw, 620px"
+                    priority={i < 2}
+                    className="object-cover object-center transition-transform duration-500 ease-out group-hover:scale-[1.03]"
+                  />
+
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/35 to-black/15 transition-all duration-300 ease-out group-hover:from-black/90 group-hover:via-black/80 group-hover:to-black/45 md:group-hover:from-black/85 md:group-hover:via-black/70 md:group-hover:to-black/40" />
+
+                  <div className="absolute left-4 top-4 z-20 md:left-5 md:top-5">
+                    <span
+                      className={`flex items-center gap-1.5 rounded-full border px-3 py-[5px] font-mono text-[10px] tracking-[0.08em] ${
+                        isLive
+                          ? "border-emerald-400/25 bg-surface-0/70 text-emerald-300"
+                          : "border-amber-400/30 bg-surface-0/70 text-amber-300"
+                      }`}
+                    >
+                      <span className={`h-1.5 w-1.5 rounded-full ${isLive ? "bg-emerald-400" : "bg-amber-400"}`} />
+                      {project.status}
+                    </span>
                   </div>
 
-                  {/* Content below image */}
-                  <div className="grid gap-0 lg:grid-cols-[1.2fr,0.8fr]">
-                    <div className="p-7 sm:p-9 lg:p-10">
-                      <div className="mb-4 flex flex-wrap items-center gap-2.5">
-                        <span className="font-mono text-[10px] uppercase tracking-[0.1em] text-dim">
-                          {project.category}
+                  <div className="absolute right-4 top-4 z-20 md:right-5 md:top-5">
+                    <span className="rounded-full border border-white/10 bg-surface-0/70 px-3 py-[5px] font-mono text-[10px] tracking-[0.06em] text-white/80">
+                      {project.industry}
+                    </span>
+                  </div>
+
+                  <div className="absolute inset-x-0 bottom-0 z-20 p-4 md:p-5 lg:p-6">
+                    <h3 className="font-display text-[24px] font-bold tracking-[-0.03em] text-white md:text-[28px]">
+                      {project.title}
+                    </h3>
+                    <p className="mt-1 text-[13px] text-white/80 md:text-[14px]">{project.tagline}</p>
+
+                    <div className="mt-3 flex flex-wrap gap-2">
+                      {project.metrics.map((metric) => (
+                        <span
+                          key={metric}
+                          className="inline-flex items-center rounded-full border border-white/15 bg-black/35 px-2.5 py-1 font-mono text-[10px] text-white/90"
+                        >
+                          {metric}
                         </span>
-                        <span className="h-0.5 w-0.5 rounded-full bg-dim" />
-                        <span className="font-mono text-[10px] text-dim">
-                          {project.year}
-                        </span>
-                      </div>
+                      ))}
+                    </div>
 
-                      <h3 className="font-display text-[28px] font-bold tracking-[-0.03em] text-white transition-colors duration-300 group-hover:text-accent sm:text-[32px] lg:text-[36px]">
-                        {project.title}
-                      </h3>
-
-                      <p className="mt-3 max-w-[460px] text-[14px] leading-[1.75] text-body sm:text-[15px]">
-                        {project.description}
-                      </p>
-
-                      <div className="mt-6 flex flex-wrap gap-1.5 sm:mt-8">
-                        {project.stack.map((t) => (
-                          <span key={t} className="tag">{t}</span>
+                    <div className="hidden translate-y-2 opacity-0 transition-all duration-300 ease-out group-hover:translate-y-0 group-hover:opacity-100 md:block">
+                      <p className="mt-3 max-w-[90%] text-[13px] leading-[1.6] text-white/90">{project.description}</p>
+                      <div className="mt-3 flex flex-wrap gap-1.5">
+                        {project.stack.map((tech) => (
+                          <span key={tech} className="tag bg-white/[0.08] text-white/90 backdrop-blur-sm">
+                            {tech}
+                          </span>
                         ))}
                       </div>
-
-                      <div className="mt-6 flex items-center gap-2 font-mono text-[11px] text-dim opacity-0 transition-all duration-300 group-hover:translate-x-1 group-hover:text-accent group-hover:opacity-100 sm:mt-8">
+                      <Link
+                        href={project.href}
+                        className="mt-3 inline-flex items-center gap-1.5 font-mono text-[11px] uppercase tracking-[0.08em] text-white transition-colors duration-200 hover:text-accent"
+                      >
                         View case study <ArrowUpRight size={12} />
-                      </div>
+                      </Link>
                     </div>
 
-                    {/* Right: metrics panel */}
-                    <div className="border-t border-white/[0.04] bg-white/[0.008] p-7 sm:p-9 lg:border-l lg:border-t-0 lg:p-10">
-                      <div className="flex h-full flex-col justify-center gap-8 lg:gap-10">
-                        {project.metrics.map((m) => (
-                          <div key={m.label}>
-                            <div className="mb-2 font-mono text-[10px] uppercase tracking-[0.12em] text-dim">
-                              {m.label}
-                            </div>
-                            {"before" in m ? (
-                              <div className="flex items-baseline gap-2.5 whitespace-nowrap">
-                                <span className="text-[14px] text-white/25 line-through">
-                                  {m.before}
-                                </span>
-                                <span className="text-[13px] text-accent/40">
-                                  &rarr;
-                                </span>
-                                <span className="font-display text-[30px] font-black tracking-[-0.02em] text-accent sm:text-[34px]">
-                                  {m.after}
-                                </span>
-                              </div>
-                            ) : (
-                              <div className="font-display text-[28px] font-black tracking-[-0.02em] text-accent sm:text-[32px]">
-                                {m.value}
-                              </div>
-                            )}
+                    <div className="mt-3 md:hidden">
+                      <button
+                        type="button"
+                        onClick={() => setExpandedCard(isExpanded ? null : project.slug)}
+                        className="inline-flex items-center gap-1 rounded-full border border-white/15 bg-black/25 px-2.5 py-1 font-mono text-[10px] uppercase tracking-[0.08em] text-white/85"
+                      >
+                        {isExpanded ? "Hide details" : "Show details"}
+                        <ChevronDown size={12} className={`transition-transform duration-300 ${isExpanded ? "rotate-180" : ""}`} />
+                      </button>
+
+                      <div
+                        className={`grid transition-all duration-300 ease-out ${
+                          isExpanded ? "mt-3 grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0"
+                        }`}
+                      >
+                        <div className="overflow-hidden">
+                          <p className="text-[13px] leading-[1.6] text-white/90">{project.description}</p>
+                          <div className="mt-3 flex flex-wrap gap-1.5">
+                            {project.stack.map((tech) => (
+                              <span key={tech} className="tag bg-white/[0.08] text-white/90 backdrop-blur-sm">
+                                {tech}
+                              </span>
+                            ))}
                           </div>
-                        ))}
+                          <Link
+                            href={project.href}
+                            className="mt-3 inline-flex items-center gap-1.5 font-mono text-[11px] uppercase tracking-[0.08em] text-white"
+                          >
+                            View case study <ArrowUpRight size={12} />
+                          </Link>
+                        </div>
                       </div>
                     </div>
                   </div>
-                </div>
-              </Link>
-            </Reveal>
-          ))}
+                </article>
+              </Reveal>
+            );
+          })}
         </div>
       </div>
     </section>
