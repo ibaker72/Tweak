@@ -138,9 +138,9 @@ const trustPoints = [
 
 function TierFeatureItem({ text, featured }: { text: string; featured?: boolean }) {
   return (
-    <li className="flex items-start gap-3 text-sm leading-relaxed text-zinc-300">
+    <li className="flex items-start gap-3 text-[13px] leading-relaxed text-body sm:text-[14px]">
       <Check
-        className={cn("mt-0.5 h-4 w-4 shrink-0", featured ? "text-lime-300" : "text-zinc-500")}
+        className={cn("mt-0.5 h-4 w-4 shrink-0", featured ? "text-accent" : "text-dim")}
         strokeWidth={2.4}
       />
       <span>{text}</span>
@@ -157,85 +157,76 @@ function TierCard({ tier, index }: { tier: StudioTier; index: number }) {
         aria-label={`${tier.name} pricing`}
         transition={{ duration: 0.22, ease: "easeOut" }}
         className={cn(
-          "group relative flex h-full flex-col overflow-hidden rounded-[24px] border p-6 md:p-7",
-          "bg-white/[0.02] transition-all duration-300 hover:-translate-y-1",
+          "group relative flex h-full flex-col rounded-2xl border p-7 transition-all duration-300 hover:border-white/[0.12] lg:p-8",
           tier.featured
-            ? "border-lime-400/25 bg-[linear-gradient(180deg,rgba(163,230,53,0.08),rgba(255,255,255,0.02))] shadow-[0_0_0_1px_rgba(163,230,53,0.04),0_20px_60px_rgba(163,230,53,0.06)]"
-            : "border-white/10 hover:border-white/16"
+            ? "border-accent/[0.15]"
+            : "border-white/[0.06]"
         )}
+        style={{
+          background: tier.featured ? "rgba(200,255,0,0.015)" : "rgba(255,255,255,0.012)",
+          boxShadow: tier.featured
+            ? "0 1px 0 rgba(200,255,0,0.03) inset"
+            : "0 1px 0 rgba(255,255,255,0.02) inset",
+        }}
       >
-        <div className="pointer-events-none absolute inset-0">
-          <div
-            className={cn(
-              "absolute inset-x-0 top-0 h-px",
-              tier.featured ? "bg-lime-300/45" : "bg-white/10"
-            )}
-          />
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.035),transparent_42%)]" />
-          {tier.featured && (
-            <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_0%,rgba(163,230,53,0.09),transparent_38%)]" />
-          )}
-        </div>
-
-        <div className="relative z-10 flex h-full flex-col">
+        <div className="flex h-full flex-col">
           <div className="flex items-start justify-between gap-4">
             <span
               className={cn(
-                "inline-flex h-11 w-11 items-center justify-center rounded-2xl border",
+                "inline-flex h-9 w-9 items-center justify-center rounded-lg border",
                 tier.featured
-                  ? "border-lime-300/20 bg-lime-300/10"
-                  : "border-white/10 bg-white/[0.04]"
+                  ? "border-accent/15 bg-accent/[0.05]"
+                  : "border-white/[0.08] bg-white/[0.03]"
               )}
             >
               <TierIcon
-                className={cn("h-5 w-5", tier.featured ? "text-lime-300" : "text-white")}
+                className={cn("h-4 w-4", tier.featured ? "text-accent" : "text-white/60")}
                 strokeWidth={2}
               />
             </span>
 
             {tier.badge && (
-              <span className="inline-flex rounded-full border border-lime-400/25 bg-lime-400/10 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.14em] text-lime-200">
+              <span className="inline-flex rounded-full border border-accent/[0.15] bg-accent/[0.06] px-2.5 py-1 font-mono text-[10px] font-medium uppercase tracking-[0.1em] text-accent/80">
                 {tier.badge}
               </span>
             )}
           </div>
 
           <div className="mt-5">
-            <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-zinc-500">
+            <p className="font-mono text-[10px] uppercase tracking-[0.14em] text-dim">
               {tier.audience}
             </p>
 
-            <h3 className="mt-3 text-[30px] font-semibold leading-[1.08] tracking-tight text-white sm:text-[32px]">
+            <h3 className="mt-3 font-display text-[22px] font-bold leading-[1.1] tracking-[-0.02em] text-white sm:text-[24px]">
               {tier.name}
             </h3>
 
-            <div className="mt-5">
-              <p className="text-4xl font-semibold tracking-tight text-white sm:text-[46px]">
+            <div className="mt-4">
+              <p className="text-[28px] font-bold tracking-tight text-white sm:text-[32px]">
                 {tier.price}
               </p>
-              <p className="mt-2 text-sm text-zinc-400">{tier.priceNote}</p>
+              <p className="mt-1.5 text-[13px] text-body">{tier.priceNote}</p>
             </div>
 
-            <p className="mt-5 max-w-[44ch] text-sm leading-7 text-zinc-400">
+            <p className="mt-4 max-w-[44ch] text-[13px] leading-[1.75] text-body sm:text-[14px]">
               {tier.summary}
             </p>
           </div>
 
-          <ul className="mt-6 space-y-3 border-t border-white/10 pt-6">
+          <ul className="mt-5 space-y-2.5 border-t border-white/[0.05] pt-5">
             {tier.features.map((feature) => (
               <TierFeatureItem key={feature} text={feature} featured={tier.featured} />
             ))}
           </ul>
 
-          <div className="mt-auto pt-7">
+          <div className="mt-auto pt-6">
             <Link
               href={tier.ctaHref}
               className={cn(
-                "inline-flex w-full items-center justify-center gap-2 rounded-2xl px-5 py-3.5 text-sm font-semibold transition-all duration-200",
-                "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-[#0a0a0a]",
+                "inline-flex w-full items-center justify-center gap-2 rounded-xl px-5 py-3 text-[13px] font-semibold transition-all duration-200 sm:text-[14px]",
                 tier.featured
-                  ? "bg-lime-400 text-zinc-950 hover:bg-lime-300 focus-visible:ring-lime-300/60"
-                  : "border border-white/12 bg-transparent text-white hover:border-white/20 hover:bg-white/[0.04] focus-visible:ring-white/40"
+                  ? "btn-v justify-center"
+                  : "btn-o justify-center"
               )}
             >
               {tier.ctaLabel}
@@ -264,35 +255,29 @@ export function PricingTiers() {
   return (
     <section
       id="pricing"
-      className="relative overflow-hidden bg-[#0a0a0a] py-20 sm:py-24 lg:py-28"
+      className="relative py-20 sm:py-24"
     >
-      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_50%_0%,rgba(163,230,53,0.07),transparent_30%),radial-gradient(circle_at_50%_18%,rgba(255,255,255,0.05),transparent_40%)]" />
-      <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(to_bottom,transparent,rgba(255,255,255,0.012),transparent)]" />
-
-      <div className="wrap relative">
+      <div className="wrap">
         <div className="mx-auto max-w-6xl">
           <Reveal>
-            <div className="mx-auto max-w-3xl text-center">
-              <span className="inline-flex items-center rounded-full border border-white/10 bg-white/[0.03] px-3 py-1 text-[11px] font-medium tracking-wide text-zinc-300">
-                Pricing
-              </span>
-
-              <h2 className="mt-6 text-4xl font-semibold tracking-tight text-white sm:text-5xl">
+            <div className="mb-12 sm:mb-16">
+              <span className="section-label">Pricing</span>
+              <h2 className="mt-5 font-display text-[clamp(32px,4.5vw,52px)] font-extrabold leading-[1.04] tracking-[-0.04em] text-white">
                 Clear offers. Senior delivery.
               </h2>
-
-              <p className="mx-auto mt-4 max-w-2xl text-base leading-relaxed text-zinc-400 sm:text-lg">
+              <p className="mt-4 max-w-[500px] text-[15px] leading-[1.75] text-body">
                 Choose the path that fits your business now, then expand as your needs grow.
               </p>
             </div>
           </Reveal>
 
+          {/* Tab switcher — minimal pill toggle */}
           <Reveal delay={0.06}>
-            <div className="mx-auto mt-10 max-w-4xl">
+            <div className="mb-10">
               <div
                 role="tablist"
                 aria-label="Pricing categories"
-                className="grid grid-cols-1 gap-2 rounded-[22px] border border-white/10 bg-white/[0.03] p-2 backdrop-blur-md sm:grid-cols-2"
+                className="inline-flex rounded-full border border-white/[0.06] bg-white/[0.015] p-1"
               >
                 {pricingTabs.map((tab) => {
                   const isActive = tab.id === activeTab;
@@ -307,19 +292,19 @@ export function PricingTiers() {
                       aria-pressed={isActive}
                       onClick={() => setActiveTab(tab.id)}
                       className={cn(
-                        "relative overflow-hidden rounded-[18px] px-5 py-3.5 text-left transition-all duration-200",
-                        isActive ? "text-zinc-950" : "text-zinc-300 hover:text-white"
+                        "relative overflow-hidden rounded-full px-5 py-2 text-[13px] font-medium transition-all duration-200",
+                        isActive ? "text-surface-0" : "text-dim hover:text-white/70"
                       )}
                     >
                       {isActive && (
                         <motion.span
                           layoutId="pricing-tab-pill"
-                          className="absolute inset-0 rounded-[18px] bg-lime-400"
+                          className="absolute inset-0 rounded-full bg-accent"
                           transition={{ type: "spring", stiffness: 280, damping: 30 }}
                         />
                       )}
 
-                      <span className="relative z-10 block text-sm font-semibold tracking-tight">
+                      <span className="relative z-10 block">
                         {tab.label}
                       </span>
                     </button>
@@ -334,7 +319,7 @@ export function PricingTiers() {
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -6 }}
                   transition={{ duration: 0.18, ease: "easeOut" }}
-                  className="mx-auto mt-4 max-w-3xl text-center text-sm leading-relaxed text-zinc-500 sm:text-[15px]"
+                  className="mt-3 max-w-[600px] text-[13px] leading-relaxed text-body sm:text-[14px]"
                 >
                   {activeTabMeta.description}
                 </motion.p>
@@ -349,7 +334,7 @@ export function PricingTiers() {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: 14 }}
               transition={{ duration: 0.22, ease: "easeOut" }}
-              className="mx-auto mt-10 grid max-w-6xl grid-cols-1 gap-5 lg:grid-cols-2"
+              className="grid grid-cols-1 gap-5 lg:grid-cols-2"
             >
               {activeTiers.map((tier, index) => (
                 <TierCard key={tier.name} tier={tier} index={index} />
@@ -358,29 +343,30 @@ export function PricingTiers() {
           </AnimatePresence>
 
           <Reveal delay={0.12}>
-            <div className="mx-auto mt-7 grid max-w-5xl grid-cols-1 gap-3 rounded-[22px] border border-white/10 bg-white/[0.02] p-3 sm:grid-cols-2 lg:grid-cols-4">
+            <div className="mt-6 flex flex-wrap items-center justify-center gap-3 sm:justify-start">
               {trustPoints.map((point) => (
                 <div
                   key={point}
-                  className="flex items-center gap-3 rounded-2xl border border-white/8 bg-white/[0.02] px-4 py-3"
+                  className="flex items-center gap-2.5 rounded-full border border-white/[0.06] bg-white/[0.015] px-4 py-2"
+                  style={{ boxShadow: "inset 0 0.5px 0 rgba(255,255,255,0.04)" }}
                 >
-                  <span className="h-2 w-2 shrink-0 rounded-full bg-lime-300" />
-                  <span className="text-sm text-zinc-300">{point}</span>
+                  <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-accent" />
+                  <span className="text-[12px] font-medium text-white/45">{point}</span>
                 </div>
               ))}
             </div>
           </Reveal>
 
           <Reveal delay={0.16}>
-            <div className="mx-auto mt-7 max-w-2xl text-center">
-              <p className="text-sm leading-relaxed text-zinc-500 sm:text-base">
+            <div className="mt-8 max-w-[600px]">
+              <p className="text-[14px] leading-[1.75] text-body">
                 Need a website, support, SEO, and upgrades together? We can scope a blended monthly
                 engagement around your business.
               </p>
 
               <Link
                 href="/contact"
-                className="mt-5 inline-flex items-center gap-2 text-sm font-medium text-lime-300 transition hover:text-lime-200"
+                className="mt-4 inline-flex items-center gap-2 text-[13px] font-medium text-accent transition hover:text-accent/80"
               >
                 Talk through your scope
                 <ArrowRight className="h-4 w-4" />

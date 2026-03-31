@@ -4,7 +4,6 @@ import { ArrowRight } from "lucide-react";
 import { Reveal } from "./shared";
 import { siteConfig } from "@/lib/config";
 
-const clientNames = ["Create3DParts", "LeadsAndSaaS", "Meridian Health", "Atlas Freight", "Kommison"];
 const servicePills = ["Websites", "Web Apps", "Automation"];
 
 export function Hero() {
@@ -103,23 +102,6 @@ export function Hero() {
           </Reveal>
         </div>
 
-        <Reveal delay={0.3}>
-          <div className="mt-16 border-t border-white/[0.05] pt-8 sm:mt-20 sm:pt-10">
-            <p className="mb-4 text-center font-mono text-[9px] uppercase tracking-[0.16em] text-dim sm:mb-5 sm:text-[10px]">
-              Trusted by founders at
-            </p>
-            <div className="flex flex-wrap items-center justify-center gap-x-2 gap-y-2 sm:gap-x-3">
-              {clientNames.map((name) => (
-                <span
-                  key={name}
-                  className="inline-flex items-center justify-center rounded-full border border-white/[0.05] bg-white/[0.015] px-4 py-2 font-display text-[12px] font-semibold text-white/25 transition-all duration-300 hover:border-white/[0.1] hover:text-white/50 sm:px-5 sm:py-2 sm:text-[13px]"
-                >
-                  {name}
-                </span>
-              ))}
-            </div>
-          </div>
-        </Reveal>
       </div>
     </section>
   );
