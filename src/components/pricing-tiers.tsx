@@ -1,10 +1,11 @@
 "use client";
 
 import Link from "next/link";
-import { Check, ArrowRight } from "lucide-react";
+import { ArrowRight, Blocks, Check, Network, Rocket, TrendingUp } from "lucide-react";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { Reveal } from "./shared";
+import type { LucideIcon } from "lucide-react";
 
 type StudioTier = {
   name: string;
@@ -15,6 +16,15 @@ type StudioTier = {
   ctaHref: string;
   featured?: boolean;
   badge?: string;
+  icon: LucideIcon;
+  accentDotClass: string;
+  accentTextClass: string;
+  accentBorderClass: string;
+  accentIconBgClass: string;
+  accentGlowClass: string;
+  accentGradientClass: string;
+  accentCheckClass: string;
+  ctaClass: string;
 };
 
 const studioPricingTiers: StudioTier[] = [
@@ -30,6 +40,16 @@ const studioPricingTiers: StudioTier[] = [
     ],
     ctaLabel: "Start Building",
     ctaHref: "/contact?tier=Landing%20Pages%20%26%20WaaS",
+    icon: Rocket,
+    accentDotClass: "bg-teal-300",
+    accentTextClass: "text-teal-200",
+    accentBorderClass: "border-teal-300/25",
+    accentIconBgClass: "bg-teal-300/10",
+    accentGlowClass: "shadow-[0_0_0_1px_rgba(45,212,191,0.2),0_18px_60px_rgba(45,212,191,0.16)]",
+    accentGradientClass: "bg-[radial-gradient(circle_at_50%_-10%,rgba(45,212,191,0.22),transparent_58%)]",
+    accentCheckClass: "text-teal-300",
+    ctaClass:
+      "border border-teal-300/25 bg-teal-300/8 text-teal-100 hover:border-teal-200/40 hover:bg-teal-300/15",
   },
   {
     name: "SaaS Development",
@@ -43,6 +63,16 @@ const studioPricingTiers: StudioTier[] = [
     ],
     ctaLabel: "Book a Strategy Call",
     ctaHref: "/contact?tier=SaaS%20Development",
+    icon: Blocks,
+    accentDotClass: "bg-indigo-300",
+    accentTextClass: "text-indigo-200",
+    accentBorderClass: "border-indigo-300/25",
+    accentIconBgClass: "bg-indigo-300/10",
+    accentGlowClass: "shadow-[0_0_0_1px_rgba(129,140,248,0.2),0_18px_60px_rgba(99,102,241,0.18)]",
+    accentGradientClass: "bg-[radial-gradient(circle_at_50%_-10%,rgba(129,140,248,0.22),transparent_58%)]",
+    accentCheckClass: "text-indigo-300",
+    ctaClass:
+      "border border-indigo-300/25 bg-indigo-300/8 text-indigo-100 hover:border-indigo-200/40 hover:bg-indigo-300/15",
   },
   {
     name: "Custom Engineering",
@@ -58,6 +88,15 @@ const studioPricingTiers: StudioTier[] = [
     ctaHref: "/contact?tier=Custom%20Engineering",
     featured: true,
     badge: "Recommended",
+    icon: Network,
+    accentDotClass: "bg-lime-300",
+    accentTextClass: "text-lime-200",
+    accentBorderClass: "border-lime-300/35",
+    accentIconBgClass: "bg-lime-300/10",
+    accentGlowClass: "shadow-[0_0_0_1px_rgba(163,230,53,0.25),0_24px_80px_rgba(163,230,53,0.24)]",
+    accentGradientClass: "bg-[radial-gradient(circle_at_50%_-10%,rgba(163,230,53,0.28),transparent_58%)]",
+    accentCheckClass: "text-lime-300",
+    ctaClass: "bg-lime-300 text-zinc-950 hover:bg-lime-200",
   },
   {
     name: "SEO & Growth",
@@ -71,65 +110,94 @@ const studioPricingTiers: StudioTier[] = [
     ],
     ctaLabel: "Scale Your Product",
     ctaHref: "/contact?tier=SEO%20%26%20Growth",
+    icon: TrendingUp,
+    accentDotClass: "bg-amber-300",
+    accentTextClass: "text-amber-200",
+    accentBorderClass: "border-amber-300/25",
+    accentIconBgClass: "bg-amber-300/10",
+    accentGlowClass: "shadow-[0_0_0_1px_rgba(252,211,77,0.2),0_18px_60px_rgba(251,191,36,0.16)]",
+    accentGradientClass: "bg-[radial-gradient(circle_at_50%_-10%,rgba(252,211,77,0.22),transparent_58%)]",
+    accentCheckClass: "text-amber-300",
+    ctaClass:
+      "border border-amber-300/25 bg-amber-300/8 text-amber-100 hover:border-amber-200/40 hover:bg-amber-300/15",
   },
 ];
 
-function TierFeatureItem({ text, featured }: { text: string; featured?: boolean }) {
+function TierFeatureItem({ text, accentCheckClass }: { text: string; accentCheckClass: string }) {
   return (
     <li className="flex items-start gap-2.5 text-sm leading-relaxed text-zinc-300">
-      <Check className={cn("mt-0.5 h-4 w-4 shrink-0", featured ? "text-lime-300" : "text-zinc-500")} strokeWidth={2.2} />
+      <Check className={cn("mt-0.5 h-4 w-4 shrink-0", accentCheckClass)} strokeWidth={2.2} />
       <span>{text}</span>
     </li>
   );
 }
 
 function TierCard({ tier, index }: { tier: StudioTier; index: number }) {
+  const TierIcon = tier.icon;
+
   return (
     <Reveal delay={index * 0.06}>
       <motion.article
         aria-label={`${tier.name} pricing`}
-        whileHover={{ y: -6 }}
-        transition={{ duration: 0.24, ease: "easeOut" }}
+        whileHover={{ y: -7 }}
+        transition={{ duration: 0.25, ease: "easeOut" }}
         className={cn(
-          "group relative flex h-full flex-col overflow-hidden rounded-2xl border p-8",
-          "bg-white/[0.02] backdrop-blur-md",
-          "transition-all duration-300",
-          tier.featured
-            ? "border-lime-400/50 shadow-[0_0_0_1px_rgba(163,230,53,0.25),0_28px_80px_rgba(163,230,53,0.12)] lg:scale-105"
-            : "border-white/10 hover:border-white/25",
+          "group relative flex h-full flex-col overflow-hidden rounded-2xl border p-10",
+          "bg-white/[0.02] backdrop-blur-md transition-all duration-300",
+          tier.accentBorderClass,
+          tier.accentGlowClass,
+          tier.featured && "lg:scale-[1.03]",
         )}
       >
+        <div className={cn("pointer-events-none absolute inset-0 opacity-75", tier.accentGradientClass)} />
+        <div
+          className={cn(
+            "pointer-events-none absolute -inset-px rounded-2xl opacity-0 blur-xl transition-opacity duration-300 group-hover:opacity-100",
+            tier.accentGradientClass,
+          )}
+        />
+
         {tier.badge && (
-          <span className="absolute left-8 top-6 inline-flex rounded-full border border-lime-300/40 bg-lime-300/10 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.12em] text-lime-200">
+          <span className="absolute right-8 top-8 inline-flex rounded-full border border-lime-300/40 bg-lime-300/10 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.12em] text-lime-200">
             {tier.badge}
           </span>
         )}
 
-        <div className={cn(tier.badge ? "pt-7" : "pt-1")}>
-          <h3 className="text-2xl font-semibold tracking-tight text-white">{tier.name}</h3>
-          <p className="mt-4 text-2xl font-semibold leading-tight text-white">{tier.price}</p>
-          <p className="mt-3 text-sm leading-relaxed text-zinc-400">{tier.subheader}</p>
+        <div className="relative z-10 flex flex-col h-full">
+          <div className="flex items-start gap-3">
+            <span className={cn("inline-flex h-11 w-11 items-center justify-center rounded-xl border border-white/10", tier.accentIconBgClass)}>
+              <TierIcon className={cn("h-5 w-5", tier.accentTextClass)} strokeWidth={2} />
+            </span>
+            <div className={cn("mt-2 h-1.5 w-1.5 rounded-full", tier.accentDotClass)} />
+          </div>
+
+          <div className={cn("space-y-3", tier.badge ? "mt-4" : "mt-5")}>
+            <h3 className="text-2xl font-bold tracking-tight text-white">{tier.name}</h3>
+            <p className="text-3xl font-bold leading-tight text-white">{tier.price}</p>
+            <p className="text-sm leading-relaxed text-zinc-400">{tier.subheader}</p>
+          </div>
+
+          <ul className="mt-7 space-y-3 border-t border-white/10 pt-6">
+            {tier.features.map((feature) => (
+              <TierFeatureItem key={feature} text={feature} accentCheckClass={tier.accentCheckClass} />
+            ))}
+          </ul>
+
+          <div className="mt-auto pt-8">
+            <Link
+              href={tier.ctaHref}
+              className={cn(
+                "inline-flex w-full items-center justify-center gap-2 rounded-xl px-4 py-3 text-sm font-semibold transition-all duration-200",
+                "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-[#0a0a0a]",
+                tier.featured ? "focus-visible:ring-lime-300/60" : "focus-visible:ring-white/40",
+                tier.ctaClass,
+              )}
+            >
+              {tier.ctaLabel}
+              <ArrowRight className="h-4 w-4" />
+            </Link>
+          </div>
         </div>
-
-        <ul className="mt-7 flex-1 space-y-3 border-t border-white/10 pt-6">
-          {tier.features.map((feature) => (
-            <TierFeatureItem key={feature} text={feature} featured={tier.featured} />
-          ))}
-        </ul>
-
-        <Link
-          href={tier.ctaHref}
-          className={cn(
-            "mt-8 inline-flex w-full items-center justify-center gap-2 rounded-xl px-4 py-3 text-sm font-semibold transition-all duration-200",
-            "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-lime-300/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#0a0a0a]",
-            tier.featured
-              ? "bg-lime-300 text-zinc-950 hover:bg-lime-200"
-              : "border border-white/15 bg-white/[0.03] text-zinc-200 hover:border-white/30 hover:bg-white/[0.06]",
-          )}
-        >
-          {tier.ctaLabel}
-          <ArrowRight className="h-4 w-4" />
-        </Link>
       </motion.article>
     </Reveal>
   );
@@ -138,7 +206,7 @@ function TierCard({ tier, index }: { tier: StudioTier; index: number }) {
 export function PricingTiers() {
   return (
     <section id="pricing" className="relative overflow-hidden bg-[#0a0a0a] py-24 sm:py-28 lg:py-32">
-      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_50%_18%,rgba(163,230,53,0.11),transparent_40%)]" />
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_50%_18%,rgba(255,255,255,0.06),transparent_40%)]" />
 
       <div className="wrap relative">
         <div className="mx-auto max-w-7xl">
