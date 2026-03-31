@@ -63,7 +63,9 @@ export function Navbar() {
           </nav>
 
           <button
-            onClick={() => setOpen(!open)}
+            type="button"
+            suppressHydrationWarning
+            onClick={() => setOpen((prev) => !prev)}
             className="flex h-9 w-9 items-center justify-center rounded-[10px] border border-white/[0.08] bg-white/[0.03] text-white transition-all duration-200 hover:border-white/[0.14] hover:bg-white/[0.05] lg:hidden"
             aria-label="Menu"
           >
