@@ -20,16 +20,16 @@ type StudioTier = {
   accentDotClass: string;
   accentTextClass: string;
   accentBorderClass: string;
+  accentBorderHoverClass: string;
   accentIconBgClass: string;
-  accentGlowClass: string;
-  accentGradientClass: string;
+  accentStrokeGlowClass: string;
   accentCheckClass: string;
   ctaClass: string;
 };
 
 const studioPricingTiers: StudioTier[] = [
   {
-    name: "Landing Pages & WaaS",
+    name: "Landing Pages",
     price: "$1,500/mo or $2,500 fixed",
     subheader: "High-converting entry points and ongoing web partnerships.",
     features: [
@@ -43,10 +43,10 @@ const studioPricingTiers: StudioTier[] = [
     icon: Rocket,
     accentDotClass: "bg-teal-300",
     accentTextClass: "text-teal-200",
-    accentBorderClass: "border-teal-300/25",
+    accentBorderClass: "border-teal-400/30",
+    accentBorderHoverClass: "group-hover:border-teal-400/80",
     accentIconBgClass: "bg-teal-300/10",
-    accentGlowClass: "shadow-[0_0_0_1px_rgba(45,212,191,0.2),0_18px_60px_rgba(45,212,191,0.16)]",
-    accentGradientClass: "bg-[radial-gradient(circle_at_50%_-10%,rgba(45,212,191,0.22),transparent_58%)]",
+    accentStrokeGlowClass: "shadow-[0_0_10px_rgba(45,212,191,0.12)]",
     accentCheckClass: "text-teal-300",
     ctaClass:
       "border border-teal-300/25 bg-teal-300/8 text-teal-100 hover:border-teal-200/40 hover:bg-teal-300/15",
@@ -66,10 +66,10 @@ const studioPricingTiers: StudioTier[] = [
     icon: Blocks,
     accentDotClass: "bg-indigo-300",
     accentTextClass: "text-indigo-200",
-    accentBorderClass: "border-indigo-300/25",
+    accentBorderClass: "border-indigo-400/30",
+    accentBorderHoverClass: "group-hover:border-indigo-400/80",
     accentIconBgClass: "bg-indigo-300/10",
-    accentGlowClass: "shadow-[0_0_0_1px_rgba(129,140,248,0.2),0_18px_60px_rgba(99,102,241,0.18)]",
-    accentGradientClass: "bg-[radial-gradient(circle_at_50%_-10%,rgba(129,140,248,0.22),transparent_58%)]",
+    accentStrokeGlowClass: "shadow-[0_0_10px_rgba(129,140,248,0.12)]",
     accentCheckClass: "text-indigo-300",
     ctaClass:
       "border border-indigo-300/25 bg-indigo-300/8 text-indigo-100 hover:border-indigo-200/40 hover:bg-indigo-300/15",
@@ -91,15 +91,15 @@ const studioPricingTiers: StudioTier[] = [
     icon: Network,
     accentDotClass: "bg-lime-300",
     accentTextClass: "text-lime-200",
-    accentBorderClass: "border-lime-300/35",
+    accentBorderClass: "border-lime-400/55",
+    accentBorderHoverClass: "group-hover:border-lime-400/90",
     accentIconBgClass: "bg-lime-300/10",
-    accentGlowClass: "shadow-[0_0_0_1px_rgba(163,230,53,0.25),0_24px_80px_rgba(163,230,53,0.24)]",
-    accentGradientClass: "bg-[radial-gradient(circle_at_50%_-10%,rgba(163,230,53,0.28),transparent_58%)]",
+    accentStrokeGlowClass: "shadow-[0_0_12px_rgba(163,230,53,0.16)]",
     accentCheckClass: "text-lime-300",
     ctaClass: "bg-lime-300 text-zinc-950 hover:bg-lime-200",
   },
   {
-    name: "SEO & Growth",
+    name: "Growth",
     price: "Monthly Retainer",
     subheader: "Search and growth systems that compound pipeline and demand.",
     features: [
@@ -113,10 +113,10 @@ const studioPricingTiers: StudioTier[] = [
     icon: TrendingUp,
     accentDotClass: "bg-amber-300",
     accentTextClass: "text-amber-200",
-    accentBorderClass: "border-amber-300/25",
+    accentBorderClass: "border-amber-400/30",
+    accentBorderHoverClass: "group-hover:border-amber-400/80",
     accentIconBgClass: "bg-amber-300/10",
-    accentGlowClass: "shadow-[0_0_0_1px_rgba(252,211,77,0.2),0_18px_60px_rgba(251,191,36,0.16)]",
-    accentGradientClass: "bg-[radial-gradient(circle_at_50%_-10%,rgba(252,211,77,0.22),transparent_58%)]",
+    accentStrokeGlowClass: "shadow-[0_0_10px_rgba(251,191,36,0.12)]",
     accentCheckClass: "text-amber-300",
     ctaClass:
       "border border-amber-300/25 bg-amber-300/8 text-amber-100 hover:border-amber-200/40 hover:bg-amber-300/15",
@@ -139,26 +139,18 @@ function TierCard({ tier, index }: { tier: StudioTier; index: number }) {
     <Reveal delay={index * 0.06}>
       <motion.article
         aria-label={`${tier.name} pricing`}
-        whileHover={{ y: -7 }}
         transition={{ duration: 0.25, ease: "easeOut" }}
         className={cn(
           "group relative flex h-full flex-col overflow-hidden rounded-2xl border p-10",
-          "bg-white/[0.02] backdrop-blur-md transition-all duration-300",
+          "bg-white/[0.02] backdrop-blur-md transition-all duration-300 hover:-translate-y-1",
           tier.accentBorderClass,
-          tier.accentGlowClass,
+          tier.accentBorderHoverClass,
+          tier.accentStrokeGlowClass,
           tier.featured && "lg:scale-[1.03]",
         )}
       >
-        <div className={cn("pointer-events-none absolute inset-0 opacity-75", tier.accentGradientClass)} />
-        <div
-          className={cn(
-            "pointer-events-none absolute -inset-px rounded-2xl opacity-0 blur-xl transition-opacity duration-300 group-hover:opacity-100",
-            tier.accentGradientClass,
-          )}
-        />
-
         {tier.badge && (
-          <span className="absolute right-8 top-8 inline-flex rounded-full border border-lime-300/40 bg-lime-300/10 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.12em] text-lime-200">
+          <span className="absolute right-8 top-8 inline-flex rounded-full border border-lime-400/60 bg-lime-400/10 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.12em] text-lime-200">
             {tier.badge}
           </span>
         )}
