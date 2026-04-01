@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { ShoppingCart, Users, Gamepad2, Car } from "lucide-react";
 import { Reveal } from "./shared";
+import { CardCarousel } from "./card-carousel";
 
 const projects = [
   {
@@ -46,52 +47,52 @@ const projects = [
 
 export function FeaturedWork() {
   return (
-    <section id="work" className="relative py-28 sm:py-36">
+    <section id="work" className="relative py-16 sm:py-24 lg:py-28 xl:py-36">
       <div className="wrap">
-        <div className="grid gap-14 lg:grid-cols-[400px,1fr] lg:gap-20">
+        <div className="grid gap-8 lg:grid-cols-[400px,1fr] lg:gap-20">
           {/* Left: sticky header */}
           <div className="lg:sticky lg:top-28 lg:self-start">
             <Reveal>
               <span className="section-label">Selected work</span>
-              <h2 className="mt-5 font-display text-[clamp(32px,4.5vw,52px)] font-extrabold leading-[1.04] tracking-[-0.04em] text-white">
+              <h2 className="mt-5 font-display text-[28px] font-extrabold leading-[1.04] tracking-[-0.04em] text-white sm:text-[32px] lg:text-[clamp(32px,4.5vw,52px)]">
                 Results speak.
                 <br />
                 <span className="text-body">We just ship.</span>
               </h2>
-              <p className="mt-5 max-w-[360px] text-[15px] leading-[1.75] text-body">
+              <p className="mt-5 max-w-none text-[15px] leading-[1.75] text-body lg:max-w-[360px]">
                 Product engineering engagements focused on measurable business lift, delivered with production-grade precision.
               </p>
             </Reveal>
           </div>
 
           {/* Right: project cards */}
-          <div className="relative">
+          <div className="relative -mx-5 sm:-mx-8 lg:mx-0">
             {/* Vertical connecting line */}
             <div className="absolute bottom-0 left-[23px] top-0 hidden w-px lg:block" style={{ background: "linear-gradient(to bottom, rgba(200,255,0,0.2), rgba(255,255,255,0.04) 80%, transparent)" }} />
 
-            <div className="space-y-5">
+            <CardCarousel>
               {projects.map((project, i) => (
                 <Reveal key={project.num} delay={i * 0.08}>
-                  <Link href={project.href} className="group block">
+                  <Link href={project.href} className="group block h-full">
                     <div
-                      className="relative rounded-2xl border border-white/[0.06] p-7 transition-all duration-300 hover:border-white/[0.12] lg:p-8"
+                      className="relative h-full rounded-2xl border border-white/[0.06] p-6 transition-all duration-300 hover:border-white/[0.12] lg:p-8"
                       style={{
                         background: "rgba(255,255,255,0.012)",
                         boxShadow: "0 1px 0 rgba(255,255,255,0.02) inset",
                       }}
                     >
                       {/* Project image */}
-                      <div className="relative mb-4 aspect-[16/9] overflow-hidden rounded-xl">
+                      <div className="relative mb-4 aspect-[16/10] overflow-hidden rounded-lg lg:aspect-[16/9] lg:rounded-xl">
                         <Image
                           src={project.image}
                           alt={project.title}
                           fill
-                          sizes="(max-width: 1024px) 100vw, 600px"
+                          sizes="(max-width: 1024px) 85vw, 600px"
                           className="object-cover object-center transition-transform duration-500 group-hover:scale-[1.03]"
                         />
                       </div>
 
-                      <div className="flex gap-5 lg:gap-6">
+                      <div className="flex gap-4 lg:gap-6">
                         {/* Number badge */}
                         <div className="relative z-10 flex h-[46px] w-[46px] flex-shrink-0 items-center justify-center rounded-xl border border-accent/20 bg-surface-0">
                           <span className="font-mono text-[13px] font-bold text-accent">{project.num}</span>
@@ -102,7 +103,7 @@ export function FeaturedWork() {
                             <h3 className="font-display text-[19px] font-bold tracking-[-0.01em] text-white">{project.title}</h3>
                             <project.icon size={14} className="text-dim/60" />
                           </div>
-                          <p className="mt-2.5 text-[13px] leading-[1.85] text-body sm:text-[14px]">{project.desc}</p>
+                          <p className="mt-2.5 line-clamp-3 text-[13px] leading-[1.85] text-body sm:text-[14px] lg:line-clamp-none">{project.desc}</p>
                           <div className="mt-4 inline-flex items-center gap-2 rounded-full border border-accent/[0.10] bg-accent/[0.03] px-3.5 py-1.5">
                             <div className="h-1 w-1 rounded-full bg-accent/70" />
                             <span className="font-mono text-[10px] font-medium text-accent/80">{project.detail}</span>
@@ -113,7 +114,7 @@ export function FeaturedWork() {
                   </Link>
                 </Reveal>
               ))}
-            </div>
+            </CardCarousel>
           </div>
         </div>
       </div>
