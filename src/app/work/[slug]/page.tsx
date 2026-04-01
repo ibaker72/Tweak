@@ -5,6 +5,7 @@ import Link from "next/link";
 import { ArrowLeft, ArrowRight, ExternalLink, CheckCircle } from "lucide-react";
 import { Reveal } from "@/components/shared";
 import { projects } from "@/lib/data";
+import { ProjectPrimaryMedia } from "@/components/project-primary-media";
 
 export default function ProjectPage() {
   const { slug } = useParams();
@@ -53,12 +54,11 @@ export default function ProjectPage() {
               <span className="font-mono text-[10px] text-dim">
                 {project.year}
               </span>
-              {project.live && (
+              {project.live ? (
                 <span className="rounded-md border border-accent/[0.2] bg-accent/[0.06] px-2 py-0.5 text-[9px] font-bold text-accent">
                   LIVE
                 </span>
-              )}
-              {!project.live && (
+              ) : (
                 <span className="rounded-md border border-amber-400/[0.2] bg-amber-400/[0.06] px-2 py-0.5 text-[9px] font-bold text-amber-400">
                   IN DEV
                 </span>
@@ -88,53 +88,45 @@ export default function ProjectPage() {
 
         <Reveal delay={0.1}>
           <div className="mb-14 overflow-hidden rounded-2xl border border-white/[0.06] bg-gradient-to-br from-surface-2 to-surface-3">
-            {project.image ? (
-              <div className="relative h-48 sm:h-72 lg:h-[420px]">
-                <Image
-                  src={project.image}
-                  alt={project.title}
-                  fill
-                  className="object-cover object-top"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/55 via-black/10 to-transparent" />
-              </div>
-            ) : (
-              <div className="flex h-64 items-center justify-center sm:h-80 lg:h-[400px]">
-                <span className="font-display text-xl text-white/[0.04]">
-                  {project.title}
-                </span>
-              </div>
-            )}
+            <ProjectPrimaryMedia
+              project={project}
+              sizes="(max-width: 1024px) 100vw, 1200px"
+              className="relative h-48 sm:h-72 lg:h-[420px]"
+              imageClassName="object-cover object-top"
+              videoClassName="h-full w-full object-cover object-top"
+              priority
+            />
+            <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/55 via-black/10 to-transparent" />
           </div>
         </Reveal>
 
         {project.gallery?.length ? (
-  <Reveal delay={0.12}>
-    <div className="mb-14">
-      <h2 className="font-display text-[17px] font-bold tracking-[-0.01em] text-white">
-        Screenshots
-      </h2>
+          <Reveal delay={0.12}>
+            <div className="mb-14">
+              <h2 className="font-display text-[17px] font-bold tracking-[-0.01em] text-white">
+                Screenshots
+              </h2>
 
-      <div className="mt-5 grid gap-4 md:grid-cols-2 md:gap-5">
-        {project.gallery.map((src, i) => (
-          <div
-            key={src}
-            className="overflow-hidden rounded-2xl border border-white/[0.06] bg-white/[0.02]"
-          >
-            <div className="relative aspect-[16/10] w-full bg-black">
-              <Image
-                src={src}
-                alt={`${project.title} screenshot ${i + 1}`}
-                fill
-                className="object-contain object-center bg-black p-2 sm:p-3"
-              />
+              <div className="mt-5 grid gap-4 md:grid-cols-2 md:gap-5">
+                {project.gallery.map((src, i) => (
+                  <div
+                    key={src}
+                    className="overflow-hidden rounded-2xl border border-white/[0.06] bg-white/[0.02]"
+                  >
+                    <div className="relative aspect-[16/10] w-full bg-black">
+                      <Image
+                        src={src}
+                        alt={`${project.title} screenshot ${i + 1}`}
+                        fill
+                        className="bg-black object-contain object-center p-2 sm:p-3"
+                      />
+                    </div>
+                  </div>
+                ))}
+              </div>
             </div>
-          </div>
-        ))}
-      </div>
-    </div>
-  </Reveal>
-) : null}
+          </Reveal>
+        ) : null}
 
         <div className="grid gap-12 lg:grid-cols-3">
           <div className="space-y-12 lg:col-span-2">
@@ -179,7 +171,9 @@ export default function ProjectPage() {
                       size={16}
                       className="mt-0.5 flex-shrink-0 text-accent/70"
                     />
-                    <p className="text-[13px] font-medium text-accent/80">{r}</p>
+                    <p className="text-[13px] font-medium text-accent/80">
+                      {r}
+                    </p>
                   </div>
                 ))}
               </div>
@@ -210,7 +204,10 @@ export default function ProjectPage() {
                 <p className="mt-2 text-[12px] leading-[1.7] text-dim">
                   Let&apos;s talk about building something for your business.
                 </p>
-                <Link href="/contact" className="btn-v mt-5 w-full justify-center">
+                <Link
+                  href="/contact"
+                  className="btn-v mt-5 w-full justify-center"
+                >
                   Start a project <ArrowRight size={13} />
                 </Link>
               </div>

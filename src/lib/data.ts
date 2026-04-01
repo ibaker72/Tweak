@@ -16,6 +16,8 @@ export interface Project {
   live?: boolean;
   url?: string;
   image?: string;
+  video?: string;
+  poster?: string;
   gallery?: string[];
 }
 
@@ -35,8 +37,7 @@ export const projects: Project[] = [
       "Manual quoting took 48 hours. Customers left and never came back.",
     solutionShort:
       "Built a real-time quoting engine with instant CAD file pricing and Stripe checkout.",
-    impactShort:
-      "Quote time: 48hrs → 60sec. Orders up 35% in month one.",
+    impactShort: "Quote time: 48hrs → 60sec. Orders up 35% in month one.",
     impact: "Quote time: 48hrs → 60sec",
     results: [
       "Quote-to-checkout reduced from 48 hours to under 60 seconds",
@@ -49,60 +50,59 @@ export const projects: Project[] = [
     url: "https://create3dparts.com",
     image: "/proof/create3dparts/home.png",
     gallery: [
-  "/proof/create3dparts/home.png",
-  "/proof/create3dparts/quote.png",
-  "/proof/create3dparts/dashboard.png",
-  "/proof/create3dparts/account-dashboard.png",
-  "/proof/create3dparts/material.png",
-  "/proof/create3dparts/sign-in.png",
-],
+      "/proof/create3dparts/home.png",
+      "/proof/create3dparts/quote.png",
+      "/proof/create3dparts/dashboard.png",
+      "/proof/create3dparts/account-dashboard.png",
+      "/proof/create3dparts/material.png",
+      "/proof/create3dparts/sign-in.png",
+    ],
   },
   {
-  slug: "leadsandsaas",
-  title: "LeadsAndSaaS",
-  category: "SaaS Platform",
-  tagline: "Agent hub, asset vault, and lead distribution engine",
-  description:
-    "A multi-tenant SaaS platform for managing AI agent workflows, storing digital assets, and distributing leads across teams with configurable routing rules.",
-  challenge:
-    "The founding team was juggling four different tools for lead management, asset storage, and agent coordination. Data was siloed and leads were being dropped.",
-  solution:
-    "We consolidated everything into one platform: a drag-and-drop agent builder, a centralized asset vault with tagging and permissions, and a lead router with round-robin and rules-based distribution.",
-  problem:
-    "Four disconnected tools. Data siloed, leads dropped, onboarding took days.",
-  solutionShort:
-    "One platform: agent builder, asset vault, and rules-based lead distribution.",
-  impactShort:
-    "Lead response dropped from 4 hours to 15 minutes.",
-  impact: "Lead response: 4hrs → 15min",
-  results: [
-    "Lead response time: 4 hours to under 15 minutes",
-    "100% of assets in one searchable vault",
-    "Onboarding reduced from 3 days to 4 hours",
-  ],
-  stack: [
-    "Next.js",
-    "TypeScript",
-    "Supabase",
-    "OpenAI API",
-    "Tailwind CSS",
-    "Vercel",
-  ],
-  year: "2025",
-  live: true,
-  image: "/proof/leadsandsaas/home.png",
-  gallery: [
-    "/proof/leadsandsaas/home.png",
-    "/proof/leadsandsaas/overview.png",
-    "/proof/leadsandsaas/agents.png",
-    "/proof/leadsandsaas/billing.png",
-    "/proof/leadsandsaas/chat-widget.png",
-    "/proof/leadsandsaas/conversations.png",
-    "/proof/leadsandsaas/integrations.png",
-    "/proof/leadsandsaas/login.png",
-    "/proof/leadsandsaas/settings.png",
-  ],
-},
+    slug: "leadsandsaas",
+    title: "LeadsAndSaaS",
+    category: "SaaS Platform",
+    tagline: "Agent hub, asset vault, and lead distribution engine",
+    description:
+      "A multi-tenant SaaS platform for managing AI agent workflows, storing digital assets, and distributing leads across teams with configurable routing rules.",
+    challenge:
+      "The founding team was juggling four different tools for lead management, asset storage, and agent coordination. Data was siloed and leads were being dropped.",
+    solution:
+      "We consolidated everything into one platform: a drag-and-drop agent builder, a centralized asset vault with tagging and permissions, and a lead router with round-robin and rules-based distribution.",
+    problem:
+      "Four disconnected tools. Data siloed, leads dropped, onboarding took days.",
+    solutionShort:
+      "One platform: agent builder, asset vault, and rules-based lead distribution.",
+    impactShort: "Lead response dropped from 4 hours to 15 minutes.",
+    impact: "Lead response: 4hrs → 15min",
+    results: [
+      "Lead response time: 4 hours to under 15 minutes",
+      "100% of assets in one searchable vault",
+      "Onboarding reduced from 3 days to 4 hours",
+    ],
+    stack: [
+      "Next.js",
+      "TypeScript",
+      "Supabase",
+      "OpenAI API",
+      "Tailwind CSS",
+      "Vercel",
+    ],
+    year: "2025",
+    live: true,
+    image: "/proof/leadsandsaas/home.png",
+    gallery: [
+      "/proof/leadsandsaas/home.png",
+      "/proof/leadsandsaas/overview.png",
+      "/proof/leadsandsaas/agents.png",
+      "/proof/leadsandsaas/billing.png",
+      "/proof/leadsandsaas/chat-widget.png",
+      "/proof/leadsandsaas/conversations.png",
+      "/proof/leadsandsaas/integrations.png",
+      "/proof/leadsandsaas/login.png",
+      "/proof/leadsandsaas/settings.png",
+    ],
+  },
   {
     slug: "meridian-health",
     title: "Meridian Health",
@@ -114,12 +114,10 @@ export const projects: Project[] = [
       "The clinic was losing 20+ staff hours per week on phone scheduling with a 25% no-show rate.",
     solution:
       "We built a patient-facing portal with real-time calendar availability, automated SMS/email reminders, and a staff dashboard for full schedule management.",
-    problem:
-      "25% no-show rate and 20+ hours/week wasted on phone scheduling.",
+    problem: "25% no-show rate and 20+ hours/week wasted on phone scheduling.",
     solutionShort:
       "Patient portal with real-time availability and automated SMS reminders.",
-    impactShort:
-      "No-shows reduced 40%. Phone volume cut in half.",
+    impactShort: "No-shows reduced 40%. Phone volume cut in half.",
     impact: "No-shows reduced 40%",
     results: [
       "No-show rate dropped from 25% to 15% in 60 days",
@@ -133,7 +131,8 @@ export const projects: Project[] = [
     slug: "atlas-freight",
     title: "Atlas Freight",
     category: "Landing Page + CRM",
-    tagline: "Lead generation engine with instant-quote calculator for logistics",
+    tagline:
+      "Lead generation engine with instant-quote calculator for logistics",
     description:
       "A conversion-optimized landing page with a step-by-step freight quote calculator feeding directly into a HubSpot sales pipeline.",
     challenge:
@@ -144,8 +143,7 @@ export const projects: Project[] = [
       "Google Ads to a generic page. No lead capture, no CRM, burning budget.",
     solutionShort:
       "Conversion-optimized page with interactive quote builder feeding HubSpot.",
-    impactShort:
-      "3.2x more qualified leads. Cost per lead down 58%.",
+    impactShort: "3.2x more qualified leads. Cost per lead down 58%.",
     impact: "3.2x more qualified leads",
     results: [
       "Qualified leads increased 3.2x in month one",
@@ -156,41 +154,44 @@ export const projects: Project[] = [
     year: "2024",
   },
   {
-  slug: "voltgrid",
-  title: "VoltGrid",
-  category: "Mobile Game",
-  tagline: "Arcade-style grid runner built for responsive full-screen mobile gameplay.",
-  description:
-    "VoltGrid is a fast-paced arcade-style web game built to feel sharp, responsive, and visually alive across mobile and desktop. The focus was on full-screen gameplay, tight controls, energetic feedback, and a polished presentation that makes the experience feel intentional from the first tap.",
-  challenge:
-    "Most browser-based game concepts feel rough on mobile because they waste screen space, scale badly, or lose responsiveness once gameplay gets intense. The challenge was to make VoltGrid feel clean, fast, and immersive across different screen sizes.",
-  solution:
-    "We designed VoltGrid as a mobile-friendly, full-screen game experience with responsive controls, cleaner layout behavior, stronger visual feedback, and a tighter gameplay presentation. The result is a more polished and engaging arcade experience that feels better to play on both phones and desktops.",
-  problem:
-    "Typical browser game prototypes feel clunky on mobile, waste space, and break immersion with weak responsiveness and rough presentation.",
-  solutionShort:
-    "Built a responsive full-screen arcade game with polished controls and stronger mobile gameplay.",
-  impactShort:
-    "Full-screen mobile gameplay with stronger visual polish and responsiveness.",
-  impact: "Full-screen mobile gameplay",
-  results: [
-    "Responsive gameplay across mobile and desktop",
-    "Cleaner full-screen presentation and game feel",
-    "Improved visual feedback and interaction polish",
-  ],
-  stack: ["Next.js", "TypeScript", "Canvas", "Tailwind CSS"],
-  year: "2025",
-  live: false,
-  image: "/proof/voltgrid/gameplay-5.png",
-  gallery: [
-    "/proof/voltgrid/gameplay-1.jpg",
-    "/proof/voltgrid/gameplay-2.jpg",
-    "/proof/voltgrid/gameplay-3.jpg",
-    "/proof/voltgrid/gameplay-4.png",
-    "/proof/voltgrid/gameplay-5.png",
-    "/proof/voltgrid/gameplay-6.png",
-  ],
-},
+    slug: "voltgrid",
+    title: "VoltGrid",
+    category: "Mobile Game",
+    tagline:
+      "Arcade-style grid runner built for responsive full-screen mobile gameplay.",
+    description:
+      "VoltGrid is a fast-paced arcade-style web game built to feel sharp, responsive, and visually alive across mobile and desktop. The focus was on full-screen gameplay, tight controls, energetic feedback, and a polished presentation that makes the experience feel intentional from the first tap.",
+    challenge:
+      "Most browser-based game concepts feel rough on mobile because they waste screen space, scale badly, or lose responsiveness once gameplay gets intense. The challenge was to make VoltGrid feel clean, fast, and immersive across different screen sizes.",
+    solution:
+      "We designed VoltGrid as a mobile-friendly, full-screen game experience with responsive controls, cleaner layout behavior, stronger visual feedback, and a tighter gameplay presentation. The result is a more polished and engaging arcade experience that feels better to play on both phones and desktops.",
+    problem:
+      "Typical browser game prototypes feel clunky on mobile, waste space, and break immersion with weak responsiveness and rough presentation.",
+    solutionShort:
+      "Built a responsive full-screen arcade game with polished controls and stronger mobile gameplay.",
+    impactShort:
+      "Full-screen mobile gameplay with stronger visual polish and responsiveness.",
+    impact: "Full-screen mobile gameplay",
+    results: [
+      "Responsive gameplay across mobile and desktop",
+      "Cleaner full-screen presentation and game feel",
+      "Improved visual feedback and interaction polish",
+    ],
+    stack: ["Next.js", "TypeScript", "Canvas", "Tailwind CSS"],
+    year: "2025",
+    live: false,
+    image: "/proof/voltgrid/gameplay-5.png",
+    video: "/proof/voltgrid/gameplay-demo.mp4",
+    poster: "/proof/voltgrid/gameplay-5.png",
+    gallery: [
+      "/proof/voltgrid/gameplay-1.jpg",
+      "/proof/voltgrid/gameplay-2.jpg",
+      "/proof/voltgrid/gameplay-3.jpg",
+      "/proof/voltgrid/gameplay-4.png",
+      "/proof/voltgrid/gameplay-5.png",
+      "/proof/voltgrid/gameplay-6.png",
+    ],
+  },
 ];
 
 export const services = [
@@ -236,7 +237,13 @@ export const tiers = [
     payment: "Paid in full upfront",
     buttonLabel: "Get started",
     stripePriceId: "price_1T9BVYPzPB6fxeLqyzhgqHGf",
-    features: ["1 responsive page", "Contact form", "SEO fundamentals", "Mobile optimized", "1 revision round"],
+    features: [
+      "1 responsive page",
+      "Contact form",
+      "SEO fundamentals",
+      "Mobile optimized",
+      "1 revision round",
+    ],
     excluded: ["CMS", "Multi-page", "E-commerce"],
     popular: false,
   },
@@ -247,7 +254,14 @@ export const tiers = [
     payment: "50% upfront · 50% before launch",
     buttonLabel: "Pay deposit",
     stripePriceId: "price_1T9BX1PzPB6fxeLqpugGa8S5",
-    features: ["Up to 5 pages", "CMS integration", "Lead capture forms", "Analytics setup", "2 revision rounds", "Basic SEO"],
+    features: [
+      "Up to 5 pages",
+      "CMS integration",
+      "Lead capture forms",
+      "Analytics setup",
+      "2 revision rounds",
+      "Basic SEO",
+    ],
     excluded: ["E-commerce", "Custom backend"],
     popular: true,
   },
@@ -258,7 +272,14 @@ export const tiers = [
     payment: "50% upfront · 50% before launch",
     buttonLabel: "Pay deposit",
     stripePriceId: "price_1T9BXWPzPB6fxeLq8GeqcE9f",
-    features: ["Up to 12 pages", "CMS + blog", "Advanced forms + SEO", "E-commerce ready", "3 revision rounds", "30 day support"],
+    features: [
+      "Up to 12 pages",
+      "CMS + blog",
+      "Advanced forms + SEO",
+      "E-commerce ready",
+      "3 revision rounds",
+      "30 day support",
+    ],
     excluded: ["Custom SaaS logic", "AI integrations"],
     popular: false,
   },
@@ -271,7 +292,8 @@ export const tiers = [
 
 export const testimonials = [
   {
-    quote: "We needed a working platform for an investor demo and they delivered in under a week. It looked and felt like something that had been in development for months.",
+    quote:
+      "We needed a working platform for an investor demo and they delivered in under a week. It looked and felt like something that had been in development for months.",
     name: "David Morales",
     title: "CTO, LeadsAndSaaS",
     project: "SaaS Platform",
@@ -279,7 +301,8 @@ export const testimonials = [
     result: "Demo-ready for investor meeting",
   },
   {
-    quote: "Our old quoting process was 48 hours of back-and-forth emails. Now customers get pricing in 60 seconds and check out on the spot. Orders jumped 35% the first month.",
+    quote:
+      "Our old quoting process was 48 hours of back-and-forth emails. Now customers get pricing in 60 seconds and check out on the spot. Orders jumped 35% the first month.",
     name: "Ryan Torres",
     title: "Founder, Create3DParts",
     project: "E-Commerce Platform",
@@ -287,7 +310,8 @@ export const testimonials = [
     result: "Quote time: 48hrs → 60sec",
   },
   {
-    quote: "We'd already burned through two agencies before finding Tweak & Build. They scoped it cleanly, hit every milestone, and we never had to chase for an update.",
+    quote:
+      "We'd already burned through two agencies before finding Tweak & Build. They scoped it cleanly, hit every milestone, and we never had to chase for an update.",
     name: "Priya Patel",
     title: "Founder, voltgrid",
     project: "Landing Page + CRM",
@@ -316,9 +340,24 @@ export const metrics = [
 ];
 
 export const recentLaunches = [
-  { name: "Create3DParts.com", type: "E-Commerce", status: "live", result: "Orders up 35%" },
-  { name: "LeadsAndSaaS", type: "SaaS Platform", status: "live", result: "Shipped in under a week" },
-  { name: "Meridian Health", type: "Web App", status: "shipped", result: "No-shows down 40%" },
+  {
+    name: "Create3DParts.com",
+    type: "E-Commerce",
+    status: "live",
+    result: "Orders up 35%",
+  },
+  {
+    name: "LeadsAndSaaS",
+    type: "SaaS Platform",
+    status: "live",
+    result: "Shipped in under a week",
+  },
+  {
+    name: "Meridian Health",
+    type: "Web App",
+    status: "shipped",
+    result: "No-shows down 40%",
+  },
 ];
 
 export const differentiators = [
@@ -350,11 +389,26 @@ export const deliveryTraits = [
 ];
 
 export const bestFitClients = [
-  { label: "Founders & CEOs", desc: "Building your first product or rebuilding for scale" },
-  { label: "Local businesses", desc: "Need a premium web presence that converts" },
-  { label: "Service companies", desc: "Want lead capture and automation that works" },
-  { label: "Early-stage startups", desc: "Ship fast without hiring a full team" },
-  { label: "E-commerce brands", desc: "Custom storefronts that outperform templates" },
+  {
+    label: "Founders & CEOs",
+    desc: "Building your first product or rebuilding for scale",
+  },
+  {
+    label: "Local businesses",
+    desc: "Need a premium web presence that converts",
+  },
+  {
+    label: "Service companies",
+    desc: "Want lead capture and automation that works",
+  },
+  {
+    label: "Early-stage startups",
+    desc: "Ship fast without hiring a full team",
+  },
+  {
+    label: "E-commerce brands",
+    desc: "Custom storefronts that outperform templates",
+  },
 ];
 
 export const faqs = [
@@ -408,5 +462,16 @@ export const faqs = [
   },
 ];
 
-export const budgetOptions = ["Under $5k", "$5k to $10k", "$10k to $25k", "$25k+", "Not sure"];
-export const timelineOptions = ["ASAP", "1 to 2 months", "2 to 4 months", "Flexible"];
+export const budgetOptions = [
+  "Under $5k",
+  "$5k to $10k",
+  "$10k to $25k",
+  "$25k+",
+  "Not sure",
+];
+export const timelineOptions = [
+  "ASAP",
+  "1 to 2 months",
+  "2 to 4 months",
+  "Flexible",
+];
