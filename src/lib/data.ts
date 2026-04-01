@@ -155,32 +155,39 @@ export const projects: Project[] = [
     year: "2024",
   },
   {
-    slug: "voltgrid",
-    title: "Kommison.com",
-    category: "Affiliate & Commission Platform",
-    tagline: "Affiliate and commission management platform with real-time tracking, automated payouts, and multi-tier campaign analytics.",
-    description:
-      "A full-stack affiliate and commission management platform that enables businesses to run, track, and optimize their affiliate programs. voltgrid handles partner onboarding, link generation, real-time conversion tracking, multi-tier commission structures, and automated payouts - replacing spreadsheets and fragmented tools with a single unified system.",
-    challenge:
-      "Affiliate program management is fragmented across spreadsheets, manual payout calculations, and disconnected tracking tools. Businesses running affiliate programs waste hours reconciling data and risk losing partners to delayed or inaccurate payments.",
-    solution:
-      "We're building voltgrid as a purpose-built affiliate management platform with real-time conversion tracking via Supabase, automated commission calculations supporting flat-rate, percentage, and tiered structures, and instant payouts through Stripe Connect. The platform includes a partner dashboard for affiliates and an admin panel for program managers.",
-    problem:
-      "Affiliate management fragmented across spreadsheets and disconnected tools. Manual payouts, no real-time tracking.",
-    solutionShort:
-      "Purpose-built affiliate platform with real-time tracking and automated payouts via Stripe Connect.",
-    impactShort:
-      "In development. Payout automation: real-time.",
-    impact: "Payout automation: real-time",
-    results: [
-      "Status: In development",
-      "Payout automation: Real-time",
-    ],
-    stack: ["Next.js", "TypeScript", "Supabase", "Stripe Connect"],
-    year: "2025",
-    live: false,
-    // TODO: Replace with Kommison.com screenshots when available
-    image: "/proof/create3dparts/dashboard.png",
+  slug: "voltgrid",
+  title: "VoltGrid",
+  category: "Mobile Game",
+  tagline: "Arcade-style grid runner built for responsive full-screen mobile gameplay.",
+  description:
+    "VoltGrid is a fast-paced arcade-style web game built to feel sharp, responsive, and visually alive across mobile and desktop. The focus was on full-screen gameplay, tight controls, energetic feedback, and a polished presentation that makes the experience feel intentional from the first tap.",
+  challenge:
+    "Most browser-based game concepts feel rough on mobile because they waste screen space, scale badly, or lose responsiveness once gameplay gets intense. The challenge was to make VoltGrid feel clean, fast, and immersive across different screen sizes.",
+  solution:
+    "We designed VoltGrid as a mobile-friendly, full-screen game experience with responsive controls, cleaner layout behavior, stronger visual feedback, and a tighter gameplay presentation. The result is a more polished and engaging arcade experience that feels better to play on both phones and desktops.",
+  problem:
+    "Typical browser game prototypes feel clunky on mobile, waste space, and break immersion with weak responsiveness and rough presentation.",
+  solutionShort:
+    "Built a responsive full-screen arcade game with polished controls and stronger mobile gameplay.",
+  impactShort:
+    "Full-screen mobile gameplay with stronger visual polish and responsiveness.",
+  impact: "Full-screen mobile gameplay",
+  results: [
+    "Responsive gameplay across mobile and desktop",
+    "Cleaner full-screen presentation and game feel",
+    "Improved visual feedback and interaction polish",
+  ],
+  stack: ["Next.js", "TypeScript", "Tailwind CSS", "Game UI"],
+  year: "2025",
+  live: false,
+  image: "/proof/voltgrid/Screenshot_20260401_002322_VoltGrid.jpg",
+  gallery: [
+    "/proof/voltgrid/Screenshot_20260401_002322_VoltGrid.jpg",
+    "/proof/voltgrid/Screenshot_20260401_002338_VoltGrid.jpg",
+    "/proof/voltgrid/Screenshot_20260401_002344_VoltGrid.jpg",
+    "/proof/voltgrid/Screenshot_20260401_002443_VoltGrid.jpg",
+    "/proof/voltgrid/Screenshot_20260401_002454_VoltGrid.jpg",
+  ],
   },
 ];
 
