@@ -1,90 +1,116 @@
 "use client";
-import { Check } from "lucide-react";
-import { Reveal, Tilt } from "./shared";
-import { differentiators, techStack } from "@/lib/data";
+import { UserCheck, DollarSign, Lightbulb, KeyRound, Shield } from "lucide-react";
+import { Reveal } from "./shared";
+
+const steps = [
+  {
+    num: "01",
+    title: "Senior-led execution",
+    desc: "No revolving door of junior devs. Your project is led by experienced engineers who've shipped real products — not managed from a distance.",
+    detail: "Direct access to senior engineers",
+    icon: UserCheck,
+  },
+  {
+    num: "02",
+    title: "Fixed pricing, always",
+    desc: "You get a locked price before we write a single line of code. No hourly billing, no scope creep surprises, no invoices that don't match the quote.",
+    detail: "No hourly billing, ever",
+    icon: DollarSign,
+  },
+  {
+    num: "03",
+    title: "Product thinking built in",
+    desc: "We don't just build what you describe. We challenge assumptions, optimize for conversion, and make sure every feature serves a business goal.",
+    detail: "Strategy meets engineering",
+    icon: Lightbulb,
+  },
+  {
+    num: "04",
+    title: "You own everything",
+    desc: "100% of the source code, design assets, and documentation transfer to you on final payment. No lock-in, no licensing fees, no hostage situations.",
+    detail: "Full IP ownership on delivery",
+    icon: KeyRound,
+  },
+];
 
 export function WhyUs() {
   return (
-    <section className="relative overflow-hidden py-28 sm:py-32">
-      <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-surface-0 via-surface-1/50 to-surface-0" />
-
-      <div className="wrap relative">
-        <Reveal>
-          <div className="mb-14">
-            <span className="section-label">Why us</span>
-            <h2 className="section-title mt-3">Not another generic agency.</h2>
-            <p className="mt-4 max-w-[520px] text-[15px] leading-[1.75] text-body">
-              We&apos;re a small, senior team that treats your product like our own. Here&apos;s what makes working with us different.
-            </p>
-          </div>
-        </Reveal>
-
-        {/* Differentiators grid */}
-        <div className="mb-16 grid gap-4 sm:grid-cols-2">
-          {differentiators.map((d, i) => (
-            <Reveal key={d.title} delay={i * 0.06}>
-              <Tilt className="h-full">
-                <div className="flex h-full gap-4 rounded-[20px] border border-white/[0.06] bg-white/[0.02] p-7 transition-all duration-300 hover:border-v/[0.1]">
-                  <div className="mt-0.5 flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-lg border border-v/[0.2] bg-gradient-to-br from-v/[0.1] to-cyan/[0.04]">
-                    <Check size={14} className="text-v-light" />
-                  </div>
-                  <div>
-                    <h3 className="mb-2 font-display text-[17px] font-bold text-white">{d.title}</h3>
-                    <p className="text-[14px] leading-[1.75] text-body">{d.desc}</p>
-                  </div>
-                </div>
-              </Tilt>
+    <section id="why-us" className="relative py-28 sm:py-36">
+      <div className="wrap">
+        <div className="grid gap-14 lg:grid-cols-[400px,1fr] lg:gap-20">
+          {/* Left: sticky header */}
+          <div className="lg:sticky lg:top-28 lg:self-start">
+            <Reveal>
+              <span className="section-label">Why us</span>
+              <h2 className="mt-5 font-display text-[clamp(32px,4.5vw,52px)] font-extrabold leading-[1.04] tracking-[-0.04em] text-white">
+                Built different.
+                <br />
+                <span className="text-body">On purpose.</span>
+              </h2>
+              <p className="mt-5 max-w-[360px] text-[15px] leading-[1.75] text-body">
+                We&apos;re not a body shop or a freelancer marketplace. We&apos;re a product-focused studio that ships — on time, on budget, every time.
+              </p>
             </Reveal>
-          ))}
-        </div>
 
-        {/* Founder + Tech stack card */}
-        <Reveal delay={0.3}>
-          <div className="mx-auto max-w-[720px]">
-            <Tilt>
-              <div className="relative overflow-hidden rounded-[24px] border border-white/[0.06] bg-white/[0.02] p-8 sm:p-10">
-                <div className="absolute left-10 right-10 top-0 h-px bg-gradient-to-r from-transparent via-v/[0.2] to-transparent" />
-
-                <div className="flex flex-col items-center gap-6 sm:flex-row sm:items-start sm:gap-8">
-                  <div className="flex-shrink-0">
-                    <div className="flex h-20 w-20 items-center justify-center rounded-2xl border border-accent/[0.15] bg-accent/[0.06] shadow-[0_0_24px_rgba(200,255,0,0.06)]">
-                      <span className="font-display text-[22px] font-black tracking-[-0.03em] text-accent">T<span className="text-accent/60">&amp;</span>B</span>
-                    </div>
-                  </div>
-                  <div className="text-center sm:text-left">
-                    <p className="text-[16px] leading-[1.85] text-gray-300">
-                      <strong className="text-white">Tweak & Build</strong> is led by <strong className="text-white">Iyad Baker</strong>, a product-minded engineer who&apos;s shipped software for startups, e-commerce brands, and funded SaaS companies. Every project gets senior engineering from day one.
-                    </p>
-                    <p className="mt-3 text-[15px] leading-[1.85] text-body">
-                      Our philosophy: <strong className="text-white/90">velocity without compromise.</strong> We move fast, but we don&apos;t cut corners. The code we hand you is production-grade, documented, and built to scale.
-                    </p>
-                  </div>
+            {/* Guarantee */}
+            <Reveal delay={0.15}>
+              <div
+                className="mt-10 flex items-start gap-4 rounded-2xl border border-accent/[0.12] p-6"
+                style={{
+                  background: "rgba(200,255,0,0.02)",
+                  boxShadow: "0 1px 0 rgba(200,255,0,0.04) inset, 0 4px 16px rgba(0,0,0,0.1)",
+                }}
+              >
+                <div className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-lg border border-accent/20 bg-accent/[0.06]">
+                  <Shield size={16} className="text-accent" />
                 </div>
-
-                {/* Tech stack */}
-                <div className="mt-8 flex flex-wrap justify-center gap-2 border-t border-white/[0.06] pt-7">
-                  {techStack.map((t) => (
-                    <div
-                      key={t.name}
-                      className="flex cursor-default items-center gap-2 rounded-[10px] border border-white/[0.06] bg-white/[0.02] px-3.5 py-2 transition-all duration-300 hover:-translate-y-0.5"
-                      onMouseEnter={(e) => {
-                        e.currentTarget.style.borderColor = `${t.color}33`;
-                        e.currentTarget.style.boxShadow = `0 0 20px ${t.color}0a`;
-                      }}
-                      onMouseLeave={(e) => {
-                        e.currentTarget.style.borderColor = "rgba(255,255,255,0.06)";
-                        e.currentTarget.style.boxShadow = "none";
-                      }}
-                    >
-                      <div className="h-1.5 w-1.5 rounded-full" style={{ background: t.color }} />
-                      <span className="font-mono text-[11px] font-medium text-gray-400">{t.name}</span>
-                    </div>
-                  ))}
+                <div>
+                  <div className="text-[14px] font-bold text-white">Velocity without compromise</div>
+                  <p className="mt-1.5 text-[13px] leading-[1.7] text-body">
+                    Led by Iyad Baker, a product-minded engineer who&apos;s shipped software for startups, e-commerce brands, and funded SaaS companies. Every project gets senior engineering from day one.
+                  </p>
                 </div>
               </div>
-            </Tilt>
+            </Reveal>
           </div>
-        </Reveal>
+
+          {/* Right: steps */}
+          <div className="relative">
+            {/* Vertical connecting line */}
+            <div className="absolute bottom-0 left-[23px] top-0 hidden w-px lg:block" style={{ background: "linear-gradient(to bottom, rgba(200,255,0,0.2), rgba(255,255,255,0.04) 80%, transparent)" }} />
+
+            <div className="space-y-5">
+              {steps.map((step, i) => (
+                <Reveal key={step.num} delay={i * 0.08}>
+                  <div
+                    className="group relative flex gap-5 rounded-2xl border border-white/[0.06] p-7 transition-all duration-300 hover:border-white/[0.12] lg:gap-6 lg:p-8"
+                    style={{
+                      background: "rgba(255,255,255,0.012)",
+                      boxShadow: "0 1px 0 rgba(255,255,255,0.02) inset",
+                    }}
+                  >
+                    {/* Step number */}
+                    <div className="relative z-10 flex h-[46px] w-[46px] flex-shrink-0 items-center justify-center rounded-xl border border-accent/20 bg-surface-0">
+                      <span className="font-mono text-[13px] font-bold text-accent">{step.num}</span>
+                    </div>
+
+                    <div className="flex-1">
+                      <div className="flex items-center gap-2.5">
+                        <h3 className="font-display text-[19px] font-bold tracking-[-0.01em] text-white">{step.title}</h3>
+                        <step.icon size={14} className="text-dim/60" />
+                      </div>
+                      <p className="mt-2.5 text-[13px] leading-[1.85] text-body sm:text-[14px]">{step.desc}</p>
+                      <div className="mt-4 inline-flex items-center gap-2 rounded-full border border-accent/[0.10] bg-accent/[0.03] px-3.5 py-1.5">
+                        <div className="h-1 w-1 rounded-full bg-accent/70" />
+                        <span className="font-mono text-[10px] font-medium text-accent/80">{step.detail}</span>
+                      </div>
+                    </div>
+                  </div>
+                </Reveal>
+              ))}
+            </div>
+          </div>
+        </div>
       </div>
     </section>
   );
