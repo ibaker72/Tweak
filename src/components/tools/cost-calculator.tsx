@@ -171,7 +171,7 @@ export function CostCalculator() {
   };
 
   const getRelevantCaseStudy = () => {
-    if (projectType === "ecommerce") return { slug: "kommison", label: "Kommison" };
+    if (projectType === "ecommerce") return { slug: "voltgrid", label: "voltgrid" };
     if (projectType === "saas" || projectType === "webapp")
       return { slug: "leadsandsaas", label: "LeadsAndSaaS" };
     return { slug: "create3dparts", label: "Create3DParts" };

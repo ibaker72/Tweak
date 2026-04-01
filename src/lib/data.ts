@@ -155,16 +155,16 @@ export const projects: Project[] = [
     year: "2024",
   },
   {
-    slug: "kommison",
+    slug: "voltgrid",
     title: "Kommison.com",
     category: "Affiliate & Commission Platform",
     tagline: "Affiliate and commission management platform with real-time tracking, automated payouts, and multi-tier campaign analytics.",
     description:
-      "A full-stack affiliate and commission management platform that enables businesses to run, track, and optimize their affiliate programs. Kommison handles partner onboarding, link generation, real-time conversion tracking, multi-tier commission structures, and automated payouts - replacing spreadsheets and fragmented tools with a single unified system.",
+      "A full-stack affiliate and commission management platform that enables businesses to run, track, and optimize their affiliate programs. voltgrid handles partner onboarding, link generation, real-time conversion tracking, multi-tier commission structures, and automated payouts - replacing spreadsheets and fragmented tools with a single unified system.",
     challenge:
       "Affiliate program management is fragmented across spreadsheets, manual payout calculations, and disconnected tracking tools. Businesses running affiliate programs waste hours reconciling data and risk losing partners to delayed or inaccurate payments.",
     solution:
-      "We're building Kommison as a purpose-built affiliate management platform with real-time conversion tracking via Supabase, automated commission calculations supporting flat-rate, percentage, and tiered structures, and instant payouts through Stripe Connect. The platform includes a partner dashboard for affiliates and an admin panel for program managers.",
+      "We're building voltgrid as a purpose-built affiliate management platform with real-time conversion tracking via Supabase, automated commission calculations supporting flat-rate, percentage, and tiered structures, and instant payouts through Stripe Connect. The platform includes a partner dashboard for affiliates and an admin panel for program managers.",
     problem:
       "Affiliate management fragmented across spreadsheets and disconnected tools. Manual payouts, no real-time tracking.",
     solutionShort:
@@ -280,7 +280,7 @@ export const testimonials = [
   {
     quote: "We'd already burned through two agencies before finding Tweak & Build. They scoped it cleanly, hit every milestone, and we never had to chase for an update.",
     name: "Priya Patel",
-    title: "Founder, Kommison",
+    title: "Founder, voltgrid",
     project: "Landing Page + CRM",
     engagement: "3-week build",
     result: "Delivered on scope and budget",

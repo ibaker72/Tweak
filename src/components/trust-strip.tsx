@@ -2,7 +2,7 @@
 import { Reveal, Counter } from "./shared";
 import { cn } from "@/lib/utils";
 
-const clientNames = ["Create3DParts", "LeadsAndSaaS", "Meridian Health", "Atlas Freight", "Kommison"];
+const clientNames = ["Create3DParts", "LeadsAndSaaS", "Meridian Health", "Atlas Freight", "voltgrid"];
 
 const industries = [
   "E-Commerce",

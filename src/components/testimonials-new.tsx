@@ -23,7 +23,7 @@ const testimonials = [
   {
     quote: "We'd already burned through two agencies before finding Tweak & Build. They scoped it cleanly, hit every milestone, and we never had to chase for an update.",
     name: "Priya Patel",
-    title: "Founder, Kommison",
+    title: "Founder, voltgrid",
     project: "Landing Page + CRM",
     engagement: "3-week build",
     result: "Delivered on scope and budget",
