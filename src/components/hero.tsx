@@ -105,7 +105,7 @@ export function Hero() {
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_70%_50%_at_50%_-10%,rgba(200,255,0,0.06),transparent)]" />
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_40%_40%_at_80%_80%,rgba(200,255,0,0.02),transparent)]" />
 
-      <div className="wrap relative z-10 flex min-h-[100dvh] flex-col justify-center pb-8 pt-20 sm:pb-16 sm:pt-24 lg:pb-20 lg:pt-28">
+      <div className="wrap relative z-10 flex min-h-[100dvh] flex-col justify-start pb-8 pt-24 sm:justify-center sm:pb-16 sm:pt-24 lg:pb-20 lg:pt-28">
         <div className="mx-auto flex w-full max-w-[980px] flex-col items-center text-center">
           <Reveal>
             <div className="mb-4 sm:mb-10">
