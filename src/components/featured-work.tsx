@@ -69,10 +69,10 @@ export function FeaturedWork() {
             {/* Vertical connecting line */}
             <div className="absolute bottom-0 left-[23px] top-0 hidden w-px lg:block" style={{ background: "linear-gradient(to bottom, rgba(200,255,0,0.2), rgba(255,255,255,0.04) 80%, transparent)" }} />
 
-            <div className="space-y-5">
+            <div className="flex snap-x snap-mandatory gap-4 overflow-x-auto pb-2 pr-1 no-scrollbar lg:block lg:space-y-5 lg:overflow-visible lg:pb-0 lg:pr-0">
               {projects.map((project, i) => (
                 <Reveal key={project.num} delay={i * 0.08}>
-                  <Link href={project.href} className="group block">
+                  <Link href={project.href} className="group block min-w-[85%] snap-start sm:min-w-[70%] lg:min-w-0">
                     <div
                       className="relative rounded-2xl border border-white/[0.06] p-7 transition-all duration-300 hover:border-white/[0.12] lg:p-8"
                       style={{

@@ -64,11 +64,11 @@ export function TrustStrip() {
             <p className="mb-4 text-center font-mono text-[9px] uppercase tracking-[0.16em] text-dim sm:mb-5 sm:text-[10px]">
               Trusted by founders at
             </p>
-            <div className="flex flex-wrap items-center justify-center gap-x-2 gap-y-2 sm:gap-x-3">
+            <div className="grid grid-cols-2 gap-2 sm:flex sm:flex-wrap sm:items-center sm:justify-center sm:gap-x-3 sm:gap-y-2">
               {clientNames.map((name) => (
                 <span
                   key={name}
-                  className="inline-flex items-center justify-center rounded-full border border-white/[0.05] bg-white/[0.015] px-4 py-2 font-display text-[12px] font-semibold text-white/25 transition-all duration-300 hover:border-white/[0.1] hover:text-white/50 sm:px-5 sm:py-2 sm:text-[13px]"
+                  className="inline-flex items-center justify-center rounded-full border border-white/[0.05] bg-white/[0.015] px-3 py-2 text-center font-display text-[12px] font-semibold text-white/25 transition-all duration-300 hover:border-white/[0.1] hover:text-white/50 sm:px-5 sm:py-2 sm:text-[13px]"
                 >
                   {name}
                 </span>

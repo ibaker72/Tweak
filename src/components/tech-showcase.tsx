@@ -191,11 +191,11 @@ export function TechShowcase() {
         </div>
 
         {/* Testimonials - compact row */}
-        <div className="mt-10 grid gap-4 sm:gap-5 lg:grid-cols-3">
+        <div className="mt-10 flex snap-x snap-mandatory gap-4 overflow-x-auto pb-2 no-scrollbar sm:gap-5 lg:grid lg:overflow-visible lg:pb-0 lg:[grid-template-columns:repeat(3,minmax(0,1fr))]">
           {testimonials.map((t, i) => (
             <Reveal key={t.name} delay={0.06 + i * 0.06}>
               <div
-                className={`flex h-full flex-col rounded-2xl border p-7 transition-all duration-300 hover:border-white/[0.12] lg:p-8 ${
+                className={`flex h-full min-w-[85%] snap-start flex-col rounded-2xl border p-7 transition-all duration-300 hover:border-white/[0.12] sm:min-w-[70%] lg:min-w-0 lg:p-8 ${
                   t.featured
                     ? "border-accent/[0.10]"
                     : "border-white/[0.06]"
@@ -260,13 +260,13 @@ export function TechShowcase() {
             }}
           >
             <div className="mb-5 text-center font-mono text-[10px] uppercase tracking-[0.12em] text-dim sm:text-left">Our stack</div>
-            <div className="flex flex-wrap justify-center gap-x-2.5 gap-y-2.5 sm:justify-start">
+            <div className="grid grid-cols-2 gap-2.5 sm:grid-cols-3 sm:justify-start">
               {techStack.map((t) => {
                 const Icon = iconMap[t.name];
                 return (
                   <div
                     key={t.name}
-                    className="flex items-center gap-2 rounded-full border border-white/[0.06] bg-white/[0.015] px-3.5 py-1.5 transition-all duration-200 hover:-translate-y-0.5 hover:border-white/[0.1]"
+                    className="flex items-center justify-center gap-2 rounded-full border border-white/[0.06] bg-white/[0.015] px-3 py-1.5 transition-all duration-200 hover:-translate-y-0.5 hover:border-white/[0.1] sm:justify-start sm:px-3.5"
                   >
                     {Icon ? <Icon color={t.color} /> : <div className="h-1.5 w-1.5 rounded-full" style={{ background: t.color }} />}
                     <span className="font-mono text-[11px] font-medium text-white/35">{t.name}</span>

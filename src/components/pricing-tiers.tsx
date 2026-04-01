@@ -158,7 +158,7 @@ function TierCard({ tier, index }: { tier: StudioTier; index: number }) {
         whileHover={{ y: -2 }}
         transition={{ duration: 0.2, ease: "easeOut" }}
         className={cn(
-          "group relative flex h-full flex-col rounded-2xl border p-5 transition-all duration-300 lg:p-6",
+          "group relative flex h-full min-w-[86%] snap-start flex-col rounded-2xl border p-5 transition-all duration-300 sm:min-w-[70%] lg:min-w-0 lg:p-6",
           tier.featured 
             ? "border-accent/30 bg-white/[0.02] hover:border-accent/50 hover:shadow-[0_4px_20px_-10px_rgba(200,255,0,0.15)]" 
             : "border-white/10 bg-white/[0.01] hover:border-white/20 hover:bg-white/[0.02] hover:shadow-[0_4px_20px_-10px_rgba(255,255,255,0.05)]"
@@ -352,7 +352,7 @@ export function PricingTiers() {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: 12 }}
               transition={{ duration: 0.25, ease: "easeOut" }}
-              className="mt-2 grid grid-cols-1 gap-6 lg:grid-cols-2 lg:gap-5"
+              className="mt-2 flex snap-x snap-mandatory gap-4 overflow-x-auto pb-2 no-scrollbar lg:grid lg:grid-cols-2 lg:gap-5 lg:overflow-visible lg:pb-0"
             >
               {activeTiers.map((tier, index) => (
                 <TierCard key={tier.name} tier={tier} index={index} />
