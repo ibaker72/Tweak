@@ -81,7 +81,7 @@ export function FeaturedWork() {
                       }}
                     >
                       {/* Project image */}
-                      <div className="relative mb-6 aspect-[16/9] overflow-hidden rounded-xl">
+                      <div className="relative mb-4 aspect-[16/9] overflow-hidden rounded-xl">
                         <Image
                           src={project.image}
                           alt={project.title}

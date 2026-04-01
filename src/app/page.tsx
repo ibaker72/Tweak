@@ -1,6 +1,7 @@
 import { Hero } from "@/components/hero";
 import { FeaturedWork } from "@/components/featured-work";
 import { ServicesNew } from "@/components/services-new";
+import { WhyUs } from "@/components/founder";
 import { TrustStrip } from "@/components/trust-strip";
 import { TechShowcase } from "@/components/tech-showcase";
 import { ProcessNew } from "@/components/process-new";
@@ -21,6 +22,7 @@ export default function Home() {
       <TrustStrip />
       <FeaturedWork />
       <ServicesNew />
+      <WhyUs />
       <PricingTiers />
       <ProcessNew />
       <TechShowcase />
