@@ -177,18 +177,19 @@ export const projects: Project[] = [
     "Cleaner full-screen presentation and game feel",
     "Improved visual feedback and interaction polish",
   ],
-  stack: ["Next.js", "TypeScript", "Tailwind CSS", "Game UI"],
+  stack: ["Next.js", "TypeScript", "Canvas", "Tailwind CSS"],
   year: "2025",
   live: false,
-  image: "/proof/voltgrid/Screenshot_20260401_002322_VoltGrid.jpg",
+  image: "/proof/voltgrid/gameplay-5.png",
   gallery: [
-    "/proof/voltgrid/Screenshot_20260401_002322_VoltGrid.jpg",
-    "/proof/voltgrid/Screenshot_20260401_002338_VoltGrid.jpg",
-    "/proof/voltgrid/Screenshot_20260401_002344_VoltGrid.jpg",
-    "/proof/voltgrid/Screenshot_20260401_002443_VoltGrid.jpg",
-    "/proof/voltgrid/Screenshot_20260401_002454_VoltGrid.jpg",
+    "/proof/voltgrid/gameplay-1.jpg",
+    "/proof/voltgrid/gameplay-2.jpg",
+    "/proof/voltgrid/gameplay-3.jpg",
+    "/proof/voltgrid/gameplay-4.png",
+    "/proof/voltgrid/gameplay-5.png",
+    "/proof/voltgrid/gameplay-6.png",
   ],
-  },
+},
 ];
 
 export const services = [

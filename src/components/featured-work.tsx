@@ -30,7 +30,7 @@ const projects = [
     desc: "Arcade-style mobile game designed and built with responsive full-screen gameplay, energetic visual feedback, and a polished, mobile-friendly game experience.",
     detail: "Full-screen mobile gameplay",
     icon: Gamepad2,
-    image: "/proof/voltgrid/cover.png",
+    image: "/proof/voltgrid/gameplay-5.png",
     href: "/work/voltgrid",
   },
   {

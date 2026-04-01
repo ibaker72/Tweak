@@ -58,7 +58,7 @@ export default function ProjectPage() {
                   LIVE
                 </span>
               )}
-              {!project.live && project.slug === "voltgrid" && (
+              {!project.live && (
                 <span className="rounded-md border border-amber-400/[0.2] bg-amber-400/[0.06] px-2 py-0.5 text-[9px] font-bold text-amber-400">
                   IN DEV
                 </span>
