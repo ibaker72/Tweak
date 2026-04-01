@@ -58,50 +58,51 @@ export const projects: Project[] = [
 ],
   },
   {
-    slug: "leadsandsaas",
-    title: "LeadsAndSaaS",
-    category: "SaaS Platform",
-    tagline: "Agent hub, asset vault, and lead distribution engine",
-    description:
-      "A multi-tenant SaaS platform for managing AI agent workflows, storing digital assets, and distributing leads across teams with configurable routing rules.",
-    challenge:
-      "The founding team was juggling four different tools for lead management, asset storage, and agent coordination. Data was siloed and leads were being dropped.",
-    solution:
-      "We consolidated everything into one platform: a drag-and-drop agent builder, a centralized asset vault with tagging and permissions, and a lead router with round-robin and rules-based distribution.",
-    problem:
-      "Four disconnected tools. Data siloed, leads dropped, onboarding took days.",
-    solutionShort:
-      "One platform: agent builder, asset vault, and rules-based lead distribution.",
-    impactShort:
-      "Lead response dropped from 4 hours to 15 minutes.",
-    impact: "Lead response: 4hrs → 15min",
-    results: [
-      "Lead response time: 4 hours to under 15 minutes",
-      "100% of assets in one searchable vault",
-      "Onboarding reduced from 3 days to 4 hours",
-    ],
-    stack: [
-      "Next.js",
-      "TypeScript",
-      "Supabase",
-      "OpenAI API",
-      "Tailwind CSS",
-      "Vercel",
-    ],
-    year: "2025",
-    live: true,
-    image: "/proof/leadsandsaas/overview.png",
-    gallery: [
-      "/proof/leadsandsaas/overview.png",
-      "/proof/leadsandsaas/billing.png",
-      "/proof/leadsandsaas/agents.png",
-      "/proof/leadsandsaas/chat-widget.png",
-      "/proof/leadsandsaas/conversations.png",
-      "/proof/leadsandsaas/integrations.png",
-      "/proof/leadsandsaas/login.png",
-      "/proof/leadsandsaas/settings.png",
-    ],
-  },
+  slug: "leadsandsaas",
+  title: "LeadsAndSaaS",
+  category: "SaaS Platform",
+  tagline: "Agent hub, asset vault, and lead distribution engine",
+  description:
+    "A multi-tenant SaaS platform for managing AI agent workflows, storing digital assets, and distributing leads across teams with configurable routing rules.",
+  challenge:
+    "The founding team was juggling four different tools for lead management, asset storage, and agent coordination. Data was siloed and leads were being dropped.",
+  solution:
+    "We consolidated everything into one platform: a drag-and-drop agent builder, a centralized asset vault with tagging and permissions, and a lead router with round-robin and rules-based distribution.",
+  problem:
+    "Four disconnected tools. Data siloed, leads dropped, onboarding took days.",
+  solutionShort:
+    "One platform: agent builder, asset vault, and rules-based lead distribution.",
+  impactShort:
+    "Lead response dropped from 4 hours to 15 minutes.",
+  impact: "Lead response: 4hrs → 15min",
+  results: [
+    "Lead response time: 4 hours to under 15 minutes",
+    "100% of assets in one searchable vault",
+    "Onboarding reduced from 3 days to 4 hours",
+  ],
+  stack: [
+    "Next.js",
+    "TypeScript",
+    "Supabase",
+    "OpenAI API",
+    "Tailwind CSS",
+    "Vercel",
+  ],
+  year: "2025",
+  live: true,
+  image: "/proof/leadsandsaas/home.png",
+  gallery: [
+    "/proof/leadsandsaas/home.png",
+    "/proof/leadsandsaas/overview.png",
+    "/proof/leadsandsaas/agents.png",
+    "/proof/leadsandsaas/billing.png",
+    "/proof/leadsandsaas/chat-widget.png",
+    "/proof/leadsandsaas/conversations.png",
+    "/proof/leadsandsaas/integrations.png",
+    "/proof/leadsandsaas/login.png",
+    "/proof/leadsandsaas/settings.png",
+  ],
+},
   {
     slug: "meridian-health",
     title: "Meridian Health",
