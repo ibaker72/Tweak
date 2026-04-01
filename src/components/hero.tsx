@@ -44,14 +44,13 @@ export function Hero() {
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_70%_50%_at_50%_-10%,rgba(200,255,0,0.06),transparent)]" />
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_40%_40%_at_80%_80%,rgba(200,255,0,0.02),transparent)]" />
 
-      <div className="wrap relative z-10 flex min-h-[100dvh] flex-col justify-center pb-12 pt-24 sm:pb-16 sm:pt-24 lg:pb-20 lg:pt-28">
+      <div className="wrap relative z-10 flex min-h-[100dvh] flex-col justify-center pb-8 pt-20 sm:pb-16 sm:pt-24 lg:pb-20 lg:pt-28">
         
-        {/* CHANGED: Added mx-auto, flex-col, items-center, and text-center to lock everything to the middle */}
         <div className="mx-auto flex w-full max-w-[900px] flex-col items-center text-center">
           <Reveal>
-            <div className="mb-6 sm:mb-10">
+            <div className="mb-4 sm:mb-10">
               <div
-                className="inline-flex items-center gap-2 rounded-full border border-emerald-400/12 bg-emerald-400/[0.03] px-3.5 py-[6px] backdrop-blur-sm sm:border-emerald-400/15 sm:bg-emerald-400/[0.04] sm:px-4 sm:py-1.5"
+                className="inline-flex items-center gap-2 rounded-full border border-emerald-400/12 bg-emerald-400/[0.03] px-3 py-[5px] backdrop-blur-sm sm:border-emerald-400/15 sm:bg-emerald-400/[0.04] sm:px-4 sm:py-1.5"
                 style={{ boxShadow: "inset 0 0.5px 0 rgba(52,211,153,0.06), 0 1px 2px rgba(0,0,0,0.15)" }}
               >
                 <span className="relative flex h-1.5 w-1.5">
@@ -66,8 +65,7 @@ export function Hero() {
           </Reveal>
 
           <Reveal delay={0.05}>
-            {/* CHANGED: Hid the <br/> on mobile using 'sm:hidden' so it's a 1-liner on desktop */}
-            <h1 className="max-w-[800px] text-balance font-display text-[clamp(44px,14vw,118px)] font-black leading-[0.9] tracking-[-0.05em] text-white sm:text-[clamp(68px,10vw,118px)]">
+            <h1 className="max-w-[800px] text-balance font-display text-[clamp(38px,12vw,118px)] font-black leading-[0.92] tracking-[-0.05em] text-white sm:text-[clamp(68px,10vw,118px)]">
               Ship
               <br className="sm:hidden" />
               <span className="gradient-text sm:ml-4">your vision.</span>
@@ -75,18 +73,17 @@ export function Hero() {
           </Reveal>
 
           <Reveal delay={0.12}>
-            {/* CHANGED: Added mx-auto to center the paragraph block */}
-            <p className="mx-auto mt-5 max-w-[600px] text-pretty text-[15px] leading-[1.7] text-white/72 sm:mt-7 sm:text-[18px] lg:text-[19px]">
+            <p className="mx-auto mt-4 max-w-[600px] text-pretty text-[14px] leading-[1.65] text-white/72 sm:mt-7 sm:text-[18px] sm:leading-[1.7] lg:text-[19px]">
               Product engineering studio for founders who need websites, web apps, and automation systems built fast, built right, and built to convert.
             </p>
           </Reveal>
 
           <Reveal delay={0.16}>
-            <div className="mobile-rail mt-6 sm:mt-8 sm:flex-wrap sm:justify-center sm:gap-2.5 sm:overflow-visible sm:pb-0">
+            <div className="mt-4 flex flex-wrap justify-center gap-2 sm:mt-8 sm:gap-2.5">
               {servicePills.map((pill) => (
                 <span
                   key={pill}
-                  className="inline-flex shrink-0 snap-start items-center rounded-full border border-white/[0.08] bg-white/[0.03] px-4 py-2 text-[11px] font-medium tracking-[0.08em] text-white/60 backdrop-blur-sm sm:text-[12px]"
+                  className="inline-flex shrink-0 items-center rounded-full border border-white/[0.08] bg-white/[0.03] px-3.5 py-1.5 text-[11px] font-medium tracking-[0.08em] text-white/60 backdrop-blur-sm sm:px-4 sm:py-2 sm:text-[12px]"
                 >
                   {pill}
                 </span>
@@ -95,14 +92,13 @@ export function Hero() {
           </Reveal>
 
           <Reveal delay={0.2}>
-            {/* CHANGED: Ensure the button group is centered */}
-            <div className="mt-7 flex w-full flex-col justify-center gap-3 sm:mt-10 sm:w-auto sm:flex-row sm:items-center">
-              <Link href="/contact" className="btn-v justify-center px-6 py-3 text-[13px] sm:px-8 sm:py-3.5 sm:text-[14px]">
+            <div className="mt-6 flex w-full flex-col justify-center gap-2.5 sm:mt-10 sm:w-auto sm:flex-row sm:items-center sm:gap-3">
+              <Link href="/contact" className="btn-v justify-center px-6 py-2.5 text-[13px] sm:px-8 sm:py-3.5 sm:text-[14px]">
                 Start a project <ArrowRight size={14} />
               </Link>
               <Link
                 href="#work"
-                className="btn-o justify-center px-6 py-3 text-[13px] backdrop-blur-sm sm:px-7 sm:py-3.5 sm:text-[14px]"
+                className="btn-o justify-center px-6 py-2.5 text-[13px] backdrop-blur-sm sm:px-7 sm:py-3.5 sm:text-[14px]"
               >
                 See our work
               </Link>
@@ -110,18 +106,18 @@ export function Hero() {
           </Reveal>
 
           <Reveal delay={0.24}>
-            <div className="mobile-rail mt-7 sm:mt-10 sm:grid sm:w-full sm:grid-cols-3 sm:gap-3 sm:overflow-visible sm:px-0 sm:pb-0">
-              <div className="mobile-rail-card rounded-xl border border-white/[0.08] bg-white/[0.02] px-4 py-3 text-left sm:w-auto sm:max-w-none">
-                <p className="font-mono text-[10px] uppercase tracking-[0.12em] text-dim">Fastest launch</p>
-                <p className="mt-1 text-[14px] font-semibold text-white">&lt; 1 week delivery</p>
+            <div className="mt-6 grid w-full grid-cols-3 gap-2 sm:mt-10 sm:gap-3">
+              <div className="rounded-xl border border-white/[0.08] bg-white/[0.02] px-3 py-2.5 text-left sm:px-4 sm:py-3">
+                <p className="font-mono text-[8px] uppercase tracking-[0.12em] text-dim sm:text-[10px]">Fastest launch</p>
+                <p className="mt-0.5 text-[12px] font-semibold text-white sm:mt-1 sm:text-[14px]">&lt; 1 week</p>
               </div>
-              <div className="mobile-rail-card rounded-xl border border-white/[0.08] bg-white/[0.02] px-4 py-3 text-left sm:w-auto sm:max-w-none">
-                <p className="font-mono text-[10px] uppercase tracking-[0.12em] text-dim">Response SLA</p>
-                <p className="mt-1 text-[14px] font-semibold text-white">&lt; 4 hours avg</p>
+              <div className="rounded-xl border border-white/[0.08] bg-white/[0.02] px-3 py-2.5 text-left sm:px-4 sm:py-3">
+                <p className="font-mono text-[8px] uppercase tracking-[0.12em] text-dim sm:text-[10px]">Response SLA</p>
+                <p className="mt-0.5 text-[12px] font-semibold text-white sm:mt-1 sm:text-[14px]">&lt; 4 hours</p>
               </div>
-              <div className="mobile-rail-card rounded-xl border border-white/[0.08] bg-white/[0.02] px-4 py-3 text-left sm:w-auto sm:max-w-none">
-                <p className="font-mono text-[10px] uppercase tracking-[0.12em] text-dim">Ownership</p>
-                <p className="mt-1 text-[14px] font-semibold text-white">100% handoff ready</p>
+              <div className="rounded-xl border border-white/[0.08] bg-white/[0.02] px-3 py-2.5 text-left sm:px-4 sm:py-3">
+                <p className="font-mono text-[8px] uppercase tracking-[0.12em] text-dim sm:text-[10px]">Ownership</p>
+                <p className="mt-0.5 text-[12px] font-semibold text-white sm:mt-1 sm:text-[14px]">100% yours</p>
               </div>
             </div>
           </Reveal>

@@ -35,9 +35,62 @@ const steps = [
 
 export function ProcessNew() {
   return (
-    <section id="process" className="relative py-28 sm:py-36">
+    <section id="process" className="relative py-12 sm:py-36">
       <div className="wrap">
-        <div className="grid gap-14 lg:grid-cols-[400px,1fr] lg:gap-20">
+        {/* Mobile: compact vertical layout */}
+        <div className="md:hidden">
+          <Reveal>
+            <span className="section-label">How we work</span>
+            <h2 className="mt-4 font-display text-[28px] font-extrabold leading-[1.06] tracking-[-0.04em] text-white">
+              Four steps. Zero mystery.
+            </h2>
+            <p className="mt-2 text-[13px] leading-[1.6] text-body">
+              Fixed pricing, weekly demos, and full transparency.
+            </p>
+          </Reveal>
+
+          <Reveal delay={0.06}>
+            <div
+              className="mt-5 flex items-start gap-3 rounded-xl border border-accent/[0.12] p-4"
+              style={{
+                background: "rgba(200,255,0,0.02)",
+                boxShadow: "0 1px 0 rgba(200,255,0,0.04) inset",
+              }}
+            >
+              <div className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-lg border border-accent/20 bg-accent/[0.06]">
+                <Shield size={14} className="text-accent" />
+              </div>
+              <div>
+                <div className="text-[13px] font-bold text-white">Milestone-based billing</div>
+                <p className="mt-1 text-[12px] leading-[1.6] text-body">
+                  If we don&apos;t deliver, full refund for that milestone.
+                </p>
+              </div>
+            </div>
+          </Reveal>
+
+          <div className="mt-4 space-y-2">
+            {steps.map((step, i) => (
+              <Reveal key={step.num} delay={0.08 + i * 0.04}>
+                <div
+                  className="flex gap-3 rounded-xl border border-white/[0.06] bg-white/[0.012] p-4"
+                  style={{ boxShadow: "0 1px 0 rgba(255,255,255,0.02) inset" }}
+                >
+                  <div className="flex h-[32px] w-[32px] flex-shrink-0 items-center justify-center rounded-lg border border-accent/20 bg-surface-0">
+                    <span className="font-mono text-[11px] font-bold text-accent">{step.num}</span>
+                  </div>
+                  <div className="flex-1">
+                    <h3 className="font-display text-[15px] font-bold tracking-[-0.01em] text-white">{step.title}</h3>
+                    <p className="mt-1 text-[12px] leading-[1.6] text-body">{step.desc}</p>
+                  </div>
+                </div>
+              </Reveal>
+            ))}
+          </div>
+        </div>
+
+        {/* Desktop: original layout preserved */}
+        <div className="hidden md:grid md:gap-14 lg:grid-cols-[400px,1fr] lg:gap-20">
           {/* Left: sticky header */}
           <div className="lg:sticky lg:top-28 lg:self-start">
             <Reveal>

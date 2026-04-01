@@ -1,5 +1,6 @@
 "use client";
-import { Rocket, Zap, Globe, Bot, Cpu } from "lucide-react";
+import { Rocket, Zap, Globe, Bot, Cpu, ChevronDown } from "lucide-react";
+import { useState } from "react";
 import { Reveal } from "./shared";
 
 const steps = [
@@ -33,11 +34,95 @@ const steps = [
   },
 ];
 
+function MobileAccordionItem({ step, defaultOpen }: { step: typeof steps[number]; defaultOpen?: boolean }) {
+  const [open, setOpen] = useState(defaultOpen ?? false);
+  const StepIcon = step.icon;
+  return (
+    <div
+      className="rounded-xl border border-white/[0.06] bg-white/[0.012] transition-colors duration-200"
+      style={{ boxShadow: "0 1px 0 rgba(255,255,255,0.02) inset" }}
+    >
+      <button
+        type="button"
+        onClick={() => setOpen(!open)}
+        className="flex w-full items-center gap-3 px-4 py-3.5 text-left"
+      >
+        <div className="flex h-[32px] w-[32px] flex-shrink-0 items-center justify-center rounded-lg border border-accent/20 bg-surface-0">
+          <StepIcon size={13} className="text-accent" />
+        </div>
+        <span className="flex-1 font-display text-[15px] font-bold tracking-[-0.01em] text-white">{step.title}</span>
+        <ChevronDown
+          size={16}
+          className={`shrink-0 text-dim transition-transform duration-200 ${open ? "rotate-180" : ""}`}
+        />
+      </button>
+      <div
+        className="grid transition-all duration-200"
+        style={{ gridTemplateRows: open ? "1fr" : "0fr" }}
+      >
+        <div className="overflow-hidden">
+          <div className="px-4 pb-4">
+            <p className="text-[12px] leading-[1.65] text-body">{step.desc}</p>
+            <div className="mt-2.5 inline-flex items-center gap-2 rounded-full border border-accent/[0.10] bg-accent/[0.03] px-3 py-1">
+              <div className="h-1 w-1 rounded-full bg-accent/70" />
+              <span className="font-mono text-[9px] font-medium text-accent/80">{step.detail}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export function ServicesNew() {
   return (
-    <section id="services" className="relative py-20 sm:py-36">
+    <section id="services" className="relative py-12 sm:py-36">
       <div className="wrap">
-        <div className="grid gap-10 lg:grid-cols-[400px,1fr] lg:gap-20">
+        {/* Mobile: compact intro + featured card + accordion */}
+        <div className="md:hidden">
+          <Reveal>
+            <span className="section-label">What we build</span>
+            <h2 className="mt-4 font-display text-[28px] font-extrabold leading-[1.06] tracking-[-0.04em] text-white">
+              End to end.
+            </h2>
+            <p className="mt-2 text-[13px] leading-[1.6] text-body">
+              Four disciplines. One team. From strategy to deployment.
+            </p>
+          </Reveal>
+
+          {/* Featured standards card */}
+          <Reveal delay={0.06}>
+            <div
+              className="mt-5 flex items-start gap-3 rounded-xl border border-accent/[0.12] p-4"
+              style={{
+                background: "rgba(200,255,0,0.02)",
+                boxShadow: "0 1px 0 rgba(200,255,0,0.04) inset",
+              }}
+            >
+              <div className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-lg border border-accent/20 bg-accent/[0.06]">
+                <Cpu size={14} className="text-accent" />
+              </div>
+              <div>
+                <div className="text-[13px] font-bold text-white">Full-stack delivery standard</div>
+                <p className="mt-1 text-[12px] leading-[1.6] text-body">
+                  Mobile-first, SEO-ready, performance optimized, and fully documented on every build.
+                </p>
+              </div>
+            </div>
+          </Reveal>
+
+          {/* Accordion list */}
+          <div className="mt-4 space-y-2">
+            {steps.map((step, i) => (
+              <Reveal key={step.num} delay={0.08 + i * 0.04}>
+                <MobileAccordionItem step={step} defaultOpen={i === 0} />
+              </Reveal>
+            ))}
+          </div>
+        </div>
+
+        {/* Desktop: original layout preserved exactly */}
+        <div className="hidden md:grid md:gap-10 lg:grid-cols-[400px,1fr] lg:gap-20">
           {/* Left: sticky header */}
           <div className="lg:sticky lg:top-28 lg:self-start">
             <Reveal>
@@ -79,30 +164,7 @@ export function ServicesNew() {
             {/* Vertical connecting line */}
             <div className="absolute bottom-0 left-[23px] top-0 hidden w-px lg:block" style={{ background: "linear-gradient(to bottom, rgba(200,255,0,0.2), rgba(255,255,255,0.04) 80%, transparent)" }} />
 
-            <div className="mobile-rail md:hidden">
-              {steps.map((step, i) => (
-                <Reveal key={step.num} delay={i * 0.08}>
-                  <article
-                    className="mobile-rail-card rounded-2xl border border-white/[0.06] bg-white/[0.012] p-5"
-                    style={{ boxShadow: "0 1px 0 rgba(255,255,255,0.02) inset" }}
-                  >
-                    <div className="flex items-center gap-3">
-                      <div className="relative z-10 flex h-[40px] w-[40px] flex-shrink-0 items-center justify-center rounded-xl border border-accent/20 bg-surface-0">
-                        <span className="font-mono text-[12px] font-bold text-accent">{step.num}</span>
-                      </div>
-                      <h3 className="font-display text-[17px] font-bold tracking-[-0.01em] text-white">{step.title}</h3>
-                    </div>
-                    <p className="mt-3 max-h-[3.6rem] overflow-hidden text-[13px] leading-[1.7] text-body">{step.desc}</p>
-                    <div className="mt-4 inline-flex items-center gap-2 rounded-full border border-accent/[0.10] bg-accent/[0.03] px-3.5 py-1.5">
-                      <div className="h-1 w-1 rounded-full bg-accent/70" />
-                      <span className="font-mono text-[10px] font-medium text-accent/80">{step.detail}</span>
-                    </div>
-                  </article>
-                </Reveal>
-              ))}
-            </div>
-
-            <div className="hidden space-y-5 md:block">
+            <div className="space-y-5">
               {steps.map((step, i) => (
                 <Reveal key={step.num} delay={i * 0.08}>
                   <div

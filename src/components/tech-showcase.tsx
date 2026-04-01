@@ -153,37 +153,37 @@ const testimonials = [
 
 export function TechShowcase() {
   return (
-    <section className="relative py-20 sm:py-24">
+    <section className="relative py-12 sm:py-24">
       <div className="wrap">
         <Reveal>
-          <div className="mb-12 sm:mb-16">
+          <div className="mb-8 sm:mb-16">
             <span className="section-label">Why us</span>
-            <h2 className="mt-5 max-w-[560px] font-display text-[clamp(32px,4.5vw,52px)] font-extrabold leading-[1.04] tracking-[-0.04em] text-white">
+            <h2 className="mt-4 max-w-[560px] font-display text-[clamp(28px,4.5vw,52px)] font-extrabold leading-[1.06] tracking-[-0.04em] text-white sm:mt-5">
               Why founders choose us.
             </h2>
-            <p className="mt-4 max-w-[460px] text-[15px] leading-[1.75] text-body">
+            <p className="mt-3 max-w-[460px] text-[13px] leading-[1.65] text-body sm:mt-4 sm:text-[15px] sm:leading-[1.75]">
               We&apos;re a small, senior team that treats your product like our own.
             </p>
           </div>
         </Reveal>
 
-        {/* Differentiators - 2x2 grid */}
-        <div className="grid auto-rows-fr gap-4 sm:grid-cols-2 sm:gap-5">
+        {/* Differentiators - single column mobile, 2x2 desktop */}
+        <div className="grid gap-3 sm:auto-rows-fr sm:grid-cols-2 sm:gap-5">
           {differentiators.map((d, i) => (
             <Reveal key={d.title} delay={i * 0.06} className="h-full">
               <div
-                className="flex h-full gap-4 rounded-2xl border border-white/[0.06] p-7 transition-all duration-300 hover:border-white/[0.12] lg:p-8"
+                className="flex h-full gap-3 rounded-xl border border-white/[0.06] p-4 transition-all duration-300 hover:border-white/[0.12] sm:gap-4 sm:rounded-2xl sm:p-7 lg:p-8"
                 style={{
                   background: "rgba(255,255,255,0.012)",
                   boxShadow: "0 1px 0 rgba(255,255,255,0.02) inset",
                 }}
               >
-                <div className="mt-0.5 flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-lg border border-accent/15 bg-accent/[0.05]">
+                <div className="mt-0.5 flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-lg border border-accent/15 bg-accent/[0.05] sm:h-9 sm:w-9">
                   <Check size={14} className="text-accent" />
                 </div>
                 <div>
-                  <h3 className="mb-2 font-display text-[17px] font-bold text-white">{d.title}</h3>
-                  <p className="text-[13px] leading-[1.8] text-body sm:text-[14px]">{d.desc}</p>
+                  <h3 className="mb-1 font-display text-[15px] font-bold text-white sm:mb-2 sm:text-[17px]">{d.title}</h3>
+                  <p className="text-[12px] leading-[1.65] text-body sm:text-[14px] sm:leading-[1.8]">{d.desc}</p>
                 </div>
               </div>
             </Reveal>
@@ -191,11 +191,11 @@ export function TechShowcase() {
         </div>
 
         {/* Testimonials - compact row */}
-        <div className="mt-10 flex snap-x snap-mandatory gap-4 overflow-x-auto pb-2 no-scrollbar sm:gap-5 lg:grid lg:overflow-visible lg:pb-0 lg:[grid-template-columns:repeat(3,minmax(0,1fr))]">
+        <div className="mt-6 flex snap-x snap-mandatory gap-3 overflow-x-auto pb-2 no-scrollbar sm:mt-10 sm:gap-5 lg:grid lg:overflow-visible lg:pb-0 lg:[grid-template-columns:repeat(3,minmax(0,1fr))]">
           {testimonials.map((t, i) => (
             <Reveal key={t.name} delay={0.06 + i * 0.06}>
               <div
-                className={`flex h-full min-w-[85%] snap-start flex-col rounded-2xl border p-7 transition-all duration-300 hover:border-white/[0.12] sm:min-w-[70%] lg:min-w-0 lg:p-8 ${
+                className={`flex h-full min-w-[84vw] snap-start flex-col rounded-xl border p-5 transition-all duration-300 hover:border-white/[0.12] sm:min-w-[70%] sm:rounded-2xl sm:p-7 lg:min-w-0 lg:p-8 ${
                   t.featured
                     ? "border-accent/[0.10]"
                     : "border-white/[0.06]"
@@ -220,10 +220,10 @@ export function TechShowcase() {
                   </span>
                 </div>
 
-                <p className={`flex-1 leading-[1.75] ${
+                <p className={`flex-1 leading-[1.7] ${
                   t.featured
-                    ? "text-[16px] font-medium text-white sm:text-[17px]"
-                    : "text-[15px] text-gray-300"
+                    ? "text-[14px] font-medium text-white sm:text-[17px]"
+                    : "text-[13px] text-gray-300 sm:text-[15px]"
                 }`}>
                   &ldquo;{t.quote}&rdquo;
                 </p>
@@ -253,23 +253,23 @@ export function TechShowcase() {
         {/* Tech stack bar */}
         <Reveal delay={0.3}>
           <div
-            className="mt-6 rounded-2xl border border-white/[0.06] p-6 sm:p-8"
+            className="mt-4 rounded-xl border border-white/[0.06] p-4 sm:mt-6 sm:rounded-2xl sm:p-8"
             style={{
               background: "rgba(255,255,255,0.012)",
               boxShadow: "0 1px 0 rgba(255,255,255,0.02) inset",
             }}
           >
-            <div className="mb-5 text-center font-mono text-[10px] uppercase tracking-[0.12em] text-dim sm:text-left">Our stack</div>
-            <div className="grid grid-cols-2 gap-2.5 sm:grid-cols-3 sm:justify-start">
+            <div className="mb-3 text-center font-mono text-[10px] uppercase tracking-[0.12em] text-dim sm:mb-5 sm:text-left">Our stack</div>
+            <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 sm:gap-2.5">
               {techStack.map((t) => {
                 const Icon = iconMap[t.name];
                 return (
                   <div
                     key={t.name}
-                    className="flex items-center justify-center gap-2 rounded-full border border-white/[0.06] bg-white/[0.015] px-3 py-1.5 transition-all duration-200 hover:-translate-y-0.5 hover:border-white/[0.1] sm:justify-start sm:px-3.5"
+                    className="flex items-center justify-center gap-1.5 rounded-full border border-white/[0.06] bg-white/[0.015] px-2.5 py-1.5 transition-all duration-200 hover:-translate-y-0.5 hover:border-white/[0.1] sm:justify-start sm:gap-2 sm:px-3.5"
                   >
                     {Icon ? <Icon color={t.color} /> : <div className="h-1.5 w-1.5 rounded-full" style={{ background: t.color }} />}
-                    <span className="font-mono text-[11px] font-medium text-white/35">{t.name}</span>
+                    <span className="font-mono text-[10px] font-medium text-white/35 sm:text-[11px]">{t.name}</span>
                   </div>
                 );
               })}

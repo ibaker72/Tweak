@@ -138,7 +138,7 @@ const trustPoints = [
 
 function TierFeatureItem({ text, featured }: { text: string; featured?: boolean }) {
   return (
-    <li className="flex items-start gap-2 text-[12px] leading-[1.5] text-white/75 sm:text-[12.5px]">
+    <li className="flex items-start gap-2 text-[11px] leading-[1.5] text-white/75 sm:text-[12.5px]">
       <Check
         className={cn("mt-[2px] h-3 w-3 shrink-0", featured ? "text-accent" : "text-white/40")}
         strokeWidth={3}
@@ -158,7 +158,7 @@ function TierCard({ tier, index }: { tier: StudioTier; index: number }) {
         whileHover={{ y: -2 }}
         transition={{ duration: 0.2, ease: "easeOut" }}
         className={cn(
-          "group relative flex h-full min-w-[86%] snap-start flex-col rounded-2xl border p-5 transition-all duration-300 sm:min-w-[70%] lg:min-w-0 lg:p-6",
+          "group relative flex h-full flex-col rounded-2xl border p-4 transition-all duration-300 sm:p-5 lg:min-w-0 lg:p-6",
           tier.featured 
             ? "border-accent/30 bg-white/[0.02] hover:border-accent/50 hover:shadow-[0_4px_20px_-10px_rgba(200,255,0,0.15)]" 
             : "border-white/10 bg-white/[0.01] hover:border-white/20 hover:bg-white/[0.02] hover:shadow-[0_4px_20px_-10px_rgba(255,255,255,0.05)]"
@@ -280,25 +280,25 @@ export function PricingTiers() {
       <div className="wrap relative z-10">
         <div className="mx-auto max-w-4xl">
           <Reveal>
-            <div className="mb-6 text-center sm:mb-8">
+            <div className="mb-5 text-center sm:mb-8">
               <span className="inline-flex rounded-md border border-white/10 bg-white/[0.03] px-2 py-0.5 font-mono text-[9px] font-semibold uppercase tracking-widest text-white/60">
                 Pricing
               </span>
-              <h2 className="mt-3 font-display text-[clamp(24px,3.5vw,34px)] font-extrabold leading-[1.1] tracking-tight text-white">
+              <h2 className="mt-2.5 font-display text-[clamp(22px,3.5vw,34px)] font-extrabold leading-[1.1] tracking-tight text-white sm:mt-3">
                 Clear offers. <span className="text-white/40">Senior delivery.</span>
               </h2>
-              <p className="mx-auto mt-3 max-w-[460px] text-[12.5px] leading-[1.6] text-white/60 sm:text-[13px]">
+              <p className="mx-auto mt-2 max-w-[460px] text-[12px] leading-[1.6] text-white/60 sm:mt-3 sm:text-[13px]">
                 Choose the path that fits your business now, then expand as your needs grow.
               </p>
             </div>
           </Reveal>
 
           <Reveal delay={0.06}>
-            <div className="mb-8 flex flex-col items-center sm:mb-10">
+            <div className="mb-6 flex flex-col items-center sm:mb-10">
               <div
                 role="tablist"
                 aria-label="Pricing categories"
-                className="inline-flex rounded-full border border-white/[0.08] bg-black/40 p-0.5 shadow-lg backdrop-blur-md"
+                className="inline-flex w-full max-w-sm rounded-full border border-white/[0.08] bg-black/40 p-0.5 shadow-lg backdrop-blur-md sm:w-auto"
               >
                 {pricingTabs.map((tab) => {
                   const isActive = tab.id === activeTab;
@@ -313,7 +313,7 @@ export function PricingTiers() {
                       aria-pressed={isActive}
                       onClick={() => setActiveTab(tab.id)}
                       className={cn(
-                        "relative overflow-hidden rounded-full px-3 py-1.5 text-[11.5px] font-semibold transition-all duration-300 sm:px-4 sm:text-[12px]",
+                        "relative flex-1 overflow-hidden rounded-full px-2.5 py-1.5 text-[11px] font-semibold transition-all duration-300 sm:flex-none sm:px-4 sm:text-[12px]",
                         isActive ? "text-black" : "text-white/60 hover:text-white/90"
                       )}
                     >
@@ -337,7 +337,7 @@ export function PricingTiers() {
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -4 }}
                   transition={{ duration: 0.15, ease: "easeOut" }}
-                  className="mt-5 max-w-[420px] text-center text-[11.5px] leading-[1.6] text-white/50 sm:text-[12px]"
+                  className="mt-3 max-w-[420px] text-center text-[11px] leading-[1.6] text-white/50 sm:mt-5 sm:text-[12px]"
                 >
                   {activeTabMeta.description}
                 </motion.p>
@@ -352,7 +352,7 @@ export function PricingTiers() {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: 12 }}
               transition={{ duration: 0.25, ease: "easeOut" }}
-              className="mt-2 flex snap-x snap-mandatory gap-4 overflow-x-auto pb-2 no-scrollbar lg:grid lg:grid-cols-2 lg:gap-5 lg:overflow-visible lg:pb-0"
+              className="mt-2 grid grid-cols-1 gap-4 sm:gap-5 lg:grid-cols-2"
             >
               {activeTiers.map((tier, index) => (
                 <TierCard key={tier.name} tier={tier} index={index} />
@@ -361,22 +361,22 @@ export function PricingTiers() {
           </AnimatePresence>
 
           <Reveal delay={0.12}>
-            <div className="mt-8 flex flex-wrap items-center justify-center gap-2">
+            <div className="mt-6 flex flex-wrap items-center justify-center gap-1.5 sm:mt-8 sm:gap-2">
               {trustPoints.map((point) => (
                 <div
                   key={point}
-                  className="flex items-center gap-1.5 rounded-full border border-white/[0.06] bg-white/[0.02] px-3 py-1"
+                  className="flex items-center gap-1.5 rounded-full border border-white/[0.06] bg-white/[0.02] px-2.5 py-1 sm:px-3"
                 >
                   <span className="h-1 w-1 shrink-0 rounded-full bg-accent shadow-[0_0_6px_rgba(200,255,0,0.4)]" />
-                  <span className="text-[11px] font-medium text-white/50">{point}</span>
+                  <span className="text-[10px] font-medium text-white/50 sm:text-[11px]">{point}</span>
                 </div>
               ))}
             </div>
           </Reveal>
 
           <Reveal delay={0.16}>
-            <div className="mx-auto mt-8 max-w-[500px] rounded-[12px] border border-white/[0.04] bg-white/[0.01] p-5 text-center">
-              <p className="text-[12.5px] leading-[1.6] text-white/60">
+            <div className="mx-auto mt-6 max-w-[500px] rounded-[12px] border border-white/[0.04] bg-white/[0.01] p-4 text-center sm:mt-8 sm:p-5">
+              <p className="text-[11px] leading-[1.6] text-white/60 sm:text-[12.5px]">
                 Need a website, support, SEO, and upgrades together? We can scope a blended monthly
                 engagement around your business.
               </p>
