@@ -35,9 +35,9 @@ const steps = [
 
 export function ServicesNew() {
   return (
-    <section id="services" className="relative py-28 sm:py-36">
+    <section id="services" className="relative py-20 sm:py-36">
       <div className="wrap">
-        <div className="grid gap-14 lg:grid-cols-[400px,1fr] lg:gap-20">
+        <div className="grid gap-10 lg:grid-cols-[400px,1fr] lg:gap-20">
           {/* Left: sticky header */}
           <div className="lg:sticky lg:top-28 lg:self-start">
             <Reveal>
@@ -47,7 +47,7 @@ export function ServicesNew() {
                 <br />
                 <span className="text-body">Pixel to deploy.</span>
               </h2>
-              <p className="mt-5 max-w-[360px] text-[15px] leading-[1.75] text-body">
+              <p className="mt-4 max-w-[360px] text-[14px] leading-[1.7] text-body sm:mt-5 sm:text-[15px] sm:leading-[1.75]">
                 Four disciplines. One team that delivers all of them. From product strategy to production deployment, we handle the full stack.
               </p>
             </Reveal>
@@ -55,7 +55,7 @@ export function ServicesNew() {
             {/* Callout card */}
             <Reveal delay={0.15}>
               <div
-                className="mt-10 flex items-start gap-4 rounded-2xl border border-accent/[0.12] p-6"
+                className="mt-6 flex items-start gap-4 rounded-2xl border border-accent/[0.12] p-5 sm:mt-10 sm:p-6"
                 style={{
                   background: "rgba(200,255,0,0.02)",
                   boxShadow: "0 1px 0 rgba(200,255,0,0.04) inset, 0 4px 16px rgba(0,0,0,0.1)",
@@ -79,25 +79,25 @@ export function ServicesNew() {
             {/* Vertical connecting line */}
             <div className="absolute bottom-0 left-[23px] top-0 hidden w-px lg:block" style={{ background: "linear-gradient(to bottom, rgba(200,255,0,0.2), rgba(255,255,255,0.04) 80%, transparent)" }} />
 
-            <div className="space-y-3 md:hidden">
+            <div className="mobile-rail md:hidden">
               {steps.map((step, i) => (
                 <Reveal key={step.num} delay={i * 0.08}>
-                  <details
-                    className="group rounded-2xl border border-white/[0.06] bg-white/[0.012] p-5"
+                  <article
+                    className="mobile-rail-card rounded-2xl border border-white/[0.06] bg-white/[0.012] p-5"
                     style={{ boxShadow: "0 1px 0 rgba(255,255,255,0.02) inset" }}
                   >
-                    <summary className="flex cursor-pointer list-none items-center gap-3 [&::-webkit-details-marker]:hidden">
+                    <div className="flex items-center gap-3">
                       <div className="relative z-10 flex h-[40px] w-[40px] flex-shrink-0 items-center justify-center rounded-xl border border-accent/20 bg-surface-0">
                         <span className="font-mono text-[12px] font-bold text-accent">{step.num}</span>
                       </div>
                       <h3 className="font-display text-[17px] font-bold tracking-[-0.01em] text-white">{step.title}</h3>
-                    </summary>
-                    <p className="mt-3 text-[13px] leading-[1.8] text-body">{step.desc}</p>
+                    </div>
+                    <p className="mt-3 max-h-[3.6rem] overflow-hidden text-[13px] leading-[1.7] text-body">{step.desc}</p>
                     <div className="mt-4 inline-flex items-center gap-2 rounded-full border border-accent/[0.10] bg-accent/[0.03] px-3.5 py-1.5">
                       <div className="h-1 w-1 rounded-full bg-accent/70" />
                       <span className="font-mono text-[10px] font-medium text-accent/80">{step.detail}</span>
                     </div>
-                  </details>
+                  </article>
                 </Reveal>
               ))}
             </div>

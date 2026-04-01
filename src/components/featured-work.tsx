@@ -46,9 +46,9 @@ const projects = [
 
 export function FeaturedWork() {
   return (
-    <section id="work" className="relative py-28 sm:py-36">
+    <section id="work" className="relative py-20 sm:py-36">
       <div className="wrap">
-        <div className="grid gap-14 lg:grid-cols-[400px,1fr] lg:gap-20">
+        <div className="grid gap-10 lg:grid-cols-[400px,1fr] lg:gap-20">
           {/* Left: sticky header */}
           <div className="lg:sticky lg:top-28 lg:self-start">
             <Reveal>
@@ -58,7 +58,7 @@ export function FeaturedWork() {
                 <br />
                 <span className="text-body">We just ship.</span>
               </h2>
-              <p className="mt-5 max-w-[360px] text-[15px] leading-[1.75] text-body">
+              <p className="mt-4 max-w-[360px] text-[14px] leading-[1.7] text-body sm:mt-5 sm:text-[15px] sm:leading-[1.75]">
                 Product engineering engagements focused on measurable business lift, delivered with production-grade precision.
               </p>
             </Reveal>
@@ -69,12 +69,12 @@ export function FeaturedWork() {
             {/* Vertical connecting line */}
             <div className="absolute bottom-0 left-[23px] top-0 hidden w-px lg:block" style={{ background: "linear-gradient(to bottom, rgba(200,255,0,0.2), rgba(255,255,255,0.04) 80%, transparent)" }} />
 
-            <div className="flex snap-x snap-mandatory gap-4 overflow-x-auto pb-2 pr-1 no-scrollbar lg:block lg:space-y-5 lg:overflow-visible lg:pb-0 lg:pr-0">
+            <div className="mobile-rail gap-4 pb-2 lg:block lg:space-y-5 lg:overflow-visible lg:px-0 lg:pb-0">
               {projects.map((project, i) => (
                 <Reveal key={project.num} delay={i * 0.08}>
-                  <Link href={project.href} className="group block min-w-[85%] snap-start sm:min-w-[70%] lg:min-w-0">
+                  <Link href={project.href} className="group mobile-rail-card block max-w-[88vw] lg:w-auto lg:max-w-none">
                     <div
-                      className="relative rounded-2xl border border-white/[0.06] p-7 transition-all duration-300 hover:border-white/[0.12] lg:p-8"
+                      className="relative h-full rounded-2xl border border-white/[0.06] p-5 transition-all duration-300 hover:border-white/[0.12] sm:p-6 lg:p-8"
                       style={{
                         background: "rgba(255,255,255,0.012)",
                         boxShadow: "0 1px 0 rgba(255,255,255,0.02) inset",
@@ -91,7 +91,7 @@ export function FeaturedWork() {
                         />
                       </div>
 
-                      <div className="flex gap-5 lg:gap-6">
+                      <div className="flex gap-4 lg:gap-6">
                         {/* Number badge */}
                         <div className="relative z-10 flex h-[46px] w-[46px] flex-shrink-0 items-center justify-center rounded-xl border border-accent/20 bg-surface-0">
                           <span className="font-mono text-[13px] font-bold text-accent">{project.num}</span>
@@ -99,10 +99,10 @@ export function FeaturedWork() {
 
                         <div className="flex-1">
                           <div className="flex items-center gap-2.5">
-                            <h3 className="font-display text-[19px] font-bold tracking-[-0.01em] text-white">{project.title}</h3>
+                            <h3 className="font-display text-[18px] font-bold tracking-[-0.01em] text-white sm:text-[19px]">{project.title}</h3>
                             <project.icon size={14} className="text-dim/60" />
                           </div>
-                          <p className="mt-2.5 text-[13px] leading-[1.85] text-body sm:text-[14px]">{project.desc}</p>
+                          <p className="mt-2.5 text-[13px] leading-[1.65] text-body sm:text-[14px] sm:leading-[1.8]">{project.desc}</p>
                           <div className="mt-4 inline-flex items-center gap-2 rounded-full border border-accent/[0.10] bg-accent/[0.03] px-3.5 py-1.5">
                             <div className="h-1 w-1 rounded-full bg-accent/70" />
                             <span className="font-mono text-[10px] font-medium text-accent/80">{project.detail}</span>

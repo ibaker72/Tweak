@@ -27,7 +27,7 @@ export function MarketingShell({ children }: { children: React.ReactNode }) {
   return (
     <>
       <Navbar />
-      <main>{children}</main>
+      <main className="w-full max-w-full overflow-x-clip">{children}</main>
       <Footer />
       <BackToTop />
       <ExitIntentPopup />
