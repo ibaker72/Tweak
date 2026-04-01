@@ -1,7 +1,6 @@
 "use client";
 import { UserCheck, DollarSign, Lightbulb, KeyRound, Shield } from "lucide-react";
 import { Reveal } from "./shared";
-import { CardCarousel } from "./card-carousel";
 
 const steps = [
   {
@@ -36,19 +35,19 @@ const steps = [
 
 export function WhyUs() {
   return (
-    <section id="why-us" className="relative py-16 sm:py-24 lg:py-28 xl:py-36">
+    <section id="why-us" className="relative py-28 sm:py-36">
       <div className="wrap">
-        <div className="grid gap-8 lg:grid-cols-[400px,1fr] lg:gap-20">
+        <div className="grid gap-14 lg:grid-cols-[400px,1fr] lg:gap-20">
           {/* Left: sticky header */}
           <div className="lg:sticky lg:top-28 lg:self-start">
             <Reveal>
               <span className="section-label">Why us</span>
-              <h2 className="mt-5 font-display text-[28px] font-extrabold leading-[1.04] tracking-[-0.04em] text-white sm:text-[32px] lg:text-[clamp(32px,4.5vw,52px)]">
+              <h2 className="mt-5 font-display text-[clamp(32px,4.5vw,52px)] font-extrabold leading-[1.04] tracking-[-0.04em] text-white">
                 Built different.
                 <br />
                 <span className="text-body">On purpose.</span>
               </h2>
-              <p className="mt-5 max-w-none text-[15px] leading-[1.75] text-body lg:max-w-[360px]">
+              <p className="mt-5 max-w-[360px] text-[15px] leading-[1.75] text-body">
                 We&apos;re not a body shop or a freelancer marketplace. We&apos;re a product-focused studio that ships — on time, on budget, every time.
               </p>
             </Reveal>
@@ -56,7 +55,7 @@ export function WhyUs() {
             {/* Guarantee */}
             <Reveal delay={0.15}>
               <div
-                className="mt-7 flex items-start gap-4 rounded-2xl border border-accent/[0.12] p-5 lg:mt-10 lg:p-6"
+                className="mt-10 flex items-start gap-4 rounded-2xl border border-accent/[0.12] p-6"
                 style={{
                   background: "rgba(200,255,0,0.02)",
                   boxShadow: "0 1px 0 rgba(200,255,0,0.04) inset, 0 4px 16px rgba(0,0,0,0.1)",
@@ -76,15 +75,15 @@ export function WhyUs() {
           </div>
 
           {/* Right: steps */}
-          <div className="relative -mx-5 sm:-mx-8 lg:mx-0">
+          <div className="relative">
             {/* Vertical connecting line */}
             <div className="absolute bottom-0 left-[23px] top-0 hidden w-px lg:block" style={{ background: "linear-gradient(to bottom, rgba(200,255,0,0.2), rgba(255,255,255,0.04) 80%, transparent)" }} />
 
-            <CardCarousel>
+            <div className="space-y-5">
               {steps.map((step, i) => (
                 <Reveal key={step.num} delay={i * 0.08}>
                   <div
-                    className="group relative flex h-full gap-4 rounded-2xl border border-white/[0.06] p-6 transition-all duration-300 hover:border-white/[0.12] lg:gap-6 lg:p-8"
+                    className="group relative flex gap-5 rounded-2xl border border-white/[0.06] p-7 transition-all duration-300 hover:border-white/[0.12] lg:gap-6 lg:p-8"
                     style={{
                       background: "rgba(255,255,255,0.012)",
                       boxShadow: "0 1px 0 rgba(255,255,255,0.02) inset",
@@ -109,7 +108,7 @@ export function WhyUs() {
                   </div>
                 </Reveal>
               ))}
-            </CardCarousel>
+            </div>
           </div>
         </div>
       </div>
