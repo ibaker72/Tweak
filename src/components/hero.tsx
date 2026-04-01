@@ -29,7 +29,7 @@ export function Hero() {
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(0,0,0,0.18),rgba(0,0,0,0.84)_72%)]" />
       <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-black/35 via-black/45 to-black/80" />
 
-      {/* NEW: Text Contrast Vignette (Dark glow directly behind the text) */}
+      {/* NEW: Text Contrast Vignette */}
       <div className="pointer-events-none absolute inset-0 z-[5] bg-[radial-gradient(ellipse_60%_50%_at_50%_50%,rgba(0,0,0,0.4),transparent)]" />
 
       {/* Texture */}
@@ -105,24 +105,8 @@ export function Hero() {
             </div>
           </Reveal>
 
-          <Reveal delay={0.24}>
-            <div className="mt-6 grid w-full grid-cols-3 gap-2 sm:mt-10 sm:gap-3">
-              <div className="rounded-xl border border-white/[0.08] bg-white/[0.02] px-3 py-2.5 text-left sm:px-4 sm:py-3">
-                <p className="font-mono text-[8px] uppercase tracking-[0.12em] text-dim sm:text-[10px]">Fastest launch</p>
-                <p className="mt-0.5 text-[12px] font-semibold text-white sm:mt-1 sm:text-[14px]">&lt; 1 week</p>
-              </div>
-              <div className="rounded-xl border border-white/[0.08] bg-white/[0.02] px-3 py-2.5 text-left sm:px-4 sm:py-3">
-                <p className="font-mono text-[8px] uppercase tracking-[0.12em] text-dim sm:text-[10px]">Response SLA</p>
-                <p className="mt-0.5 text-[12px] font-semibold text-white sm:mt-1 sm:text-[14px]">&lt; 4 hours</p>
-              </div>
-              <div className="rounded-xl border border-white/[0.08] bg-white/[0.02] px-3 py-2.5 text-left sm:px-4 sm:py-3">
-                <p className="font-mono text-[8px] uppercase tracking-[0.12em] text-dim sm:text-[10px]">Ownership</p>
-                <p className="mt-0.5 text-[12px] font-semibold text-white sm:mt-1 sm:text-[14px]">100% yours</p>
-              </div>
-            </div>
-          </Reveal>
+          {/* Removed the stats grid (Reveal delay={0.24}) from here */}
         </div>
-
       </div>
     </section>
   );
