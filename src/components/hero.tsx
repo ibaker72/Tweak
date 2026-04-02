@@ -6,7 +6,7 @@ import { Reveal } from "./shared";
 import { siteConfig } from "@/lib/config";
 import { useEffect, useRef, useState } from "react";
 
-const servicePills = ["Websites", "Web Apps", "Automation"];
+const servicePills = ["SaaS Dashboards", "Internal Tools", "Client Portals"];
 const rotatingWords = ["vision", "product", "startup", "future"];
 const longestRotatingWord = rotatingWords.reduce(
   (longest, current) =>
