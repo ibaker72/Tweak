@@ -19,7 +19,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   ];
 
   // Case study pages
-  const caseStudies = ["create3dparts", "leadsandsaas", "meridian-health", "atlas-freight", "voltgrid"].map(
+  const caseStudies = ["create3dparts", "leadsandsaas", "speedway", "atlas-freight", "voltgrid"].map(
     (slug) => ({
       url: `${SITE_URL}/work/${slug}`,
       lastModified: new Date(),

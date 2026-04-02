@@ -5,7 +5,7 @@ import { Reveal, Counter } from "./shared";
 const clientNames = [
   "Create3DParts",
   "LeadsAndSaaS",
-  "Meridian Health",
+  "speedway",
   "Atlas Freight",
   "voltgrid",
 ];
