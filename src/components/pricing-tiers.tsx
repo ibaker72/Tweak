@@ -34,9 +34,9 @@ type StudioTier = {
 const pricingTabs: PricingTab[] = [
   {
     id: "business",
-    label: "Business Websites & Growth",
+    label: "Business Websites & SEO",
     description:
-      "For dealerships, restaurants, insurance agencies, and service businesses that need a better website and ongoing support.",
+      "Stop fighting with templates. Get a custom-engineered foundation that actually works for your business.",
   },
   {
     id: "product",
@@ -49,17 +49,17 @@ const pricingTabs: PricingTab[] = [
 const studioPricingTiers: StudioTier[] = [
   {
     tab: "business",
-    name: "Business Websites & Support",
+    name: "Business Websites",
     audience: "For service businesses",
     price: "Starting at $2,500",
-    priceNote: "Custom website projects for service businesses.",
+    priceNote: "One-time build + Ongoing support available.",
     summary:
-      "For dealerships, restaurants, insurance agencies, and service businesses that need a better website and optional ongoing support.",
+      "Custom websites for dealerships, restaurants, insurance agencies, and service businesses that need a stronger online presence and a system that’s built to convert.",
     features: [
       "Custom website design",
-      "Mobile-first build",
-      "SEO foundation",
-      "Speed and performance setup",
+      "Mobile-first, conversion-focused build",
+      "SEO-ready foundation",
+      "Speed and performance optimization",
       "Ongoing edits and support available",
     ],
     ctaLabel: "Start a Website Project",
@@ -75,13 +75,14 @@ const studioPricingTiers: StudioTier[] = [
     price: "Starting at $1,500/mo",
     priceNote: "Monthly growth support for businesses.",
     summary:
-      "For businesses that already have a site and want ongoing SEO, content planning, and conversion improvements.",
+      "Ongoing SEO and growth support for businesses ready to increase traffic, generate leads, and improve conversions after launch.",
     features: [
       "Technical SEO audits",
       "On-page improvements",
       "Search-driven content roadmap",
       "Local SEO support",
       "Conversion and UX improvements",
+      "Designed to build on your website foundation and drive measurable growth.",
     ],
     ctaLabel: "Scale with SEO",
     ctaHref: "/contact?tier=SEO%20%26%20Growth%20Retainer",
@@ -285,10 +286,10 @@ export function PricingTiers() {
                 Pricing
               </span>
               <h2 className="mt-2.5 font-display text-[clamp(22px,3.5vw,34px)] font-extrabold leading-[1.1] tracking-tight text-white sm:mt-3">
-                Clear offers. <span className="text-white/40">Senior delivery.</span>
+                Built for speed. <span className="text-white/40">Priced for scale.</span>
               </h2>
               <p className="mx-auto mt-2 max-w-[460px] text-[12px] leading-[1.6] text-white/60 sm:mt-3 sm:text-[13px]">
-                Choose the path that fits your business now, then expand as your needs grow.
+                High-performance systems designed to turn your traffic into revenue from day one.
               </p>
             </div>
           </Reveal>
