@@ -2,7 +2,7 @@ import { Hero } from "@/components/hero";
 import { FeaturedWork } from "@/components/featured-work";
 import { ServicesNew } from "@/components/services-new";
 import { WhyUs } from "@/components/founder";
-import { TrustStrip } from "@/components/trust-strip";
+import { StackMarquee } from "@/components/home/stack-marquee";
 import { TechShowcase } from "@/components/tech-showcase";
 import { ProcessNew } from "@/components/process-new";
 import { PricingTiers } from "@/components/pricing-tiers";
@@ -19,7 +19,7 @@ export default function Home() {
       <OrganizationJsonLd />
       <FAQJsonLd faqs={faqs} />
       <Hero />
-      <TrustStrip />
+      <StackMarquee />
       <FeaturedWork />
       <ServicesNew />
       <WhyUs />
