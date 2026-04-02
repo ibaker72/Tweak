@@ -3,7 +3,6 @@ import { FeaturedWork } from "@/components/featured-work";
 import { ServicesNew } from "@/components/services-new";
 import { WhyUs } from "@/components/founder";
 import { StackMarquee } from "@/components/home/stack-marquee";
-import { TechShowcase } from "@/components/tech-showcase";
 import { ProcessNew } from "@/components/process-new";
 import { PricingTiers } from "@/components/pricing-tiers";
 import { FinalCTA } from "@/components/final-cta";
@@ -25,7 +24,6 @@ export default function Home() {
       <WhyUs />
       <PricingTiers />
       <ProcessNew />
-      <TechShowcase />
       <HomepageAuditCTA />
       <FinalCTA />
       <HomepageNewsletter />
