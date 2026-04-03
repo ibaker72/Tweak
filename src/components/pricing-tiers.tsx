@@ -3,7 +3,16 @@
 import Link from "next/link";
 import { useMemo, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { ArrowRight, Blocks, Check, Cpu, Globe, TrendingUp, Crown } from "lucide-react";
+import {
+  ArrowRight,
+  Blocks,
+  Check,
+  Cpu,
+  Globe,
+  TrendingUp,
+  Crown,
+  MapPinned,
+} from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Reveal } from "./shared";
 import type { LucideIcon } from "lucide-react";
@@ -29,6 +38,7 @@ type StudioTier = {
   featured?: boolean;
   badge?: string;
   icon: LucideIcon;
+  eyebrow?: string;
 };
 
 const pricingTabs: PricingTab[] = [
@@ -36,7 +46,7 @@ const pricingTabs: PricingTab[] = [
     id: "business",
     label: "Business Websites & SEO",
     description:
-      "Stop fighting with templates. Get a custom-engineered foundation that actually works for your business.",
+      "Custom-engineered websites and growth systems built to generate leads, improve visibility, and support long-term business growth.",
   },
   {
     id: "product",
@@ -49,51 +59,76 @@ const pricingTabs: PricingTab[] = [
 const studioPricingTiers: StudioTier[] = [
   {
     tab: "business",
-    name: "Business Websites",
+    name: "Business Website",
     audience: "For service businesses",
+    eyebrow: "Foundation",
     price: "Starting at $2,500",
-    priceNote: "One-time build + Ongoing support available.",
+    priceNote: "One-time build + ongoing support available.",
     summary:
-      "Custom websites for dealerships, restaurants, insurance agencies, and service businesses that need a stronger online presence and a system that’s built to convert.",
+      "A high-performance website foundation built to help service businesses look credible, load fast, and convert more visitors into real enquiries.",
     features: [
       "Custom website design",
       "Mobile-first, conversion-focused build",
-      "SEO-ready foundation",
+      "SEO-ready structure and on-page foundation",
       "Speed and performance optimization",
-      "Ongoing edits and support available",
+      "Contact, quote, or booking funnel setup",
+      "Optimized for Google + AI discovery",
     ],
     ctaLabel: "Start a Website Project",
-    ctaHref: "/contact?tier=Business%20Websites%20%26%20Support",
-    featured: true,
-    badge: "Most Popular",
+    ctaHref: "/contact?tier=Business%20Website",
     icon: Globe,
   },
   {
     tab: "business",
-    name: "SEO & Growth Retainer",
-    audience: "For growth-focused teams",
-    price: "Starting at $1,500/mo",
-    priceNote: "Monthly growth support for businesses.",
+    name: "Growth Website System",
+    audience: "For businesses ready to grow",
+    eyebrow: "Most clients choose this",
+    price: "$4,000 – $6,000",
+    priceNote: "One-time build with expansion-ready structure.",
     summary:
-      "Ongoing SEO and growth support for businesses ready to increase traffic, generate leads, and improve conversions after launch.",
+      "A complete website and lead generation system designed to expand your visibility across Google and AI-driven search while turning more traffic into calls and enquiries.",
     features: [
-      "Technical SEO audits",
-      "On-page improvements",
-      "Search-driven content roadmap",
-      "Local SEO support",
+      "Everything in Business Website",
+      "Location + service landing page system",
+      "Local SEO and advanced schema setup",
+      "SEO + GEO foundation for modern search",
+      "Lead capture and conversion flow planning",
+      "Built for multi-service or multi-city growth",
+    ],
+    ctaLabel: "Build My Growth System",
+    ctaHref: "/contact?tier=Growth%20Website%20System",
+    featured: true,
+    badge: "Best Value",
+    icon: MapPinned,
+  },
+  {
+    tab: "business",
+    name: "SEO, AI Visibility & Growth",
+    audience: "For growth-focused teams",
+    eyebrow: "Ongoing growth",
+    price: "Starting at $1,500/mo",
+    priceNote: "Monthly growth support for businesses ready to scale.",
+    summary:
+      "Ongoing SEO and growth support designed to increase traffic, improve conversions, and help your business get discovered across Google and AI platforms.",
+    features: [
+      "Technical SEO audits and fixes",
+      "On-page optimization and content improvements",
+      "Search + AI visibility strategy (SEO + GEO)",
+      "Local SEO support and keyword targeting",
       "Conversion and UX improvements",
-      "Designed to build on your website foundation and drive measurable growth.",
+      "Continuous performance-focused growth work",
     ],
     ctaLabel: "Scale with SEO",
-    ctaHref: "/contact?tier=SEO%20%26%20Growth%20Retainer",
+    ctaHref: "/contact?tier=SEO%20AI%20Visibility%20and%20Growth",
     icon: TrendingUp,
   },
   {
     tab: "product",
     name: "Custom Engineering",
     audience: "For advanced technical builds",
+    eyebrow: "Senior-led delivery",
     price: "Starting at $8,000",
-    priceNote: "Custom scoped project",
+    priceNote: "Custom-scoped project.",
     summary:
       "For teams that need advanced software, integrations, automation, or internal systems built properly.",
     features: [
@@ -113,8 +148,9 @@ const studioPricingTiers: StudioTier[] = [
     tab: "product",
     name: "SaaS & Internal Tools",
     audience: "For product teams and startups",
+    eyebrow: "Fixed-scope builds",
     price: "Starting at $5,000",
-    priceNote: "Fixed-scope product builds",
+    priceNote: "Fixed-scope product builds.",
     summary:
       "For startups and teams building MVPs, dashboards, portals, and internal software.",
     features: [
@@ -160,12 +196,11 @@ function TierCard({ tier, index }: { tier: StudioTier; index: number }) {
         transition={{ duration: 0.2, ease: "easeOut" }}
         className={cn(
           "group relative flex h-full flex-col rounded-2xl border p-4 transition-all duration-300 sm:p-5 lg:min-w-0 lg:p-6",
-          tier.featured 
-            ? "border-accent/30 bg-white/[0.02] hover:border-accent/50 hover:shadow-[0_4px_20px_-10px_rgba(200,255,0,0.15)]" 
+          tier.featured
+            ? "border-accent/30 bg-white/[0.02] hover:border-accent/50 hover:shadow-[0_4px_20px_-10px_rgba(200,255,0,0.15)]"
             : "border-white/10 bg-white/[0.01] hover:border-white/20 hover:bg-white/[0.02] hover:shadow-[0_4px_20px_-10px_rgba(255,255,255,0.05)]"
         )}
       >
-        {/* Absolute Floating Crown Badge */}
         {tier.badge && (
           <div className="absolute -top-3.5 left-1/2 z-30 flex -translate-x-1/2 items-center gap-1.5 rounded-full border border-accent/30 bg-black px-3.5 py-1 shadow-[0_0_15px_rgba(200,255,0,0.2)]">
             <Crown className="h-3 w-3 text-accent" strokeWidth={2.5} />
@@ -175,26 +210,20 @@ function TierCard({ tier, index }: { tier: StudioTier; index: number }) {
           </div>
         )}
 
-        {/* Background Effects Wrapper (Contains the rounded corners so the gradients don't spill) */}
         <div className="pointer-events-none absolute inset-0 overflow-hidden rounded-2xl">
           {tier.featured ? (
             <>
-              {/* Crisp top border highlight for featured */}
               <div className="absolute inset-x-8 -top-px h-px bg-gradient-to-r from-transparent via-accent/60 to-transparent opacity-70" />
-              {/* Centered Spotlight dropping from the badge */}
               <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-accent/[0.08] via-transparent to-transparent" />
             </>
           ) : (
             <>
-              {/* Subtle silver top border highlight for standard cards */}
               <div className="absolute inset-x-8 -top-px h-px bg-gradient-to-r from-transparent via-white/20 to-transparent opacity-30 transition-opacity duration-300 group-hover:opacity-60" />
-              {/* Faint ambient spotlight for standard cards */}
               <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-white/[0.025] via-transparent to-transparent transition-colors duration-300 group-hover:from-white/[0.04]" />
             </>
           )}
         </div>
 
-        {/* Content Container */}
         <div className="relative z-10 flex flex-1 flex-col pt-2">
           <div className="flex items-start justify-between gap-3">
             <div
@@ -206,7 +235,10 @@ function TierCard({ tier, index }: { tier: StudioTier; index: number }) {
               )}
             >
               <TierIcon
-                className={cn("h-3.5 w-3.5", tier.featured ? "text-accent" : "text-white/70 group-hover:text-white/90")}
+                className={cn(
+                  "h-3.5 w-3.5",
+                  tier.featured ? "text-accent" : "text-white/70 group-hover:text-white/90"
+                )}
                 strokeWidth={2}
               />
             </div>
@@ -217,6 +249,17 @@ function TierCard({ tier, index }: { tier: StudioTier; index: number }) {
               {tier.audience}
             </p>
 
+            {tier.eyebrow ? (
+              <p
+                className={cn(
+                  "mt-2 text-[11px] font-semibold",
+                  tier.featured ? "text-accent/90" : "text-white/55"
+                )}
+              >
+                {tier.eyebrow}
+              </p>
+            ) : null}
+
             <h3 className="mt-1.5 font-display text-[17px] font-bold leading-tight tracking-tight text-white sm:text-[18px]">
               {tier.name}
             </h3>
@@ -226,6 +269,7 @@ function TierCard({ tier, index }: { tier: StudioTier; index: number }) {
                 {tier.price}
               </p>
             </div>
+
             <p className="mt-1 text-[11.5px] font-medium leading-[1.5] text-white/50">
               {tier.priceNote}
             </p>
@@ -248,14 +292,32 @@ function TierCard({ tier, index }: { tier: StudioTier; index: number }) {
               href={tier.ctaHref}
               className={cn(
                 "inline-flex w-full items-center justify-center gap-1.5 rounded-lg px-3.5 py-2 text-[12px] font-bold transition-all duration-200",
-                tier.featured 
-                  ? "bg-accent text-black hover:bg-accent/90" 
+                tier.featured
+                  ? "bg-accent text-black hover:bg-accent/90"
                   : "border border-white/10 bg-white/[0.03] text-white hover:bg-white/[0.08] hover:shadow-[0_0_15px_rgba(255,255,255,0.03)]"
               )}
             >
               {tier.ctaLabel}
               <ArrowRight className="h-3 w-3" />
             </Link>
+
+            {tier.tab === "business" && !tier.featured && tier.name === "Business Website" ? (
+              <p className="mt-2 text-center text-[10.5px] leading-[1.5] text-white/40">
+                Best for businesses that need a strong foundation first.
+              </p>
+            ) : null}
+
+            {tier.tab === "business" && tier.featured ? (
+              <p className="mt-2 text-center text-[10.5px] leading-[1.5] text-accent/75">
+                Built for Google + AI search visibility.
+              </p>
+            ) : null}
+
+            {tier.tab === "business" && tier.name === "SEO, AI Visibility & Growth" ? (
+              <p className="mt-2 text-center text-[10.5px] leading-[1.5] text-white/40">
+                Best after launch or for businesses ready to scale traffic.
+              </p>
+            ) : null}
           </div>
         </div>
       </motion.article>
@@ -279,17 +341,18 @@ export function PricingTiers() {
   return (
     <section id="pricing" className="relative py-12 sm:py-16">
       <div className="wrap relative z-10">
-        <div className="mx-auto max-w-4xl">
+        <div className="mx-auto max-w-6xl">
           <Reveal>
             <div className="mb-5 text-center sm:mb-8">
               <span className="inline-flex rounded-md border border-white/10 bg-white/[0.03] px-2 py-0.5 font-mono text-[9px] font-semibold uppercase tracking-widest text-white/60">
                 Pricing
               </span>
               <h2 className="mt-2.5 font-display text-[clamp(22px,3.5vw,34px)] font-extrabold leading-[1.1] tracking-tight text-white sm:mt-3">
-                Built for speed. <span className="text-white/40">Priced for scale.</span>
+                Built for growth. <span className="text-white/40">Priced with clear scope.</span>
               </h2>
-              <p className="mx-auto mt-2 max-w-[460px] text-[12px] leading-[1.6] text-white/60 sm:mt-3 sm:text-[13px]">
-                High-performance systems designed to turn your traffic into revenue from day one.
+              <p className="mx-auto mt-2 max-w-[560px] text-[12px] leading-[1.6] text-white/60 sm:mt-3 sm:text-[13px]">
+                Choose the setup that matches your stage — from a strong website foundation to a
+                full lead generation system and ongoing growth support.
               </p>
             </div>
           </Reveal>
@@ -338,7 +401,7 @@ export function PricingTiers() {
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -4 }}
                   transition={{ duration: 0.15, ease: "easeOut" }}
-                  className="mt-3 max-w-[420px] text-center text-[11px] leading-[1.6] text-white/50 sm:mt-5 sm:text-[12px]"
+                  className="mt-3 max-w-[460px] text-center text-[11px] leading-[1.6] text-white/50 sm:mt-5 sm:text-[12px]"
                 >
                   {activeTabMeta.description}
                 </motion.p>
@@ -353,7 +416,10 @@ export function PricingTiers() {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: 12 }}
               transition={{ duration: 0.25, ease: "easeOut" }}
-              className="mt-2 grid grid-cols-1 gap-4 sm:gap-5 lg:grid-cols-2"
+              className={cn(
+                "mt-2 grid grid-cols-1 gap-4 sm:gap-5",
+                activeTab === "business" ? "xl:grid-cols-3" : "lg:grid-cols-2"
+              )}
             >
               {activeTiers.map((tier, index) => (
                 <TierCard key={tier.name} tier={tier} index={index} />
@@ -369,22 +435,27 @@ export function PricingTiers() {
                   className="flex items-center gap-1.5 rounded-full border border-white/[0.06] bg-white/[0.02] px-2.5 py-1 sm:px-3"
                 >
                   <span className="h-1 w-1 shrink-0 rounded-full bg-accent shadow-[0_0_6px_rgba(200,255,0,0.4)]" />
-                  <span className="text-[10px] font-medium text-white/50 sm:text-[11px]">{point}</span>
+                  <span className="text-[10px] font-medium text-white/50 sm:text-[11px]">
+                    {point}
+                  </span>
                 </div>
               ))}
             </div>
           </Reveal>
 
           <Reveal delay={0.16}>
-            <div className="mx-auto mt-6 max-w-[500px] rounded-[12px] border border-white/[0.04] bg-white/[0.01] p-4 text-center sm:mt-8 sm:p-5">
-              <p className="text-[11px] leading-[1.6] text-white/60 sm:text-[12.5px]">
-                Need a website, support, SEO, and upgrades together? We can scope a blended monthly
-                engagement around your business.
+            <div className="mx-auto mt-6 max-w-[700px] rounded-[12px] border border-white/[0.05] bg-white/[0.01] p-4 text-center sm:mt-8 sm:p-5">
+              <h3 className="text-[13px] font-semibold text-white sm:text-[14px]">
+                Need a blended setup?
+              </h3>
+              <p className="mt-2 text-[11px] leading-[1.6] text-white/60 sm:text-[12.5px]">
+                We can combine website build, landing page expansion, SEO, ongoing updates, and
+                growth support into a single custom engagement around your business goals.
               </p>
 
               <Link
                 href="/contact"
-                className="mt-2.5 inline-flex items-center gap-1.5 text-[12px] font-bold text-accent transition-all hover:gap-2 hover:text-accent/80"
+                className="mt-3 inline-flex items-center gap-1.5 text-[12px] font-bold text-accent transition-all hover:gap-2 hover:text-accent/80"
               >
                 Talk through your scope
                 <ArrowRight className="h-3 w-3" />
