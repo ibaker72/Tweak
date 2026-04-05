@@ -17,13 +17,13 @@ const marqueeItems = [...stackItems, ...stackItems];
 
 export function StackMarquee() {
   return (
-    <section className="relative border-y border-white/[0.04] bg-surface-1/35 py-7 sm:py-8">
+    <section className="relative border-y border-white/[0.06] bg-surface-1/35 py-10 sm:py-14 lg:py-16">
       <div className="wrap">
-        <p className="text-center font-mono text-[10px] uppercase tracking-[0.24em] text-white/36 sm:text-[11px]">
-          OUR STACK
+        <p className="text-center font-mono text-[10px] uppercase tracking-[0.3em] text-white/30 sm:text-[11px] lg:text-xs">
+          Our Stack
         </p>
 
-        <div className="relative mt-4 sm:mt-5">
+        <div className="relative mt-6 sm:mt-8">
           <div className="motion-reduce:hidden">
             <div className="stack-marquee">
               <ul className="stack-marquee-track">
