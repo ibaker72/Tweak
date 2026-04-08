@@ -16,7 +16,7 @@ export const metadata: Metadata = {
   },
 };
 
-const industryIcons: Record<string, React.ComponentType<{ size?: number; className?: string }>> = {
+const industryIcons: Record<string, React.ComponentType<{ size?: number | string; className?: string }>> = {
   dealerships: Car,
   insurance: ShieldCheck,
   "service-businesses": Wrench,
