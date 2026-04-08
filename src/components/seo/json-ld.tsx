@@ -1,4 +1,5 @@
 import type { BlogPost } from "@/lib/blog";
+import type { Industry } from "@/lib/industries";
 
 const SITE_URL = "https://www.tweakandbuild.com";
 
@@ -85,6 +86,55 @@ export function FAQJsonLd({
       },
     })),
   };
+
+  return (
+    <script
+      type="application/ld+json"
+      dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
+    />
+  );
+}
+
+export function IndustryServiceJsonLd({ industry }: { industry: Industry }) {
+  const schema = [
+    {
+      "@context": "https://schema.org",
+      "@type": "Service",
+      name: `${industry.name} Web Design & Development`,
+      description: industry.metaDescription,
+      provider: {
+        "@type": "ProfessionalService",
+        name: "Tweak & Build",
+        url: SITE_URL,
+      },
+      serviceType: "Web Development",
+      areaServed: "Worldwide",
+      hasOfferCatalog: {
+        "@type": "OfferCatalog",
+        name: `Services for ${industry.name}`,
+        itemListElement: industry.services.map((s) => ({
+          "@type": "Offer",
+          itemOffered: {
+            "@type": "Service",
+            name: s.title,
+            description: s.description,
+          },
+        })),
+      },
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      mainEntity: industry.faqs.map((faq) => ({
+        "@type": "Question",
+        name: faq.q,
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: faq.a,
+        },
+      })),
+    },
+  ];
 
   return (
     <script

@@ -11,6 +11,7 @@ import {
   MessageSquare,
   FileText,
   CheckSquare,
+  Crosshair,
   Menu,
   X,
   LogOut,
@@ -23,6 +24,7 @@ const links = [
   { href: "/admin/updates", label: "Updates", icon: MessageSquare },
   { href: "/admin/files", label: "Files", icon: FileText },
   { href: "/admin/approvals", label: "Approvals", icon: CheckSquare },
+  { href: "/admin/openclaw", label: "OpenClaw", icon: Crosshair },
 ];
 
 function isActive(pathname: string, href: string) {

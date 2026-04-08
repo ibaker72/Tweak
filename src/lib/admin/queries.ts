@@ -21,6 +21,25 @@ export interface AdminStats {
   totalClients: number;
 }
 
+export interface ProspectStats {
+  total: number;
+  qualified: number;
+  contacted: number;
+  converted: number;
+}
+
+export async function getProspectStats(): Promise<ProspectStats> {
+  const supabase = await createClient();
+  const { data } = await supabase.from("prospects").select("status");
+  const rows = (data ?? []) as { status: string }[];
+  return {
+    total: rows.length,
+    qualified: rows.filter((r) => r.status === "qualified").length,
+    contacted: rows.filter((r) => r.status === "contacted").length,
+    converted: rows.filter((r) => r.status === "converted").length,
+  };
+}
+
 export async function getAdminStats(): Promise<AdminStats> {
   const supabase = await createClient();
 

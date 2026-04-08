@@ -10,19 +10,21 @@ import {
   FileText,
   ArrowRight,
   Plus,
+  Crosshair,
 } from "lucide-react";
 import { SummaryCard } from "@/components/portal/summary-card";
 import { PortalCard } from "@/components/portal/portal-card";
 import { StatusBadge } from "@/components/portal/status-badge";
 import { EmptyState } from "@/components/portal/empty-state";
-import { getAdminStats, getRecentUpdates, getRecentFiles, getAllProjects } from "@/lib/admin/queries";
+import { getAdminStats, getRecentUpdates, getRecentFiles, getAllProjects, getProspectStats } from "@/lib/admin/queries";
 
 export default async function AdminDashboard() {
-  const [stats, recentUpdates, recentFiles, projects] = await Promise.all([
+  const [stats, recentUpdates, recentFiles, projects, prospectStats] = await Promise.all([
     getAdminStats(),
     getRecentUpdates(6),
     getRecentFiles(5),
     getAllProjects(),
+    getProspectStats(),
   ]);
 
   const activeProjects = projects.filter((p) => p.status !== "live").slice(0, 5);
@@ -49,7 +51,7 @@ export default async function AdminDashboard() {
       </div>
 
       {/* Stats row */}
-      <div className="grid grid-cols-2 gap-3 lg:grid-cols-5">
+      <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">
         <SummaryCard
           label="Total Projects"
           value={String(stats.totalProjects)}
@@ -76,6 +78,13 @@ export default async function AdminDashboard() {
           value={String(stats.totalClients)}
           icon={<Users size={18} />}
         />
+        <Link href="/admin/openclaw" className="block">
+          <SummaryCard
+            label="Prospects"
+            value={String(prospectStats.total)}
+            icon={<Crosshair size={18} />}
+          />
+        </Link>
       </div>
 
       {/* Main grid */}
@@ -201,6 +210,7 @@ export default async function AdminDashboard() {
                 { href: "/admin/clients", label: "Clients", icon: Users },
                 { href: "/admin/updates", label: "Updates", icon: MessageSquare },
                 { href: "/admin/approvals", label: "Approvals", icon: CheckSquare },
+                { href: "/admin/openclaw", label: "OpenClaw", icon: Crosshair },
               ].map(({ href, label, icon: Icon }) => (
                 <Link
                   key={href}

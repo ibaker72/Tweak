@@ -1,6 +1,7 @@
 import type { MetadataRoute } from "next";
 import { getAllPosts } from "@/lib/blog";
 import { comparisons } from "@/lib/comparisons";
+import { industrySlugs } from "@/lib/industries";
 
 const SITE_URL = "https://www.tweakandbuild.com";
 
@@ -44,5 +45,16 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.6,
   }));
 
-  return [...staticPages, ...caseStudies, ...posts, ...comparePages];
+  // Industry pages
+  const industryPages = [
+    { url: `${SITE_URL}/industries`, lastModified: new Date(), changeFrequency: "monthly" as const, priority: 0.85 },
+    ...industrySlugs.map((slug) => ({
+      url: `${SITE_URL}/industries/${slug}`,
+      lastModified: new Date(),
+      changeFrequency: "monthly" as const,
+      priority: 0.85,
+    })),
+  ];
+
+  return [...staticPages, ...caseStudies, ...posts, ...comparePages, ...industryPages];
 }
