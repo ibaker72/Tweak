@@ -13,7 +13,7 @@ import {
 import { Reveal } from "@/components/shared";
 import type { Industry } from "@/lib/industries";
 
-const iconMap: Record<string, React.ComponentType<{ size?: number; className?: string }>> = {
+const iconMap: Record<string, React.ComponentType<{ size?: number | string; className?: string }>> = {
   Car,
   Target,
   CalendarCheck,
