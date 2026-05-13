@@ -8,6 +8,12 @@ const patchSchema = z.object({
     .optional(),
   notes: z.string().max(2000).optional(),
   contacted_at: z.string().datetime().optional(),
+  email: z.string().email().optional().or(z.literal("")),
+  contact_name: z.string().max(120).optional(),
+  deal_stage: z
+    .enum(["lead", "engaged", "meeting", "proposal", "won", "lost"])
+    .optional(),
+  deal_value_cents: z.number().int().nonnegative().optional(),
 });
 
 interface RouteParams {

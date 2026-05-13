@@ -1,7 +1,8 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
-import { Crosshair, RefreshCw } from "lucide-react";
+import Link from "next/link";
+import { Crosshair, RefreshCw, Bot, BookOpen } from "lucide-react";
 import { SearchForm } from "@/components/openclaw/search-form";
 import { ProspectsTable } from "@/components/openclaw/prospects-table";
 import { ProspectDetail } from "@/components/openclaw/prospect-detail";
@@ -74,13 +75,29 @@ export default function OpenClawPage() {
             Find and qualify B2B prospects from Google Places
           </p>
         </div>
-        <button
-          onClick={fetchProspects}
-          className="flex items-center gap-1.5 rounded-lg border border-white/[0.06] bg-white/[0.02] px-3 py-1.5 font-mono text-[11px] text-dim transition-colors hover:text-white"
-        >
-          <RefreshCw size={11} />
-          Refresh
-        </button>
+        <div className="flex items-center gap-2">
+          <Link
+            href="/admin/openclaw/automation"
+            className="flex items-center gap-1.5 rounded-lg border border-white/[0.06] bg-white/[0.02] px-3 py-1.5 font-mono text-[11px] text-dim transition-colors hover:text-white"
+          >
+            <Bot size={11} />
+            Automation
+          </Link>
+          <Link
+            href="/admin/openclaw/prompts"
+            className="flex items-center gap-1.5 rounded-lg border border-white/[0.06] bg-white/[0.02] px-3 py-1.5 font-mono text-[11px] text-dim transition-colors hover:text-white"
+          >
+            <BookOpen size={11} />
+            Prompts
+          </Link>
+          <button
+            onClick={fetchProspects}
+            className="flex items-center gap-1.5 rounded-lg border border-white/[0.06] bg-white/[0.02] px-3 py-1.5 font-mono text-[11px] text-dim transition-colors hover:text-white"
+          >
+            <RefreshCw size={11} />
+            Refresh
+          </button>
+        </div>
       </div>
 
       {/* Search form */}

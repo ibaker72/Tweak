@@ -1,11 +1,17 @@
 "use client";
 
-import { useState } from "react";
-import { X, Globe, Phone, MapPin, Star, ExternalLink, Loader2, ArrowRight } from "lucide-react";
+import { useEffect, useState } from "react";
+import { X, Globe, Phone, MapPin, Star, ExternalLink, Loader2, ArrowRight, Mail, Send } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { ScoreBadge } from "./score-badge";
-import { STATUS_LABELS, STATUS_COLORS, INDUSTRY_LABELS } from "@/lib/openclaw/types";
-import type { Prospect, ProspectStatus } from "@/lib/openclaw/types";
+import {
+  STATUS_LABELS,
+  STATUS_COLORS,
+  INDUSTRY_LABELS,
+  DEAL_STAGES,
+  DEAL_STAGE_LABELS,
+} from "@/lib/openclaw/types";
+import type { Prospect, ProspectStatus, DealStage, OutreachRecord } from "@/lib/openclaw/types";
 
 interface ProspectDetailProps {
   prospect: Prospect | null;
@@ -19,6 +25,28 @@ export function ProspectDetail({ prospect, onClose, onUpdated }: ProspectDetailP
   const [saving, setSaving] = useState(false);
   const [notes, setNotes] = useState(prospect?.notes || "");
   const [status, setStatus] = useState<ProspectStatus>(prospect?.status ?? "new");
+  const [email, setEmail] = useState(prospect?.email || "");
+  const [contactName, setContactName] = useState(prospect?.contact_name || "");
+  const [dealStage, setDealStage] = useState<DealStage>(prospect?.deal_stage ?? "lead");
+  const [outreachHistory, setOutreachHistory] = useState<OutreachRecord[]>([]);
+  const [draftBusy, setDraftBusy] = useState<"draft" | "send" | null>(null);
+  const [draftPreview, setDraftPreview] = useState<{ subject: string; body: string } | null>(null);
+  const [draftError, setDraftError] = useState<string | null>(null);
+
+  const prospectId = prospect?.id;
+  useEffect(() => {
+    if (!prospectId) return;
+    let cancelled = false;
+    fetch(`/api/openclaw/prospects/${prospectId}/outreach`)
+      .then((r) => r.json())
+      .then((d) => {
+        if (!cancelled) setOutreachHistory(d.outreach || []);
+      })
+      .catch(() => undefined);
+    return () => {
+      cancelled = true;
+    };
+  }, [prospectId]);
 
   // Sync state when prospect changes
   if (prospect && notes !== (prospect.notes || "") && !saving) {
@@ -26,6 +54,15 @@ export function ProspectDetail({ prospect, onClose, onUpdated }: ProspectDetailP
   }
   if (prospect && status !== prospect.status && !saving) {
     setStatus(prospect.status);
+  }
+  if (prospect && email !== (prospect.email || "") && !saving) {
+    setEmail(prospect.email || "");
+  }
+  if (prospect && contactName !== (prospect.contact_name || "") && !saving) {
+    setContactName(prospect.contact_name || "");
+  }
+  if (prospect && dealStage !== prospect.deal_stage && !saving) {
+    setDealStage(prospect.deal_stage);
   }
 
   if (!prospect) return null;
@@ -46,7 +83,13 @@ export function ProspectDetail({ prospect, onClose, onUpdated }: ProspectDetailP
       const res = await fetch(`/api/openclaw/prospects/${prospect.id}`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ status, notes }),
+        body: JSON.stringify({
+          status,
+          notes,
+          email: email || "",
+          contact_name: contactName,
+          deal_stage: dealStage,
+        }),
       });
       const data = await res.json();
       if (data.prospect) {
@@ -56,6 +99,32 @@ export function ProspectDetail({ prospect, onClose, onUpdated }: ProspectDetailP
       // silent
     } finally {
       setSaving(false);
+    }
+  }
+
+  async function handleDraftOrSend(send: boolean) {
+    if (!prospect) return;
+    setDraftBusy(send ? "send" : "draft");
+    setDraftError(null);
+    try {
+      const res = await fetch(`/api/openclaw/prospects/${prospect.id}/outreach`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ action: send ? "send_draft" : "draft", send }),
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        setDraftError(data.error || "Failed");
+        return;
+      }
+      if (data.draft) setDraftPreview(data.draft);
+      // refresh history
+      const h = await fetch(`/api/openclaw/prospects/${prospect.id}/outreach`).then((r) => r.json());
+      setOutreachHistory(h.outreach || []);
+    } catch (err) {
+      setDraftError(err instanceof Error ? err.message : "Network error");
+    } finally {
+      setDraftBusy(null);
     }
   }
 
@@ -176,6 +245,118 @@ export function ProspectDetail({ prospect, onClose, onUpdated }: ProspectDetailP
               </p>
             )}
           </div>
+
+          {/* Contact + deal pipeline */}
+          <div className="space-y-3 rounded-xl border border-white/[0.06] bg-white/[0.02] p-4">
+            <div className="flex items-center gap-2">
+              <Mail size={12} className="text-accent" />
+              <span className="font-display text-[12px] font-bold text-white">Contact &amp; pipeline</span>
+            </div>
+            <div className="grid grid-cols-2 gap-2">
+              <div>
+                <label className="mb-1 block font-mono text-[9px] uppercase tracking-[0.08em] text-dim">
+                  Contact name
+                </label>
+                <input
+                  type="text"
+                  className="field w-full"
+                  placeholder="First Last"
+                  value={contactName}
+                  onChange={(e) => setContactName(e.target.value)}
+                />
+              </div>
+              <div>
+                <label className="mb-1 block font-mono text-[9px] uppercase tracking-[0.08em] text-dim">
+                  Email
+                </label>
+                <input
+                  type="email"
+                  className="field w-full"
+                  placeholder="contact@example.com"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                />
+              </div>
+            </div>
+            <div>
+              <label className="mb-1 block font-mono text-[9px] uppercase tracking-[0.08em] text-dim">
+                Deal stage
+              </label>
+              <select
+                value={dealStage}
+                onChange={(e) => setDealStage(e.target.value as DealStage)}
+                className="field w-full"
+              >
+                {DEAL_STAGES.map((s) => (
+                  <option key={s} value={s}>
+                    {DEAL_STAGE_LABELS[s]}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <div className="flex gap-2">
+              <button
+                onClick={() => handleDraftOrSend(false)}
+                disabled={draftBusy !== null}
+                className="flex flex-1 items-center justify-center gap-1.5 rounded-lg border border-white/[0.06] bg-white/[0.02] px-3 py-2 font-mono text-[11px] text-body transition-colors hover:text-white disabled:opacity-40"
+              >
+                {draftBusy === "draft" ? <Loader2 size={11} className="animate-spin" /> : <Mail size={11} />}
+                Draft with Claude
+              </button>
+              <button
+                onClick={() => handleDraftOrSend(true)}
+                disabled={draftBusy !== null || !email}
+                className="flex flex-1 items-center justify-center gap-1.5 rounded-lg border border-accent/30 bg-accent/[0.06] px-3 py-2 font-mono text-[11px] text-accent transition-colors hover:bg-accent/[0.1] disabled:opacity-40"
+                title={!email ? "Add an email first" : "Draft + send via Resend"}
+              >
+                {draftBusy === "send" ? <Loader2 size={11} className="animate-spin" /> : <Send size={11} />}
+                Draft + Send
+              </button>
+            </div>
+            {draftError && (
+              <p className="rounded-lg border border-red-400/15 bg-red-400/[0.06] px-3 py-2 font-mono text-[10px] text-red-400">
+                {draftError}
+              </p>
+            )}
+            {draftPreview && (
+              <div className="rounded-lg border border-white/[0.06] bg-black/30 p-3">
+                <div className="font-mono text-[10px] uppercase tracking-[0.08em] text-dim">Subject</div>
+                <div className="mt-1 text-[12px] text-white">{draftPreview.subject}</div>
+                <div className="mt-3 font-mono text-[10px] uppercase tracking-[0.08em] text-dim">Body</div>
+                <pre className="mt-1 whitespace-pre-wrap font-sans text-[12px] leading-[1.55] text-body">{draftPreview.body}</pre>
+              </div>
+            )}
+          </div>
+
+          {/* Outreach history */}
+          {outreachHistory.length > 0 && (
+            <div className="space-y-2">
+              <p className="font-mono text-[10px] uppercase tracking-[0.08em] text-dim">Outreach history</p>
+              <div className="space-y-1.5">
+                {outreachHistory.slice(0, 8).map((o) => (
+                  <div
+                    key={o.id}
+                    className="rounded-lg border border-white/[0.04] bg-white/[0.02] px-3 py-2 text-[11px] text-body"
+                  >
+                    <div className="flex items-center justify-between gap-2">
+                      <span className="truncate text-white">{o.subject || o.kind}</span>
+                      <span className={cn(
+                        "flex-shrink-0 font-mono text-[10px]",
+                        o.status === "sent" || o.status === "opened" || o.status === "clicked" ? "text-emerald-400" :
+                        o.status === "replied" ? "text-accent" :
+                        o.status === "bounced" || o.status === "complained" || o.status === "failed" ? "text-red-400" : "text-dim"
+                      )}>
+                        {o.status}
+                      </span>
+                    </div>
+                    <div className="mt-0.5 font-mono text-[10px] text-dim">
+                      {o.kind} · {new Date(o.created_at).toLocaleString()}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
 
           {/* Status */}
           <div>

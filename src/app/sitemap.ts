@@ -2,6 +2,7 @@ import type { MetadataRoute } from "next";
 import { getAllPosts } from "@/lib/blog";
 import { comparisons } from "@/lib/comparisons";
 import { industrySlugs } from "@/lib/industries";
+import { allGeoSlugs } from "@/lib/openclaw/geo-content";
 
 const SITE_URL = "https://www.tweakandbuild.com";
 
@@ -56,5 +57,16 @@ export default function sitemap(): MetadataRoute.Sitemap {
     })),
   ];
 
-  return [...staticPages, ...caseStudies, ...posts, ...comparePages, ...industryPages];
+  // GEO programmatic pages (/seo/<city-state>/<industry>)
+  const geoPages = allGeoSlugs().map(({ city, state, industry }) => {
+    const citySlug = `${city.toLowerCase().replace(/\s+/g, "-")}-${state.toLowerCase()}`;
+    return {
+      url: `${SITE_URL}/seo/${citySlug}/${industry}`,
+      lastModified: new Date(),
+      changeFrequency: "monthly" as const,
+      priority: 0.75,
+    };
+  });
+
+  return [...staticPages, ...caseStudies, ...posts, ...comparePages, ...industryPages, ...geoPages];
 }

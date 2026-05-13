@@ -1,0 +1,20 @@
+{
+  "crons": [
+    {
+      "path": "/api/openclaw/cron/discover",
+      "schedule": "0 13 * * *"
+    },
+    {
+      "path": "/api/openclaw/cron/outreach",
+      "schedule": "0 15 * * 1-5"
+    },
+    {
+      "path": "/api/openclaw/cron/followup",
+      "schedule": "0 16 * * 1-5"
+    },
+    {
+      "path": "/api/openclaw/cron/geo-generate",
+      "schedule": "0 6 * * *"
+    }
+  ]
+}

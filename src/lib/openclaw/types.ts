@@ -11,6 +11,8 @@ export type ProspectIndustry =
   | "insurance"
   | "service-businesses";
 
+export type DealStage = "lead" | "engaged" | "meeting" | "proposal" | "won" | "lost";
+
 export interface Prospect {
   id: string;
   business_name: string;
@@ -32,6 +34,47 @@ export interface Prospect {
   contacted_at: string | null;
   created_at: string;
   updated_at: string;
+  email: string | null;
+  contact_name: string | null;
+  deal_stage: DealStage;
+  deal_value_cents: number | null;
+  last_outreach_at: string | null;
+  outreach_count: number;
+  auto_enrolled: boolean;
+}
+
+export const DEAL_STAGES: DealStage[] = [
+  "lead",
+  "engaged",
+  "meeting",
+  "proposal",
+  "won",
+  "lost",
+];
+
+export const DEAL_STAGE_LABELS: Record<DealStage, string> = {
+  lead: "Lead",
+  engaged: "Engaged",
+  meeting: "Meeting",
+  proposal: "Proposal",
+  won: "Won",
+  lost: "Lost",
+};
+
+export interface OutreachRecord {
+  id: string;
+  prospect_id: string;
+  sequence_step: number;
+  kind: string;
+  to_email: string | null;
+  subject: string | null;
+  body_text: string | null;
+  status: string;
+  sent_at: string | null;
+  opened_at: string | null;
+  replied_at: string | null;
+  error: string | null;
+  created_at: string;
 }
 
 export interface PlaceResult {

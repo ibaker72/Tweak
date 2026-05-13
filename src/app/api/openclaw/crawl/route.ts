@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 import { createServiceClient } from "@/lib/supabase/service";
-import { runAudit } from "@/lib/audit/aggregate";
+import { auditWebsite } from "@/lib/openclaw/audit-runner";
 
 const schema = z.object({
   prospectId: z.string().uuid("Invalid prospect ID"),
@@ -21,7 +21,6 @@ export async function POST(request: NextRequest) {
 
     const supabase = createServiceClient();
 
-    // Fetch the prospect
     const { data: prospect, error: fetchError } = await supabase
       .from("prospects")
       .select("id, website_url, business_name")
@@ -39,71 +38,23 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Normalize URL
-    let url = prospect.website_url.trim();
-    if (!/^https?:\/\//i.test(url)) {
-      url = "https://" + url;
-    }
-    url = url.replace(/\/+$/, "");
+    const audit = await auditWebsite(prospect.website_url);
 
-    // Fetch the website
-    const controller = new AbortController();
-    const timeout = setTimeout(() => controller.abort(), 15000);
-
-    let auditResult;
-    try {
-      const startTime = Date.now();
-      const response = await fetch(url, {
-        signal: controller.signal,
-        headers: {
-          "User-Agent": "TweakAndBuild-OpenClaw/1.0 (https://tweakandbuild.com)",
-          Accept: "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
-        },
-        redirect: "follow",
-      });
-      clearTimeout(timeout);
-
-      const loadTimeMs = Date.now() - startTime;
-      const html = await response.text();
-      const pageSize = new TextEncoder().encode(html).length;
-
-      const headers: Record<string, string> = {};
-      response.headers.forEach((value, key) => {
-        headers[key] = value;
-      });
-
-      auditResult = runAudit({
-        url,
-        html,
-        headers,
-        statusCode: response.status,
-        loadTimeMs,
-        pageSize,
-      });
-    } catch (fetchError: unknown) {
-      clearTimeout(timeout);
-      const message =
-        fetchError instanceof Error && fetchError.name === "AbortError"
-          ? "Website took too long to respond"
-          : fetchError instanceof Error
-            ? fetchError.message
-            : "Could not reach website";
-
+    if (!audit.ok) {
       await supabase
         .from("prospects")
         .update({ status: "crawled", crawled_at: new Date().toISOString(), audit_score: 0 })
         .eq("id", prospect.id);
 
-      return NextResponse.json({ error: message, score: 0 }, { status: 200 });
+      return NextResponse.json({ error: audit.error, score: 0 }, { status: 200 });
     }
 
-    // Save audit results to prospect
     const { data: updated, error: updateError } = await supabase
       .from("prospects")
       .update({
         status: "crawled",
-        audit_score: auditResult.overallScore,
-        audit_result_json: auditResult as unknown as Record<string, unknown>,
+        audit_score: audit.score,
+        audit_result_json: audit.result as unknown as Record<string, unknown>,
         crawled_at: new Date().toISOString(),
       })
       .eq("id", prospect.id)
@@ -116,7 +67,7 @@ export async function POST(request: NextRequest) {
     }
 
     return NextResponse.json({
-      score: auditResult.overallScore,
+      score: audit.score,
       prospect: updated,
     });
   } catch (err) {
