@@ -9,6 +9,7 @@ import {
   Check,
   Cpu,
   Globe,
+  Megaphone,
   TrendingUp,
   Crown,
   MapPinned,
@@ -100,6 +101,27 @@ const studioPricingTiers: StudioTier[] = [
     featured: true,
     badge: "Best Value",
     icon: MapPinned,
+  },
+  {
+    tab: "business",
+    name: "Digital Marketing & Advertising",
+    audience: "For businesses ready to book more leads",
+    eyebrow: "Paid growth",
+    price: "Starting at $1,800/mo",
+    priceNote: "Monthly retainer + your ad spend (managed separately).",
+    summary:
+      "Full-funnel paid ad management across Google, Meta, and LinkedIn — built to drive booked calls, not vanity clicks. Includes tracking, landing page optimization, and weekly iteration.",
+    features: [
+      "Google Ads (Search, Performance Max, Display)",
+      "Meta Ads (Facebook + Instagram)",
+      "LinkedIn Ads for B2B targeting",
+      "Conversion tracking + GA4 / GTM setup",
+      "Landing page and offer optimization",
+      "Weekly reporting and creative iteration",
+    ],
+    ctaLabel: "Run Ads with Us",
+    ctaHref: "/contact?tier=Digital%20Marketing%20and%20Advertising",
+    icon: Megaphone,
   },
   {
     tab: "business",
@@ -318,6 +340,12 @@ function TierCard({ tier, index }: { tier: StudioTier; index: number }) {
                 Best after launch or for businesses ready to scale traffic.
               </p>
             ) : null}
+
+            {tier.tab === "business" && tier.name === "Digital Marketing & Advertising" ? (
+              <p className="mt-2 text-center text-[10.5px] leading-[1.5] text-white/40">
+                Best paired with a Growth Website System or strong landing pages.
+              </p>
+            ) : null}
           </div>
         </div>
       </motion.article>
@@ -418,7 +446,7 @@ export function PricingTiers() {
               transition={{ duration: 0.25, ease: "easeOut" }}
               className={cn(
                 "mt-2 grid grid-cols-1 gap-4 sm:gap-5",
-                activeTab === "business" ? "xl:grid-cols-3" : "lg:grid-cols-2"
+                activeTab === "business" ? "md:grid-cols-2 xl:grid-cols-4" : "lg:grid-cols-2"
               )}
             >
               {activeTiers.map((tier, index) => (

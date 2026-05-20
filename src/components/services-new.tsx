@@ -1,5 +1,5 @@
 "use client";
-import { Rocket, Zap, Globe, Bot, Cpu, ChevronDown } from "lucide-react";
+import { Rocket, Zap, Globe, Bot, Cpu, Megaphone, ChevronDown } from "lucide-react";
 import { useState } from "react";
 import { Reveal } from "./shared";
 
@@ -31,6 +31,13 @@ const steps = [
     desc: "We connect your tools, automate repetitive workflows, and build AI-powered systems that save your team real hours every week.",
     detail: "OpenAI · n8n · Custom APIs",
     icon: Bot,
+  },
+  {
+    num: "05",
+    title: "Digital Marketing & Advertising",
+    desc: "Google, Meta, and LinkedIn ad campaigns engineered to book real meetings. Landing pages, tracking, and creative tested weekly so every dollar of ad spend pulls its weight.",
+    detail: "Google Ads · Meta Ads · LinkedIn Ads",
+    icon: Megaphone,
   },
 ];
 
@@ -86,7 +93,7 @@ export function ServicesNew() {
               End to end.
             </h2>
             <p className="mt-2 text-[13px] leading-[1.6] text-body">
-              Four disciplines. One team. From strategy to deployment.
+              Five disciplines. One team. From strategy to deployment.
             </p>
           </Reveal>
 
@@ -133,7 +140,7 @@ export function ServicesNew() {
                 <span className="text-body">Pixel to deploy.</span>
               </h2>
               <p className="mt-4 max-w-[360px] text-[14px] leading-[1.7] text-body sm:mt-5 sm:text-[15px] sm:leading-[1.75]">
-                Four disciplines. One team that delivers all of them. From product strategy to production deployment, we handle the full stack.
+                Five disciplines. One team that delivers all of them. From product strategy through paid acquisition, we handle the full stack.
               </p>
             </Reveal>
 
