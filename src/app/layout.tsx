@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
+import { Analytics } from "@vercel/analytics/next";
 import "./globals.css";
 import { ReferralTracker } from "@/components/referral-tracking";
 import { MarketingShell } from "@/components/marketing-shell";
@@ -52,6 +53,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <ReferralTracker />
         </Suspense>
         <MarketingShell>{children}</MarketingShell>
+        <Analytics />
       </body>
     </html>
   );
