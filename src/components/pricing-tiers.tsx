@@ -1,495 +1,493 @@
 "use client";
 
 import Link from "next/link";
-import { useMemo, useState } from "react";
+import { useId, useMemo, useState, useRef, type KeyboardEvent } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import {
-  ArrowRight,
-  Blocks,
-  Check,
-  Cpu,
-  Globe,
-  Megaphone,
-  TrendingUp,
-  Crown,
-  MapPinned,
-} from "lucide-react";
+import { Check } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { Reveal } from "./shared";
-import type { LucideIcon } from "lucide-react";
 
-type PricingTabId = "business" | "product";
+type TabId = "websites" | "marketing";
 
-type PricingTab = {
-  id: PricingTabId;
+type Tier = {
   label: string;
-  description: string;
-};
-
-type StudioTier = {
-  tab: PricingTabId;
   name: string;
-  audience: string;
+  subtitle: string;
   price: string;
-  priceNote: string;
-  summary: string;
+  priceSuffix: string;
+  cadence: string;
   features: string[];
   ctaLabel: string;
   ctaHref: string;
+  footnote: string;
   featured?: boolean;
-  badge?: string;
-  icon: LucideIcon;
-  eyebrow?: string;
 };
 
-const pricingTabs: PricingTab[] = [
+type TabContent = {
+  id: TabId;
+  label: string;
+  tiers: Tier[];
+};
+
+const TABS: TabContent[] = [
   {
-    id: "business",
-    label: "Business Websites & SEO",
-    description:
-      "Custom-engineered websites and growth systems built to generate leads, improve visibility, and support long-term business growth.",
+    id: "websites",
+    label: "Websites",
+    tiers: [
+      {
+        label: "Starter",
+        name: "Foundation Website",
+        subtitle:
+          "A fast, credible website built to convert visitors into real enquiries.",
+        price: "$2,500",
+        priceSuffix: "",
+        cadence: "One-time build · support available",
+        features: [
+          "Custom design, mobile-first",
+          "SEO-ready structure & on-page setup",
+          "Contact, quote, or booking funnel",
+          "Speed & Core Web Vitals optimized",
+          "Google & AI search discovery ready",
+        ],
+        ctaLabel: "Start a project",
+        ctaHref: "/contact?tier=Foundation%20Website",
+        footnote: "Best for new or rebranding businesses",
+      },
+      {
+        label: "Growth",
+        name: "Growth Website System",
+        subtitle:
+          "A full website + lead engine designed to dominate local search.",
+        price: "$4,500",
+        priceSuffix: "",
+        cadence: "One-time build · expansion-ready structure",
+        features: [
+          "Everything in Foundation",
+          "Location + service landing page system",
+          "Local SEO & advanced schema markup",
+          "GEO foundation for AI-driven search",
+          "Lead capture & conversion flow planning",
+          "Multi-service or multi-city ready",
+        ],
+        ctaLabel: "Build my growth system",
+        ctaHref: "/contact?tier=Growth%20Website%20System",
+        footnote: "Best for businesses ready to dominate local search",
+        featured: true,
+      },
+      {
+        label: "Scale",
+        name: "Premium Growth Package",
+        subtitle:
+          "Continuous build + growth retainer for multi-location operators.",
+        price: "$6,500",
+        priceSuffix: "+",
+        cadence: "One-time build + retained monthly growth",
+        features: [
+          "Everything in Growth System",
+          "Ongoing technical SEO audits & fixes",
+          "Search + AI visibility strategy (GEO)",
+          "Conversion & UX continuous improvements",
+          "Monthly reporting & strategic iteration",
+          "Priority support & dedicated account lead",
+        ],
+        ctaLabel: "Let's talk scale",
+        ctaHref: "/contact?tier=Premium%20Growth%20Package",
+        footnote: "Best for multi-location or high-growth businesses",
+      },
+    ],
   },
   {
-    id: "product",
-    label: "Software & Custom Builds",
-    description:
-      "For startups and teams that need portals, dashboards, internal tools, SaaS products, or deeper custom systems.",
+    id: "marketing",
+    label: "Marketing & Ads",
+    tiers: [
+      {
+        label: "Starter",
+        name: "Ads Starter",
+        subtitle:
+          "One channel, dialed in. Tracking, creative, and reporting handled.",
+        price: "$1,200",
+        priceSuffix: "/mo",
+        cadence: "Monthly retainer · ad spend separate",
+        features: [
+          "One ad channel (Google or Meta)",
+          "Campaign setup & audience targeting",
+          "Conversion tracking + GA4 setup",
+          "Monthly performance report",
+          "Ad creative direction & copy",
+        ],
+        ctaLabel: "Get started",
+        ctaHref: "/contact?tier=Ads%20Starter",
+        footnote: "Best paired with a Foundation Website",
+      },
+      {
+        label: "Scale",
+        name: "Full-Funnel Ads Management",
+        subtitle:
+          "Multi-channel paid media with weekly iteration and landing page CRO.",
+        price: "$1,800",
+        priceSuffix: "/mo",
+        cadence: "Monthly retainer · ad spend separate",
+        features: [
+          "Google Ads (Search, PMax, Display)",
+          "Meta Ads (Facebook + Instagram)",
+          "LinkedIn Ads for B2B targeting",
+          "Conversion tracking + GA4 / GTM",
+          "Landing page & offer optimization",
+          "Weekly reporting & creative iteration",
+        ],
+        ctaLabel: "Run ads with us",
+        ctaHref: "/contact?tier=Full-Funnel%20Ads",
+        footnote: "Best paired with a Growth Website System",
+        featured: true,
+      },
+      {
+        label: "Dominate",
+        name: "Growth Partnership",
+        subtitle:
+          "Full-stack growth team: paid, SEO, CRO, and a dedicated strategist.",
+        price: "$3,200",
+        priceSuffix: "/mo",
+        cadence: "Monthly retainer · ad spend separate",
+        features: [
+          "Everything in Full-Funnel Ads",
+          "SEO + AI visibility strategy (GEO)",
+          "Dedicated growth strategist",
+          "CRO — continuous UX & offer testing",
+          "Bi-weekly strategy calls",
+          "Priority turnaround on all deliverables",
+        ],
+        ctaLabel: "Book a strategy call",
+        ctaHref: "/contact?tier=Growth%20Partnership",
+        footnote: "Best for serious growth investment",
+      },
+    ],
   },
 ];
 
-const studioPricingTiers: StudioTier[] = [
-  {
-    tab: "business",
-    name: "Business Website",
-    audience: "For service businesses",
-    eyebrow: "Foundation",
-    price: "Starting at $2,500",
-    priceNote: "One-time build + ongoing support available.",
-    summary:
-      "A high-performance website foundation built to help service businesses look credible, load fast, and convert more visitors into real enquiries.",
-    features: [
-      "Custom website design",
-      "Mobile-first, conversion-focused build",
-      "SEO-ready structure and on-page foundation",
-      "Speed and performance optimization",
-      "Contact, quote, or booking funnel setup",
-      "Optimized for Google + AI discovery",
-    ],
-    ctaLabel: "Start a Website Project",
-    ctaHref: "/contact?tier=Business%20Website",
-    icon: Globe,
-  },
-  {
-    tab: "business",
-    name: "Growth Website System",
-    audience: "For businesses ready to grow",
-    eyebrow: "Most clients choose this",
-    price: "$4,000 – $6,000",
-    priceNote: "One-time build with expansion-ready structure.",
-    summary:
-      "A complete website and lead generation system designed to expand your visibility across Google and AI-driven search while turning more traffic into calls and enquiries.",
-    features: [
-      "Everything in Business Website",
-      "Location + service landing page system",
-      "Local SEO and advanced schema setup",
-      "SEO + GEO foundation for modern search",
-      "Lead capture and conversion flow planning",
-      "Built for multi-service or multi-city growth",
-    ],
-    ctaLabel: "Build My Growth System",
-    ctaHref: "/contact?tier=Growth%20Website%20System",
-    featured: true,
-    badge: "Best Value",
-    icon: MapPinned,
-  },
-  {
-    tab: "business",
-    name: "Digital Marketing & Advertising",
-    audience: "For businesses ready to book more leads",
-    eyebrow: "Paid growth",
-    price: "Starting at $1,800/mo",
-    priceNote: "Monthly retainer + your ad spend (managed separately).",
-    summary:
-      "Full-funnel paid ad management across Google, Meta, and LinkedIn — built to drive booked calls, not vanity clicks. Includes tracking, landing page optimization, and weekly iteration.",
-    features: [
-      "Google Ads (Search, Performance Max, Display)",
-      "Meta Ads (Facebook + Instagram)",
-      "LinkedIn Ads for B2B targeting",
-      "Conversion tracking + GA4 / GTM setup",
-      "Landing page and offer optimization",
-      "Weekly reporting and creative iteration",
-    ],
-    ctaLabel: "Run Ads with Us",
-    ctaHref: "/contact?tier=Digital%20Marketing%20and%20Advertising",
-    icon: Megaphone,
-  },
-  {
-    tab: "business",
-    name: "SEO, AI Visibility & Growth",
-    audience: "For growth-focused teams",
-    eyebrow: "Ongoing growth",
-    price: "Starting at $1,500/mo",
-    priceNote: "Monthly growth support for businesses ready to scale.",
-    summary:
-      "Ongoing SEO and growth support designed to increase traffic, improve conversions, and help your business get discovered across Google and AI platforms.",
-    features: [
-      "Technical SEO audits and fixes",
-      "On-page optimization and content improvements",
-      "Search + AI visibility strategy (SEO + GEO)",
-      "Local SEO support and keyword targeting",
-      "Conversion and UX improvements",
-      "Continuous performance-focused growth work",
-    ],
-    ctaLabel: "Scale with SEO",
-    ctaHref: "/contact?tier=SEO%20AI%20Visibility%20and%20Growth",
-    icon: TrendingUp,
-  },
-  {
-    tab: "product",
-    name: "Custom Engineering",
-    audience: "For advanced technical builds",
-    eyebrow: "Senior-led delivery",
-    price: "Starting at $8,000",
-    priceNote: "Custom-scoped project.",
-    summary:
-      "For teams that need advanced software, integrations, automation, or internal systems built properly.",
-    features: [
-      "Custom full-stack systems",
-      "Custom APIs and integrations",
-      "AI and automation workflows",
-      "Infrastructure planning",
-      "Senior-led delivery",
-    ],
-    ctaLabel: "Discuss Custom Engineering",
-    ctaHref: "/contact?tier=Custom%20Engineering",
-    featured: true,
-    badge: "Recommended",
-    icon: Cpu,
-  },
-  {
-    tab: "product",
-    name: "SaaS & Internal Tools",
-    audience: "For product teams and startups",
-    eyebrow: "Fixed-scope builds",
-    price: "Starting at $5,000",
-    priceNote: "Fixed-scope product builds.",
-    summary:
-      "For startups and teams building MVPs, dashboards, portals, and internal software.",
-    features: [
-      "MVP and SaaS builds",
-      "Client or admin portals",
-      "Auth and payments",
-      "Database architecture",
-      "Scalable V1 architecture",
-    ],
-    ctaLabel: "Book a Strategy Call",
-    ctaHref: "/contact?tier=SaaS%20%26%20Internal%20Tools",
-    icon: Blocks,
-  },
-];
-
-const trustPoints = [
-  "Direct with senior engineer",
-  "Clear scope upfront",
-  "Code ownership included",
-  "Fast onboarding",
-];
-
-function TierFeatureItem({ text, featured }: { text: string; featured?: boolean }) {
+function FeatureItem({ text }: { text: string }) {
   return (
-    <li className="flex items-start gap-2 text-[11px] leading-[1.5] text-white/75 sm:text-[12.5px]">
-      <Check
-        className={cn("mt-[2px] h-3 w-3 shrink-0", featured ? "text-accent" : "text-white/40")}
-        strokeWidth={3}
-      />
-      <span>{text}</span>
+    <li className="flex items-start gap-2.5">
+      <span
+        aria-hidden="true"
+        className="mt-[3px] inline-flex h-3.5 w-3.5 shrink-0 items-center justify-center rounded-full"
+        style={{ background: "rgba(200, 242, 58, 0.12)" }}
+      >
+        <Check
+          className="h-2.5 w-2.5"
+          strokeWidth={3}
+          style={{ color: "var(--pricing-accent)" }}
+        />
+      </span>
+      <span
+        className="text-[12.5px] leading-[1.55]"
+        style={{ color: "rgba(255,255,255,0.62)", fontFamily: "'DM Sans', sans-serif" }}
+      >
+        {text}
+      </span>
     </li>
   );
 }
 
-function TierCard({ tier, index }: { tier: StudioTier; index: number }) {
-  const TierIcon = tier.icon;
+function PricingCard({
+  tier,
+  index,
+  panelId,
+}: {
+  tier: Tier;
+  index: number;
+  panelId: string;
+}) {
+  const isFeatured = !!tier.featured;
 
   return (
-    <Reveal delay={index * 0.05}>
-      <motion.article
-        aria-label={`${tier.name} pricing`}
-        whileHover={{ y: -2 }}
-        transition={{ duration: 0.2, ease: "easeOut" }}
-        className={cn(
-          "group relative flex h-full flex-col rounded-2xl border p-4 transition-all duration-300 sm:p-5 lg:min-w-0 lg:p-6",
-          tier.featured
-            ? "border-accent/30 bg-white/[0.02] hover:border-accent/50 hover:shadow-[0_4px_20px_-10px_rgba(200,255,0,0.15)]"
-            : "border-white/10 bg-white/[0.01] hover:border-white/20 hover:bg-white/[0.02] hover:shadow-[0_4px_20px_-10px_rgba(255,255,255,0.05)]"
-        )}
+    <article
+      aria-label={`${tier.name} pricing tier`}
+      className={cn(
+        "pricing-card group relative flex h-full flex-col p-6 sm:p-7 lg:p-8",
+        "transition-colors duration-300"
+      )}
+      style={{
+        background: isFeatured ? "var(--pricing-bg-card-mid)" : "var(--pricing-bg-card)",
+        animation: `pricing-card-rise 600ms cubic-bezier(0.16,1,0.3,1) both`,
+        animationDelay: `${index * 80}ms`,
+      }}
+    >
+      {isFeatured && (
+        <div className="pointer-events-none absolute -top-3 left-1/2 -translate-x-1/2">
+          <span
+            className="inline-flex items-center rounded-full px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.14em]"
+            style={{
+              background: "var(--pricing-accent)",
+              color: "var(--pricing-accent-dark)",
+              fontFamily: "'DM Sans', sans-serif",
+            }}
+          >
+            Most popular
+          </span>
+        </div>
+      )}
+
+      <p
+        className="text-[10px] font-semibold uppercase tracking-[0.18em]"
+        style={{ color: "#444", fontFamily: "'DM Sans', sans-serif" }}
       >
-        {tier.badge && (
-          <div className="absolute -top-3.5 left-1/2 z-30 flex -translate-x-1/2 items-center gap-1.5 rounded-full border border-accent/30 bg-black px-3.5 py-1 shadow-[0_0_15px_rgba(200,255,0,0.2)]">
-            <Crown className="h-3 w-3 text-accent" strokeWidth={2.5} />
-            <span className="font-mono text-[9px] font-extrabold uppercase tracking-[0.15em] text-accent/90">
-              {tier.badge}
-            </span>
-          </div>
+        {tier.label}
+      </p>
+
+      <h3
+        className="mt-3 text-[22px] leading-[1.15]"
+        style={{
+          color: "#fff",
+          fontFamily: "'Instrument Serif', serif",
+          fontWeight: 400,
+        }}
+      >
+        {tier.name}
+      </h3>
+
+      <p
+        className="mt-1.5 max-w-[34ch] text-[12px] leading-[1.55]"
+        style={{ color: "rgba(255,255,255,0.5)", fontFamily: "'DM Sans', sans-serif" }}
+      >
+        {tier.subtitle}
+      </p>
+
+      <div className="mt-5 flex items-baseline gap-1">
+        <span
+          className="text-[38px] leading-none"
+          style={{
+            color: "#fff",
+            fontFamily: "'Instrument Serif', serif",
+            fontWeight: 400,
+          }}
+        >
+          {tier.price}
+        </span>
+        {tier.priceSuffix && (
+          <span
+            className="text-[14px]"
+            style={{
+              color: "rgba(255,255,255,0.45)",
+              fontFamily: "'DM Sans', sans-serif",
+            }}
+          >
+            {tier.priceSuffix}
+          </span>
         )}
+      </div>
 
-        <div className="pointer-events-none absolute inset-0 overflow-hidden rounded-2xl">
-          {tier.featured ? (
-            <>
-              <div className="absolute inset-x-8 -top-px h-px bg-gradient-to-r from-transparent via-accent/60 to-transparent opacity-70" />
-              <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-accent/[0.08] via-transparent to-transparent" />
-            </>
-          ) : (
-            <>
-              <div className="absolute inset-x-8 -top-px h-px bg-gradient-to-r from-transparent via-white/20 to-transparent opacity-30 transition-opacity duration-300 group-hover:opacity-60" />
-              <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-white/[0.025] via-transparent to-transparent transition-colors duration-300 group-hover:from-white/[0.04]" />
-            </>
+      <p
+        className="mt-2 text-[11px] leading-[1.5]"
+        style={{ color: "rgba(255,255,255,0.38)", fontFamily: "'DM Sans', sans-serif" }}
+      >
+        {tier.cadence}
+      </p>
+
+      <div
+        className="my-6 h-px w-full"
+        style={{ background: "var(--pricing-border-subtle)" }}
+      />
+
+      <ul className="flex flex-col gap-2.5">
+        {tier.features.map((feature) => (
+          <FeatureItem key={feature} text={feature} />
+        ))}
+      </ul>
+
+      <div className="mt-auto pt-7">
+        <Link
+          href={tier.ctaHref}
+          aria-label={`${tier.ctaLabel} — ${tier.name}`}
+          aria-describedby={`${panelId}-foot-${index}`}
+          className={cn(
+            "pricing-cta inline-flex w-full items-center justify-center rounded-full px-5 py-3 text-[12.5px] font-semibold transition-all duration-200",
+            isFeatured ? "pricing-cta--solid" : "pricing-cta--outline"
           )}
-        </div>
+          style={{ fontFamily: "'DM Sans', sans-serif" }}
+        >
+          {tier.ctaLabel} <span aria-hidden="true" className="ml-1.5">→</span>
+        </Link>
 
-        <div className="relative z-10 flex flex-1 flex-col pt-2">
-          <div className="flex items-start justify-between gap-3">
-            <div
-              className={cn(
-                "inline-flex h-8 w-8 items-center justify-center rounded-lg border shadow-sm transition-colors duration-300",
-                tier.featured
-                  ? "border-accent/20 bg-accent/[0.05]"
-                  : "border-white/[0.1] bg-white/[0.03] group-hover:border-white/[0.15] group-hover:bg-white/[0.06]"
-              )}
-            >
-              <TierIcon
-                className={cn(
-                  "h-3.5 w-3.5",
-                  tier.featured ? "text-accent" : "text-white/70 group-hover:text-white/90"
-                )}
-                strokeWidth={2}
-              />
-            </div>
-          </div>
-
-          <div className="mt-4">
-            <p className="font-mono text-[9px] font-semibold uppercase tracking-[0.15em] text-white/50">
-              {tier.audience}
-            </p>
-
-            {tier.eyebrow ? (
-              <p
-                className={cn(
-                  "mt-2 text-[11px] font-semibold",
-                  tier.featured ? "text-accent/90" : "text-white/55"
-                )}
-              >
-                {tier.eyebrow}
-              </p>
-            ) : null}
-
-            <h3 className="mt-1.5 font-display text-[17px] font-bold leading-tight tracking-tight text-white sm:text-[18px]">
-              {tier.name}
-            </h3>
-
-            <div className="mt-2.5 flex items-baseline gap-1.5">
-              <p className="text-[22px] font-extrabold tracking-tight text-white sm:text-[24px]">
-                {tier.price}
-              </p>
-            </div>
-
-            <p className="mt-1 text-[11.5px] font-medium leading-[1.5] text-white/50">
-              {tier.priceNote}
-            </p>
-
-            <p className="mt-3 max-w-[46ch] text-[12px] leading-[1.6] text-white/70">
-              {tier.summary}
-            </p>
-          </div>
-        </div>
-
-        <div className="relative z-10 mt-auto pt-6">
-          <ul className="space-y-2.5 border-t border-white/[0.06] pt-5 transition-colors duration-300 group-hover:border-white/[0.08]">
-            {tier.features.map((feature) => (
-              <TierFeatureItem key={feature} text={feature} featured={tier.featured} />
-            ))}
-          </ul>
-
-          <div className="mt-5">
-            <Link
-              href={tier.ctaHref}
-              className={cn(
-                "inline-flex w-full items-center justify-center gap-1.5 rounded-lg px-3.5 py-2 text-[12px] font-bold transition-all duration-200",
-                tier.featured
-                  ? "bg-accent text-black hover:bg-accent/90"
-                  : "border border-white/10 bg-white/[0.03] text-white hover:bg-white/[0.08] hover:shadow-[0_0_15px_rgba(255,255,255,0.03)]"
-              )}
-            >
-              {tier.ctaLabel}
-              <ArrowRight className="h-3 w-3" />
-            </Link>
-
-            {tier.tab === "business" && !tier.featured && tier.name === "Business Website" ? (
-              <p className="mt-2 text-center text-[10.5px] leading-[1.5] text-white/40">
-                Best for businesses that need a strong foundation first.
-              </p>
-            ) : null}
-
-            {tier.tab === "business" && tier.featured ? (
-              <p className="mt-2 text-center text-[10.5px] leading-[1.5] text-accent/75">
-                Built for Google + AI search visibility.
-              </p>
-            ) : null}
-
-            {tier.tab === "business" && tier.name === "SEO, AI Visibility & Growth" ? (
-              <p className="mt-2 text-center text-[10.5px] leading-[1.5] text-white/40">
-                Best after launch or for businesses ready to scale traffic.
-              </p>
-            ) : null}
-
-            {tier.tab === "business" && tier.name === "Digital Marketing & Advertising" ? (
-              <p className="mt-2 text-center text-[10.5px] leading-[1.5] text-white/40">
-                Best paired with a Growth Website System or strong landing pages.
-              </p>
-            ) : null}
-          </div>
-        </div>
-      </motion.article>
-    </Reveal>
+        <p
+          id={`${panelId}-foot-${index}`}
+          className="mt-3 text-center text-[11px] leading-[1.5]"
+          style={{ color: "rgba(255,255,255,0.32)", fontFamily: "'DM Sans', sans-serif" }}
+        >
+          {tier.footnote}
+        </p>
+      </div>
+    </article>
   );
 }
 
 export function PricingTiers() {
-  const [activeTab, setActiveTab] = useState<PricingTabId>("business");
+  const [activeTab, setActiveTab] = useState<TabId>("websites");
+  const baseId = useId();
+  const tabRefs = useRef<Record<TabId, HTMLButtonElement | null>>({
+    websites: null,
+    marketing: null,
+  });
 
-  const activeTabMeta = useMemo(
-    () => pricingTabs.find((tab) => tab.id === activeTab) ?? pricingTabs[0],
+  const activePanel = useMemo(
+    () => TABS.find((t) => t.id === activeTab) ?? TABS[0],
     [activeTab]
   );
 
-  const activeTiers = useMemo(
-    () => studioPricingTiers.filter((tier) => tier.tab === activeTab),
-    [activeTab]
-  );
+  const onTabKeyDown = (e: KeyboardEvent<HTMLButtonElement>) => {
+    if (e.key !== "ArrowRight" && e.key !== "ArrowLeft" && e.key !== "Home" && e.key !== "End") return;
+    e.preventDefault();
+    const idx = TABS.findIndex((t) => t.id === activeTab);
+    let nextIdx = idx;
+    if (e.key === "ArrowRight") nextIdx = (idx + 1) % TABS.length;
+    else if (e.key === "ArrowLeft") nextIdx = (idx - 1 + TABS.length) % TABS.length;
+    else if (e.key === "Home") nextIdx = 0;
+    else if (e.key === "End") nextIdx = TABS.length - 1;
+    const nextTab = TABS[nextIdx];
+    setActiveTab(nextTab.id);
+    tabRefs.current[nextTab.id]?.focus();
+  };
 
   return (
-    <section id="pricing" className="relative py-12 sm:py-16">
+    <section id="pricing" className="relative py-16 sm:py-20 lg:py-24">
+      <style>{`
+        .pricing-card { transition: background-color 300ms ease; }
+        .pricing-card:hover { background: #181818 !important; }
+        .pricing-cta--solid {
+          background: var(--pricing-accent);
+          color: var(--pricing-accent-dark);
+        }
+        .pricing-cta--solid:hover { background: var(--pricing-accent-hover); }
+        .pricing-cta--outline {
+          background: transparent;
+          color: rgba(255,255,255,0.85);
+          border: 1px solid rgba(255,255,255,0.14);
+        }
+        .pricing-cta--outline:hover {
+          color: #fff;
+          border-color: rgba(255,255,255,0.32);
+          background: rgba(255,255,255,0.03);
+        }
+        .pricing-panel { animation: pricing-panel-fade 150ms ease-out both; }
+      `}</style>
+
       <div className="wrap relative z-10">
         <div className="mx-auto max-w-6xl">
-          <Reveal>
-            <div className="mb-5 text-center sm:mb-8">
-              <span className="inline-flex rounded-md border border-white/10 bg-white/[0.03] px-2 py-0.5 font-mono text-[9px] font-semibold uppercase tracking-widest text-white/60">
-                Pricing
-              </span>
-              <h2 className="mt-2.5 font-display text-[clamp(22px,3.5vw,34px)] font-extrabold leading-[1.1] tracking-tight text-white sm:mt-3">
-                Built for growth. <span className="text-white/40">Priced with clear scope.</span>
-              </h2>
-              <p className="mx-auto mt-2 max-w-[560px] text-[12px] leading-[1.6] text-white/60 sm:mt-3 sm:text-[13px]">
-                Choose the setup that matches your stage — from a strong website foundation to a
-                full lead generation system and ongoing growth support.
-              </p>
+          <div className="mb-8 text-center sm:mb-10">
+            <span
+              className="inline-flex rounded-full border px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.18em]"
+              style={{
+                borderColor: "var(--pricing-border-subtle)",
+                color: "rgba(255,255,255,0.55)",
+                fontFamily: "'DM Sans', sans-serif",
+              }}
+            >
+              Pricing
+            </span>
+            <h2
+              className="mt-4 text-[clamp(28px,4.2vw,42px)] leading-[1.1]"
+              style={{
+                color: "#fff",
+                fontFamily: "'Instrument Serif', serif",
+                fontWeight: 400,
+              }}
+            >
+              Plans for every stage of growth
+            </h2>
+            <p
+              className="mx-auto mt-3 max-w-[520px] text-[13px] leading-[1.6]"
+              style={{
+                color: "rgba(255,255,255,0.5)",
+                fontFamily: "'DM Sans', sans-serif",
+              }}
+            >
+              Pick the website foundation or the marketing engine — or run both
+              together for compounding results.
+            </p>
+          </div>
+
+          <div className="mb-10 flex justify-center sm:mb-12">
+            <div
+              role="tablist"
+              aria-label="Pricing categories"
+              className="inline-flex w-full max-w-[360px] rounded-full p-1"
+              style={{ background: "#161616" }}
+            >
+              {TABS.map((tab) => {
+                const isActive = tab.id === activeTab;
+                const panelId = `${baseId}-panel-${tab.id}`;
+                const tabId = `${baseId}-tab-${tab.id}`;
+                return (
+                  <button
+                    key={tab.id}
+                    ref={(el) => {
+                      tabRefs.current[tab.id] = el;
+                    }}
+                    id={tabId}
+                    type="button"
+                    role="tab"
+                    aria-selected={isActive}
+                    aria-controls={panelId}
+                    tabIndex={isActive ? 0 : -1}
+                    onClick={() => setActiveTab(tab.id)}
+                    onKeyDown={onTabKeyDown}
+                    className={cn(
+                      "relative flex-1 rounded-full px-4 py-2.5 text-[12.5px] font-semibold transition-colors duration-200"
+                    )}
+                    style={{
+                      color: isActive ? "var(--pricing-accent-dark)" : "rgba(255,255,255,0.55)",
+                      fontFamily: "'DM Sans', sans-serif",
+                    }}
+                  >
+                    {isActive && (
+                      <motion.span
+                        layoutId="pricing-tab-active"
+                        className="absolute inset-0 -z-0 rounded-full"
+                        style={{ background: "var(--pricing-accent)" }}
+                        transition={{ type: "spring", stiffness: 380, damping: 32 }}
+                      />
+                    )}
+                    <span className="relative z-10">{tab.label}</span>
+                  </button>
+                );
+              })}
             </div>
-          </Reveal>
-
-          <Reveal delay={0.06}>
-            <div className="mb-6 flex flex-col items-center sm:mb-10">
-              <div
-                role="tablist"
-                aria-label="Pricing categories"
-                className="inline-flex w-full max-w-sm rounded-full border border-white/[0.08] bg-black/40 p-0.5 shadow-lg backdrop-blur-md sm:w-auto"
-              >
-                {pricingTabs.map((tab) => {
-                  const isActive = tab.id === activeTab;
-
-                  return (
-                    <button
-                      key={tab.id}
-                      type="button"
-                      suppressHydrationWarning
-                      role="tab"
-                      aria-selected={isActive}
-                      aria-pressed={isActive}
-                      onClick={() => setActiveTab(tab.id)}
-                      className={cn(
-                        "relative flex-1 overflow-hidden rounded-full px-2.5 py-1.5 text-[11px] font-semibold transition-all duration-300 sm:flex-none sm:px-4 sm:text-[12px]",
-                        isActive ? "text-black" : "text-white/60 hover:text-white/90"
-                      )}
-                    >
-                      {isActive && (
-                        <motion.span
-                          layoutId="pricing-tab-pill"
-                          className="absolute inset-0 z-0 rounded-full bg-accent"
-                          transition={{ type: "spring", stiffness: 400, damping: 30 }}
-                        />
-                      )}
-                      <span className="relative z-10 block">{tab.label}</span>
-                    </button>
-                  );
-                })}
-              </div>
-
-              <AnimatePresence mode="wait" initial={false}>
-                <motion.p
-                  key={activeTabMeta.id}
-                  initial={{ opacity: 0, y: 4 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -4 }}
-                  transition={{ duration: 0.15, ease: "easeOut" }}
-                  className="mt-3 max-w-[460px] text-center text-[11px] leading-[1.6] text-white/50 sm:mt-5 sm:text-[12px]"
-                >
-                  {activeTabMeta.description}
-                </motion.p>
-              </AnimatePresence>
-            </div>
-          </Reveal>
+          </div>
 
           <AnimatePresence mode="wait" initial={false}>
             <motion.div
-              key={activeTab}
-              initial={{ opacity: 0, y: 12 }}
+              key={activePanel.id}
+              id={`${baseId}-panel-${activePanel.id}`}
+              role="tabpanel"
+              aria-labelledby={`${baseId}-tab-${activePanel.id}`}
+              initial={{ opacity: 0, y: 6 }}
               animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: 12 }}
-              transition={{ duration: 0.25, ease: "easeOut" }}
-              className={cn(
-                "mt-2 grid grid-cols-1 gap-4 sm:gap-5",
-                activeTab === "business" ? "md:grid-cols-2 xl:grid-cols-4" : "lg:grid-cols-2"
-              )}
+              exit={{ opacity: 0, y: -6 }}
+              transition={{ duration: 0.15, ease: "easeOut" }}
+              className="overflow-hidden rounded-2xl"
+              style={{ background: "var(--pricing-border-subtle)" }}
             >
-              {activeTiers.map((tier, index) => (
-                <TierCard key={tier.name} tier={tier} index={index} />
-              ))}
+              <div className="grid grid-cols-1 gap-px lg:grid-cols-3">
+                {activePanel.tiers.map((tier, i) => (
+                  <PricingCard
+                    key={`${activePanel.id}-${tier.name}`}
+                    tier={tier}
+                    index={i}
+                    panelId={`${baseId}-panel-${activePanel.id}`}
+                  />
+                ))}
+              </div>
             </motion.div>
           </AnimatePresence>
 
-          <Reveal delay={0.12}>
-            <div className="mt-6 flex flex-wrap items-center justify-center gap-1.5 sm:mt-8 sm:gap-2">
-              {trustPoints.map((point) => (
-                <div
-                  key={point}
-                  className="flex items-center gap-1.5 rounded-full border border-white/[0.06] bg-white/[0.02] px-2.5 py-1 sm:px-3"
-                >
-                  <span className="h-1 w-1 shrink-0 rounded-full bg-accent shadow-[0_0_6px_rgba(200,255,0,0.4)]" />
-                  <span className="text-[10px] font-medium text-white/50 sm:text-[11px]">
-                    {point}
-                  </span>
-                </div>
-              ))}
-            </div>
-          </Reveal>
-
-          <Reveal delay={0.16}>
-            <div className="mx-auto mt-6 max-w-[700px] rounded-[12px] border border-white/[0.05] bg-white/[0.01] p-4 text-center sm:mt-8 sm:p-5">
-              <h3 className="text-[13px] font-semibold text-white sm:text-[14px]">
-                Need a blended setup?
-              </h3>
-              <p className="mt-2 text-[11px] leading-[1.6] text-white/60 sm:text-[12.5px]">
-                We can combine website build, landing page expansion, SEO, ongoing updates, and
-                growth support into a single custom engagement around your business goals.
-              </p>
-
-              <Link
-                href="/contact"
-                className="mt-3 inline-flex items-center gap-1.5 text-[12px] font-bold text-accent transition-all hover:gap-2 hover:text-accent/80"
-              >
-                Talk through your scope
-                <ArrowRight className="h-3 w-3" />
-              </Link>
-            </div>
-          </Reveal>
+          <p
+            className="mx-auto mt-8 max-w-[520px] text-center text-[12px] leading-[1.6] sm:mt-10"
+            style={{
+              color: "rgba(255,255,255,0.35)",
+              fontFamily: "'DM Sans', sans-serif",
+            }}
+          >
+            All projects include direct access to senior engineers, clear scope
+            upfront, and full code ownership.
+          </p>
         </div>
       </div>
     </section>

@@ -19,6 +19,24 @@
   --brand-radius-md: 16px;
   --brand-radius-lg: 20px;
   --brand-radius-full: 9999px;
+
+  /* Pricing section tokens */
+  --pricing-accent: #c8f23a;
+  --pricing-accent-dark: #1a2a00;
+  --pricing-accent-hover: #d4f74a;
+  --pricing-bg-card: #111111;
+  --pricing-bg-card-mid: #151515;
+  --pricing-border-subtle: #1e1e1e;
+}
+
+@keyframes pricing-card-rise {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes pricing-panel-fade {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 
 @layer base {
