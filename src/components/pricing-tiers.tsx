@@ -202,22 +202,34 @@ function PricingCard({
     <article
       aria-label={`${tier.name} pricing tier`}
       className={cn(
-        "pricing-card group relative flex h-full flex-col p-6 sm:p-7 lg:p-8",
+        "pricing-card group relative flex h-full flex-col px-6 pb-6 sm:px-6 sm:pb-7 lg:px-6 lg:pb-8",
+        isFeatured ? "pt-8 sm:pt-9 lg:pt-10" : "pt-6 sm:pt-7 lg:pt-8",
         "transition-colors duration-300"
       )}
       style={{
         background: isFeatured ? "var(--pricing-bg-card-mid)" : "var(--pricing-bg-card)",
+        border: isFeatured ? "1px solid rgba(200, 242, 58, 0.12)" : undefined,
         animation: `pricing-card-rise 600ms cubic-bezier(0.16,1,0.3,1) both`,
         animationDelay: `${index * 80}ms`,
       }}
     >
       {isFeatured && (
-        <div className="pointer-events-none absolute -top-3 left-1/2 -translate-x-1/2">
+        <div
+          className="pointer-events-none absolute left-1/2 z-10"
+          style={{ top: 0, transform: "translate(-50%, -50%)" }}
+        >
           <span
-            className="inline-flex items-center rounded-full px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.14em]"
+            className="inline-flex items-center uppercase"
             style={{
-              background: "var(--pricing-accent)",
-              color: "var(--pricing-accent-dark)",
+              background: "#c8f23a",
+              color: "#1a2a00",
+              fontSize: "10px",
+              letterSpacing: "0.1em",
+              fontWeight: 600,
+              padding: "5px 16px",
+              borderRadius: "999px",
+              border: "none",
+              boxShadow: "0 0 0 3px rgba(200, 242, 58, 0.15)",
               fontFamily: "'DM Sans', sans-serif",
             }}
           >
@@ -309,8 +321,13 @@ function PricingCard({
 
         <p
           id={`${panelId}-foot-${index}`}
-          className="mt-3 text-center text-[11px] leading-[1.5]"
-          style={{ color: "rgba(255,255,255,0.32)", fontFamily: "'DM Sans', sans-serif" }}
+          className="text-center leading-[1.5]"
+          style={{
+            marginTop: "10px",
+            fontSize: "11px",
+            color: "#333",
+            fontFamily: "'DM Sans', sans-serif",
+          }}
         >
           {tier.footnote}
         </p>
@@ -347,7 +364,7 @@ export function PricingTiers() {
   };
 
   return (
-    <section id="pricing" className="relative py-16 sm:py-20 lg:py-24">
+    <section id="pricing" className="relative pb-16 pt-20 sm:pb-20 sm:pt-24 lg:pb-24 lg:pt-28">
       <style>{`
         .pricing-card { transition: background-color 300ms ease; }
         .pricing-card:hover { background: #181818 !important; }
@@ -365,6 +382,12 @@ export function PricingTiers() {
           color: #fff;
           border-color: rgba(255,255,255,0.32);
           background: rgba(255,255,255,0.03);
+        }
+        .pricing-tab {
+          transition: background-color 200ms ease, color 200ms ease;
+        }
+        .pricing-tab[aria-selected="false"]:hover {
+          color: #aaaaaa;
         }
         .pricing-panel { animation: pricing-panel-fade 150ms ease-out both; }
       `}</style>
@@ -409,7 +432,7 @@ export function PricingTiers() {
               role="tablist"
               aria-label="Pricing categories"
               className="inline-flex w-full max-w-[360px] rounded-full p-1"
-              style={{ background: "#161616" }}
+              style={{ background: "#161616", border: "1px solid #222" }}
             >
               {TABS.map((tab) => {
                 const isActive = tab.id === activeTab;
@@ -431,7 +454,7 @@ export function PricingTiers() {
                     onKeyDown={onTabKeyDown}
                     suppressHydrationWarning
                     className={cn(
-                      "relative flex-1 rounded-full px-4 py-2.5 text-[12.5px] font-semibold transition-colors duration-200"
+                      "pricing-tab relative flex-1 rounded-full px-4 py-2.5 text-[12.5px] font-semibold"
                     )}
                     style={{
                       color: isActive ? "var(--pricing-accent-dark)" : "rgba(255,255,255,0.55)",
@@ -463,7 +486,7 @@ export function PricingTiers() {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -6 }}
               transition={{ duration: 0.15, ease: "easeOut" }}
-              className="overflow-hidden rounded-2xl"
+              className="rounded-2xl"
               style={{ background: "var(--pricing-border-subtle)" }}
             >
               <div className="grid grid-cols-1 gap-px lg:grid-cols-3">
