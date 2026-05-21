@@ -429,6 +429,7 @@ export function PricingTiers() {
                     tabIndex={isActive ? 0 : -1}
                     onClick={() => setActiveTab(tab.id)}
                     onKeyDown={onTabKeyDown}
+                    suppressHydrationWarning
                     className={cn(
                       "relative flex-1 rounded-full px-4 py-2.5 text-[12.5px] font-semibold transition-colors duration-200"
                     )}
