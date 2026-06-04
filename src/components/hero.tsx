@@ -6,7 +6,10 @@ import { Reveal } from "./shared";
 import { siteConfig } from "@/lib/config";
 import { useEffect, useRef, useState } from "react";
 
-const servicePills = ["SaaS Dashboards", "Internal Tools", "Client Portals"];
+const servicePillRows = [
+  ["Dealership Websites", "Local Business Sites", "AI SEO Systems"],
+  ["Lead Generation", "Ads Management", "Automation & CRM"],
+];
 const rotatingWords = ["vision", "product", "startup", "future"];
 const longestRotatingWord = rotatingWords.reduce(
   (longest, current) =>
@@ -258,14 +261,21 @@ export function Hero() {
           </Reveal>
 
           <Reveal delay={0.16}>
-            <div className="mt-5 flex flex-wrap justify-center gap-2 sm:mt-8 sm:gap-2.5">
-              {servicePills.map((pill) => (
-                <span
-                  key={pill}
-                  className="inline-flex shrink-0 items-center rounded-full border border-white/[0.07] bg-white/[0.025] px-3.5 py-1.5 text-[11px] font-medium tracking-[0.08em] text-white/50 backdrop-blur-sm transition-colors duration-300 hover:border-white/[0.12] hover:text-white/65 sm:px-4 sm:py-2 sm:text-[12px]"
+            <div className="mt-5 flex flex-col items-center gap-2 sm:mt-8 sm:gap-2.5">
+              {servicePillRows.map((row, rowIdx) => (
+                <div
+                  key={rowIdx}
+                  className="flex flex-wrap justify-center gap-2 sm:gap-2.5"
                 >
-                  {pill}
-                </span>
+                  {row.map((pill) => (
+                    <span
+                      key={pill}
+                      className="inline-flex shrink-0 items-center rounded-full border border-white/[0.07] bg-white/[0.025] px-3.5 py-1.5 text-[11px] font-medium tracking-[0.08em] text-white/50 backdrop-blur-sm transition-colors duration-300 hover:border-white/[0.12] hover:text-white/65 sm:px-4 sm:py-2 sm:text-[12px]"
+                    >
+                      {pill}
+                    </span>
+                  ))}
+                </div>
               ))}
             </div>
           </Reveal>

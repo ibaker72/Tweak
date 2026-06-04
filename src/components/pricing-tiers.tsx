@@ -14,12 +14,16 @@ type Tier = {
   subtitle: string;
   price: string;
   priceSuffix: string;
+  priceSubline?: string;
   cadence: string;
   features: string[];
   ctaLabel: string;
   ctaHref: string;
   footnote: string;
   featured?: boolean;
+  accent?: "lime" | "amber";
+  badgeLabel?: string;
+  liveExampleHref?: string;
 };
 
 type TabContent = {
@@ -38,7 +42,7 @@ const TABS: TabContent[] = [
         name: "Foundation Website",
         subtitle:
           "A fast, credible website built to convert visitors into real enquiries.",
-        price: "$2,500",
+        price: "$3,500",
         priceSuffix: "",
         cadence: "One-time build · support available",
         features: [
@@ -47,6 +51,7 @@ const TABS: TabContent[] = [
           "Contact, quote, or booking funnel",
           "Speed & Core Web Vitals optimized",
           "Google & AI search discovery ready",
+          "Dealership & local business ready",
         ],
         ctaLabel: "Start a project",
         ctaHref: "/contact?tier=Foundation%20Website",
@@ -57,7 +62,7 @@ const TABS: TabContent[] = [
         name: "Growth Website System",
         subtitle:
           "A full website + lead engine designed to dominate local search.",
-        price: "$4,500",
+        price: "$6,500",
         priceSuffix: "",
         cadence: "One-time build · expansion-ready structure",
         features: [
@@ -77,9 +82,10 @@ const TABS: TabContent[] = [
         label: "Scale",
         name: "Premium Growth Package",
         subtitle:
-          "Continuous build + growth retainer for multi-location operators.",
-        price: "$6,500",
+          "Continuous build + growth retainer. Retainer includes monthly SEO audits, reporting, and priority support.",
+        price: "$8,500",
         priceSuffix: "+",
+        priceSubline: "+ $800/mo retainer",
         cadence: "One-time build + retained monthly growth",
         features: [
           "Everything in Growth System",
@@ -93,6 +99,30 @@ const TABS: TabContent[] = [
         ctaHref: "/contact?tier=Premium%20Growth%20Package",
         footnote: "Best for multi-location or high-growth businesses",
       },
+      {
+        label: "Automotive",
+        name: "Dealership Website System",
+        subtitle:
+          "Built for independent dealers who want live inventory, AI SEO, and real leads.",
+        price: "$8,500",
+        priceSuffix: "",
+        cadence: "One-time build · $600/mo maintenance",
+        features: [
+          "Live inventory sync (CSV / SFTP feed)",
+          "AI-generated local SEO city pages",
+          "Vehicle detail pages with photos",
+          "Lead capture + deal desk integration",
+          "Vercel + Supabase infrastructure",
+          "Weekly inventory automation",
+          "Sitemap + robots.txt automation",
+        ],
+        ctaLabel: "Book a discovery call",
+        ctaHref: "/contact?tier=Dealership%20Website%20System",
+        footnote: "Best for independent dealerships ready to compete online",
+        accent: "amber",
+        badgeLabel: "Automotive",
+        liveExampleHref: "https://speedwaymotorsllc.com",
+      },
     ],
   },
   {
@@ -104,7 +134,7 @@ const TABS: TabContent[] = [
         name: "Ads Starter",
         subtitle:
           "One channel, dialed in. Tracking, creative, and reporting handled.",
-        price: "$1,200",
+        price: "$1,500",
         priceSuffix: "/mo",
         cadence: "Monthly retainer · ad spend separate",
         features: [
@@ -123,13 +153,14 @@ const TABS: TabContent[] = [
         name: "Full-Funnel Ads Management",
         subtitle:
           "Multi-channel paid media with weekly iteration and landing page CRO.",
-        price: "$1,800",
+        price: "$2,500",
         priceSuffix: "/mo",
         cadence: "Monthly retainer · ad spend separate",
         features: [
           "Google Ads (Search, PMax, Display)",
           "Meta Ads (Facebook + Instagram)",
-          "LinkedIn Ads for B2B targeting",
+          "Retargeting campaigns across channels",
+          "Google Local Services Ads (LSA) setup",
           "Conversion tracking + GA4 / GTM",
           "Landing page & offer optimization",
           "Weekly reporting & creative iteration",
@@ -144,7 +175,7 @@ const TABS: TabContent[] = [
         name: "Growth Partnership",
         subtitle:
           "Full-stack growth team: paid, SEO, CRO, and a dedicated strategist.",
-        price: "$3,200",
+        price: "$4,500",
         priceSuffix: "/mo",
         cadence: "Monthly retainer · ad spend separate",
         features: [
@@ -153,6 +184,7 @@ const TABS: TabContent[] = [
           "Dedicated growth strategist",
           "CRO — continuous UX & offer testing",
           "Bi-weekly strategy calls",
+          "Bi-weekly performance strategy calls",
           "Priority turnaround on all deliverables",
         ],
         ctaLabel: "Book a strategy call",
@@ -197,23 +229,31 @@ function PricingCard({
   panelId: string;
 }) {
   const isFeatured = !!tier.featured;
+  const isAmber = tier.accent === "amber";
+  const hasBadge = isFeatured || !!tier.badgeLabel;
+  const amberAccent = "#f5a524";
+  const amberAccentDark = "#3a2700";
 
   return (
     <article
       aria-label={`${tier.name} pricing tier`}
       className={cn(
         "pricing-card group relative flex h-full flex-col px-6 pb-6 sm:px-6 sm:pb-7 lg:px-6 lg:pb-8",
-        isFeatured ? "pt-8 sm:pt-9 lg:pt-10" : "pt-6 sm:pt-7 lg:pt-8",
+        hasBadge ? "pt-8 sm:pt-9 lg:pt-10" : "pt-6 sm:pt-7 lg:pt-8",
         "transition-colors duration-300"
       )}
       style={{
         background: isFeatured ? "var(--pricing-bg-card-mid)" : "var(--pricing-bg-card)",
-        border: isFeatured ? "1px solid rgba(200, 242, 58, 0.12)" : undefined,
+        border: isFeatured
+          ? "1px solid rgba(200, 242, 58, 0.12)"
+          : isAmber
+          ? "1px solid rgba(245, 165, 36, 0.18)"
+          : undefined,
         animation: `pricing-card-rise 600ms cubic-bezier(0.16,1,0.3,1) both`,
         animationDelay: `${index * 80}ms`,
       }}
     >
-      {isFeatured && (
+      {hasBadge && (
         <div
           className="pointer-events-none absolute left-1/2 z-10"
           style={{ top: 0, transform: "translate(-50%, -50%)" }}
@@ -221,26 +261,31 @@ function PricingCard({
           <span
             className="inline-flex items-center uppercase"
             style={{
-              background: "#c8f23a",
-              color: "#1a2a00",
+              background: isAmber ? amberAccent : "#c8f23a",
+              color: isAmber ? amberAccentDark : "#1a2a00",
               fontSize: "10px",
               letterSpacing: "0.1em",
               fontWeight: 600,
               padding: "5px 16px",
               borderRadius: "999px",
               border: "none",
-              boxShadow: "0 0 0 3px rgba(200, 242, 58, 0.15)",
+              boxShadow: isAmber
+                ? "0 0 0 3px rgba(245, 165, 36, 0.18)"
+                : "0 0 0 3px rgba(200, 242, 58, 0.15)",
               fontFamily: "'DM Sans', sans-serif",
             }}
           >
-            Most popular
+            {tier.badgeLabel ?? "Most popular"}
           </span>
         </div>
       )}
 
       <p
         className="text-[10px] font-semibold uppercase tracking-[0.18em]"
-        style={{ color: "#444", fontFamily: "'DM Sans', sans-serif" }}
+        style={{
+          color: isAmber ? "rgba(245, 165, 36, 0.85)" : "#444",
+          fontFamily: "'DM Sans', sans-serif",
+        }}
       >
         {tier.label}
       </p>
@@ -287,6 +332,18 @@ function PricingCard({
         )}
       </div>
 
+      {tier.priceSubline && (
+        <p
+          className="mt-1 text-[12px] leading-[1.5]"
+          style={{
+            color: "rgba(255,255,255,0.45)",
+            fontFamily: "'DM Sans', sans-serif",
+          }}
+        >
+          {tier.priceSubline}
+        </p>
+      )}
+
       <p
         className="mt-2 text-[11px] leading-[1.5]"
         style={{ color: "rgba(255,255,255,0.38)", fontFamily: "'DM Sans', sans-serif" }}
@@ -305,6 +362,23 @@ function PricingCard({
         ))}
       </ul>
 
+      {tier.liveExampleHref && (
+        <div className="mt-4">
+          <Link
+            href={tier.liveExampleHref}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-1 text-[12px] font-medium transition-opacity duration-200 hover:opacity-80"
+            style={{
+              color: "var(--pricing-accent)",
+              fontFamily: "'DM Sans', sans-serif",
+            }}
+          >
+            Live example <span aria-hidden="true">→</span>
+          </Link>
+        </div>
+      )}
+
       <div className="mt-auto pt-7">
         <Link
           href={tier.ctaHref}
@@ -312,7 +386,11 @@ function PricingCard({
           aria-describedby={`${panelId}-foot-${index}`}
           className={cn(
             "pricing-cta inline-flex w-full items-center justify-center rounded-full px-5 py-3 text-[12.5px] font-semibold transition-all duration-200",
-            isFeatured ? "pricing-cta--solid" : "pricing-cta--outline"
+            isFeatured
+              ? "pricing-cta--solid"
+              : isAmber
+              ? "pricing-cta--amber"
+              : "pricing-cta--outline"
           )}
           style={{ fontFamily: "'DM Sans', sans-serif" }}
         >
@@ -382,6 +460,16 @@ export function PricingTiers() {
           color: #fff;
           border-color: rgba(255,255,255,0.32);
           background: rgba(255,255,255,0.03);
+        }
+        .pricing-cta--amber {
+          background: transparent;
+          color: rgba(255,255,255,0.92);
+          border: 1px solid rgba(245, 165, 36, 0.45);
+        }
+        .pricing-cta--amber:hover {
+          color: #1a1100;
+          background: #f5a524;
+          border-color: #f5a524;
         }
         .pricing-tab {
           transition: background-color 200ms ease, color 200ms ease;
@@ -489,7 +577,14 @@ export function PricingTiers() {
               className="rounded-2xl"
               style={{ background: "var(--pricing-border-subtle)" }}
             >
-              <div className="grid grid-cols-1 gap-px lg:grid-cols-3">
+              <div
+                className={cn(
+                  "grid grid-cols-1 gap-px",
+                  activePanel.tiers.length === 4
+                    ? "md:grid-cols-2 lg:grid-cols-4"
+                    : "lg:grid-cols-3"
+                )}
+              >
                 {activePanel.tiers.map((tier, i) => (
                   <PricingCard
                     key={`${activePanel.id}-${tier.name}`}
@@ -502,8 +597,12 @@ export function PricingTiers() {
             </motion.div>
           </AnimatePresence>
 
+          <BundleBanner />
+
+          <AddOnsSection />
+
           <p
-            className="mx-auto mt-8 max-w-[520px] text-center text-[12px] leading-[1.6] sm:mt-10"
+            className="mx-auto mt-12 max-w-[520px] text-center text-[12px] leading-[1.6]"
             style={{
               color: "rgba(255,255,255,0.35)",
               fontFamily: "'DM Sans', sans-serif",
@@ -515,5 +614,179 @@ export function PricingTiers() {
         </div>
       </div>
     </section>
+  );
+}
+
+function BundleBanner() {
+  return (
+    <div
+      className="mt-10 overflow-hidden rounded-2xl sm:mt-12"
+      style={{
+        background: "#141414",
+        borderLeft: "3px solid var(--pricing-accent)",
+        border: "1px solid var(--pricing-border-subtle)",
+        borderLeftWidth: "3px",
+        borderLeftColor: "var(--pricing-accent)",
+      }}
+    >
+      <div className="flex flex-col items-start gap-5 px-6 py-6 sm:flex-row sm:items-center sm:justify-between sm:px-8 sm:py-7">
+        <div className="flex-1">
+          <div
+            className="inline-flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.16em]"
+            style={{
+              color: "var(--pricing-accent)",
+              fontFamily: "'DM Sans', sans-serif",
+            }}
+          >
+            <span aria-hidden="true">🔥</span>
+            <span>Bundle &amp; Save</span>
+          </div>
+          <p
+            className="mt-2 text-[16px] leading-[1.45] sm:text-[18px]"
+            style={{
+              color: "#fff",
+              fontFamily: "'Instrument Serif', serif",
+              fontWeight: 400,
+            }}
+          >
+            Combine a website build with ads management and get $500 off your
+            first month of ads.
+          </p>
+          <p
+            className="mt-1.5 text-[12.5px] leading-[1.55]"
+            style={{
+              color: "rgba(255,255,255,0.5)",
+              fontFamily: "'DM Sans', sans-serif",
+            }}
+          >
+            Most clients run both — the website converts, the ads drive traffic.
+          </p>
+        </div>
+        <Link
+          href="/contact?tier=Bundle"
+          className="pricing-cta pricing-cta--solid inline-flex shrink-0 items-center justify-center rounded-full px-5 py-3 text-[12.5px] font-semibold transition-all duration-200"
+          style={{ fontFamily: "'DM Sans', sans-serif" }}
+        >
+          Book a strategy call <span aria-hidden="true" className="ml-1.5">→</span>
+        </Link>
+      </div>
+    </div>
+  );
+}
+
+type AddOn = {
+  name: string;
+  description: string;
+  price: string;
+};
+
+const ADD_ONS: AddOn[] = [
+  {
+    name: "AI Local SEO Page",
+    description:
+      "Geo-targeted landing page generated and optimized for a specific city.",
+    price: "$200 per page",
+  },
+  {
+    name: "Extra Location / Service Page",
+    description:
+      "Additional service area or offering page, built and SEO-optimized.",
+    price: "$300",
+  },
+  {
+    name: "Monthly SEO Maintenance",
+    description:
+      "Ongoing technical SEO checks, fixes, and content updates.",
+    price: "$400/mo",
+  },
+  {
+    name: "GA4 + Conversion Tracking Setup",
+    description:
+      "Full Google Analytics 4 and conversion event configuration.",
+    price: "$350 one-time",
+  },
+  {
+    name: "CRO Audit",
+    description:
+      "Full conversion rate audit with prioritized recommendations.",
+    price: "$500 one-time",
+  },
+  {
+    name: "Dealership Inventory Feed Integration",
+    description:
+      "Connect any CSV or SFTP inventory feed to an existing site.",
+    price: "$1,500",
+  },
+];
+
+function AddOnsSection() {
+  return (
+    <div className="mt-12 sm:mt-16">
+      <div className="text-center">
+        <h3
+          className="text-[clamp(24px,3.4vw,32px)] leading-[1.15]"
+          style={{
+            color: "#fff",
+            fontFamily: "'Instrument Serif', serif",
+            fontWeight: 400,
+          }}
+        >
+          Enhance your project
+        </h3>
+        <p
+          className="mx-auto mt-2 text-[13px] leading-[1.55]"
+          style={{
+            color: "rgba(255,255,255,0.5)",
+            fontFamily: "'DM Sans', sans-serif",
+          }}
+        >
+          Add-ons available with any package
+        </p>
+      </div>
+
+      <div className="mt-8 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
+        {ADD_ONS.map((addOn) => (
+          <div
+            key={addOn.name}
+            className="flex flex-col rounded-xl px-5 py-5 transition-colors duration-300 hover:bg-[#181818]"
+            style={{
+              background: "var(--pricing-bg-card)",
+              border: "1px solid var(--pricing-border-subtle)",
+            }}
+          >
+            <div className="flex items-start justify-between gap-3">
+              <h4
+                className="text-[15px] leading-[1.3]"
+                style={{
+                  color: "#fff",
+                  fontFamily: "'Instrument Serif', serif",
+                  fontWeight: 400,
+                }}
+              >
+                {addOn.name}
+              </h4>
+              <span
+                className="shrink-0 text-[12.5px] font-semibold"
+                style={{
+                  color: "var(--pricing-accent)",
+                  fontFamily: "'DM Sans', sans-serif",
+                }}
+              >
+                {addOn.price}
+              </span>
+            </div>
+            <p
+              className="mt-2 text-[12.5px] leading-[1.55]"
+              style={{
+                color: "rgba(255,255,255,0.55)",
+                fontFamily: "'DM Sans', sans-serif",
+              }}
+            >
+              {addOn.description}
+            </p>
+          </div>
+        ))}
+      </div>
+    </div>
   );
 }
