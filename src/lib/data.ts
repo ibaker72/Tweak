@@ -19,9 +19,134 @@ export interface Project {
   video?: string;
   poster?: string;
   gallery?: string[];
+  proofBadges?: string[];
+  metricBadge?: string;
+  accent?: "lime" | "cyan" | "violet" | "amber";
 }
 
 export const projects: Project[] = [
+  {
+    slug: "pp-mechanical",
+    title: "PP Mechanical",
+    category: "HVAC Website + Lead System",
+    tagline:
+      "Modern HVAC service site engineered for trust and lead capture.",
+    description:
+      "Built a modern service website for an HVAC company with lead capture, service pages, trust-focused layout, and conversion-focused calls to action.",
+    challenge:
+      "PP Mechanical was running a dated site that did not match the quality of their service work and was not capturing leads from the homeowners landing on it.",
+    solution:
+      "We rebuilt the site with a service-led structure, trust-focused layout, and conversion-focused CTAs. Every page funnels visitors toward a clear lead capture path so calls and inquiries are tracked rather than lost.",
+    problem:
+      "Outdated HVAC site that hurt credibility and dropped leads on the floor.",
+    solutionShort:
+      "Rebuilt HVAC site with trust-led design, service pages, and conversion-focused lead capture.",
+    impactShort: "Website credibility upgraded. Lead capture wired into every page.",
+    impact: "Website credibility upgraded",
+    results: [
+      "Modern trust-led design replaces dated layout",
+      "Lead capture wired into every service page",
+      "Mobile-optimized for homeowners searching on phones",
+    ],
+    stack: ["Next.js", "Tailwind CSS", "Vercel", "Resend"],
+    year: "2025",
+    live: true,
+    proofBadges: ["Local HVAC Website", "Lead Capture Ready", "Mobile Optimized"],
+    metricBadge: "Website credibility upgraded",
+    accent: "lime",
+  },
+  {
+    slug: "speedway-motors",
+    title: "Speedway Motors",
+    category: "Auto Dealer Inventory Automation",
+    tagline:
+      "Inventory-driven dealership site with automated vehicle syncing.",
+    description:
+      "Built an inventory-driven dealership website with automated vehicle syncing, live listings, image handling, filtering, and database-backed inventory management.",
+    challenge:
+      "Speedway needed live inventory online without anyone manually updating vehicles, photos, or listings every day.",
+    solution:
+      "We built a Supabase-backed inventory engine with scheduled cron syncs, live listings, image handling, and category and price filtering. Vehicles move from source to live site automatically.",
+    problem:
+      "Manual inventory entry. Stale listings. No filtering. Photos out of sync.",
+    solutionShort:
+      "Supabase-backed inventory engine with cron sync, live listings, filtering, and image handling.",
+    impactShort:
+      "105+ vehicles synced automatically. Manual inventory updates removed.",
+    impact: "105+ vehicles synced automatically",
+    results: [
+      "105+ vehicles syncing automatically from source to site",
+      "Manual inventory updates eliminated via scheduled cron jobs",
+      "Filterable live listings with proper image handling",
+    ],
+    stack: ["Next.js", "Supabase", "TypeScript", "Cron", "Vercel"],
+    year: "2025",
+    live: true,
+    proofBadges: ["105+ Vehicles Synced", "Automated Inventory", "Supabase + Cron"],
+    metricBadge: "Manual inventory updates reduced",
+    accent: "cyan",
+  },
+  {
+    slug: "tweak-build-os",
+    title: "Tweak & Build OS",
+    category: "AI Operations Platform",
+    tagline:
+      "Internal AI operating system for sales, leads, and client workflows.",
+    description:
+      "Built an internal AI-powered operating system for lead generation, sales workflows, client tracking, automations, and business process management.",
+    challenge:
+      "Running a studio across lead gen, sales, projects, and client work meant juggling tools and losing context. We needed one place that ran the business.",
+    solution:
+      "Built an internal AI-driven OS with lead pipelines, sales workflows, client tracking, project status, and automations. AI handles the repetitive lifts so the team stays in execution mode.",
+    problem:
+      "Sales, leads, and client work spread across too many disconnected tools.",
+    solutionShort:
+      "Internal AI-powered OS with lead gen, sales workflows, CRM logic, and automations.",
+    impactShort: "Sales process centralized. AI handling repetitive workflows.",
+    impact: "Sales process centralized",
+    results: [
+      "Lead gen, sales, and client tracking unified into one OS",
+      "AI workflows running across pipeline, outreach, and updates",
+      "Custom CRM logic shaped around how the studio actually operates",
+    ],
+    stack: ["Next.js", "Supabase", "OpenAI API", "TypeScript", "Vercel"],
+    year: "2025",
+    live: true,
+    proofBadges: ["AI Workflows", "Lead Generation", "CRM Logic"],
+    metricBadge: "Sales process centralized",
+    accent: "violet",
+  },
+  {
+    slug: "jerseypantry",
+    title: "JerseyPantry.com",
+    category: "Local E-Commerce / Food Brand",
+    tagline:
+      "Local commerce experience built for product discovery and trust.",
+    description:
+      "Built a local commerce experience focused on product discovery, brand trust, mobile shopping, and a cleaner path from visitor to customer.",
+    challenge:
+      "JerseyPantry needed a brand-first commerce site that felt local and trustworthy while still being easy to shop on a phone.",
+    solution:
+      "We built a mobile-first commerce experience with product discovery, brand trust signals, and a cleaner visitor-to-customer path. The result feels like a real local brand, not a template.",
+    problem:
+      "Local food brand needed a real commerce site, not a generic template.",
+    solutionShort:
+      "Mobile-first local commerce build with product discovery and a cleaner buying path.",
+    impactShort:
+      "Customer journey improved end to end. Brand trust visible from the first scroll.",
+    impact: "Customer journey improved",
+    results: [
+      "Mobile-first storefront optimized for phone shopping",
+      "Product discovery and trust signals woven into every page",
+      "Cleaner path from first visit to checkout",
+    ],
+    stack: ["Next.js", "Tailwind CSS", "Stripe", "Vercel"],
+    year: "2025",
+    live: true,
+    proofBadges: ["Local Brand", "E-Commerce Ready", "Mobile First"],
+    metricBadge: "Customer journey improved",
+    accent: "amber",
+  },
   {
     slug: "create3dparts",
     title: "Create3DParts.com",
