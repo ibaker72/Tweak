@@ -130,6 +130,14 @@ export function FeaturedWork() {
   }, [getCardStride]);
 
   useEffect(() => {
+    // Temporary debug hook — confirms the v2 carousel module is actually live.
+    // Remove together with the on-screen "Carousel v2 active" badge once the
+    // user has verified horizontal scroll on their device.
+    if (typeof window !== "undefined") {
+      // eslint-disable-next-line no-console
+      console.log("FeaturedWork carousel v2 mounted");
+    }
+
     const container = scrollRef.current;
     if (!container) return;
     const onScroll = () => {
@@ -180,7 +188,11 @@ export function FeaturedWork() {
   );
 
   return (
-    <section id="work" className="relative py-14 sm:py-32">
+    <section
+      id="work"
+      data-section="selected-work"
+      className="relative py-14 sm:py-32"
+    >
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_55%_40%_at_50%_0%,rgba(200,255,0,0.04),transparent)]" />
 
       <div className="wrap relative">
@@ -215,13 +227,13 @@ export function FeaturedWork() {
         </Reveal>
 
         <Reveal delay={0.08}>
-          <div className="relative mt-9 sm:mt-12">
+          <div className="relative mt-9 overflow-hidden sm:mt-12">
             <div
               ref={scrollRef}
               role="region"
               aria-roledescription="carousel"
               aria-label="Selected work showcase"
-              className="no-scrollbar -mx-5 flex snap-x snap-mandatory gap-4 overflow-x-auto scroll-smooth px-5 pb-2 sm:-mx-8 sm:gap-5 sm:px-8"
+              className="no-scrollbar -mx-5 flex flex-row flex-nowrap snap-x snap-mandatory gap-4 overflow-x-auto overflow-y-hidden scroll-smooth px-5 pb-2 sm:-mx-8 sm:gap-5 sm:px-8"
               style={{ scrollPaddingLeft: "20px" }}
             >
               {featuredProjects.map((project, i) => (
@@ -233,7 +245,7 @@ export function FeaturedWork() {
               ))}
             </div>
 
-            {/* Right-edge fade only on desktop — signals "more to see" */}
+            {/* Right-edge fade — signals "more to see" on desktop */}
             <div className="pointer-events-none absolute inset-y-0 right-0 hidden w-20 bg-gradient-to-l from-surface-0 to-transparent sm:block" />
           </div>
         </Reveal>
@@ -289,6 +301,15 @@ export function FeaturedWork() {
             </p>
           </div>
         </Reveal>
+
+        {/* TEMPORARY debug marker — remove this block once the user has
+            confirmed horizontal scroll is live on their device. */}
+        <div className="mt-6 flex justify-center">
+          <span className="inline-flex items-center gap-1.5 rounded-full border border-accent/30 bg-accent/[0.06] px-3 py-1 font-mono text-[10px] uppercase tracking-[0.1em] text-accent">
+            <span className="h-1 w-1 rounded-full bg-accent" />
+            Carousel v2 active
+          </span>
+        </div>
       </div>
     </section>
   );
@@ -326,9 +347,9 @@ function FeaturedCard({
   const accent = accentMap[project.accent ?? "lime"];
 
   return (
-    <div
+    <article
       data-card
-      className="group relative w-[82vw] max-w-[340px] shrink-0 snap-start sm:w-[420px] sm:max-w-none lg:w-[400px]"
+      className="group relative shrink-0 snap-start basis-[82vw] max-w-[360px] sm:basis-[420px] sm:max-w-[420px] lg:basis-[400px] lg:max-w-[400px]"
     >
       <Link
         href={`/work/${project.slug}`}
@@ -351,10 +372,10 @@ function FeaturedCard({
               "0 1px 0 rgba(255,255,255,0.03) inset, 0 16px 48px rgba(0,0,0,0.18)",
           }}
         >
-          {/* TODO: replace this gradient placeholder block with a real
-              screenshot when assets land at /public/proof/<slug>/cover.png —
-              swap in <ProjectPrimaryMedia /> or <Image fill /> and keep the
-              corner LIVE pill + bottom accent line. */}
+          {/* TODO: replace this gradient placeholder with a real screenshot
+              when assets land at /public/proof/<slug>/cover.png — swap in
+              <ProjectPrimaryMedia /> or <Image fill /> and keep the corner
+              LIVE pill + bottom accent line. */}
           <div
             className="relative aspect-[16/10] w-full overflow-hidden"
             style={{ background: accent.placeholder }}
@@ -463,6 +484,6 @@ function FeaturedCard({
           </div>
         </div>
       </Link>
-    </div>
+    </article>
   );
 }
