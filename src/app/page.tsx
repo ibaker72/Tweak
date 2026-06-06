@@ -1,5 +1,8 @@
 import { Hero } from "@/components/hero";
 import { FeaturedWork } from "@/components/featured-work";
+import { ProofVault } from "@/components/proof-vault";
+import { WhatThisProves } from "@/components/what-this-proves";
+import { ProofCTA } from "@/components/proof-cta";
 import { ServicesNew } from "@/components/services-new";
 import { WhyUs } from "@/components/founder";
 import { StackMarquee } from "@/components/home/stack-marquee";
@@ -20,6 +23,9 @@ export default function Home() {
       <Hero />
       <StackMarquee />
       <FeaturedWork />
+      <ProofVault />
+      <WhatThisProves />
+      <ProofCTA />
       <ServicesNew />
       <WhyUs />
       <PricingTiers />
