@@ -120,8 +120,8 @@ export function ProjectCard({ project }: Props) {
             "0 1px 0 rgba(255,255,255,0.03) inset, 0 16px 48px rgba(0,0,0,0.18)",
         }}
       >
-        {/* MEDIA — 16:9 */}
-        <div className="relative aspect-[16/9] w-full overflow-hidden bg-surface-2">
+        {/* MEDIA — 16:10 (tighter than 16:9 so it doesn't dominate the card) */}
+        <div className="relative aspect-[16/10] w-full overflow-hidden bg-surface-2">
           <MediaFallback title={project.title} accent={project.accent ?? "lime"} />
 
           {!mediaFailed && project.mediaType === "video" ? (
@@ -144,18 +144,18 @@ export function ProjectCard({ project }: Props) {
               alt={`${project.title} screenshot`}
               fill
               loading="lazy"
-              sizes="(max-width: 640px) 85vw, 45vw"
+              sizes="(max-width: 640px) 85vw, 30vw"
               className="relative object-cover"
               onError={() => setMediaFailed(true)}
             />
           ) : null}
 
           {/* Subtle gradient overlay at bottom of media */}
-          <div className="pointer-events-none absolute inset-x-0 bottom-0 h-12 bg-gradient-to-t from-black/30 to-transparent" />
+          <div className="pointer-events-none absolute inset-x-0 bottom-0 h-10 bg-gradient-to-t from-black/30 to-transparent" />
         </div>
 
         {/* CONTENT */}
-        <div className="flex flex-1 flex-col p-5 sm:p-6">
+        <div className="flex flex-1 flex-col p-4 sm:p-5">
           {/* Index + category */}
           <div className="flex items-center gap-2">
             <span className="font-mono text-[10px] uppercase tracking-[0.08em] text-dim">
@@ -163,31 +163,31 @@ export function ProjectCard({ project }: Props) {
             </span>
             <span className="h-1 w-1 rounded-full bg-white/[0.18]" />
             <span
-              className={`truncate font-mono text-[10px] uppercase tracking-[0.08em] ${accent.catLabel}`}
+              className={`truncate font-mono text-[9.5px] uppercase tracking-[0.08em] ${accent.catLabel}`}
             >
               {project.category}
             </span>
           </div>
 
           {/* Title */}
-          <h3 className="mt-2 font-display text-[20px] font-bold tracking-[-0.01em] text-white sm:text-[22px]">
+          <h3 className="mt-1.5 font-display text-[17px] font-bold tracking-[-0.01em] text-white sm:text-[18px]">
             {project.title}
           </h3>
 
-          {/* Description */}
-          <p className="mt-3 text-[13.5px] leading-[1.7] text-body sm:text-[14px] sm:leading-[1.75]">
+          {/* Description — clamped to 2 lines */}
+          <p className="mt-2 line-clamp-2 text-[12.5px] leading-[1.6] text-body sm:text-[13px]">
             {project.description}
           </p>
 
           {/* Tag pills */}
           {project.tags?.length ? (
-            <div className="mt-4 flex flex-wrap gap-1.5">
+            <div className="mt-3 flex flex-wrap gap-1">
               {project.tags.map((tag) => (
                 <span
                   key={tag}
-                  className={`inline-flex items-center gap-1.5 rounded-full border ${accent.chip} px-2.5 py-1 font-mono text-[10px] font-medium tracking-[0.02em]`}
+                  className={`inline-flex items-center gap-1 rounded-full border ${accent.chip} px-2 py-[3px] font-mono text-[9.5px] font-medium tracking-[0.02em]`}
                 >
-                  <span className={`h-1 w-1 rounded-full ${accent.dot}`} />
+                  <span className={`h-[3px] w-[3px] rounded-full ${accent.dot}`} />
                   {tag}
                 </span>
               ))}
@@ -197,35 +197,35 @@ export function ProjectCard({ project }: Props) {
           {/* Outcome pill */}
           {project.outcome ? (
             <div
-              className={`mt-4 inline-flex w-fit items-center gap-2 rounded-xl border ${accent.outcome} px-3.5 py-2`}
+              className={`mt-3 inline-flex w-fit items-center gap-1.5 rounded-lg border ${accent.outcome} px-2.5 py-1.5`}
             >
-              <CheckCircle2 size={13} strokeWidth={2} />
-              <span className="text-[12px] font-semibold tracking-[-0.005em]">
+              <CheckCircle2 size={12} strokeWidth={2} />
+              <span className="text-[11.5px] font-semibold tracking-[-0.005em]">
                 {project.outcome}
               </span>
             </div>
           ) : null}
 
           {/* Spacer */}
-          <div className="mt-5 flex-1" />
+          <div className="mt-3 flex-1" />
 
           {/* Footer */}
-          <div className="mt-4 flex items-center justify-between gap-3 border-t border-white/[0.05] pt-4">
+          <div className="mt-3 flex items-center justify-between gap-3 border-t border-white/[0.05] pt-3">
             <a
               href={project.liveUrl}
               target="_blank"
               rel="noreferrer noopener"
-              className="inline-flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-[0.1em] text-dim transition-colors hover:text-white/70"
+              className="inline-flex items-center gap-1.5 font-mono text-[9.5px] uppercase tracking-[0.1em] text-dim transition-colors hover:text-white/70"
             >
-              Live <ExternalLink size={11} strokeWidth={1.75} />
+              Live <ExternalLink size={10} strokeWidth={1.75} />
             </a>
             <Link
               href={project.caseStudyHref}
-              className="inline-flex items-center gap-1.5 text-[12.5px] font-semibold text-white/85 transition-colors duration-200 group-hover:text-accent"
+              className="inline-flex items-center gap-1.5 text-[12px] font-semibold text-white/85 transition-colors duration-200 group-hover:text-accent"
             >
               View Case Study
               <ArrowRight
-                size={13}
+                size={12}
                 className="transition-transform duration-200 group-hover:translate-x-0.5"
               />
             </Link>

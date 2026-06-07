@@ -20,13 +20,13 @@
   --brand-radius-lg: 20px;
   --brand-radius-full: 9999px;
 
-  /* Pricing section tokens */
-  --pricing-accent: #c8f23a;
+  /* Pricing section tokens — unified with brand accent + surface tones */
+  --pricing-accent: var(--brand-accent);
   --pricing-accent-dark: #1a2a00;
-  --pricing-accent-hover: #d4f74a;
-  --pricing-bg-card: #111111;
-  --pricing-bg-card-mid: #151515;
-  --pricing-border-subtle: #1e1e1e;
+  --pricing-accent-hover: #e8ff80;
+  --pricing-bg-card: var(--brand-surface-2);
+  --pricing-bg-card-mid: var(--brand-surface-3);
+  --pricing-border-subtle: rgba(255,255,255,0.06);
 }
 
 @keyframes pricing-card-rise {

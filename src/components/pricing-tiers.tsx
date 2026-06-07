@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useId, useMemo, useState, useRef, type KeyboardEvent } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { Check } from "lucide-react";
+import { Check, Zap } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 type TabId = "websites" | "marketing";
@@ -21,7 +21,6 @@ type Tier = {
   ctaHref: string;
   footnote: string;
   featured?: boolean;
-  accent?: "lime" | "amber";
   badgeLabel?: string;
   liveExampleHref?: string;
 };
@@ -119,7 +118,6 @@ const TABS: TabContent[] = [
         ctaLabel: "Book a discovery call",
         ctaHref: "/contact?tier=Dealership%20Website%20System",
         footnote: "Best for independent dealerships ready to compete online",
-        accent: "amber",
         badgeLabel: "Automotive",
         liveExampleHref: "https://speedwaymotorsllc.com",
       },
@@ -200,19 +198,11 @@ function FeatureItem({ text }: { text: string }) {
     <li className="flex items-start gap-2.5">
       <span
         aria-hidden="true"
-        className="mt-[3px] inline-flex h-3.5 w-3.5 shrink-0 items-center justify-center rounded-full"
-        style={{ background: "rgba(200, 242, 58, 0.12)" }}
+        className="mt-[3px] inline-flex h-3.5 w-3.5 shrink-0 items-center justify-center rounded-full bg-accent/[0.12]"
       >
-        <Check
-          className="h-2.5 w-2.5"
-          strokeWidth={3}
-          style={{ color: "var(--pricing-accent)" }}
-        />
+        <Check className="h-2.5 w-2.5 text-accent" strokeWidth={3} />
       </span>
-      <span
-        className="text-[12.5px] leading-[1.55]"
-        style={{ color: "rgba(255,255,255,0.62)", fontFamily: "'DM Sans', sans-serif" }}
-      >
+      <span className="font-body text-[12.5px] leading-[1.55] text-white/[0.62]">
         {text}
       </span>
     </li>
@@ -229,10 +219,7 @@ function PricingCard({
   panelId: string;
 }) {
   const isFeatured = !!tier.featured;
-  const isAmber = tier.accent === "amber";
   const hasBadge = isFeatured || !!tier.badgeLabel;
-  const amberAccent = "#f5a524";
-  const amberAccentDark = "#3a2700";
 
   return (
     <article
@@ -244,11 +231,7 @@ function PricingCard({
       )}
       style={{
         background: isFeatured ? "var(--pricing-bg-card-mid)" : "var(--pricing-bg-card)",
-        border: isFeatured
-          ? "1px solid rgba(200, 242, 58, 0.12)"
-          : isAmber
-          ? "1px solid rgba(245, 165, 36, 0.18)"
-          : undefined,
+        border: hasBadge ? "1px solid rgba(200, 255, 0, 0.18)" : undefined,
         animation: `pricing-card-rise 600ms cubic-bezier(0.16,1,0.3,1) both`,
         animationDelay: `${index * 80}ms`,
       }}
@@ -259,20 +242,11 @@ function PricingCard({
           style={{ top: 0, transform: "translate(-50%, -50%)" }}
         >
           <span
-            className="inline-flex items-center uppercase"
+            className="inline-flex items-center rounded-full border-none px-4 py-[5px] font-mono text-[10px] font-semibold uppercase tracking-[0.12em]"
             style={{
-              background: isAmber ? amberAccent : "#c8f23a",
-              color: isAmber ? amberAccentDark : "#1a2a00",
-              fontSize: "10px",
-              letterSpacing: "0.1em",
-              fontWeight: 600,
-              padding: "5px 16px",
-              borderRadius: "999px",
-              border: "none",
-              boxShadow: isAmber
-                ? "0 0 0 3px rgba(245, 165, 36, 0.18)"
-                : "0 0 0 3px rgba(200, 242, 58, 0.15)",
-              fontFamily: "'DM Sans', sans-serif",
+              background: "var(--pricing-accent)",
+              color: "var(--pricing-accent-dark)",
+              boxShadow: "0 0 0 3px rgba(200, 255, 0, 0.15)",
             }}
           >
             {tier.badgeLabel ?? "Most popular"}
@@ -280,74 +254,36 @@ function PricingCard({
         </div>
       )}
 
-      <p
-        className="text-[10px] font-semibold uppercase tracking-[0.18em]"
-        style={{
-          color: isAmber ? "rgba(245, 165, 36, 0.85)" : "#444",
-          fontFamily: "'DM Sans', sans-serif",
-        }}
-      >
+      <p className="font-mono text-[10px] font-semibold uppercase tracking-[0.18em] text-white/35">
         {tier.label}
       </p>
 
-      <h3
-        className="mt-3 text-[22px] leading-[1.15]"
-        style={{
-          color: "#fff",
-          fontFamily: "'Instrument Serif', serif",
-          fontWeight: 400,
-        }}
-      >
+      <h3 className="mt-3 font-display text-[22px] font-extrabold leading-[1.15] tracking-[-0.02em] text-white">
         {tier.name}
       </h3>
 
-      <p
-        className="mt-1.5 max-w-[34ch] text-[12px] leading-[1.55]"
-        style={{ color: "rgba(255,255,255,0.5)", fontFamily: "'DM Sans', sans-serif" }}
-      >
+      <p className="mt-1.5 max-w-[34ch] font-body text-[12px] leading-[1.55] text-white/50">
         {tier.subtitle}
       </p>
 
       <div className="mt-5 flex items-baseline gap-1">
-        <span
-          className="text-[38px] leading-none"
-          style={{
-            color: "#fff",
-            fontFamily: "'Instrument Serif', serif",
-            fontWeight: 400,
-          }}
-        >
+        <span className="font-display text-[38px] font-extrabold leading-none tracking-[-0.03em] text-white">
           {tier.price}
         </span>
         {tier.priceSuffix && (
-          <span
-            className="text-[14px]"
-            style={{
-              color: "rgba(255,255,255,0.45)",
-              fontFamily: "'DM Sans', sans-serif",
-            }}
-          >
+          <span className="font-body text-[14px] text-white/45">
             {tier.priceSuffix}
           </span>
         )}
       </div>
 
       {tier.priceSubline && (
-        <p
-          className="mt-1 text-[12px] leading-[1.5]"
-          style={{
-            color: "rgba(255,255,255,0.45)",
-            fontFamily: "'DM Sans', sans-serif",
-          }}
-        >
+        <p className="mt-1 font-body text-[12px] leading-[1.5] text-white/45">
           {tier.priceSubline}
         </p>
       )}
 
-      <p
-        className="mt-2 text-[11px] leading-[1.5]"
-        style={{ color: "rgba(255,255,255,0.38)", fontFamily: "'DM Sans', sans-serif" }}
-      >
+      <p className="mt-2 font-body text-[11px] leading-[1.5] text-white/38">
         {tier.cadence}
       </p>
 
@@ -368,11 +304,7 @@ function PricingCard({
             href={tier.liveExampleHref}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-1 text-[12px] font-medium transition-opacity duration-200 hover:opacity-80"
-            style={{
-              color: "var(--pricing-accent)",
-              fontFamily: "'DM Sans', sans-serif",
-            }}
+            className="inline-flex items-center gap-1 font-body text-[12px] font-medium text-accent transition-opacity duration-200 hover:opacity-80"
           >
             Live example <span aria-hidden="true">→</span>
           </Link>
@@ -385,27 +317,16 @@ function PricingCard({
           aria-label={`${tier.ctaLabel} — ${tier.name}`}
           aria-describedby={`${panelId}-foot-${index}`}
           className={cn(
-            "pricing-cta inline-flex w-full items-center justify-center rounded-full px-5 py-3 text-[12.5px] font-semibold transition-all duration-200",
-            isFeatured
-              ? "pricing-cta--solid"
-              : isAmber
-              ? "pricing-cta--amber"
-              : "pricing-cta--outline"
+            "inline-flex w-full items-center justify-center !gap-2 !px-5 !py-3 !text-[12.5px]",
+            isFeatured ? "btn-v" : "btn-o"
           )}
-          style={{ fontFamily: "'DM Sans', sans-serif" }}
         >
-          {tier.ctaLabel} <span aria-hidden="true" className="ml-1.5">→</span>
+          {tier.ctaLabel} <span aria-hidden="true">→</span>
         </Link>
 
         <p
           id={`${panelId}-foot-${index}`}
-          className="text-center leading-[1.5]"
-          style={{
-            marginTop: "10px",
-            fontSize: "11px",
-            color: "#333",
-            fontFamily: "'DM Sans', sans-serif",
-          }}
+          className="mt-2.5 text-center font-body text-[11px] leading-[1.5] text-white/30"
         >
           {tier.footnote}
         </p>
@@ -444,38 +365,13 @@ export function PricingTiers() {
   return (
     <section id="pricing" className="relative pb-16 pt-20 sm:pb-20 sm:pt-24 lg:pb-24 lg:pt-28">
       <style>{`
-        .pricing-card { transition: background-color 300ms ease; }
-        .pricing-card:hover { background: #181818 !important; }
-        .pricing-cta--solid {
-          background: var(--pricing-accent);
-          color: var(--pricing-accent-dark);
-        }
-        .pricing-cta--solid:hover { background: var(--pricing-accent-hover); }
-        .pricing-cta--outline {
-          background: transparent;
-          color: rgba(255,255,255,0.85);
-          border: 1px solid rgba(255,255,255,0.14);
-        }
-        .pricing-cta--outline:hover {
-          color: #fff;
-          border-color: rgba(255,255,255,0.32);
-          background: rgba(255,255,255,0.03);
-        }
-        .pricing-cta--amber {
-          background: transparent;
-          color: rgba(255,255,255,0.92);
-          border: 1px solid rgba(245, 165, 36, 0.45);
-        }
-        .pricing-cta--amber:hover {
-          color: #1a1100;
-          background: #f5a524;
-          border-color: #f5a524;
-        }
+        .pricing-card { transition: background-color 300ms ease, border-color 300ms ease; }
+        .pricing-card:hover { background: var(--brand-surface-3) !important; }
         .pricing-tab {
           transition: background-color 200ms ease, color 200ms ease;
         }
         .pricing-tab[aria-selected="false"]:hover {
-          color: #aaaaaa;
+          color: rgba(255,255,255,0.85);
         }
         .pricing-panel { animation: pricing-panel-fade 150ms ease-out both; }
       `}</style>
@@ -483,33 +379,11 @@ export function PricingTiers() {
       <div className="wrap relative z-10">
         <div className="mx-auto max-w-6xl">
           <div className="mb-8 text-center sm:mb-10">
-            <span
-              className="inline-flex rounded-full border px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.18em]"
-              style={{
-                borderColor: "var(--pricing-border-subtle)",
-                color: "rgba(255,255,255,0.55)",
-                fontFamily: "'DM Sans', sans-serif",
-              }}
-            >
-              Pricing
-            </span>
-            <h2
-              className="mt-4 text-[clamp(28px,4.2vw,42px)] leading-[1.1]"
-              style={{
-                color: "#fff",
-                fontFamily: "'Instrument Serif', serif",
-                fontWeight: 400,
-              }}
-            >
+            <span className="section-label">Pricing</span>
+            <h2 className="mt-4 font-display text-[clamp(28px,4.5vw,46px)] font-extrabold leading-[1.06] tracking-[-0.04em] text-white">
               Plans for every stage of growth
             </h2>
-            <p
-              className="mx-auto mt-3 max-w-[520px] text-[13px] leading-[1.6]"
-              style={{
-                color: "rgba(255,255,255,0.5)",
-                fontFamily: "'DM Sans', sans-serif",
-              }}
-            >
+            <p className="mx-auto mt-3 max-w-[520px] font-body text-[13px] leading-[1.6] text-white/50">
               Pick the website foundation or the marketing engine — or run both
               together for compounding results.
             </p>
@@ -519,8 +393,7 @@ export function PricingTiers() {
             <div
               role="tablist"
               aria-label="Pricing categories"
-              className="inline-flex w-full max-w-[360px] rounded-full p-1"
-              style={{ background: "#161616", border: "1px solid #222" }}
+              className="inline-flex w-full max-w-[360px] rounded-full border border-white/[0.06] bg-white/[0.02] p-1"
             >
               {TABS.map((tab) => {
                 const isActive = tab.id === activeTab;
@@ -541,12 +414,9 @@ export function PricingTiers() {
                     onClick={() => setActiveTab(tab.id)}
                     onKeyDown={onTabKeyDown}
                     suppressHydrationWarning
-                    className={cn(
-                      "pricing-tab relative flex-1 rounded-full px-4 py-2.5 text-[12.5px] font-semibold"
-                    )}
+                    className="pricing-tab relative flex-1 rounded-full px-4 py-2.5 font-body text-[12.5px] font-semibold"
                     style={{
                       color: isActive ? "var(--pricing-accent-dark)" : "rgba(255,255,255,0.55)",
-                      fontFamily: "'DM Sans', sans-serif",
                     }}
                   >
                     {isActive && (
@@ -574,7 +444,7 @@ export function PricingTiers() {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -6 }}
               transition={{ duration: 0.15, ease: "easeOut" }}
-              className="rounded-2xl"
+              className="overflow-hidden rounded-2xl border border-white/[0.06]"
               style={{ background: "var(--pricing-border-subtle)" }}
             >
               <div
@@ -601,13 +471,7 @@ export function PricingTiers() {
 
           <AddOnsSection />
 
-          <p
-            className="mx-auto mt-12 max-w-[520px] text-center text-[12px] leading-[1.6]"
-            style={{
-              color: "rgba(255,255,255,0.35)",
-              fontFamily: "'DM Sans', sans-serif",
-            }}
-          >
+          <p className="mx-auto mt-12 max-w-[520px] text-center font-body text-[12px] leading-[1.6] text-white/35">
             All projects include direct access to senior engineers, clear scope
             upfront, and full code ownership.
           </p>
@@ -620,54 +484,31 @@ export function PricingTiers() {
 function BundleBanner() {
   return (
     <div
-      className="mt-10 overflow-hidden rounded-2xl sm:mt-12"
+      className="mt-10 overflow-hidden rounded-2xl border border-white/[0.06] sm:mt-12"
       style={{
-        background: "#141414",
+        background: "var(--brand-surface-2)",
         borderLeft: "3px solid var(--pricing-accent)",
-        border: "1px solid var(--pricing-border-subtle)",
-        borderLeftWidth: "3px",
-        borderLeftColor: "var(--pricing-accent)",
       }}
     >
       <div className="flex flex-col items-start gap-5 px-6 py-6 sm:flex-row sm:items-center sm:justify-between sm:px-8 sm:py-7">
         <div className="flex-1">
-          <div
-            className="inline-flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.16em]"
-            style={{
-              color: "var(--pricing-accent)",
-              fontFamily: "'DM Sans', sans-serif",
-            }}
-          >
-            <span aria-hidden="true">🔥</span>
+          <div className="inline-flex items-center gap-2 font-mono text-[11px] font-semibold uppercase tracking-[0.16em] text-accent">
+            <Zap aria-hidden="true" className="h-3.5 w-3.5" strokeWidth={2.25} />
             <span>Bundle &amp; Save</span>
           </div>
-          <p
-            className="mt-2 text-[16px] leading-[1.45] sm:text-[18px]"
-            style={{
-              color: "#fff",
-              fontFamily: "'Instrument Serif', serif",
-              fontWeight: 400,
-            }}
-          >
+          <p className="mt-2 font-display text-[18px] font-extrabold leading-[1.25] tracking-[-0.02em] text-white sm:text-[20px]">
             Combine a website build with ads management and get $500 off your
             first month of ads.
           </p>
-          <p
-            className="mt-1.5 text-[12.5px] leading-[1.55]"
-            style={{
-              color: "rgba(255,255,255,0.5)",
-              fontFamily: "'DM Sans', sans-serif",
-            }}
-          >
+          <p className="mt-1.5 font-body text-[12.5px] leading-[1.55] text-white/50">
             Most clients run both — the website converts, the ads drive traffic.
           </p>
         </div>
         <Link
           href="/contact?tier=Bundle"
-          className="pricing-cta pricing-cta--solid inline-flex shrink-0 items-center justify-center rounded-full px-5 py-3 text-[12.5px] font-semibold transition-all duration-200"
-          style={{ fontFamily: "'DM Sans', sans-serif" }}
+          className="btn-v inline-flex shrink-0 items-center justify-center !gap-2 !px-5 !py-3 !text-[12.5px]"
         >
-          Book a strategy call <span aria-hidden="true" className="ml-1.5">→</span>
+          Book a strategy call <span aria-hidden="true">→</span>
         </Link>
       </div>
     </div>
@@ -723,23 +564,10 @@ function AddOnsSection() {
   return (
     <div className="mt-12 sm:mt-16">
       <div className="text-center">
-        <h3
-          className="text-[clamp(24px,3.4vw,32px)] leading-[1.15]"
-          style={{
-            color: "#fff",
-            fontFamily: "'Instrument Serif', serif",
-            fontWeight: 400,
-          }}
-        >
+        <h3 className="font-display text-[clamp(24px,3.4vw,32px)] font-extrabold leading-[1.15] tracking-[-0.03em] text-white">
           Enhance your project
         </h3>
-        <p
-          className="mx-auto mt-2 text-[13px] leading-[1.55]"
-          style={{
-            color: "rgba(255,255,255,0.5)",
-            fontFamily: "'DM Sans', sans-serif",
-          }}
-        >
+        <p className="mx-auto mt-2 font-body text-[13px] leading-[1.55] text-white/50">
           Add-ons available with any package
         </p>
       </div>
@@ -748,40 +576,18 @@ function AddOnsSection() {
         {ADD_ONS.map((addOn) => (
           <div
             key={addOn.name}
-            className="flex flex-col rounded-xl px-5 py-5 transition-colors duration-300 hover:bg-[#181818]"
-            style={{
-              background: "var(--pricing-bg-card)",
-              border: "1px solid var(--pricing-border-subtle)",
-            }}
+            className="flex flex-col rounded-xl border border-white/[0.06] px-5 py-5 transition-colors duration-300 hover:border-white/[0.12]"
+            style={{ background: "var(--pricing-bg-card)" }}
           >
             <div className="flex items-start justify-between gap-3">
-              <h4
-                className="text-[15px] leading-[1.3]"
-                style={{
-                  color: "#fff",
-                  fontFamily: "'Instrument Serif', serif",
-                  fontWeight: 400,
-                }}
-              >
+              <h4 className="font-display text-[15px] font-bold leading-[1.3] tracking-[-0.01em] text-white">
                 {addOn.name}
               </h4>
-              <span
-                className="shrink-0 text-[12.5px] font-semibold"
-                style={{
-                  color: "var(--pricing-accent)",
-                  fontFamily: "'DM Sans', sans-serif",
-                }}
-              >
+              <span className="shrink-0 font-mono text-[12px] font-semibold text-accent">
                 {addOn.price}
               </span>
             </div>
-            <p
-              className="mt-2 text-[12.5px] leading-[1.55]"
-              style={{
-                color: "rgba(255,255,255,0.55)",
-                fontFamily: "'DM Sans', sans-serif",
-              }}
-            >
+            <p className="mt-2 font-body text-[12.5px] leading-[1.55] text-white/55">
               {addOn.description}
             </p>
           </div>
