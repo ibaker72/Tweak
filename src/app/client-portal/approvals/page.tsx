@@ -5,6 +5,7 @@ import { createClient } from "@/lib/supabase/server";
 import { getUserProjects, getProjectApprovals } from "@/lib/portal/queries";
 import { ApprovalList } from "@/components/portal/approval-list";
 import { EmptyState } from "@/components/portal/empty-state";
+import { ProjectSwitcher } from "@/components/portal/project-switcher";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = { title: "Approvals | Client Portal" };
@@ -40,50 +41,55 @@ export default async function ApprovalsPage({ searchParams }: PageProps) {
           <ArrowLeft size={12} />
           Dashboard
         </Link>
-        <div className="flex items-center gap-3">
-          <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-white/[0.03]">
-            <CheckSquare size={16} className="text-dim" />
+        <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+          <div className="flex items-center gap-3">
+            <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-white/[0.03]">
+              <CheckSquare size={16} className="text-dim" />
+            </div>
+            <div>
+              <h1 className="font-display text-[22px] font-bold tracking-[-0.02em] text-white">
+                Approvals
+              </h1>
+              <p className="font-mono text-[11px] uppercase tracking-[0.06em] text-dim">
+                {activeProject.name}
+              </p>
+            </div>
           </div>
-          <div>
-            <h1 className="font-display text-[22px] font-bold tracking-[-0.02em] text-white">
-              Approvals
-            </h1>
-            <p className="font-mono text-[11px] text-dim">{activeProject.name}</p>
-          </div>
+          {projects.length > 1 && (
+            <ProjectSwitcher projects={projects} activeProjectId={activeProjectId} />
+          )}
         </div>
       </div>
 
       {approvals.length > 0 ? (
         <div className="space-y-8">
-          {/* Pending */}
           {pending.length > 0 && (
-            <div>
+            <section>
               <h2 className="mb-3 flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.1em] text-dim">
-                <span className="flex h-4 w-4 items-center justify-center rounded bg-gold/10">
-                  <ClipboardCheck size={10} className="text-gold" />
+                <span className="flex h-4 w-4 items-center justify-center rounded bg-white/[0.04]">
+                  <ClipboardCheck size={10} className="text-dim" />
                 </span>
-                Awaiting Review ({pending.length})
+                Awaiting your review ({pending.length})
               </h2>
               <ApprovalList approvals={pending} interactive />
-            </div>
+            </section>
           )}
 
-          {/* Resolved */}
           {resolved.length > 0 && (
-            <div>
+            <section>
               <h2 className="mb-3 font-mono text-[10px] uppercase tracking-[0.1em] text-dim">
                 Resolved ({resolved.length})
               </h2>
               <ApprovalList approvals={resolved} />
-            </div>
+            </section>
           )}
         </div>
       ) : (
         <div className="card-premium">
           <EmptyState
             icon={<CheckSquare size={18} />}
-            title="No approvals yet"
-            description="Approval requests will appear here when your team needs your sign-off."
+            title="Nothing awaiting your approval"
+            description="When your team needs your sign-off — designs, copy, contracts, anything — it'll show up here. Each item gets an approve / request-changes button and a timestamped receipt of your decision."
           />
         </div>
       )}
