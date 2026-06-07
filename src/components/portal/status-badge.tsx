@@ -16,10 +16,16 @@ const milestoneStatusConfig: Record<MilestoneStatus, { label: string; className:
   completed:   { label: "Completed",   className: "border-emerald-500/25 bg-emerald-500/[0.08] text-emerald-400" },
 };
 
+// Approval pill palette is brand-only (no new hues).
+//  • approved          → accent (lime)
+//  • pending           → muted neutral (NOT gold — keeps gold reserved for
+//                        action-required / changes-requested signal)
+//  • changes_requested → gold (already in the palette, used elsewhere for
+//                        attention; documented in the migration summary)
 const approvalStatusConfig: Record<ApprovalStatus, { label: string; className: string }> = {
-  pending:           { label: "Pending",           className: "border-gold/25 bg-gold/[0.08] text-gold" },
-  approved:          { label: "Approved",          className: "border-emerald-500/25 bg-emerald-500/[0.08] text-emerald-400" },
-  changes_requested: { label: "Changes Requested", className: "border-red-400/25 bg-red-400/[0.08] text-red-400" },
+  pending:           { label: "Pending",           className: "border-white/[0.10] bg-white/[0.04] text-white/60" },
+  approved:          { label: "Approved",          className: "border-accent/30 bg-accent-muted text-accent" },
+  changes_requested: { label: "Changes Requested", className: "border-gold/30 bg-gold/[0.08] text-gold" },
 };
 
 interface StatusBadgeProps {

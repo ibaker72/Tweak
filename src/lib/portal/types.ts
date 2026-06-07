@@ -101,6 +101,16 @@ export interface ProjectFile {
   created_at: string;
 }
 
+export interface ApprovalDecision {
+  id: string;
+  approval_item_id: string;
+  decided_by: string;
+  decision: "approved" | "changes_requested";
+  comment: string | null;
+  created_at: string;
+  decider?: { id: string; full_name: string | null; email: string | null } | null;
+}
+
 export interface ProjectApproval {
   id: string;
   project_id: string;
@@ -110,7 +120,12 @@ export interface ProjectApproval {
   response_note: string | null;
   approved_by: string | null;
   approved_at: string | null;
+  file_id: string | null;
+  url: string | null;
+  sort_order: number;
   created_at: string;
+  decisions?: ApprovalDecision[];
+  file?: { id: string; file_name: string; mime_type: string | null } | null;
 }
 
 export type InviteStatus = "pending" | "accepted" | "cancelled";

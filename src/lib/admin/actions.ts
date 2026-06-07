@@ -278,84 +278,84 @@ export async function updateApprovalStatus(
 
 /* ─── Client Approval Response ─── */
 
-export async function respondToApproval(
-  approvalId: string,
-  status: "approved" | "changes_requested",
-  projectId: string,
-  responseNote?: string,
+/**
+ * Record a client's decision on an approval item. Writes an append-only row to
+ * approval_decisions; the DB trigger mirrors status/approved_by/approved_at
+ * onto project_approvals.
+ *
+ * The server forces decided_by = auth.uid(). The DB's RLS WITH CHECK enforces
+ * the same invariant + that the caller is a project_member of the parent item's
+ * project, so even if this route were bypassed the DB rejects forgeries.
+ */
+export async function recordApprovalDecision(
+  approvalItemId: string,
+  decision: "approved" | "changes_requested",
+  comment?: string,
 ) {
   const { supabase, userId } = await requireAuth();
 
-  // Verify user is a member of this project
-  const { data: membership } = await supabase
-    .from("project_members")
-    .select("id")
-    .eq("project_id", projectId)
-    .eq("user_id", userId)
-    .single();
-
-  if (!membership) throw new Error("Access denied");
-
-  const fields: Record<string, unknown> = {
-    status,
-    approved_by: userId,
-    approved_at: new Date().toISOString(),
-  };
-  if (responseNote !== undefined) {
-    fields.response_note = responseNote || null;
-  }
-
-  const { error } = await supabase
+  // RLS-scoped lookup — if the user can't read the item, the insert will be
+  // rejected too, but failing here gives a clearer error.
+  const { data: item } = await supabase
     .from("project_approvals")
-    .update(fields)
-    .eq("id", approvalId)
-    .eq("status", "pending"); // Only allow responding to pending approvals
+    .select("id, project_id, title")
+    .eq("id", approvalItemId)
+    .maybeSingle();
 
-  if (error) throw new Error(error.message);
+  if (!item) throw new Error("Approval item not found");
+
+  const { error: insertError } = await supabase
+    .from("approval_decisions")
+    .insert({
+      approval_item_id: approvalItemId,
+      decided_by: userId,                          // server-forced
+      decision,
+      comment: comment?.trim() ? comment.trim() : null,
+    });
+
+  if (insertError) throw new Error(insertError.message);
+
   revalidatePath("/client-portal");
   revalidatePath("/client-portal/approvals");
-  revalidateProject(projectId);
+  revalidateProject(item.project_id);
   revalidatePath("/admin/approvals");
 
-  // Notify admin/team about the approval response
+  // Notify admin/team about the response (best-effort).
   const serviceClient = createServiceClient();
-  const { data: approval } = await serviceClient
-    .from("project_approvals")
-    .select("title")
-    .eq("id", approvalId)
-    .single();
+  const [{ data: project }, { data: responder }, { data: admins }] = await Promise.all([
+    serviceClient.from("projects").select("name").eq("id", item.project_id).single(),
+    serviceClient.from("profiles").select("full_name, email").eq("id", userId).single(),
+    serviceClient.from("profiles").select("email").in("role", ["admin", "team"]),
+  ]);
 
-  const { data: project } = await serviceClient
-    .from("projects")
-    .select("name")
-    .eq("id", projectId)
-    .single();
-
-  const { data: responder } = await serviceClient
-    .from("profiles")
-    .select("full_name, email")
-    .eq("id", userId)
-    .single();
-
-  const { data: admins } = await serviceClient
-    .from("profiles")
-    .select("email")
-    .in("role", ["admin", "team"]);
-
-  if (approval && project && admins) {
+  if (project && admins) {
     const responderName = responder?.full_name || responder?.email || "A client";
-    const statusLabel = status === "approved" ? "Approved" : "Changes Requested";
+    const statusLabel = decision === "approved" ? "Approved" : "Changes Requested";
     for (const admin of admins as { email: string }[]) {
       sendNotification({
         to: admin.email,
-        subject: `${statusLabel}: ${approval.title} — ${project.name}`,
+        subject: `${statusLabel}: ${item.title} — ${project.name}`,
         heading: `Approval ${statusLabel}`,
-        body: `<strong>${responderName}</strong> has ${status === "approved" ? "approved" : "requested changes on"} <strong>${approval.title}</strong> for ${project.name}.${responseNote ? `<br><br><em>"${responseNote}"</em>` : ""}`,
+        body: `<strong>${responderName}</strong> has ${decision === "approved" ? "approved" : "requested changes on"} <strong>${item.title}</strong> for ${project.name}.${comment ? `<br><br><em>"${comment}"</em>` : ""}`,
         ctaLabel: "View in Admin",
-        ctaUrl: `${process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000"}/admin/projects/${projectId}`,
+        ctaUrl: `${process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000"}/admin/projects/${item.project_id}`,
       }).catch(() => {});
     }
   }
+}
+
+/**
+ * Compatibility shim — old name + signature kept so any existing callers don't
+ * break during the rollout. New code should call recordApprovalDecision.
+ */
+export async function respondToApproval(
+  approvalId: string,
+  status: "approved" | "changes_requested",
+  _projectId: string,
+  responseNote?: string,
+) {
+  void _projectId;
+  return recordApprovalDecision(approvalId, status, responseNote);
 }
 
 /* ─── Member Mutations ─── */

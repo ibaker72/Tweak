@@ -111,16 +111,31 @@ export async function getProjectFiles(projectId: string): Promise<ProjectFile[]>
   return (data ?? []) as ProjectFile[];
 }
 
-/** Get approvals for a project, newest first */
+/** Get approvals for a project, ordered, with decision history + linked file */
 export async function getProjectApprovals(projectId: string): Promise<ProjectApproval[]> {
   const supabase = await createClient();
   const { data } = await supabase
     .from("project_approvals")
-    .select("*")
+    .select(
+      `*,
+       file:project_files!project_approvals_file_id_fkey(id, file_name, mime_type),
+       decisions:approval_decisions(
+         id, approval_item_id, decided_by, decision, comment, created_at,
+         decider:profiles!approval_decisions_decided_by_fkey(id, full_name, email)
+       )`,
+    )
     .eq("project_id", projectId)
+    .order("sort_order", { ascending: true })
     .order("created_at", { ascending: false });
 
-  return (data ?? []) as ProjectApproval[];
+  // Decisions come back unordered from the join — sort newest first per item.
+  const approvals = (data ?? []) as ProjectApproval[];
+  for (const a of approvals) {
+    if (a.decisions?.length) {
+      a.decisions.sort((x, y) => +new Date(y.created_at) - +new Date(x.created_at));
+    }
+  }
+  return approvals;
 }
 
 /** Fetch all dashboard data for a specific project */
