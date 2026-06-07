@@ -107,6 +107,10 @@ grant execute on function public.user_owns_storage_path(text)
 -- already renamed them.
 drop policy if exists "Authenticated users can read vmqls3_0"   on storage.objects;
 drop policy if exists "Authenticated users can upload vmqls3_0" on storage.objects;
+drop policy if exists "Members can read project files" on storage.objects;
+drop policy if exists "Admin and team can write project files" on storage.objects;
+drop policy if exists "Admin and team can update project files" on storage.objects;
+drop policy if exists "Admin and team can delete project files" on storage.objects;
 
 create policy "Members can read project files"
   on storage.objects for select
