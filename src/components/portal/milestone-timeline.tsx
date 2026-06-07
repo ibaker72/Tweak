@@ -53,14 +53,27 @@ export function MilestoneTimeline({ milestones }: MilestoneTimelineProps) {
               >
                 {m.title}
               </p>
-              {m.due_date && (
-                <p className="mt-0.5 font-mono text-[10px] text-dim">
-                  {new Date(m.due_date + "T00:00:00").toLocaleDateString("en-US", {
-                    month: "short",
-                    day: "numeric",
-                  })}
+              {m.description && (
+                <p
+                  className={cn(
+                    "mt-1 text-[12px] leading-relaxed",
+                    isCompleted ? "text-dim" : isActive ? "text-body" : "text-dim/80",
+                  )}
+                >
+                  {m.description}
                 </p>
               )}
+              <div className="mt-1 flex flex-wrap items-center gap-x-2 gap-y-0.5 font-mono text-[10px] uppercase tracking-[0.06em] text-dim">
+                {isCompleted && m.completed_at ? (
+                  <span className="text-accent/70">
+                    Done {new Date(m.completed_at).toLocaleDateString("en-US", { month: "short", day: "numeric" })}
+                  </span>
+                ) : m.due_date ? (
+                  <span>
+                    Due {new Date(m.due_date + "T00:00:00").toLocaleDateString("en-US", { month: "short", day: "numeric" })}
+                  </span>
+                ) : null}
+              </div>
             </div>
           </div>
         );

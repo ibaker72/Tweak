@@ -9,6 +9,7 @@ import {
   Activity,
   CheckCircle2,
   ClipboardCheck,
+  ExternalLink,
   FileText,
   FolderOpen,
   ArrowRight,
@@ -65,13 +66,16 @@ export default async function ClientPortalPage({ searchParams }: PageProps) {
   const launchTotal = launchChecks.length;
   const pendingApprovals = approvals.filter((a) => a.status === "pending").length;
 
+  // Maps the existing DB enum to the brief's display vocabulary
+  // (discovery / design / build / review / launched). launch_prep stays
+  // grouped under "Review" since it's the final pre-ship phase.
   const statusLabels: Record<string, string> = {
-    planning: "Planning",
+    planning: "Discovery",
     design: "Design",
-    development: "Development",
-    revisions: "Revisions",
-    launch_prep: "Launch Prep",
-    live: "Live",
+    development: "Build",
+    revisions: "Review",
+    launch_prep: "Review",
+    live: "Launched",
   };
 
   return (
@@ -94,12 +98,31 @@ export default async function ClientPortalPage({ searchParams }: PageProps) {
             </h1>
             <StatusBadge status={project.status} type="project" />
           </div>
-          <div className="flex flex-wrap items-center gap-x-4 gap-y-1 font-mono text-[11px] text-dim">
-            {project.client_company && <span>{project.client_company}</span>}
+          <div className="flex flex-wrap items-center gap-x-4 gap-y-1 font-mono text-[11px] uppercase tracking-[0.06em] text-dim">
+            {project.type && <span>{project.type}</span>}
+            {project.client_company && (
+              <>
+                {project.type && <span className="text-white/10">|</span>}
+                <span>{project.client_company}</span>
+              </>
+            )}
             {project.launch_window && (
               <>
                 <span className="text-white/10">|</span>
                 <span>Launch: {project.launch_window}</span>
+              </>
+            )}
+            {project.live_url && (
+              <>
+                <span className="text-white/10">|</span>
+                <a
+                  href={project.live_url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1 text-accent transition-colors hover:text-accent/80"
+                >
+                  View live site <ExternalLink size={10} />
+                </a>
               </>
             )}
           </div>
