@@ -50,7 +50,7 @@ export function FileRow({ file, projectId }: { file: ProjectFile; projectId: str
       </div>
       <div className="flex items-center gap-1 pl-2">
         <a
-          href={`/api/files/download?path=${encodeURIComponent(file.file_path)}`}
+          href={`/api/files/download?id=${encodeURIComponent(file.id)}`}
           target="_blank"
           rel="noopener noreferrer"
           className="flex h-6 w-6 items-center justify-center rounded-md text-dim opacity-0 transition-all hover:bg-accent/10 hover:text-accent group-hover:opacity-100"
