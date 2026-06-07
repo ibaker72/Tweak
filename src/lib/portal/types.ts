@@ -29,6 +29,8 @@ export interface Project {
   slug: string | null;
   client_company: string | null;
   status: ProjectStatus;
+  type: string | null;
+  live_url: string | null;
   completion_percent: number;
   launch_window: string | null;
   created_by: string | null;
@@ -48,9 +50,11 @@ export interface ProjectMilestone {
   id: string;
   project_id: string;
   title: string;
+  description: string | null;
   status: MilestoneStatus;
   sort_order: number;
   due_date: string | null;
+  completed_at: string | null;
   created_at: string;
 }
 
