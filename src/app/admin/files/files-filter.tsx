@@ -81,7 +81,7 @@ function FileRowItem({ file }: { file: FileRow }) {
           </Link>
         )}
         <a
-          href={`/api/files/download?path=${encodeURIComponent(file.file_path)}`}
+          href={`/api/files/download?id=${encodeURIComponent(file.id)}`}
           target="_blank"
           rel="noopener noreferrer"
           className="flex h-7 w-7 items-center justify-center rounded-lg text-dim opacity-0 transition-all hover:bg-accent/10 hover:text-accent group-hover:opacity-100"

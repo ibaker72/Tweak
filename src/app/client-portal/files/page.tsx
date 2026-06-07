@@ -4,8 +4,9 @@ import { ArrowLeft, FolderOpen, FileText } from "lucide-react";
 import { createClient } from "@/lib/supabase/server";
 import { getUserProjects, getProjectFiles } from "@/lib/portal/queries";
 import { FileList } from "@/components/portal/file-list";
-import { ClientUpload } from "@/components/portal/client-upload";
 import { EmptyState } from "@/components/portal/empty-state";
+import { ProjectSwitcher } from "@/components/portal/project-switcher";
+import { FILE_CATEGORY_LABELS, type FileCategory, type ProjectFile } from "@/lib/portal/types";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = { title: "Files | Client Portal" };
@@ -13,6 +14,10 @@ export const metadata: Metadata = { title: "Files | Client Portal" };
 interface PageProps {
   searchParams: Promise<{ project?: string }>;
 }
+
+// Render order for category sections. Anything unrecognised falls through to
+// the "Uncategorised" bucket at the bottom.
+const CATEGORY_ORDER: FileCategory[] = ["design", "document", "asset", "invoice", "other"];
 
 export default async function FilesPage({ searchParams }: PageProps) {
   const supabase = await createClient();
@@ -27,14 +32,24 @@ export default async function FilesPage({ searchParams }: PageProps) {
   const activeProject = projects.find((p) => p.id === activeProjectId) ?? projects[0];
   const files = await getProjectFiles(activeProject.id);
 
-  // Group files by type
-  const grouped = files.reduce<Record<string, typeof files>>((acc, f) => {
-    const group = f.file_type?.toUpperCase() || "OTHER";
-    (acc[group] ??= []).push(f);
+  // Group by category, preserving CATEGORY_ORDER, with an "Uncategorised"
+  // bucket for null. Inside each bucket files keep their query order (newest
+  // first by created_at).
+  const grouped = files.reduce<Record<string, ProjectFile[]>>((acc, f) => {
+    const key = f.category ?? "_uncategorised";
+    (acc[key] ??= []).push(f);
     return acc;
   }, {});
 
-  const groups = Object.entries(grouped).sort(([a], [b]) => a.localeCompare(b));
+  const sections: Array<{ key: string; label: string; files: ProjectFile[] }> = [];
+  for (const c of CATEGORY_ORDER) {
+    if (grouped[c]?.length) {
+      sections.push({ key: c, label: FILE_CATEGORY_LABELS[c], files: grouped[c] });
+    }
+  }
+  if (grouped._uncategorised?.length) {
+    sections.push({ key: "_uncategorised", label: "Uncategorised", files: grouped._uncategorised });
+  }
 
   return (
     <div>
@@ -56,24 +71,30 @@ export default async function FilesPage({ searchParams }: PageProps) {
               <h1 className="font-display text-[22px] font-bold tracking-[-0.02em] text-white">
                 Project Files
               </h1>
-              <p className="font-mono text-[11px] text-dim">{activeProject.name}</p>
+              <p className="font-mono text-[11px] uppercase tracking-[0.06em] text-dim">
+                {activeProject.name}
+              </p>
             </div>
           </div>
-          <ClientUpload projectId={activeProject.id} />
+          {projects.length > 1 && (
+            <ProjectSwitcher projects={projects} activeProjectId={activeProjectId} />
+          )}
         </div>
       </div>
 
       {/* File list */}
       {files.length > 0 ? (
-        groups.length > 1 ? (
+        sections.length > 1 ? (
           <div className="space-y-8">
-            {groups.map(([type, typeFiles]) => (
-              <div key={type}>
-                <h2 className="mb-3 font-mono text-[10px] uppercase tracking-[0.1em] text-dim">
-                  {type} files
+            {sections.map(({ key, label, files: sectionFiles }) => (
+              <section key={key}>
+                <h2 className="mb-3 flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.1em] text-dim">
+                  <span>{label}</span>
+                  <span className="text-white/15">·</span>
+                  <span>{sectionFiles.length} {sectionFiles.length === 1 ? "file" : "files"}</span>
                 </h2>
-                <FileList files={typeFiles} />
-              </div>
+                <FileList files={sectionFiles} />
+              </section>
             ))}
           </div>
         ) : (
@@ -83,8 +104,8 @@ export default async function FilesPage({ searchParams }: PageProps) {
         <div className="card-premium">
           <EmptyState
             icon={<FileText size={18} />}
-            title="No files yet"
-            description="Project files will appear here when uploaded. You can also upload files to share with your team."
+            title="No files shared yet"
+            description="Your team will share project files here — designs, documents, assets and invoices. You'll be able to preview images inline and download anything else."
           />
         </div>
       )}

@@ -21,27 +21,18 @@ export async function POST(request: Request) {
     .single();
 
   const isAdmin = profile?.role === "admin" || profile?.role === "team";
+  if (!isAdmin) {
+    // Phase 2: client uploads are not allowed. Only admin/team can upload.
+    return NextResponse.json({ error: "Access denied" }, { status: 403 });
+  }
 
   const formData = await request.formData();
   const file = formData.get("file") as File | null;
   const projectId = formData.get("project_id") as string | null;
+  const category = formData.get("category") as string | null;
 
   if (!file || !projectId) {
     return NextResponse.json({ error: "File and project_id required" }, { status: 400 });
-  }
-
-  // If not admin/team, verify project membership
-  if (!isAdmin) {
-    const { data: membership } = await supabase
-      .from("project_members")
-      .select("id")
-      .eq("project_id", projectId)
-      .eq("user_id", user.id)
-      .single();
-
-    if (!membership) {
-      return NextResponse.json({ error: "Access denied" }, { status: 403 });
-    }
   }
 
   if (file.size > MAX_SIZE) {
@@ -65,13 +56,19 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: uploadError.message }, { status: 500 });
   }
 
-  // Insert metadata row with file_size
+  const allowedCategories = ["design", "document", "asset", "invoice", "other"];
+  const normalizedCategory =
+    category && allowedCategories.includes(category) ? category : null;
+
+  // Insert metadata row
   const { error: dbError } = await supabase.from("project_files").insert({
     project_id: projectId,
     file_name: file.name,
     file_path: storagePath,
     file_type: ext || null,
     file_size: file.size,
+    mime_type: file.type || null,
+    category: normalizedCategory,
     uploaded_by: user.id,
   });
 

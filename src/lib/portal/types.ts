@@ -14,6 +14,15 @@ export type ProjectStatus =
 export type MilestoneStatus = "pending" | "in_progress" | "completed";
 export type TaskType = "completed" | "client_action" | "launch_check";
 export type ApprovalStatus = "pending" | "approved" | "changes_requested";
+export type FileCategory = "design" | "document" | "asset" | "invoice" | "other";
+
+export const FILE_CATEGORY_LABELS: Record<FileCategory, string> = {
+  design: "Design",
+  document: "Document",
+  asset: "Asset",
+  invoice: "Invoice",
+  other: "Other",
+};
 
 export interface Profile {
   id: string;
@@ -86,6 +95,8 @@ export interface ProjectFile {
   file_path: string;
   file_type: string | null;
   file_size: number | null;
+  category: FileCategory | null;
+  mime_type: string | null;
   uploaded_by: string | null;
   created_at: string;
 }
