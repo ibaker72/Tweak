@@ -110,6 +110,7 @@ create trigger project_milestones_completed_at
 -- filtered to "rows where user_id = auth.uid()", which is exactly the
 -- access check we want.
 drop policy if exists "Members can read memberships for their projects" on public.project_members;
+drop policy if exists "Users can read their own memberships" on public.project_members;
 create policy "Users can read their own memberships"
   on public.project_members for select
   using (user_id = auth.uid());
