@@ -171,12 +171,9 @@ export function ProjectRail({ projects }: Props) {
           <div
             key={project.slug}
             data-rail-card
-            className="shrink-0 snap-start"
-            style={{
-              // Mobile: ~85vw so next card peeks.
-              // Desktop: ~2.2 cards visible (clamp max ~560px).
-              width: "clamp(280px, 85vw, 560px)",
-            }}
+            // Mobile: 85vw (capped) so the next card peeks on phones.
+            // Desktop: clamp(320px, 30vw, 440px) so ~2.5+ cards are visible.
+            className="w-[85vw] max-w-[420px] shrink-0 snap-start sm:w-[clamp(320px,30vw,440px)] sm:max-w-none"
           >
             <ProjectCard project={project} />
           </div>
