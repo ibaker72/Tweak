@@ -444,7 +444,7 @@ export function PricingTiers() {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -6 }}
               transition={{ duration: 0.15, ease: "easeOut" }}
-              className="overflow-hidden rounded-2xl border border-white/[0.06]"
+              className="overflow-hidden rounded-2xl border border-white/[0.06] pt-7 sm:pt-8"
               style={{ background: "var(--pricing-border-subtle)" }}
             >
               <div
