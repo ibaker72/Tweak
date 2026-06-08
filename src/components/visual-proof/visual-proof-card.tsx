@@ -41,6 +41,13 @@ const accentTokens: Record<
     dot: "bg-violet-300",
     check: "text-violet-300",
   },
+  amber: {
+    glow: "rgba(251,191,36,0.10)",
+    tag: "border-amber-300/20 bg-amber-300/[0.06] text-amber-200",
+    catLabel: "text-amber-300/80",
+    dot: "bg-amber-300",
+    check: "text-amber-300",
+  },
 };
 
 type Props = { project: VisualProofProject };
@@ -87,7 +94,7 @@ export function VisualProofCard({ project }: Props) {
           type="button"
           onClick={() => setLightboxIndex(0)}
           aria-label={`Open ${project.title} gallery`}
-          className="group/cover relative block aspect-[16/10] w-full overflow-hidden bg-surface-2"
+          className="group/cover relative block aspect-[16/7.5] w-full overflow-hidden bg-surface-2"
         >
           <MediaTile
             src={cover.src}
@@ -173,7 +180,7 @@ export function VisualProofCard({ project }: Props) {
                   type="button"
                   onClick={() => setLightboxIndex(i)}
                   aria-label={`Open ${project.title} — ${m.label ?? `slide ${i + 1}`}`}
-                  className="relative aspect-[16/10] w-[86px] flex-shrink-0 snap-start overflow-hidden rounded-md border border-white/[0.07] bg-surface-2 transition-all hover:border-white/[0.22] hover:opacity-100 sm:w-[96px]"
+                  className="relative aspect-[16/7.5] w-[86px] flex-shrink-0 snap-start overflow-hidden rounded-md border border-white/[0.07] bg-surface-2 transition-all hover:border-white/[0.22] hover:opacity-100 sm:w-[96px]"
                 >
                   <MediaTile
                     src={m.src}

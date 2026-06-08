@@ -1,4 +1,4 @@
-export type VisualProofAccent = "lime" | "cyan" | "violet";
+export type VisualProofAccent = "lime" | "cyan" | "violet" | "amber";
 
 export type VisualProofMediaKind = "image" | "video";
 
@@ -24,6 +24,7 @@ export interface VisualProofProject {
 const PP_BASE = "/visual-proof/ppmechanical";
 const SPEEDWAY_BASE = "/visual-proof/speedwaymotors";
 const TWEAK_BASE = "/visual-proof/tweak-os";
+const JERSEYPANTRY_BASE = "/visual-proof/jerseypantry";
 
 export const visualProofProjects: VisualProofProject[] = [
   {
@@ -152,6 +153,47 @@ export const visualProofProjects: VisualProofProject[] = [
         src: `${TWEAK_BASE}/proposal-result.webp`,
         type: "image",
         label: "Proposal result",
+      },
+    ],
+  },
+  {
+    slug: "jerseypantry",
+    title: "JerseyPantry",
+    category: "Local Same-Day Delivery Storefront",
+    description:
+      "Built a mobile-first local commerce experience for North Jersey — same-day delivery, ZIP-gated checkout, category browsing, and a clean path from add-to-cart to checkout.",
+    tags: [
+      "Local Commerce",
+      "Same-Day Delivery",
+      "Mobile-First",
+      "ZIP-Gated Checkout",
+    ],
+    outcomes: [
+      "Mobile-first storefront",
+      "Same-day delivery flow",
+      "ZIP-gated checkout",
+      "Coupon code workflow",
+      "Category-first product browsing",
+    ],
+    accent: "amber",
+    liveUrl: "https://jerseypantry.com",
+    caseStudyHref: "/work/jerseypantry",
+    media: [
+      { src: `${JERSEYPANTRY_BASE}/hero.webp`, type: "image", label: "Hero" },
+      {
+        src: `${JERSEYPANTRY_BASE}/how-it-works.webp`,
+        type: "image",
+        label: "How it works",
+      },
+      {
+        src: `${JERSEYPANTRY_BASE}/add-to-cart.webp`,
+        type: "image",
+        label: "Add to cart",
+      },
+      {
+        src: `${JERSEYPANTRY_BASE}/cart-checkout.webp`,
+        type: "image",
+        label: "Cart & checkout",
       },
     ],
   },
