@@ -41,7 +41,7 @@ export function FeaturedWork() {
             -mx-5 px-5 pb-2
             sm:mx-0 sm:mt-14 sm:grid sm:snap-none sm:grid-cols-1
             sm:gap-5 sm:overflow-visible sm:px-0
-            lg:grid-cols-3 lg:gap-6
+            lg:grid-cols-2 lg:gap-6
           "
         >
           {visualProofProjects.map((project, i) => (
