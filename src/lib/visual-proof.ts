@@ -181,19 +181,19 @@ export const visualProofProjects: VisualProofProject[] = [
     media: [
       { src: `${JERSEYPANTRY_BASE}/hero.webp`, type: "image", label: "Hero" },
       {
-        src: `${JERSEYPANTRY_BASE}/how-it-works.webp`,
+        src: `${JERSEYPANTRY_BASE}/menu.webp`,
         type: "image",
-        label: "How it works",
+        label: "Menu",
       },
       {
-        src: `${JERSEYPANTRY_BASE}/add-to-cart.webp`,
+        src: `${JERSEYPANTRY_BASE}/cart.webp`,
         type: "image",
-        label: "Add to cart",
+        label: "Cart",
       },
       {
-        src: `${JERSEYPANTRY_BASE}/cart-checkout.webp`,
+        src: `${JERSEYPANTRY_BASE}/checkout.webp`,
         type: "image",
-        label: "Cart & checkout",
+        label: "Checkout",
       },
     ],
   },

@@ -108,21 +108,37 @@ export default function ProjectPage() {
               </h2>
 
               <div className="mt-5 grid gap-4 md:grid-cols-2 md:gap-5">
-                {project.gallery.map((src, i) => (
-                  <div
-                    key={src}
-                    className="overflow-hidden rounded-2xl border border-white/[0.06] bg-white/[0.02]"
-                  >
-                    <div className="relative aspect-[16/10] w-full bg-black">
-                      <Image
-                        src={src}
-                        alt={`${project.title} screenshot ${i + 1}`}
-                        fill
-                        className="bg-black object-contain object-center p-2 sm:p-3"
-                      />
+                {project.gallery.map((src, i) => {
+                  const isVideo = /\.mp4(?:\?|#|$)/i.test(src);
+                  return (
+                    <div
+                      key={src}
+                      className="overflow-hidden rounded-2xl border border-white/[0.06] bg-white/[0.02]"
+                    >
+                      <div className="relative aspect-[16/10] w-full bg-black">
+                        {isVideo ? (
+                          <video
+                            src={src}
+                            muted
+                            loop
+                            playsInline
+                            autoPlay
+                            preload="metadata"
+                            aria-label={`${project.title} demo ${i + 1}`}
+                            className="absolute inset-0 h-full w-full bg-black object-contain object-center p-2 sm:p-3"
+                          />
+                        ) : (
+                          <Image
+                            src={src}
+                            alt={`${project.title} screenshot ${i + 1}`}
+                            fill
+                            className="bg-black object-contain object-center p-2 sm:p-3"
+                          />
+                        )}
+                      </div>
                     </div>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
             </div>
           </Reveal>
