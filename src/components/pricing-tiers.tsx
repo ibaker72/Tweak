@@ -19,6 +19,7 @@ type Tier = {
   features: string[];
   ctaLabel: string;
   ctaHref: string;
+  checkoutUrl?: string;
   footnote: string;
   featured?: boolean;
   badgeLabel?: string;
@@ -30,6 +31,16 @@ type TabContent = {
   label: string;
   tiers: Tier[];
 };
+
+const pricingLinks = {
+  foundationWebsite: process.env.NEXT_PUBLIC_STRIPE_FOUNDATION_WEBSITE_LINK,
+  growthWebsite: process.env.NEXT_PUBLIC_STRIPE_GROWTH_WEBSITE_LINK,
+  premiumGrowth: process.env.NEXT_PUBLIC_STRIPE_PREMIUM_GROWTH_LINK,
+  dealershipWebsite: process.env.NEXT_PUBLIC_STRIPE_DEALERSHIP_WEBSITE_LINK,
+  adsStarter: process.env.NEXT_PUBLIC_STRIPE_ADS_STARTER_LINK,
+  fullFunnelAds: process.env.NEXT_PUBLIC_STRIPE_FULL_FUNNEL_ADS_LINK,
+  growthPartnership: process.env.NEXT_PUBLIC_STRIPE_GROWTH_PARTNERSHIP_LINK,
+} as const;
 
 const TABS: TabContent[] = [
   {
@@ -54,6 +65,7 @@ const TABS: TabContent[] = [
         ],
         ctaLabel: "Start a project",
         ctaHref: "/contact?tier=Foundation%20Website",
+        checkoutUrl: pricingLinks.foundationWebsite,
         footnote: "Best for new or rebranding businesses",
       },
       {
@@ -74,6 +86,7 @@ const TABS: TabContent[] = [
         ],
         ctaLabel: "Build my growth system",
         ctaHref: "/contact?tier=Growth%20Website%20System",
+        checkoutUrl: pricingLinks.growthWebsite,
         footnote: "Best for businesses ready to dominate local search",
         featured: true,
       },
@@ -96,6 +109,7 @@ const TABS: TabContent[] = [
         ],
         ctaLabel: "Let's talk scale",
         ctaHref: "/contact?tier=Premium%20Growth%20Package",
+        checkoutUrl: pricingLinks.premiumGrowth,
         footnote: "Best for multi-location or high-growth businesses",
       },
       {
@@ -117,6 +131,7 @@ const TABS: TabContent[] = [
         ],
         ctaLabel: "Book a discovery call",
         ctaHref: "/contact?tier=Dealership%20Website%20System",
+        checkoutUrl: pricingLinks.dealershipWebsite,
         footnote: "Best for independent dealerships ready to compete online",
         badgeLabel: "Automotive",
         liveExampleHref: "https://speedwaymotorsllc.com",
@@ -144,6 +159,7 @@ const TABS: TabContent[] = [
         ],
         ctaLabel: "Get started",
         ctaHref: "/contact?tier=Ads%20Starter",
+        checkoutUrl: pricingLinks.adsStarter,
         footnote: "Best paired with a Foundation Website",
       },
       {
@@ -165,6 +181,7 @@ const TABS: TabContent[] = [
         ],
         ctaLabel: "Run ads with us",
         ctaHref: "/contact?tier=Full-Funnel%20Ads",
+        checkoutUrl: pricingLinks.fullFunnelAds,
         footnote: "Best paired with a Growth Website System",
         featured: true,
       },
@@ -187,6 +204,7 @@ const TABS: TabContent[] = [
         ],
         ctaLabel: "Book a strategy call",
         ctaHref: "/contact?tier=Growth%20Partnership",
+        checkoutUrl: pricingLinks.growthPartnership,
         footnote: "Best for serious growth investment",
       },
     ],
@@ -312,17 +330,33 @@ function PricingCard({
       )}
 
       <div className="mt-auto pt-7">
-        <Link
-          href={tier.ctaHref}
-          aria-label={`${tier.ctaLabel} — ${tier.name}`}
-          aria-describedby={`${panelId}-foot-${index}`}
-          className={cn(
-            "inline-flex w-full items-center justify-center !gap-2 !px-5 !py-3 !text-[12.5px]",
-            isFeatured ? "btn-v" : "btn-o"
-          )}
-        >
-          {tier.ctaLabel} <span aria-hidden="true">→</span>
-        </Link>
+        {tier.checkoutUrl ? (
+          <a
+            href={tier.checkoutUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label={`Purchase now — ${tier.name}`}
+            aria-describedby={`${panelId}-foot-${index}`}
+            className={cn(
+              "inline-flex w-full items-center justify-center !gap-2 !px-5 !py-3 !text-[12.5px]",
+              isFeatured ? "btn-v" : "btn-o"
+            )}
+          >
+            Purchase now <span aria-hidden="true">→</span>
+          </a>
+        ) : (
+          <Link
+            href={tier.ctaHref}
+            aria-label={`${tier.ctaLabel} — ${tier.name}`}
+            aria-describedby={`${panelId}-foot-${index}`}
+            className={cn(
+              "inline-flex w-full items-center justify-center !gap-2 !px-5 !py-3 !text-[12.5px]",
+              isFeatured ? "btn-v" : "btn-o"
+            )}
+          >
+            {tier.ctaLabel} <span aria-hidden="true">→</span>
+          </Link>
+        )}
 
         <p
           id={`${panelId}-foot-${index}`}
