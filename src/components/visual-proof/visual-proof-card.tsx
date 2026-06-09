@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { ArrowRight, CheckCircle2, ExternalLink, Maximize2 } from "lucide-react";
 import { MediaTile } from "./media-tile";
+import { ProofSlideshow } from "./proof-slideshow";
 import { VisualProofLightbox } from "./visual-proof-lightbox";
 import type {
   VisualProofAccent,
@@ -96,12 +97,14 @@ export function VisualProofCard({ project }: Props) {
           aria-label={`Open ${project.title} gallery`}
           className="group/cover relative block aspect-[16/7.5] w-full overflow-hidden bg-surface-2"
         >
-          <MediaTile
-            src={cover.src}
-            alt={`${project.title} — ${cover.label ?? "cover"}`}
+          <ProofSlideshow
+            sources={project.media
+              .filter((m) => m.type === "image")
+              .slice(0, 5)
+              .map((m) => m.src)}
+            alt={`${project.title} — gallery preview`}
             className="absolute inset-0 h-full w-full"
             sizes="(max-width: 640px) 88vw, (max-width: 1024px) 50vw, 33vw"
-            active={inView}
           />
           <div className="pointer-events-none absolute inset-x-0 bottom-0 h-12 bg-gradient-to-t from-black/40 to-transparent" />
           <span className="pointer-events-none absolute right-3 top-3 inline-flex items-center gap-1.5 rounded-full border border-white/[0.14] bg-black/45 px-2.5 py-1 font-mono text-[9.5px] font-medium uppercase tracking-[0.08em] text-white/85 backdrop-blur transition-colors group-hover/cover:bg-black/65">
