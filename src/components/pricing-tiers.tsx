@@ -24,6 +24,7 @@ type Tier = {
   priceSuffix: string;
   priceSubline?: string;
   cadence: string;
+  cadenceAddOn?: string;
   features: string[];
   ctaLabel: string;
   ctaHref: string;
@@ -32,14 +33,13 @@ type Tier = {
   featured?: boolean;
   badgeLabel?: string;
   liveExampleHref?: string;
-  monthlyAddOn?: {
-    label: string;
-    price: string;
-    priceSuffix: string;
+  monthlyCareNote?: {
+    title: string;
     description: string;
-    features: string[];
-    ctaLabel: string;
-    ctaHref: string;
+  };
+  secondaryCta?: {
+    label: string;
+    href: string;
     checkoutUrl?: string;
   };
 };
@@ -76,6 +76,7 @@ const TABS: TabContent[] = [
         price: "$2,500",
         priceSuffix: "",
         cadence: "One-time launch setup",
+        cadenceAddOn: "Optional care plan available: +$297/mo",
         features: [
           "Launch-ready starter website",
           "Core pages: home, about, services, contact",
@@ -83,31 +84,21 @@ const TABS: TabContent[] = [
           "Contact / booking form",
           "Basic local SEO setup",
           "Google Business Profile setup guidance",
-          "Domain + hosting setup guidance",
           "Analytics & form tracking",
           "Launch deployment",
-          "Optional monthly website care + starter SEO support",
         ],
         ctaLabel: "Start Launch Kit — $2,500",
         ctaHref: "/contact?tier=New%20Business%20Launch%20Kit",
         checkoutUrl: pricingLinks.newBusinessLaunchKit,
         footnote: "Best for brand-new businesses launching online",
-        monthlyAddOn: {
-          label: "Optional Monthly Website/SEO Care Plan",
-          price: "+$297",
-          priceSuffix: "/mo",
+        monthlyCareNote: {
+          title: "Monthly care available",
           description:
-            "Ongoing care to support your local online presence after launch.",
-          features: [
-            "Website maintenance & small updates",
-            "Basic technical SEO checks",
-            "Google Business Profile support",
-            "Form, tracking & analytics checks",
-            "Speed and mobile usability monitoring",
-            "Monthly priority support",
-          ],
-          ctaLabel: "Add Monthly Care — $297/mo",
-          ctaHref: "/contact?tier=Monthly%20Website%20SEO%20Care%20Plan",
+            "Website updates, basic SEO checks, GBP support, analytics checks, and priority support.",
+        },
+        secondaryCta: {
+          label: "Ask about monthly care",
+          href: "/contact?tier=Monthly%20Website%20SEO%20Care%20Plan",
           checkoutUrl: pricingLinks.monthlyWebsiteSeoCare,
         },
       },
@@ -302,10 +293,11 @@ function PricingCard({
 }) {
   const isFeatured = !!tier.featured;
   const hasBadge = isFeatured || !!tier.badgeLabel;
-  const monthlyAddOn = tier.monthlyAddOn;
-  const primaryCtaIsFilled = isFeatured || !!monthlyAddOn;
+  const secondaryCta = tier.secondaryCta;
+  const monthlyCareNote = tier.monthlyCareNote;
+  const primaryCtaIsFilled = isFeatured || !!secondaryCta;
   const primaryCtaLabel =
-    tier.checkoutUrl && !monthlyAddOn ? "Purchase now" : tier.ctaLabel;
+    tier.checkoutUrl && !secondaryCta ? "Purchase now" : tier.ctaLabel;
   const primaryCtaClassName = cn(
     "inline-flex w-full items-center justify-center !gap-2 !px-5 !py-3 !text-[12.5px]",
     primaryCtaIsFilled ? "btn-v" : "btn-o"
@@ -379,6 +371,12 @@ function PricingCard({
         {tier.cadence}
       </p>
 
+      {tier.cadenceAddOn && (
+        <p className="mt-1 font-body text-[11px] leading-[1.5] text-white/45">
+          {tier.cadenceAddOn}
+        </p>
+      )}
+
       <div
         className="my-6 h-px w-full"
         style={{ background: "var(--pricing-border-subtle)" }}
@@ -403,36 +401,18 @@ function PricingCard({
         </div>
       )}
 
-      {monthlyAddOn && (
-        <div className="mt-6 rounded-xl border border-accent/[0.18] bg-white/[0.02] p-4">
-          <div className="flex items-start justify-between gap-3">
-            <div className="min-w-0">
-              <p className="font-mono text-[10px] font-semibold uppercase tracking-[0.18em] text-accent">
-                Optional add-on
-              </p>
-              <p className="mt-1.5 font-display text-[14px] font-bold leading-[1.3] tracking-[-0.01em] text-white">
-                {monthlyAddOn.label}
-              </p>
-            </div>
-            <p className="shrink-0 font-display text-[18px] font-extrabold leading-none tracking-[-0.02em] text-white">
-              {monthlyAddOn.price}
-              <span className="font-body text-[12px] font-medium text-white/45">
-                {monthlyAddOn.priceSuffix}
-              </span>
+      <div className="mt-auto pt-7">
+        {monthlyCareNote && (
+          <div className="mb-5 border-t border-white/[0.05] pt-4">
+            <p className="font-mono text-[10px] font-semibold uppercase tracking-[0.18em] text-accent/85">
+              {monthlyCareNote.title}
+            </p>
+            <p className="mt-1.5 font-body text-[11.5px] leading-[1.55] text-white/50">
+              {monthlyCareNote.description}
             </p>
           </div>
-          <p className="mt-2 font-body text-[11.5px] leading-[1.5] text-white/50">
-            {monthlyAddOn.description}
-          </p>
-          <ul className="mt-3 flex flex-col gap-1.5">
-            {monthlyAddOn.features.map((feature) => (
-              <FeatureItem key={feature} text={feature} />
-            ))}
-          </ul>
-        </div>
-      )}
+        )}
 
-      <div className="mt-auto pt-7">
         {tier.checkoutUrl ? (
           <a
             href={tier.checkoutUrl}
@@ -455,24 +435,24 @@ function PricingCard({
           </Link>
         )}
 
-        {monthlyAddOn &&
-          (monthlyAddOn.checkoutUrl ? (
+        {secondaryCta &&
+          (secondaryCta.checkoutUrl ? (
             <a
-              href={monthlyAddOn.checkoutUrl}
+              href={secondaryCta.checkoutUrl}
               target="_blank"
               rel="noopener noreferrer"
-              aria-label={`${monthlyAddOn.ctaLabel} — ${tier.name}`}
-              className="btn-o mt-3 inline-flex w-full items-center justify-center !gap-2 !px-5 !py-3 !text-[12.5px]"
+              aria-label={`${secondaryCta.label} — ${tier.name}`}
+              className="mt-2 inline-flex w-full items-center justify-center gap-1.5 px-3 py-2 font-body text-[11.5px] font-medium text-white/55 transition-colors duration-200 hover:text-accent"
             >
-              {monthlyAddOn.ctaLabel} <span aria-hidden="true">→</span>
+              {secondaryCta.label} <span aria-hidden="true">→</span>
             </a>
           ) : (
             <Link
-              href={monthlyAddOn.ctaHref}
-              aria-label={`${monthlyAddOn.ctaLabel} — ${tier.name}`}
-              className="btn-o mt-3 inline-flex w-full items-center justify-center !gap-2 !px-5 !py-3 !text-[12.5px]"
+              href={secondaryCta.href}
+              aria-label={`${secondaryCta.label} — ${tier.name}`}
+              className="mt-2 inline-flex w-full items-center justify-center gap-1.5 px-3 py-2 font-body text-[11.5px] font-medium text-white/55 transition-colors duration-200 hover:text-accent"
             >
-              {monthlyAddOn.ctaLabel} <span aria-hidden="true">→</span>
+              {secondaryCta.label} <span aria-hidden="true">→</span>
             </Link>
           ))}
 
