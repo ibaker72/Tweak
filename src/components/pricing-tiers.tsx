@@ -32,7 +32,16 @@ type Tier = {
   featured?: boolean;
   badgeLabel?: string;
   liveExampleHref?: string;
-  variant?: "addon";
+  monthlyAddOn?: {
+    label: string;
+    price: string;
+    priceSuffix: string;
+    description: string;
+    features: string[];
+    ctaLabel: string;
+    ctaHref: string;
+    checkoutUrl?: string;
+  };
 };
 
 type TabContent = {
@@ -43,8 +52,6 @@ type TabContent = {
 
 const pricingLinks = {
   newBusinessLaunchKit: process.env.NEXT_PUBLIC_STRIPE_NEW_BUSINESS_LAUNCH_KIT_LINK,
-  newBusinessLaunchKitSetup:
-    process.env.NEXT_PUBLIC_STRIPE_NEW_BUSINESS_LAUNCH_KIT_SETUP_LINK,
   monthlyWebsiteSeoCare:
     process.env.NEXT_PUBLIC_STRIPE_MONTHLY_WEBSITE_SEO_CARE_LINK,
   foundationWebsite: process.env.NEXT_PUBLIC_STRIPE_FOUNDATION_WEBSITE_LINK,
@@ -65,64 +72,44 @@ const TABS: TabContent[] = [
         label: "New business",
         name: "New Business Launch Kit",
         subtitle:
-          "Everything a brand-new business needs to launch online fast.",
-        price: "$2,000",
+          "Everything a brand-new business needs to launch online fast with a professional website, quote/contact flow, and local presence foundation.",
+        price: "$2,500",
         priceSuffix: "",
-        cadence: "One-time build · launch-ready in days",
+        cadence: "One-time launch setup",
         features: [
-          "Launch-ready website",
-          "Core pages (home, about, services, contact)",
-          "Contact / booking form",
-          "Basic SEO setup",
+          "Launch-ready starter website",
+          "Core pages: home, about, services, contact",
           "Mobile-first design",
+          "Contact / booking form",
+          "Basic local SEO setup",
+          "Google Business Profile setup guidance",
+          "Domain + hosting setup guidance",
+          "Analytics & form tracking",
+          "Launch deployment",
+          "Optional monthly website care + starter SEO support",
         ],
-        ctaLabel: "Launch my business",
+        ctaLabel: "Start Launch Kit — $2,500",
         ctaHref: "/contact?tier=New%20Business%20Launch%20Kit",
         checkoutUrl: pricingLinks.newBusinessLaunchKit,
         footnote: "Best for brand-new businesses launching online",
-      },
-      {
-        label: "Add-on",
-        name: "New Business Launch Kit Setup",
-        subtitle:
-          "Get your Launch Kit set up, deployed, and ready to go.",
-        price: "$500",
-        priceSuffix: "",
-        cadence: "One-time setup · pairs with Launch Kit",
-        features: [
-          "Domain + hosting setup",
-          "Analytics & form wiring",
-          "Launch deployment",
-        ],
-        ctaLabel: "Add setup",
-        ctaHref: "/contact?tier=New%20Business%20Launch%20Kit%20Setup",
-        checkoutUrl: pricingLinks.newBusinessLaunchKitSetup,
-        footnote: "Add-on for the Launch Kit",
-        variant: "addon",
-      },
-      {
-        label: "Monthly care",
-        name: "Monthly Website/SEO Care Plan",
-        subtitle: "Monthly website care + starter SEO support",
-        price: "$297",
-        priceSuffix: "/mo",
-        cadence:
-          "Keep your website maintained, updated, and moving in the right direction after launch.",
-        features: [
-          "Website maintenance & small updates",
-          "Basic technical SEO checks",
-          "Google Business Profile support",
-          "Form, tracking & analytics checks",
-          "Speed and mobile usability monitoring",
-          "Monthly priority support",
-          "Light content / service-page updates",
-          "Best paired with the Launch Kit Setup",
-        ],
-        ctaLabel: "Start monthly care",
-        ctaHref: "/contact?tier=Monthly%20Website%20SEO%20Care%20Plan",
-        checkoutUrl: pricingLinks.monthlyWebsiteSeoCare,
-        footnote:
-          "Best for new businesses that want ongoing support without a large upfront build",
+        monthlyAddOn: {
+          label: "Optional Monthly Website/SEO Care Plan",
+          price: "+$297",
+          priceSuffix: "/mo",
+          description:
+            "Ongoing care to support your local online presence after launch.",
+          features: [
+            "Website maintenance & small updates",
+            "Basic technical SEO checks",
+            "Google Business Profile support",
+            "Form, tracking & analytics checks",
+            "Speed and mobile usability monitoring",
+            "Monthly priority support",
+          ],
+          ctaLabel: "Add Monthly Care — $297/mo",
+          ctaHref: "/contact?tier=Monthly%20Website%20SEO%20Care%20Plan",
+          checkoutUrl: pricingLinks.monthlyWebsiteSeoCare,
+        },
       },
       {
         label: "Starter",
@@ -314,26 +301,28 @@ function PricingCard({
   panelId: string;
 }) {
   const isFeatured = !!tier.featured;
-  const isAddon = tier.variant === "addon";
-  const hasBadge = !isAddon && (isFeatured || !!tier.badgeLabel);
-
-  const cardBackground = isAddon
-    ? "var(--brand-surface-1)"
-    : isFeatured
-      ? "var(--pricing-bg-card-mid)"
-      : "var(--pricing-bg-card)";
+  const hasBadge = isFeatured || !!tier.badgeLabel;
+  const monthlyAddOn = tier.monthlyAddOn;
+  const primaryCtaIsFilled = isFeatured || !!monthlyAddOn;
+  const primaryCtaLabel =
+    tier.checkoutUrl && !monthlyAddOn ? "Purchase now" : tier.ctaLabel;
+  const primaryCtaClassName = cn(
+    "inline-flex w-full items-center justify-center !gap-2 !px-5 !py-3 !text-[12.5px]",
+    primaryCtaIsFilled ? "btn-v" : "btn-o"
+  );
 
   return (
     <article
       aria-label={`${tier.name} pricing tier`}
-      data-variant={isAddon ? "addon" : undefined}
       className={cn(
         "pricing-card group relative flex h-full flex-col px-6 pb-6 sm:px-6 sm:pb-7 lg:px-6 lg:pb-8",
         hasBadge ? "pt-8 sm:pt-9 lg:pt-10" : "pt-6 sm:pt-7 lg:pt-8",
         "transition-colors duration-300"
       )}
       style={{
-        background: cardBackground,
+        background: isFeatured
+          ? "var(--pricing-bg-card-mid)"
+          : "var(--pricing-bg-card)",
         border: hasBadge ? "1px solid rgba(200, 255, 0, 0.18)" : undefined,
         animation: `pricing-card-rise 600ms cubic-bezier(0.16,1,0.3,1) both`,
         animationDelay: `${index * 80}ms`,
@@ -357,15 +346,9 @@ function PricingCard({
         </div>
       )}
 
-      {isAddon ? (
-        <span className="inline-flex items-center self-start rounded-full border border-white/[0.10] bg-white/[0.02] px-2.5 py-[3px] font-mono text-[10px] font-semibold uppercase tracking-[0.18em] text-white/55">
-          {tier.label}
-        </span>
-      ) : (
-        <p className="font-mono text-[10px] font-semibold uppercase tracking-[0.18em] text-white/35">
-          {tier.label}
-        </p>
-      )}
+      <p className="font-mono text-[10px] font-semibold uppercase tracking-[0.18em] text-white/35">
+        {tier.label}
+      </p>
 
       <h3 className="mt-3 font-display text-[22px] font-extrabold leading-[1.15] tracking-[-0.02em] text-white">
         {tier.name}
@@ -376,12 +359,7 @@ function PricingCard({
       </p>
 
       <div className="mt-5 flex items-baseline gap-1">
-        <span
-          className={cn(
-            "font-display font-extrabold leading-none tracking-[-0.03em] text-white",
-            isAddon ? "text-[28px]" : "text-[38px]"
-          )}
-        >
+        <span className="font-display text-[38px] font-extrabold leading-none tracking-[-0.03em] text-white">
           {tier.price}
         </span>
         {tier.priceSuffix && (
@@ -425,34 +403,78 @@ function PricingCard({
         </div>
       )}
 
+      {monthlyAddOn && (
+        <div className="mt-6 rounded-xl border border-accent/[0.18] bg-white/[0.02] p-4">
+          <div className="flex items-start justify-between gap-3">
+            <div className="min-w-0">
+              <p className="font-mono text-[10px] font-semibold uppercase tracking-[0.18em] text-accent">
+                Optional add-on
+              </p>
+              <p className="mt-1.5 font-display text-[14px] font-bold leading-[1.3] tracking-[-0.01em] text-white">
+                {monthlyAddOn.label}
+              </p>
+            </div>
+            <p className="shrink-0 font-display text-[18px] font-extrabold leading-none tracking-[-0.02em] text-white">
+              {monthlyAddOn.price}
+              <span className="font-body text-[12px] font-medium text-white/45">
+                {monthlyAddOn.priceSuffix}
+              </span>
+            </p>
+          </div>
+          <p className="mt-2 font-body text-[11.5px] leading-[1.5] text-white/50">
+            {monthlyAddOn.description}
+          </p>
+          <ul className="mt-3 flex flex-col gap-1.5">
+            {monthlyAddOn.features.map((feature) => (
+              <FeatureItem key={feature} text={feature} />
+            ))}
+          </ul>
+        </div>
+      )}
+
       <div className="mt-auto pt-7">
         {tier.checkoutUrl ? (
           <a
             href={tier.checkoutUrl}
             target="_blank"
             rel="noopener noreferrer"
-            aria-label={`Purchase now — ${tier.name}`}
+            aria-label={`${primaryCtaLabel} — ${tier.name}`}
             aria-describedby={`${panelId}-foot-${index}`}
-            className={cn(
-              "inline-flex w-full items-center justify-center !gap-2 !px-5 !py-3 !text-[12.5px]",
-              isFeatured && !isAddon ? "btn-v" : "btn-o"
-            )}
+            className={primaryCtaClassName}
           >
-            Purchase now <span aria-hidden="true">→</span>
+            {primaryCtaLabel} <span aria-hidden="true">→</span>
           </a>
         ) : (
           <Link
             href={tier.ctaHref}
-            aria-label={`${tier.ctaLabel} — ${tier.name}`}
+            aria-label={`${primaryCtaLabel} — ${tier.name}`}
             aria-describedby={`${panelId}-foot-${index}`}
-            className={cn(
-              "inline-flex w-full items-center justify-center !gap-2 !px-5 !py-3 !text-[12.5px]",
-              isFeatured && !isAddon ? "btn-v" : "btn-o"
-            )}
+            className={primaryCtaClassName}
           >
-            {tier.ctaLabel} <span aria-hidden="true">→</span>
+            {primaryCtaLabel} <span aria-hidden="true">→</span>
           </Link>
         )}
+
+        {monthlyAddOn &&
+          (monthlyAddOn.checkoutUrl ? (
+            <a
+              href={monthlyAddOn.checkoutUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label={`${monthlyAddOn.ctaLabel} — ${tier.name}`}
+              className="btn-o mt-3 inline-flex w-full items-center justify-center !gap-2 !px-5 !py-3 !text-[12.5px]"
+            >
+              {monthlyAddOn.ctaLabel} <span aria-hidden="true">→</span>
+            </a>
+          ) : (
+            <Link
+              href={monthlyAddOn.ctaHref}
+              aria-label={`${monthlyAddOn.ctaLabel} — ${tier.name}`}
+              className="btn-o mt-3 inline-flex w-full items-center justify-center !gap-2 !px-5 !py-3 !text-[12.5px]"
+            >
+              {monthlyAddOn.ctaLabel} <span aria-hidden="true">→</span>
+            </Link>
+          ))}
 
         <p
           id={`${panelId}-foot-${index}`}
@@ -564,7 +586,47 @@ function PricingCarousel({
 
   return (
     <div>
-      {/* Desktop arrow controls */}
+      {/* Mobile + tablet controls: prev arrow · dot indicators · next arrow, above the rail */}
+      <div className="mb-3 flex items-center justify-between gap-3 lg:hidden">
+        <button
+          type="button"
+          aria-label="Previous pricing tiers"
+          onClick={() => scrollByCard(-1)}
+          disabled={!canScrollLeft}
+          className="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-white/[0.08] bg-white/[0.02] text-white/70 transition-all duration-200 hover:border-white/[0.18] hover:bg-white/[0.04] hover:text-white disabled:cursor-not-allowed disabled:opacity-30 disabled:hover:border-white/[0.08] disabled:hover:bg-white/[0.02]"
+        >
+          <ChevronLeft size={14} />
+        </button>
+        <div className="flex flex-1 items-center justify-center gap-1.5">
+          {tiers.map((tier, i) => {
+            const isActive = activeIndex === i;
+            return (
+              <button
+                key={`dot-${panelId}-${tier.name}`}
+                type="button"
+                aria-label={`Go to ${tier.name}`}
+                aria-current={isActive}
+                onClick={() => scrollToIndex(i)}
+                className={cn(
+                  "h-1.5 rounded-full transition-all duration-200",
+                  isActive ? "w-6 bg-accent" : "w-1.5 bg-white/20 hover:bg-white/40"
+                )}
+              />
+            );
+          })}
+        </div>
+        <button
+          type="button"
+          aria-label="Next pricing tiers"
+          onClick={() => scrollByCard(1)}
+          disabled={!canScrollRight}
+          className="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-white/[0.08] bg-white/[0.02] text-white/70 transition-all duration-200 hover:border-white/[0.18] hover:bg-white/[0.04] hover:text-white disabled:cursor-not-allowed disabled:opacity-30 disabled:hover:border-white/[0.08] disabled:hover:bg-white/[0.02]"
+        >
+          <ChevronRight size={14} />
+        </button>
+      </div>
+
+      {/* Desktop arrow controls, top-right */}
       <div
         className={cn(
           "mb-3 hidden justify-end gap-2 lg:flex",
@@ -634,26 +696,6 @@ function PricingCarousel({
           <div className="shrink-0" aria-hidden="true" style={{ width: 1 }} />
         </div>
       </div>
-
-      {/* Mobile dot indicators */}
-      <div className="mt-5 flex justify-center gap-1.5 md:hidden">
-        {tiers.map((tier, i) => {
-          const isActive = activeIndex === i;
-          return (
-            <button
-              key={`dot-${panelId}-${tier.name}`}
-              type="button"
-              aria-label={`Go to ${tier.name}`}
-              aria-current={isActive}
-              onClick={() => scrollToIndex(i)}
-              className={cn(
-                "h-1.5 rounded-full transition-all duration-200",
-                isActive ? "w-6 bg-accent" : "w-1.5 bg-white/20 hover:bg-white/40"
-              )}
-            />
-          );
-        })}
-      </div>
     </div>
   );
 }
@@ -690,7 +732,6 @@ export function PricingTiers() {
       <style>{`
         .pricing-card { transition: background-color 300ms ease, border-color 300ms ease; }
         .pricing-card:hover { background: var(--brand-surface-3) !important; }
-        .pricing-card[data-variant="addon"]:hover { background: var(--brand-surface-2) !important; }
         .pricing-tab {
           transition: background-color 200ms ease, color 200ms ease;
         }
@@ -713,7 +754,7 @@ export function PricingTiers() {
             </p>
           </div>
 
-          <div className="mb-10 flex justify-center sm:mb-12">
+          <div className="mb-6 flex justify-center sm:mb-10 lg:mb-12">
             <div
               role="tablist"
               aria-label="Pricing categories"
