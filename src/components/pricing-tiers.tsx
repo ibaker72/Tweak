@@ -1,9 +1,17 @@
 "use client";
 
 import Link from "next/link";
-import { useId, useMemo, useState, useRef, type KeyboardEvent } from "react";
+import {
+  useCallback,
+  useEffect,
+  useId,
+  useMemo,
+  useRef,
+  useState,
+  type KeyboardEvent,
+} from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { Check, Zap } from "lucide-react";
+import { Check, ChevronLeft, ChevronRight, Zap } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 type TabId = "websites" | "marketing";
@@ -24,6 +32,7 @@ type Tier = {
   featured?: boolean;
   badgeLabel?: string;
   liveExampleHref?: string;
+  variant?: "addon";
 };
 
 type TabContent = {
@@ -33,6 +42,9 @@ type TabContent = {
 };
 
 const pricingLinks = {
+  newBusinessLaunchKit: process.env.NEXT_PUBLIC_STRIPE_NEW_BUSINESS_LAUNCH_KIT_LINK,
+  newBusinessLaunchKitSetup:
+    process.env.NEXT_PUBLIC_STRIPE_NEW_BUSINESS_LAUNCH_KIT_SETUP_LINK,
   foundationWebsite: process.env.NEXT_PUBLIC_STRIPE_FOUNDATION_WEBSITE_LINK,
   growthWebsite: process.env.NEXT_PUBLIC_STRIPE_GROWTH_WEBSITE_LINK,
   premiumGrowth: process.env.NEXT_PUBLIC_STRIPE_PREMIUM_GROWTH_LINK,
@@ -47,6 +59,45 @@ const TABS: TabContent[] = [
     id: "websites",
     label: "Websites",
     tiers: [
+      {
+        label: "New business",
+        name: "New Business Launch Kit",
+        subtitle:
+          "Everything a brand-new business needs to launch online fast.",
+        price: "$2,000",
+        priceSuffix: "",
+        cadence: "One-time build · launch-ready in days",
+        features: [
+          "Launch-ready website",
+          "Core pages (home, about, services, contact)",
+          "Contact / booking form",
+          "Basic SEO setup",
+          "Mobile-first design",
+        ],
+        ctaLabel: "Launch my business",
+        ctaHref: "/contact?tier=New%20Business%20Launch%20Kit",
+        checkoutUrl: pricingLinks.newBusinessLaunchKit,
+        footnote: "Best for brand-new businesses launching online",
+      },
+      {
+        label: "Add-on",
+        name: "New Business Launch Kit Setup",
+        subtitle:
+          "Get your Launch Kit set up, deployed, and ready to go.",
+        price: "$500",
+        priceSuffix: "",
+        cadence: "One-time setup · pairs with Launch Kit",
+        features: [
+          "Domain + hosting setup",
+          "Analytics & form wiring",
+          "Launch deployment",
+        ],
+        ctaLabel: "Add setup",
+        ctaHref: "/contact?tier=New%20Business%20Launch%20Kit%20Setup",
+        checkoutUrl: pricingLinks.newBusinessLaunchKitSetup,
+        footnote: "Add-on for the Launch Kit",
+        variant: "addon",
+      },
       {
         label: "Starter",
         name: "Foundation Website",
@@ -237,18 +288,26 @@ function PricingCard({
   panelId: string;
 }) {
   const isFeatured = !!tier.featured;
-  const hasBadge = isFeatured || !!tier.badgeLabel;
+  const isAddon = tier.variant === "addon";
+  const hasBadge = !isAddon && (isFeatured || !!tier.badgeLabel);
+
+  const cardBackground = isAddon
+    ? "var(--brand-surface-1)"
+    : isFeatured
+      ? "var(--pricing-bg-card-mid)"
+      : "var(--pricing-bg-card)";
 
   return (
     <article
       aria-label={`${tier.name} pricing tier`}
+      data-variant={isAddon ? "addon" : undefined}
       className={cn(
         "pricing-card group relative flex h-full flex-col px-6 pb-6 sm:px-6 sm:pb-7 lg:px-6 lg:pb-8",
         hasBadge ? "pt-8 sm:pt-9 lg:pt-10" : "pt-6 sm:pt-7 lg:pt-8",
         "transition-colors duration-300"
       )}
       style={{
-        background: isFeatured ? "var(--pricing-bg-card-mid)" : "var(--pricing-bg-card)",
+        background: cardBackground,
         border: hasBadge ? "1px solid rgba(200, 255, 0, 0.18)" : undefined,
         animation: `pricing-card-rise 600ms cubic-bezier(0.16,1,0.3,1) both`,
         animationDelay: `${index * 80}ms`,
@@ -272,9 +331,15 @@ function PricingCard({
         </div>
       )}
 
-      <p className="font-mono text-[10px] font-semibold uppercase tracking-[0.18em] text-white/35">
-        {tier.label}
-      </p>
+      {isAddon ? (
+        <span className="inline-flex items-center self-start rounded-full border border-white/[0.10] bg-white/[0.02] px-2.5 py-[3px] font-mono text-[10px] font-semibold uppercase tracking-[0.18em] text-white/55">
+          {tier.label}
+        </span>
+      ) : (
+        <p className="font-mono text-[10px] font-semibold uppercase tracking-[0.18em] text-white/35">
+          {tier.label}
+        </p>
+      )}
 
       <h3 className="mt-3 font-display text-[22px] font-extrabold leading-[1.15] tracking-[-0.02em] text-white">
         {tier.name}
@@ -285,7 +350,12 @@ function PricingCard({
       </p>
 
       <div className="mt-5 flex items-baseline gap-1">
-        <span className="font-display text-[38px] font-extrabold leading-none tracking-[-0.03em] text-white">
+        <span
+          className={cn(
+            "font-display font-extrabold leading-none tracking-[-0.03em] text-white",
+            isAddon ? "text-[28px]" : "text-[38px]"
+          )}
+        >
           {tier.price}
         </span>
         {tier.priceSuffix && (
@@ -339,7 +409,7 @@ function PricingCard({
             aria-describedby={`${panelId}-foot-${index}`}
             className={cn(
               "inline-flex w-full items-center justify-center !gap-2 !px-5 !py-3 !text-[12.5px]",
-              isFeatured ? "btn-v" : "btn-o"
+              isFeatured && !isAddon ? "btn-v" : "btn-o"
             )}
           >
             Purchase now <span aria-hidden="true">→</span>
@@ -351,7 +421,7 @@ function PricingCard({
             aria-describedby={`${panelId}-foot-${index}`}
             className={cn(
               "inline-flex w-full items-center justify-center !gap-2 !px-5 !py-3 !text-[12.5px]",
-              isFeatured ? "btn-v" : "btn-o"
+              isFeatured && !isAddon ? "btn-v" : "btn-o"
             )}
           >
             {tier.ctaLabel} <span aria-hidden="true">→</span>
@@ -366,6 +436,199 @@ function PricingCard({
         </p>
       </div>
     </article>
+  );
+}
+
+function PricingCarousel({
+  tiers,
+  panelId,
+}: {
+  tiers: Tier[];
+  panelId: string;
+}) {
+  const railRef = useRef<HTMLDivElement>(null);
+  const [canScrollLeft, setCanScrollLeft] = useState(false);
+  const [canScrollRight, setCanScrollRight] = useState(true);
+  const [activeIndex, setActiveIndex] = useState(0);
+  const [reducedMotion, setReducedMotion] = useState(false);
+
+  useEffect(() => {
+    const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
+    setReducedMotion(mq.matches);
+    const handler = (e: MediaQueryListEvent) => setReducedMotion(e.matches);
+    mq.addEventListener?.("change", handler);
+    return () => mq.removeEventListener?.("change", handler);
+  }, []);
+
+  const updateState = useCallback(() => {
+    const el = railRef.current;
+    if (!el) return;
+    const max = el.scrollWidth - el.clientWidth;
+    setCanScrollLeft(el.scrollLeft > 2);
+    setCanScrollRight(el.scrollLeft < max - 2);
+
+    const cards = el.querySelectorAll<HTMLElement>("[data-pricing-card]");
+    if (cards.length === 0) return;
+    const scrollLeft = el.scrollLeft;
+    let bestIdx = 0;
+    let bestDist = Infinity;
+    cards.forEach((card, i) => {
+      const dist = Math.abs(card.offsetLeft - scrollLeft);
+      if (dist < bestDist) {
+        bestDist = dist;
+        bestIdx = i;
+      }
+    });
+    setActiveIndex(bestIdx);
+  }, []);
+
+  useEffect(() => {
+    updateState();
+    const el = railRef.current;
+    if (!el) return;
+    const onScroll = () => updateState();
+    el.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", updateState);
+    return () => {
+      el.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", updateState);
+    };
+  }, [updateState]);
+
+  const scrollByCard = useCallback(
+    (dir: 1 | -1) => {
+      const el = railRef.current;
+      if (!el) return;
+      const card = el.querySelector<HTMLElement>("[data-pricing-card]");
+      const cardWidth = card?.offsetWidth ?? el.clientWidth * 0.85;
+      el.scrollBy({
+        left: dir * (cardWidth + 1),
+        behavior: reducedMotion ? "auto" : "smooth",
+      });
+    },
+    [reducedMotion]
+  );
+
+  const scrollToIndex = useCallback(
+    (idx: number) => {
+      const el = railRef.current;
+      if (!el) return;
+      const cards = el.querySelectorAll<HTMLElement>("[data-pricing-card]");
+      const target = cards[idx];
+      if (!target) return;
+      el.scrollTo({
+        left: target.offsetLeft,
+        behavior: reducedMotion ? "auto" : "smooth",
+      });
+    },
+    [reducedMotion]
+  );
+
+  const onRailKeyDown = (e: KeyboardEvent<HTMLDivElement>) => {
+    if (e.key === "ArrowRight") {
+      e.preventDefault();
+      scrollByCard(1);
+    } else if (e.key === "ArrowLeft") {
+      e.preventDefault();
+      scrollByCard(-1);
+    }
+  };
+
+  const canScroll = canScrollLeft || canScrollRight;
+
+  return (
+    <div>
+      {/* Desktop arrow controls */}
+      <div
+        className={cn(
+          "mb-3 hidden justify-end gap-2 lg:flex",
+          !canScroll && "lg:hidden"
+        )}
+      >
+        <button
+          type="button"
+          aria-label="Previous pricing tiers"
+          onClick={() => scrollByCard(-1)}
+          disabled={!canScrollLeft}
+          className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-white/[0.08] bg-white/[0.02] text-white/70 transition-all duration-200 hover:border-white/[0.18] hover:bg-white/[0.04] hover:text-white disabled:cursor-not-allowed disabled:opacity-30 disabled:hover:border-white/[0.08] disabled:hover:bg-white/[0.02]"
+        >
+          <ChevronLeft size={16} />
+        </button>
+        <button
+          type="button"
+          aria-label="Next pricing tiers"
+          onClick={() => scrollByCard(1)}
+          disabled={!canScrollRight}
+          className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-white/[0.08] bg-white/[0.02] text-white/70 transition-all duration-200 hover:border-white/[0.18] hover:bg-white/[0.04] hover:text-white disabled:cursor-not-allowed disabled:opacity-30 disabled:hover:border-white/[0.08] disabled:hover:bg-white/[0.02]"
+        >
+          <ChevronRight size={16} />
+        </button>
+      </div>
+
+      {/* Bordered wrapper + scroll rail */}
+      <div
+        className="relative overflow-hidden rounded-2xl border border-white/[0.06]"
+        style={{ background: "var(--pricing-border-subtle)" }}
+      >
+        {/* Edge fade — left */}
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-y-0 left-0 z-10 w-12 bg-gradient-to-r from-[var(--brand-surface-3)] to-transparent transition-opacity duration-200"
+          style={{ opacity: canScrollLeft ? 1 : 0 }}
+        />
+        {/* Edge fade — right */}
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-y-0 right-0 z-10 w-12 bg-gradient-to-l from-[var(--brand-surface-3)] to-transparent transition-opacity duration-200"
+          style={{ opacity: canScrollRight ? 1 : 0 }}
+        />
+
+        <div
+          ref={railRef}
+          role="region"
+          aria-label="Pricing tiers — horizontal scroll"
+          tabIndex={0}
+          onKeyDown={onRailKeyDown}
+          className="no-scrollbar flex snap-x snap-mandatory gap-px overflow-x-auto px-4 pb-3 pt-10 outline-none focus-visible:ring-2 focus-visible:ring-accent/40 sm:px-6"
+          style={{
+            scrollBehavior: reducedMotion ? "auto" : "smooth",
+            WebkitOverflowScrolling: "touch",
+          }}
+        >
+          {tiers.map((tier, i) => (
+            <div
+              key={`${panelId}-${tier.name}`}
+              data-pricing-card
+              className="flex shrink-0 snap-start flex-col w-[85vw] max-w-[340px] md:w-[clamp(280px,46vw,360px)] lg:w-[clamp(280px,30vw,360px)]"
+            >
+              <PricingCard tier={tier} index={i} panelId={panelId} />
+            </div>
+          ))}
+          {/* Tail spacer so the last card's right edge can snap-start fully */}
+          <div className="shrink-0" aria-hidden="true" style={{ width: 1 }} />
+        </div>
+      </div>
+
+      {/* Mobile dot indicators */}
+      <div className="mt-5 flex justify-center gap-1.5 md:hidden">
+        {tiers.map((tier, i) => {
+          const isActive = activeIndex === i;
+          return (
+            <button
+              key={`dot-${panelId}-${tier.name}`}
+              type="button"
+              aria-label={`Go to ${tier.name}`}
+              aria-current={isActive}
+              onClick={() => scrollToIndex(i)}
+              className={cn(
+                "h-1.5 rounded-full transition-all duration-200",
+                isActive ? "w-6 bg-accent" : "w-1.5 bg-white/20 hover:bg-white/40"
+              )}
+            />
+          );
+        })}
+      </div>
+    </div>
   );
 }
 
@@ -401,6 +664,7 @@ export function PricingTiers() {
       <style>{`
         .pricing-card { transition: background-color 300ms ease, border-color 300ms ease; }
         .pricing-card:hover { background: var(--brand-surface-3) !important; }
+        .pricing-card[data-variant="addon"]:hover { background: var(--brand-surface-2) !important; }
         .pricing-tab {
           transition: background-color 200ms ease, color 200ms ease;
         }
@@ -478,26 +742,11 @@ export function PricingTiers() {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -6 }}
               transition={{ duration: 0.15, ease: "easeOut" }}
-              className="overflow-hidden rounded-2xl border border-white/[0.06] pt-7 sm:pt-8"
-              style={{ background: "var(--pricing-border-subtle)" }}
             >
-              <div
-                className={cn(
-                  "grid grid-cols-1 gap-px",
-                  activePanel.tiers.length === 4
-                    ? "md:grid-cols-2 lg:grid-cols-4"
-                    : "lg:grid-cols-3"
-                )}
-              >
-                {activePanel.tiers.map((tier, i) => (
-                  <PricingCard
-                    key={`${activePanel.id}-${tier.name}`}
-                    tier={tier}
-                    index={i}
-                    panelId={`${baseId}-panel-${activePanel.id}`}
-                  />
-                ))}
-              </div>
+              <PricingCarousel
+                tiers={activePanel.tiers}
+                panelId={`${baseId}-panel-${activePanel.id}`}
+              />
             </motion.div>
           </AnimatePresence>
 
