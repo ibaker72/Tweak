@@ -45,6 +45,8 @@ const pricingLinks = {
   newBusinessLaunchKit: process.env.NEXT_PUBLIC_STRIPE_NEW_BUSINESS_LAUNCH_KIT_LINK,
   newBusinessLaunchKitSetup:
     process.env.NEXT_PUBLIC_STRIPE_NEW_BUSINESS_LAUNCH_KIT_SETUP_LINK,
+  monthlyWebsiteSeoCare:
+    process.env.NEXT_PUBLIC_STRIPE_MONTHLY_WEBSITE_SEO_CARE_LINK,
   foundationWebsite: process.env.NEXT_PUBLIC_STRIPE_FOUNDATION_WEBSITE_LINK,
   growthWebsite: process.env.NEXT_PUBLIC_STRIPE_GROWTH_WEBSITE_LINK,
   premiumGrowth: process.env.NEXT_PUBLIC_STRIPE_PREMIUM_GROWTH_LINK,
@@ -97,6 +99,30 @@ const TABS: TabContent[] = [
         checkoutUrl: pricingLinks.newBusinessLaunchKitSetup,
         footnote: "Add-on for the Launch Kit",
         variant: "addon",
+      },
+      {
+        label: "Monthly care",
+        name: "Monthly Website/SEO Care Plan",
+        subtitle: "Monthly website care + starter SEO support",
+        price: "$297",
+        priceSuffix: "/mo",
+        cadence:
+          "Keep your website maintained, updated, and moving in the right direction after launch.",
+        features: [
+          "Website maintenance & small updates",
+          "Basic technical SEO checks",
+          "Google Business Profile support",
+          "Form, tracking & analytics checks",
+          "Speed and mobile usability monitoring",
+          "Monthly priority support",
+          "Light content / service-page updates",
+          "Best paired with the Launch Kit Setup",
+        ],
+        ctaLabel: "Start monthly care",
+        ctaHref: "/contact?tier=Monthly%20Website%20SEO%20Care%20Plan",
+        checkoutUrl: pricingLinks.monthlyWebsiteSeoCare,
+        footnote:
+          "Best for new businesses that want ongoing support without a large upfront build",
       },
       {
         label: "Starter",
