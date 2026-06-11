@@ -48,7 +48,7 @@ export function Footer() {
   const cols = [
     { h: "Services", links: [{ l: "Web Applications", href: "/#services" }, { l: "Landing Pages", href: "/#services" }, { l: "E-Commerce", href: "/#services" }, { l: "Automation & AI", href: "/#services" }, { l: "Digital Marketing", href: "/services/digital-marketing" }] },
     { h: "Company", links: [{ l: "Case Studies", href: "/work" }, { l: "About", href: "/about" }, { l: "Process", href: "/#process" }, { l: "Contact", href: "/contact" }, { l: "Partners", href: "/partners" }] },
-    { h: "Resources", links: [{ l: "Blog", href: "/blog" }, { l: "Cost Calculator", href: "/tools/website-cost-calculator" }, { l: "Resources", href: "/resources" }, { l: "Compare", href: "/compare/tweak-and-build-vs-freelancer" }] },
+    { h: "Resources", links: [{ l: "Blog", href: "/blog" }, { l: "Cost Calculator", href: "/tools/website-cost-calculator" }, { l: "Resources", href: "/resources" }, { l: "Compare", href: "/compare/tweak-and-build-vs-freelancer" }, { l: "North Jersey SEO", href: "/seo" }] },
   ];
 
   return (

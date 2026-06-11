@@ -13,8 +13,20 @@
       "schedule": "0 16 * * 1-5"
     },
     {
-      "path": "/api/openclaw/cron/geo-generate",
-      "schedule": "0 6 * * *"
+      "path": "/api/cron/generate-city-pages",
+      "schedule": "0 4 * * 1"
+    },
+    {
+      "path": "/api/cron/ping-search-engines",
+      "schedule": "0 5 * * 1"
+    },
+    {
+      "path": "/api/cron/generate-gbp-posts",
+      "schedule": "0 5 * * 2"
+    },
+    {
+      "path": "/api/cron/seo-health",
+      "schedule": "0 5 * * 3"
     }
   ]
 }
