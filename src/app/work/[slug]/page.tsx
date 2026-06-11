@@ -32,6 +32,17 @@ export default function ProjectPage() {
   const prev = idx > 0 ? projects[idx - 1] : null;
   const next = idx < projects.length - 1 ? projects[idx + 1] : null;
 
+  const heroAspectClass =
+    project.heroAspect === "wide"
+      ? "aspect-[16/9]"
+      : project.heroAspect === "mobile"
+        ? "aspect-[4/5] sm:aspect-[3/4] lg:aspect-[4/3]"
+        : "aspect-[16/10]";
+  const heroFitClass =
+    project.heroImageFit === "cover"
+      ? "object-cover object-top"
+      : "object-contain object-center";
+
   return (
     <div className="pb-24 pt-36 sm:pt-40">
       <div className="wrap">
@@ -87,16 +98,19 @@ export default function ProjectPage() {
         </Reveal>
 
         <Reveal delay={0.1}>
-          <div className="mb-14 overflow-hidden rounded-2xl border border-white/[0.06] bg-gradient-to-br from-surface-2 to-surface-3">
-            <ProjectPrimaryMedia
-              project={project}
-              sizes="(max-width: 1024px) 100vw, 1200px"
-              className="relative h-48 sm:h-72 lg:h-[420px]"
-              imageClassName="object-cover object-top"
-              videoClassName="h-full w-full object-cover object-top"
-              priority
-            />
-            <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/55 via-black/10 to-transparent" />
+          <div className="mb-14 overflow-hidden rounded-2xl border border-white/[0.08] bg-gradient-to-br from-surface-2 to-surface-3 shadow-[0_1px_0_rgba(255,255,255,0.03)_inset,0_24px_64px_rgba(0,0,0,0.35)]">
+            <div
+              className={`relative w-full ${heroAspectClass} max-h-[640px] bg-black/30`}
+            >
+              <ProjectPrimaryMedia
+                project={project}
+                sizes="(max-width: 1024px) 100vw, 1200px"
+                className="absolute inset-0"
+                imageClassName={heroFitClass}
+                videoClassName={`h-full w-full ${heroFitClass}`}
+                priority
+              />
+            </div>
           </div>
         </Reveal>
 

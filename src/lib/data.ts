@@ -20,6 +20,8 @@ export interface Project {
   video?: string;
   poster?: string;
   gallery?: string[];
+  heroAspect?: "desktop" | "mobile" | "wide";
+  heroImageFit?: "contain" | "cover";
   proofBadges?: string[];
   metricBadge?: string;
   accent?: "lime" | "cyan" | "violet" | "amber";
@@ -54,6 +56,7 @@ export const projects: Project[] = [
     live: true,
     url: "https://ppmechanicalllc.com",
     image: "/visual-proof/ppmechanical/hero.webp",
+    heroAspect: "mobile",
     gallery: [
       "/visual-proof/ppmechanical/hero.webp",
       "/visual-proof/ppmechanical/service.webp",
@@ -97,6 +100,7 @@ export const projects: Project[] = [
     live: true,
     url: "https://speedwaymotorsllc.com",
     image: "/visual-proof/speedwaymotors/hero.webp",
+    heroAspect: "mobile",
     gallery: [
       "/visual-proof/speedwaymotors/hero.webp",
       "/visual-proof/speedwaymotors/inventory.webp",
@@ -143,6 +147,7 @@ export const projects: Project[] = [
     live: true,
     url: "https://app.tweakandbuild.com",
     image: "/visual-proof/tweak-os/cover.webp",
+    heroAspect: "mobile",
     gallery: [
       "/visual-proof/tweak-os/cover.webp",
       "/visual-proof/tweak-os/dashboard.webp",
@@ -186,6 +191,7 @@ export const projects: Project[] = [
     live: true,
     url: "https://jerseypantry.com",
     image: "/visual-proof/jerseypantry/hero.webp",
+    heroAspect: "mobile",
     gallery: [
       "/visual-proof/jerseypantry/hero.webp",
       "/visual-proof/jerseypantry/menu.webp",
@@ -361,6 +367,7 @@ export const projects: Project[] = [
     image: "/proof/voltgrid/gameplay-5.png",
     video: "/proof/voltgrid/gameplay-demo.mp4",
     poster: "/proof/voltgrid/gameplay-5.png",
+    heroAspect: "wide",
     gallery: [
       "/proof/voltgrid/gameplay-1.jpg",
       "/proof/voltgrid/gameplay-2.jpg",
