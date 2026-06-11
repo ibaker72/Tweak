@@ -14,6 +14,7 @@ export interface Project {
   stack: string[];
   year: string;
   live?: boolean;
+  status?: "live" | "coming-soon" | "concept";
   url?: string;
   image?: string;
   video?: string;
@@ -280,51 +281,55 @@ export const projects: Project[] = [
     slug: "meridian-health",
     title: "Meridian Health",
     category: "Web Application",
-    tagline: "Patient portal and scheduling for a multi-location clinic",
+    tagline:
+      "Planned patient portal concept for multi-location clinics.",
     description:
-      "A full-stack patient portal and scheduling platform serving three clinic locations, replacing phone-based booking with a seamless digital experience.",
+      "An upcoming healthcare portal concept focused on patient scheduling, intake flows, and a smoother digital experience for multi-location clinics.",
     challenge:
-      "The clinic was losing 20+ staff hours per week on phone scheduling with a 25% no-show rate.",
+      "Multi-location clinics still lean on phone-based scheduling and paper intake. The concept explores what a modern patient portal could look like end to end.",
     solution:
-      "We built a patient-facing portal with real-time calendar availability, automated SMS/email reminders, and a staff dashboard for full schedule management.",
-    problem: "25% no-show rate and 20+ hours/week wasted on phone scheduling.",
+      "A planned patient-facing portal with calendar-driven scheduling, digital intake, and a staff dashboard for managing appointments across locations.",
+    problem:
+      "Phone-based scheduling and paper intake slow down both patients and front-desk staff.",
     solutionShort:
-      "Patient portal with real-time availability and automated SMS reminders.",
-    impactShort: "No-shows reduced 40%. Phone volume cut in half.",
-    impact: "No-shows reduced 40%",
+      "Concept portal with calendar scheduling, digital intake, and a multi-location staff dashboard.",
+    impactShort: "Concept build — showcase in progress.",
+    impact: "Concept build in progress",
     results: [
-      "No-show rate dropped from 25% to 15% in 60 days",
-      "Phone volume reduced by 40%",
-      "Patient satisfaction up 22%",
+      "Patient-facing scheduling and intake flow",
+      "Staff dashboard for multi-location appointment management",
+      "Reminder and notification flows designed in",
     ],
     stack: ["Next.js", "TypeScript", "Supabase", "Twilio", "Vercel"],
     year: "2025",
+    status: "coming-soon",
   },
   {
     slug: "atlas-freight",
     title: "Atlas Freight",
     category: "Landing Page + CRM",
     tagline:
-      "Lead generation engine with instant-quote calculator for logistics",
+      "Concept logistics landing page with a quote-to-CRM flow.",
     description:
-      "A conversion-optimized landing page with a step-by-step freight quote calculator feeding directly into a HubSpot sales pipeline.",
+      "A logistics landing page and quote-flow concept designed to show how freight companies can capture leads, qualify requests, and route them into a CRM.",
     challenge:
-      "Atlas was running Google Ads to a generic WordPress page with just a phone number. No online lead capture, no CRM.",
+      "Most freight operators send paid traffic to a phone number and a generic page. The concept explores a real lead-capture and qualification path instead.",
     solution:
-      "We designed a high-converting landing page with an interactive quote builder. Leads flow into HubSpot with automated sequences and real-time sales notifications.",
+      "A planned high-converting landing page paired with a step-by-step quote builder. Submissions are designed to flow into a CRM with qualification fields and routing in mind.",
     problem:
-      "Google Ads to a generic page. No lead capture, no CRM, burning budget.",
+      "Logistics sites typically have no online lead capture and no CRM connection for paid traffic.",
     solutionShort:
-      "Conversion-optimized page with interactive quote builder feeding HubSpot.",
-    impactShort: "3.2x more qualified leads. Cost per lead down 58%.",
-    impact: "3.2x more qualified leads",
+      "Concept landing page with a quote builder designed to feed a CRM.",
+    impactShort: "Concept build — showcase in progress.",
+    impact: "Concept build in progress",
     results: [
-      "Qualified leads increased 3.2x in month one",
-      "Cost per lead decreased 58%",
-      "Sales response: 6 hours to 12 minutes",
+      "Interactive quote builder for freight requests",
+      "Lead capture and qualification fields designed in",
+      "CRM-ready submission flow planned",
     ],
     stack: ["React", "TypeScript", "HubSpot API", "Vercel", "Analytics"],
-    year: "2024",
+    year: "2025",
+    status: "concept",
   },
   {
     slug: "voltgrid",

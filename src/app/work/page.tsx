@@ -63,6 +63,14 @@ const remainder = projects.filter(
 
 const orderedProjects = [...featuredFirst, ...remainder];
 
+const statusMeta: Record<
+  Exclude<NonNullable<(typeof projects)[number]["status"]>, "live">,
+  { badge: string; cta: string }
+> = {
+  "coming-soon": { badge: "Coming Soon", cta: "Coming Soon" },
+  concept: { badge: "Concept", cta: "Concept Build" },
+};
+
 export default function WorkPage() {
   return (
     <div className="pb-8 pt-36 sm:pt-40">
@@ -90,86 +98,106 @@ export default function WorkPage() {
             {orderedProjects.map((project, i) => {
               const Icon = projectIcons[project.slug] ?? CheckCircle2;
               const accent = accentMap[project.accent ?? "lime"];
+              const meta =
+                project.status === "coming-soon" ||
+                project.status === "concept"
+                  ? statusMeta[project.status]
+                  : null;
+              const upcoming = meta !== null;
 
-              return (
-                <Reveal key={project.slug} delay={i * 0.05}>
-                  <Link
-                    href={`/work/${project.slug}`}
-                    className="group relative block h-full"
-                  >
+              const cardBody = (
+                <>
+                  {!upcoming ? (
                     <div
                       className="pointer-events-none absolute -inset-px rounded-2xl opacity-0 transition-opacity duration-500 group-hover:opacity-100"
                       style={{
                         background: `radial-gradient(60% 50% at 50% 0%, ${accent.glow}, transparent)`,
                       }}
                     />
-                    <div
-                      className="relative flex h-full flex-col rounded-2xl border border-white/[0.07] p-5 transition-all duration-300 group-hover:border-white/[0.14] sm:p-7"
-                      style={{
-                        background:
-                          "linear-gradient(180deg, rgba(255,255,255,0.018), rgba(255,255,255,0.008))",
-                        boxShadow:
-                          "0 1px 0 rgba(255,255,255,0.03) inset, 0 16px 48px rgba(0,0,0,0.18)",
-                      }}
-                    >
-                      <div className="flex items-start gap-4">
-                        <div
-                          className={`flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-xl border ${accent.iconRing}`}
-                        >
-                          <Icon size={18} strokeWidth={1.75} />
-                        </div>
-                        <div className="min-w-0 flex-1">
-                          <div className="flex items-center gap-2">
-                            <span className="font-mono text-[10px] uppercase tracking-[0.08em] text-dim">
-                              {String(i + 1).padStart(2, "0")}
-                            </span>
-                            <span className="h-1 w-1 rounded-full bg-white/[0.18]" />
-                            <span className="truncate font-mono text-[10px] uppercase tracking-[0.08em] text-accent/70">
-                              {project.category}
-                            </span>
-                          </div>
-                          <h2 className="mt-1.5 font-display text-[20px] font-bold tracking-[-0.01em] text-white sm:text-[22px]">
-                            {project.title}
-                          </h2>
-                        </div>
+                  ) : null}
+                  <div
+                    className={`relative flex h-full flex-col rounded-2xl border border-white/[0.07] p-5 transition-all duration-300 sm:p-7 ${
+                      upcoming ? "" : "group-hover:border-white/[0.14]"
+                    }`}
+                    style={{
+                      background:
+                        "linear-gradient(180deg, rgba(255,255,255,0.018), rgba(255,255,255,0.008))",
+                      boxShadow:
+                        "0 1px 0 rgba(255,255,255,0.03) inset, 0 16px 48px rgba(0,0,0,0.18)",
+                    }}
+                  >
+                    <div className="flex items-start gap-4">
+                      <div
+                        className={`flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-xl border ${accent.iconRing}`}
+                      >
+                        <Icon size={18} strokeWidth={1.75} />
                       </div>
-
-                      <p className="mt-4 text-[13.5px] leading-[1.7] text-body sm:text-[14px] sm:leading-[1.75]">
-                        {project.description}
-                      </p>
-
-                      {project.proofBadges?.length ? (
-                        <div className="mt-5 flex flex-wrap gap-1.5">
-                          {project.proofBadges.map((badge) => (
-                            <span
-                              key={badge}
-                              className={`inline-flex items-center gap-1.5 rounded-full border ${accent.chip} px-2.5 py-1 font-mono text-[10px] font-medium tracking-[0.02em]`}
-                            >
-                              <span
-                                className={`h-1 w-1 rounded-full ${accent.dot}`}
-                              />
-                              {badge}
-                            </span>
-                          ))}
-                        </div>
-                      ) : null}
-
-                      {project.metricBadge ? (
-                        <div
-                          className={`mt-5 inline-flex w-fit items-center gap-2 rounded-xl border ${accent.metric} px-3.5 py-2`}
-                        >
-                          <CheckCircle2 size={13} strokeWidth={2} />
-                          <span className="text-[12px] font-semibold tracking-[-0.005em]">
-                            {project.metricBadge}
+                      <div className="min-w-0 flex-1">
+                        <div className="flex flex-wrap items-center gap-2">
+                          <span className="font-mono text-[10px] uppercase tracking-[0.08em] text-dim">
+                            {String(i + 1).padStart(2, "0")}
                           </span>
+                          <span className="h-1 w-1 rounded-full bg-white/[0.18]" />
+                          <span className="truncate font-mono text-[10px] uppercase tracking-[0.08em] text-accent/70">
+                            {project.category}
+                          </span>
+                          {meta ? (
+                            <span className="inline-flex items-center gap-1.5 rounded-full border border-white/[0.1] bg-white/[0.03] px-2 py-0.5 font-mono text-[9.5px] uppercase tracking-[0.08em] text-white/65">
+                              <span className="h-1 w-1 rounded-full bg-white/40" />
+                              {meta.badge}
+                            </span>
+                          ) : null}
                         </div>
-                      ) : null}
+                        <h2 className="mt-1.5 font-display text-[20px] font-bold tracking-[-0.01em] text-white sm:text-[22px]">
+                          {project.title}
+                        </h2>
+                      </div>
+                    </div>
 
-                      <div className="mt-6 flex-1" />
-                      <div className="mt-4 flex items-center justify-between border-t border-white/[0.05] pt-4">
-                        <span className="font-mono text-[10px] uppercase tracking-[0.1em] text-dim">
-                          Case study
+                    <p className="mt-4 text-[13.5px] leading-[1.7] text-body sm:text-[14px] sm:leading-[1.75]">
+                      {project.description}
+                    </p>
+
+                    {project.proofBadges?.length ? (
+                      <div className="mt-5 flex flex-wrap gap-1.5">
+                        {project.proofBadges.map((badge) => (
+                          <span
+                            key={badge}
+                            className={`inline-flex items-center gap-1.5 rounded-full border ${accent.chip} px-2.5 py-1 font-mono text-[10px] font-medium tracking-[0.02em]`}
+                          >
+                            <span
+                              className={`h-1 w-1 rounded-full ${accent.dot}`}
+                            />
+                            {badge}
+                          </span>
+                        ))}
+                      </div>
+                    ) : null}
+
+                    {project.metricBadge ? (
+                      <div
+                        className={`mt-5 inline-flex w-fit items-center gap-2 rounded-xl border ${accent.metric} px-3.5 py-2`}
+                      >
+                        <CheckCircle2 size={13} strokeWidth={2} />
+                        <span className="text-[12px] font-semibold tracking-[-0.005em]">
+                          {project.metricBadge}
                         </span>
+                      </div>
+                    ) : null}
+
+                    <div className="mt-6 flex-1" />
+                    <div className="mt-4 flex items-center justify-between border-t border-white/[0.05] pt-4">
+                      <span className="font-mono text-[10px] uppercase tracking-[0.1em] text-dim">
+                        {upcoming ? "Showcase" : "Case study"}
+                      </span>
+                      {meta ? (
+                        <span
+                          aria-disabled="true"
+                          className="inline-flex items-center gap-1.5 text-[12.5px] font-semibold text-white/55"
+                        >
+                          {meta.cta}
+                        </span>
+                      ) : (
                         <span className="inline-flex items-center gap-1.5 text-[12.5px] font-semibold text-white/85 transition-colors duration-200 group-hover:text-accent">
                           View Case Study
                           <ArrowRight
@@ -177,9 +205,29 @@ export default function WorkPage() {
                             className="transition-transform duration-200 group-hover:translate-x-0.5"
                           />
                         </span>
-                      </div>
+                      )}
                     </div>
-                  </Link>
+                  </div>
+                </>
+              );
+
+              return (
+                <Reveal key={project.slug} delay={i * 0.05}>
+                  {upcoming ? (
+                    <div
+                      aria-label={`${project.title} — ${meta?.badge ?? "Upcoming"}`}
+                      className="relative block h-full cursor-default"
+                    >
+                      {cardBody}
+                    </div>
+                  ) : (
+                    <Link
+                      href={`/work/${project.slug}`}
+                      className="group relative block h-full"
+                    >
+                      {cardBody}
+                    </Link>
+                  )}
                 </Reveal>
               );
             })}
