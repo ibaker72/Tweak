@@ -30,7 +30,7 @@ export default function TermsPage() {
               <p>
                 These Terms of Service (&ldquo;Terms&rdquo;) govern your use of the website, services, and
                 communications provided by <strong>Bedrock Alliance Holdings LLC</strong>, operating as{" "}
-                <strong>Tweak &amp; Build</strong> (&ldquo;we,&rdquo; &ldquo;us,&rdquo; or
+                <strong>Tweak &amp; Build </strong> (&ldquo;we,&rdquo; &ldquo;us,&rdquo; or
                 &ldquo;our&rdquo;). By using our website, submitting a form, booking a call, requesting a
                 quote, or engaging us for services, you agree to these Terms and to our{" "}
                 <Link href="/privacy">Privacy Policy</Link>. If you do not agree, please do not use the
