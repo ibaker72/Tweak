@@ -1,5 +1,6 @@
 "use client";
 import { useState, useEffect } from "react";
+import Link from "next/link";
 import { Mail, Clock, Shield, Send, Loader2, Check, ArrowRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Reveal } from "@/components/shared";
@@ -10,7 +11,7 @@ import { getReferralFromCookie } from "@/lib/referral";
 export default function ContactPage() {
   const [tierParam, setTierParam] = useState<string | null>(null);
   const [referralCode, setReferralCode] = useState("");
-  const [form, setForm] = useState({ name: "", email: "", company: "", budget: "", timeline: "", tier: "", message: "" });
+  const [form, setForm] = useState({ name: "", email: "", phone: "", company: "", budget: "", timeline: "", tier: "", message: "" });
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     setTierParam(params.get("tier"));
@@ -90,7 +91,7 @@ export default function ContactPage() {
                     </div>
                     <p className="font-display text-[17px] font-bold text-white">{tierParam ? "Request received!" : "Inquiry received!"}</p>
                     <p className="mt-1.5 text-[13px] text-dim">Our team will respond within 24 hours.</p>
-                    <button onClick={() => { setStatus("idle"); setForm({ name:"",email:"",company:"",budget:"",timeline:"",tier:tierParam||"",message:"" }); }} className="mt-5 inline-flex items-center gap-1.5 text-[13px] font-semibold text-accent transition-colors duration-200 hover:text-white">
+                    <button onClick={() => { setStatus("idle"); setForm({ name:"",email:"",phone:"",company:"",budget:"",timeline:"",tier:tierParam||"",message:"" }); }} className="mt-5 inline-flex items-center gap-1.5 text-[13px] font-semibold text-accent transition-colors duration-200 hover:text-white">
                       Submit another <ArrowRight size={12} />
                     </button>
                   </div>
@@ -110,6 +111,10 @@ export default function ContactPage() {
                         <label className="mb-1.5 block font-mono text-[10px] uppercase tracking-[0.06em] text-dim">Email *</label>
                         <input className="field" type="email" placeholder="jane@co.com" value={form.email} onChange={s("email")} />
                       </div>
+                    </div>
+                    <div>
+                      <label className="mb-1.5 block font-mono text-[10px] uppercase tracking-[0.06em] text-dim">Phone (optional)</label>
+                      <input className="field" type="tel" inputMode="tel" autoComplete="tel" placeholder="(555) 123-4567" value={form.phone} onChange={s("phone")} />
                     </div>
                     {!tierParam && (
                       <>
@@ -144,6 +149,12 @@ export default function ContactPage() {
                       {status === "loading" ? <Loader2 size={15} className="animate-spin" /> : <Send size={13} />}
                       {status === "loading" ? "Sending..." : tierParam ? `Request ${tierParam} Build` : "Submit inquiry"}
                     </button>
+                    <p className="mt-1 text-[11px] leading-[1.6] text-dim">
+                      By submitting this form, you agree that Tweak &amp; Build may contact you by email, phone, or SMS about your inquiry. Message frequency varies. Message and data rates may apply. Reply STOP to opt out or HELP for help. See our{" "}
+                      <Link href="/privacy" className="text-accent/80 underline decoration-accent/20 underline-offset-2 transition-colors hover:text-accent hover:decoration-accent/40">Privacy Policy</Link>
+                      {" "}and{" "}
+                      <Link href="/terms" className="text-accent/80 underline decoration-accent/20 underline-offset-2 transition-colors hover:text-accent hover:decoration-accent/40">Terms</Link>.
+                    </p>
                   </div>
                 )}
               </div>
