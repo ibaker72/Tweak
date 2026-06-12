@@ -97,29 +97,28 @@ const TABS: TabContent[] = [
         label: "New business",
         name: "New Business Launch Kit",
         subtitle:
-          "Everything a brand-new business needs to launch online fast with a professional website, quote/contact flow, and local presence foundation.",
+          "For newly formed businesses that need to look real fast. A lean starter presence — not a full custom multi-page growth system.",
         price: "$2,500",
         priceSuffix: "",
         cadence: "One-time launch setup",
         cadenceAddOn: "Optional care plan available: +$297/mo",
         features: [
-          "Launch-ready starter website",
-          "Core pages: home, about, services, contact",
-          "Mobile-first design",
-          "Contact / booking form",
-          "Basic local SEO setup",
-          "Google Business Profile setup guidance",
+          "Lean mobile-first starter site",
+          "Core offer and message sections",
+          "Contact form or quote request form",
+          "Basic SEO foundation",
+          "Google Business Profile readiness",
           "Analytics & form tracking",
-          "Launch deployment",
+          "Fast launch structure",
         ],
-        ctaLabel: "Start Launch Kit — $2,500",
+        ctaLabel: "Request a build estimate",
         ctaHref: "/contact?tier=New%20Business%20Launch%20Kit",
         checkoutUrl: pricingLinks.newBusinessLaunchKit,
-        footnote: "Best for brand-new businesses launching online",
+        footnote: "Best for new LLCs, solo operators, and brand-new businesses",
         monthlyCareNote: {
           title: "Monthly care available",
           description:
-            "Website updates, basic SEO checks, GBP support, analytics checks, and priority support.",
+            "Protects uptime, edits, monitoring, and technical fixes. Includes basic SEO checks, GBP support, analytics checks, and priority support.",
         },
         secondaryCta: {
           label: "Ask about monthly care",
@@ -128,66 +127,70 @@ const TABS: TabContent[] = [
         },
       },
       {
-        label: "Starter",
+        label: "Custom",
         name: "Foundation Website",
         subtitle:
-          "A fast, credible website built to convert visitors into real enquiries.",
+          "For established businesses that need a full custom website built to convert — not a starter landing page.",
         price: "$3,500",
         priceSuffix: "",
         cadence: "One-time build · support available",
         features: [
-          "Custom design, mobile-first",
-          "SEO-ready structure & on-page setup",
-          "Contact, quote, or booking funnel",
-          "Speed & Core Web Vitals optimized",
-          "Google & AI search discovery ready",
-          "Dealership & local business ready",
+          "Custom business website (not a starter page)",
+          "3–5 core pages or equivalent sections",
+          "Conversion-focused layout & service structure",
+          "Service, trust, and proof sections",
+          "Lead capture forms",
+          "SEO basics and analytics setup",
+          "Mobile-first performance",
         ],
         ctaLabel: "Start a project",
         ctaHref: "/contact?tier=Foundation%20Website",
         checkoutUrl: pricingLinks.foundationWebsite,
-        footnote: "Best for new or rebranding businesses",
+        footnote: "Best for established businesses upgrading their web presence",
       },
       {
         label: "Growth",
         name: "Growth Website System",
         subtitle:
-          "A full website + lead engine designed to dominate local search.",
+          "For local service businesses that want a website plus a local lead engine — built to convert more visitors into inquiries.",
         price: "$6,500",
         priceSuffix: "",
         cadence: "One-time build · expansion-ready structure",
         features: [
           "Everything in Foundation",
-          "Location + service landing page system",
-          "Local SEO & advanced schema markup",
-          "GEO foundation for AI-driven search",
-          "Lead capture & conversion flow planning",
-          "Multi-service or multi-city ready",
+          "Multi-location or service-area SEO structure",
+          "City / service page framework",
+          "Stronger conversion copy throughout",
+          "Local SEO architecture & schema markup",
+          "Proposal / lead capture flow",
+          "Analytics and tracking readiness",
+          "Built to support ongoing growth campaigns",
         ],
-        ctaLabel: "Build my growth system",
+        ctaLabel: "Discuss the right package",
         ctaHref: "/contact?tier=Growth%20Website%20System",
         checkoutUrl: pricingLinks.growthWebsite,
-        footnote: "Best for businesses ready to dominate local search",
+        footnote: "Best for serious local businesses ready to grow",
         featured: true,
+        badgeLabel: "Best Value",
       },
       {
         label: "Scale",
         name: "Premium Growth Package",
         subtitle:
-          "Continuous build + growth retainer. Retainer includes monthly SEO audits, reporting, and priority support.",
+          "A full Growth Website System paired with a monthly growth retainer for SEO, content, and continuous improvement.",
         price: "$8,500",
         priceSuffix: "+",
-        priceSubline: "+ $800/mo retainer",
-        cadence: "One-time build + retained monthly growth",
+        priceSubline: "+ $800/mo growth retainer",
+        cadence: "One-time build + ongoing growth retainer",
         features: [
-          "Everything in Growth System",
+          "Everything in Growth Website System",
           "Ongoing technical SEO audits & fixes",
           "Search + AI visibility strategy (GEO)",
           "Conversion & UX continuous improvements",
           "Monthly reporting & strategic iteration",
           "Priority support & dedicated account lead",
         ],
-        ctaLabel: "Let's talk scale",
+        ctaLabel: "Book a strategy call",
         ctaHref: "/contact?tier=Premium%20Growth%20Package",
         checkoutUrl: pricingLinks.premiumGrowth,
         footnote: "Best for multi-location or high-growth businesses",
@@ -196,23 +199,27 @@ const TABS: TabContent[] = [
         label: "Automotive",
         name: "Dealership Website System",
         subtitle:
-          "Built for independent dealers who want live inventory, AI SEO, and real leads.",
+          "For dealerships that need real inventory infrastructure — not a basic brochure site with a feed bolted on.",
         price: "$8,500",
-        priceSuffix: "",
-        cadence: "One-time build · $600/mo maintenance",
+        priceSuffix: "+",
+        cadence: "One-time build · $600/mo dealership retainer",
+        cadenceAddOn:
+          "Retainer covers feed monitoring, inventory sync checks, website support, and ongoing improvements.",
         features: [
-          "Live inventory sync (CSV / SFTP feed)",
-          "AI-generated local SEO city pages",
-          "Vehicle detail pages with photos",
-          "Lead capture + deal desk integration",
-          "Vercel + Supabase infrastructure",
-          "Weekly inventory automation",
-          "Sitemap + robots.txt automation",
+          "Inventory-ready dealership website",
+          "Vehicle listing pages with search & filtering",
+          "Vehicle detail pages (VDPs) with photos",
+          "CSV / SFTP or inventory feed integration",
+          "Supabase / database-backed inventory architecture",
+          "Featured inventory sections",
+          "SEO-ready vehicle and location structure",
+          "Built for live inventory operations, not static pages",
         ],
-        ctaLabel: "Book a discovery call",
+        ctaLabel: "Book a strategy call",
         ctaHref: "/contact?tier=Dealership%20Website%20System",
         checkoutUrl: pricingLinks.dealershipWebsite,
-        footnote: "Best for independent dealerships ready to compete online",
+        footnote:
+          "A full dealership system — not replicable by adding a feed to a standard website.",
         badgeLabel: "Automotive",
         liveExampleHref: "https://speedwaymotorsllc.com",
       },
@@ -321,8 +328,7 @@ function PricingCard({
   const secondaryCta = tier.secondaryCta;
   const monthlyCareNote = tier.monthlyCareNote;
   const primaryCtaIsFilled = isFeatured || !!secondaryCta;
-  const primaryCtaLabel =
-    tier.checkoutUrl && !secondaryCta ? "Purchase now" : tier.ctaLabel;
+  const primaryCtaLabel = tier.ctaLabel;
   const primaryCtaClassName = cn(
     "inline-flex w-full items-center justify-center !gap-2 !px-5 !py-3 !text-[12.5px]",
     primaryCtaIsFilled ? "btn-v" : "btn-o"
@@ -907,21 +913,21 @@ type AddOn = {
 
 const ADD_ONS: AddOn[] = [
   {
-    name: "AI Local SEO Page",
+    name: "Programmatic Local SEO Page",
     description:
-      "Geo-targeted landing page generated and optimized for a specific city.",
+      "AI-assisted city or service page using an approved layout and SEO structure. Best for scalable local expansion.",
     price: "$200 per page",
   },
   {
-    name: "Extra Location / Service Page",
+    name: "Custom Location or Service Page",
     description:
-      "Additional service area or offering page, built and SEO-optimized.",
-    price: "$300",
+      "Individually written and structured page for priority cities, services, or campaigns that need stronger copy, proof, FAQs, and conversion sections.",
+    price: "from $300",
   },
   {
     name: "Monthly SEO Maintenance",
     description:
-      "Ongoing technical SEO checks, fixes, and content updates.",
+      "Ongoing technical SEO checks, fixes, and content updates to keep the site improving month over month.",
     price: "$400/mo",
   },
   {
@@ -937,10 +943,10 @@ const ADD_ONS: AddOn[] = [
     price: "$500 one-time",
   },
   {
-    name: "Dealership Inventory Feed Integration",
+    name: "Inventory Feed Integration",
     description:
-      "Connect any CSV or SFTP inventory feed to an existing site.",
-    price: "$1,500",
+      "Retrofit / add-on for qualifying existing sites. Includes feed connection work only. Does not include the full dealership UX, VDP system, filtering experience, SEO architecture, or ongoing feed monitoring included in the Dealership Website System.",
+    price: "from $1,500",
   },
 ];
 
