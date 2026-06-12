@@ -328,7 +328,7 @@ function PricingCard({
   const secondaryCta = tier.secondaryCta;
   const monthlyCareNote = tier.monthlyCareNote;
   const primaryCtaIsFilled = isFeatured || !!secondaryCta;
-  const primaryCtaLabel = tier.ctaLabel;
+  const primaryCtaLabel = tier.checkoutUrl ? "Purchase Now" : tier.ctaLabel;
   const primaryCtaClassName = cn(
     "inline-flex w-full items-center justify-center !gap-2 !px-5 !py-3 !text-[12.5px]",
     primaryCtaIsFilled ? "btn-v" : "btn-o"
@@ -484,7 +484,7 @@ function PricingCard({
               href={secondaryCta.checkoutUrl}
               target="_blank"
               rel="noopener noreferrer"
-              aria-label={`${secondaryCta.label} — ${tier.name}`}
+              aria-label={`Purchase Now — ${tier.name}`}
               className="mt-2 inline-flex w-full items-center justify-center gap-1.5 px-3 py-2 font-body text-[11.5px] font-medium text-white/55 transition-colors duration-200 hover:text-accent"
               onClick={() =>
                 trackEvent("pricing_button_click", {
@@ -494,7 +494,7 @@ function PricingCard({
                 })
               }
             >
-              {secondaryCta.label} <span aria-hidden="true">→</span>
+              Purchase Now <span aria-hidden="true">→</span>
             </a>
           ) : (
             <Link
