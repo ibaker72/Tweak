@@ -5,6 +5,7 @@ import { ChevronDown, ArrowUp, Terminal } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Reveal } from "./shared";
 import { faqs } from "@/lib/data";
+import { trackEvent } from "@/lib/analytics";
 
 
 export function FAQ() {
@@ -67,7 +68,13 @@ export function Footer() {
             <p className="mt-4 max-w-xs text-[13px] leading-[1.75] text-body">
               Premium product engineering studio. We build high-converting websites, web apps, and automation systems for founders who ship.
             </p>
-            <a href="mailto:hello@tweakandbuild.com" className="mt-4 inline-block text-[13px] text-dim transition-colors hover:text-accent">hello@tweakandbuild.com</a>
+            <a
+              href="mailto:hello@tweakandbuild.com"
+              className="mt-4 inline-block text-[13px] text-dim transition-colors hover:text-accent"
+              onClick={() => trackEvent("email_click", { source: "footer" })}
+            >
+              hello@tweakandbuild.com
+            </a>
           </div>
           {cols.map(c => (
             <div key={c.h}>

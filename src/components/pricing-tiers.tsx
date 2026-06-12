@@ -13,6 +13,7 @@ import {
 import { AnimatePresence, motion } from "framer-motion";
 import { Check, ChevronLeft, ChevronRight, Zap } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { isValidStripePaymentLink, trackEvent } from "@/lib/analytics";
 
 type TabId = "websites" | "marketing";
 
@@ -50,17 +51,41 @@ type TabContent = {
   tiers: Tier[];
 };
 
+// Only accept fully-qualified Stripe Payment Link URLs (https://buy.stripe.com/...).
+// A raw price ID (price_xxx) or any other value resolves to undefined so the card
+// falls back to the contact CTA instead of navigating to a broken /price_xxx URL.
+function sanitizeStripeLink(raw: string | undefined): string | undefined {
+  return isValidStripePaymentLink(raw) ? raw : undefined;
+}
+
 const pricingLinks = {
-  newBusinessLaunchKit: process.env.NEXT_PUBLIC_STRIPE_NEW_BUSINESS_LAUNCH_KIT_LINK,
-  monthlyWebsiteSeoCare:
-    process.env.NEXT_PUBLIC_STRIPE_MONTHLY_WEBSITE_SEO_CARE_LINK,
-  foundationWebsite: process.env.NEXT_PUBLIC_STRIPE_FOUNDATION_WEBSITE_LINK,
-  growthWebsite: process.env.NEXT_PUBLIC_STRIPE_GROWTH_WEBSITE_LINK,
-  premiumGrowth: process.env.NEXT_PUBLIC_STRIPE_PREMIUM_GROWTH_LINK,
-  dealershipWebsite: process.env.NEXT_PUBLIC_STRIPE_DEALERSHIP_WEBSITE_LINK,
-  adsStarter: process.env.NEXT_PUBLIC_STRIPE_ADS_STARTER_LINK,
-  fullFunnelAds: process.env.NEXT_PUBLIC_STRIPE_FULL_FUNNEL_ADS_LINK,
-  growthPartnership: process.env.NEXT_PUBLIC_STRIPE_GROWTH_PARTNERSHIP_LINK,
+  newBusinessLaunchKit: sanitizeStripeLink(
+    process.env.NEXT_PUBLIC_STRIPE_NEW_BUSINESS_LAUNCH_KIT_LINK
+  ),
+  monthlyWebsiteSeoCare: sanitizeStripeLink(
+    process.env.NEXT_PUBLIC_STRIPE_MONTHLY_WEBSITE_SEO_CARE_LINK
+  ),
+  foundationWebsite: sanitizeStripeLink(
+    process.env.NEXT_PUBLIC_STRIPE_FOUNDATION_WEBSITE_LINK
+  ),
+  growthWebsite: sanitizeStripeLink(
+    process.env.NEXT_PUBLIC_STRIPE_GROWTH_WEBSITE_LINK
+  ),
+  premiumGrowth: sanitizeStripeLink(
+    process.env.NEXT_PUBLIC_STRIPE_PREMIUM_GROWTH_LINK
+  ),
+  dealershipWebsite: sanitizeStripeLink(
+    process.env.NEXT_PUBLIC_STRIPE_DEALERSHIP_WEBSITE_LINK
+  ),
+  adsStarter: sanitizeStripeLink(
+    process.env.NEXT_PUBLIC_STRIPE_ADS_STARTER_LINK
+  ),
+  fullFunnelAds: sanitizeStripeLink(
+    process.env.NEXT_PUBLIC_STRIPE_FULL_FUNNEL_ADS_LINK
+  ),
+  growthPartnership: sanitizeStripeLink(
+    process.env.NEXT_PUBLIC_STRIPE_GROWTH_PARTNERSHIP_LINK
+  ),
 } as const;
 
 const TABS: TabContent[] = [
@@ -421,6 +446,12 @@ function PricingCard({
             aria-label={`${primaryCtaLabel} — ${tier.name}`}
             aria-describedby={`${panelId}-foot-${index}`}
             className={primaryCtaClassName}
+            onClick={() =>
+              trackEvent("pricing_button_click", {
+                tier: tier.name,
+                destination: "stripe_checkout",
+              })
+            }
           >
             {primaryCtaLabel} <span aria-hidden="true">→</span>
           </a>
@@ -430,6 +461,12 @@ function PricingCard({
             aria-label={`${primaryCtaLabel} — ${tier.name}`}
             aria-describedby={`${panelId}-foot-${index}`}
             className={primaryCtaClassName}
+            onClick={() =>
+              trackEvent("pricing_button_click", {
+                tier: tier.name,
+                destination: "contact",
+              })
+            }
           >
             {primaryCtaLabel} <span aria-hidden="true">→</span>
           </Link>
@@ -443,6 +480,13 @@ function PricingCard({
               rel="noopener noreferrer"
               aria-label={`${secondaryCta.label} — ${tier.name}`}
               className="mt-2 inline-flex w-full items-center justify-center gap-1.5 px-3 py-2 font-body text-[11.5px] font-medium text-white/55 transition-colors duration-200 hover:text-accent"
+              onClick={() =>
+                trackEvent("pricing_button_click", {
+                  tier: tier.name,
+                  destination: "stripe_checkout",
+                  secondary: true,
+                })
+              }
             >
               {secondaryCta.label} <span aria-hidden="true">→</span>
             </a>
@@ -451,6 +495,13 @@ function PricingCard({
               href={secondaryCta.href}
               aria-label={`${secondaryCta.label} — ${tier.name}`}
               className="mt-2 inline-flex w-full items-center justify-center gap-1.5 px-3 py-2 font-body text-[11.5px] font-medium text-white/55 transition-colors duration-200 hover:text-accent"
+              onClick={() =>
+                trackEvent("pricing_button_click", {
+                  tier: tier.name,
+                  destination: "contact",
+                  secondary: true,
+                })
+              }
             >
               {secondaryCta.label} <span aria-hidden="true">→</span>
             </Link>
@@ -837,6 +888,9 @@ function BundleBanner() {
         <Link
           href="/contact?tier=Bundle"
           className="btn-v inline-flex shrink-0 items-center justify-center !gap-2 !px-5 !py-3 !text-[12.5px]"
+          onClick={() =>
+            trackEvent("book_call_click", { source: "pricing_bundle_banner" })
+          }
         >
           Book a strategy call <span aria-hidden="true">→</span>
         </Link>

@@ -6,6 +6,7 @@ import { ArrowLeft, ArrowRight, ExternalLink, CheckCircle } from "lucide-react";
 import { Reveal } from "@/components/shared";
 import { projects } from "@/lib/data";
 import { ProjectPrimaryMedia } from "@/components/project-primary-media";
+import { trackEvent } from "@/lib/analytics";
 
 export default function ProjectPage() {
   const { slug } = useParams();
@@ -215,21 +216,93 @@ export default function ProjectPage() {
             <Reveal delay={0.2}>
               <div className="card rounded-2xl p-6">
                 <h3 className="font-display text-[14px] font-bold text-white">
-                  Have a similar challenge?
+                  Want a build like this?
                 </h3>
                 <p className="mt-2 text-[12px] leading-[1.7] text-dim">
-                  Let&apos;s talk about building something for your business.
+                  Get a similar site for your business. Fixed quote within 24 hours.
                 </p>
                 <Link
-                  href="/contact"
+                  href={`/contact?ref=${project.slug}`}
                   className="btn-v mt-5 w-full justify-center"
+                  onClick={() =>
+                    trackEvent("work_case_study_cta_click", {
+                      project: project.slug,
+                      cta: "request_quote",
+                      placement: "sidebar",
+                    })
+                  }
                 >
-                  Start a project <ArrowRight size={13} />
+                  Request a quote <ArrowRight size={13} />
+                </Link>
+                <Link
+                  href={`/contact?ref=${project.slug}#calendly`}
+                  className="btn-o mt-2 w-full justify-center"
+                  onClick={() =>
+                    trackEvent("book_call_click", {
+                      source: "case_study_sidebar",
+                      project: project.slug,
+                    })
+                  }
+                >
+                  Book a 15-minute call
                 </Link>
               </div>
             </Reveal>
           </div>
         </div>
+
+        <Reveal delay={0.21}>
+          <div
+            className="mt-16 overflow-hidden rounded-3xl border border-accent/[0.12] px-6 py-9 sm:px-10 sm:py-11"
+            style={{
+              background:
+                "linear-gradient(180deg, rgba(200,255,0,0.04), rgba(255,255,255,0.012))",
+              boxShadow:
+                "0 1px 0 rgba(255,255,255,0.04) inset, 0 24px 60px rgba(0,0,0,0.32)",
+            }}
+          >
+            <div className="flex flex-col items-start gap-6 sm:flex-row sm:items-center sm:justify-between">
+              <div className="max-w-xl">
+                <span className="font-mono text-[10px] uppercase tracking-[0.12em] text-accent/80">
+                  Build like {project.title}
+                </span>
+                <h2 className="mt-2 font-display text-[clamp(22px,3.5vw,30px)] font-extrabold leading-[1.15] tracking-[-0.02em] text-white">
+                  Want a build like this for your business?
+                </h2>
+                <p className="mt-2.5 text-[13.5px] leading-[1.7] text-body">
+                  Fixed-price quote within 24 hours. Senior engineers. No lock-in.
+                </p>
+              </div>
+              <div className="flex flex-col gap-2 sm:flex-row sm:items-center">
+                <Link
+                  href={`/contact?ref=${project.slug}`}
+                  className="btn-v justify-center !px-5 !py-3 !text-[13px]"
+                  onClick={() =>
+                    trackEvent("work_case_study_cta_click", {
+                      project: project.slug,
+                      cta: "request_quote",
+                      placement: "bottom_banner",
+                    })
+                  }
+                >
+                  Get a similar site <ArrowRight size={13} />
+                </Link>
+                <Link
+                  href={`/contact?ref=${project.slug}#calendly`}
+                  className="btn-o justify-center !px-5 !py-3 !text-[13px]"
+                  onClick={() =>
+                    trackEvent("book_call_click", {
+                      source: "case_study_bottom_banner",
+                      project: project.slug,
+                    })
+                  }
+                >
+                  Book a 15-min call
+                </Link>
+              </div>
+            </div>
+          </div>
+        </Reveal>
 
         <Reveal delay={0.22}>
           <div className="divider mt-16" />

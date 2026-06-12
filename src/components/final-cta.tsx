@@ -2,6 +2,7 @@
 import Link from "next/link";
 import { ArrowRight, Mail, Clock, Shield, Check } from "lucide-react";
 import { Reveal } from "./shared";
+import { trackEvent } from "@/lib/analytics";
 
 export function FinalCTA() {
   return (
@@ -70,6 +71,9 @@ export function FinalCTA() {
               <a
                 href="mailto:hello@tweakandbuild.com"
                 className="inline-flex items-center gap-2 text-[13px] text-dim transition-colors duration-200 hover:text-white"
+                onClick={() =>
+                  trackEvent("email_click", { source: "final_cta" })
+                }
               >
                 <Mail size={13} className="text-accent/50" /> hello@tweakandbuild.com
               </a>
