@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { ArrowRight, FolderOpen } from "lucide-react";
 import { Reveal } from "./shared";
+import { trackEvent } from "@/lib/analytics";
 
 export function ProofCTA() {
   return (
@@ -65,10 +66,13 @@ export function ProofCTA() {
 
               <div className="mt-7 flex flex-col items-center justify-center gap-2.5 sm:mt-9 sm:flex-row sm:gap-3">
                 <Link
-                  href="/contact"
+                  href="/contact#calendly"
                   className="btn-v w-full justify-center py-2.5 text-[13px] sm:w-auto sm:px-7 sm:py-3.5 sm:text-[14px]"
+                  onClick={() =>
+                    trackEvent("book_call_click", { source: "work_proof_cta" })
+                  }
                 >
-                  Book a Build Call <ArrowRight size={14} />
+                  Book a 15-min Build Call <ArrowRight size={14} />
                 </Link>
                 <Link
                   href="#proof-vault"

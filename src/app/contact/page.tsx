@@ -7,6 +7,7 @@ import { Reveal } from "@/components/shared";
 import { CalendlyEmbed } from "@/components/calendly-embed";
 import { budgetOptions, timelineOptions, tiers } from "@/lib/data";
 import { getReferralFromCookie } from "@/lib/referral";
+import { trackEvent } from "@/lib/analytics";
 
 export default function ContactPage() {
   const [tierParam, setTierParam] = useState<string | null>(null);
@@ -20,7 +21,23 @@ export default function ContactPage() {
   const [status, setStatus] = useState<"idle"|"loading"|"success">("idle");
   useEffect(() => { if (tierParam) setForm(p => ({ ...p, tier: tierParam })); }, [tierParam]);
   const s = (k: string) => (e: React.ChangeEvent<HTMLInputElement|HTMLTextAreaElement|HTMLSelectElement>) => setForm(p => ({ ...p, [k]: e.target.value }));
-  const submit = async () => { setStatus("loading"); try { await fetch("/api/contact", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ ...form, referral: referralCode || undefined }) }); } catch {} setStatus("success"); };
+  const submit = async () => {
+    setStatus("loading");
+    try {
+      await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ ...form, referral: referralCode || undefined }),
+      });
+    } catch {}
+    trackEvent("contact_form_submit", {
+      tier: form.tier || null,
+      hasCompany: Boolean(form.company),
+      hasPhone: Boolean(form.phone),
+      referral: referralCode || null,
+    });
+    setStatus("success");
+  };
 
   return (
     <div className="pb-24 pt-36 sm:pt-40">
@@ -42,7 +59,13 @@ export default function ContactPage() {
               Book a strategy call or submit your project details. We respond within one business day.
             </p>
             <div className="mx-auto mt-6 flex flex-wrap items-center justify-center gap-5 text-[13px] text-dim">
-              <a href="mailto:projects@tweakandbuild.com" className="flex items-center gap-2 transition-colors duration-200 hover:text-white">
+              <a
+                href="mailto:projects@tweakandbuild.com"
+                className="flex items-center gap-2 transition-colors duration-200 hover:text-white"
+                onClick={() =>
+                  trackEvent("email_click", { source: "contact_header" })
+                }
+              >
                 <Mail size={13} className="text-accent/60" /> projects@tweakandbuild.com
               </a>
               <span className="hidden h-3 w-px bg-white/[0.08] sm:block" />
