@@ -11,11 +11,21 @@ import {
   type KeyboardEvent,
 } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { Check, ChevronLeft, ChevronRight, Zap } from "lucide-react";
+import {
+  Camera,
+  Check,
+  ChevronLeft,
+  ChevronRight,
+  Plane,
+  Sparkles,
+  Video,
+  Zap,
+} from "lucide-react";
+import type { LucideIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { isValidStripePaymentLink, trackEvent } from "@/lib/analytics";
 
-type TabId = "websites" | "marketing";
+type TabId = "websites" | "marketing" | "drone";
 
 type Tier = {
   label: string;
@@ -45,10 +55,24 @@ type Tier = {
   };
 };
 
+type BenefitItem = {
+  title: string;
+  copy: string;
+  icon: LucideIcon;
+};
+
+type BenefitsBlockContent = {
+  title: string;
+  items: BenefitItem[];
+};
+
 type TabContent = {
   id: TabId;
   label: string;
   tiers: Tier[];
+  note?: string;
+  microCopy?: string;
+  benefitsBlock?: BenefitsBlockContent;
 };
 
 // Only accept fully-qualified Stripe Payment Link URLs (https://buy.stripe.com/...).
@@ -295,6 +319,107 @@ const TABS: TabContent[] = [
         footnote: "Best for serious growth investment",
       },
     ],
+  },
+  {
+    id: "drone",
+    label: "Drone & Media",
+    note: "Available as a standalone service or add-on to website/marketing packages.",
+    microCopy:
+      "Perfect for contractors, auto dealers, gyms, real estate, restaurants, home services, and any business that needs real visuals instead of stock photos.",
+    tiers: [
+      {
+        label: "Content",
+        name: "Content Day",
+        subtitle:
+          "Best for websites, Google profiles, and social proof.",
+        price: "$750",
+        priceSuffix: "+",
+        cadence: "On-site session · edited files delivered",
+        features: [
+          "On-site photo session",
+          "Short-form video clips",
+          "Exterior/business shots",
+          "Team, vehicle, or workspace content",
+          "Edited photos for website use",
+          "Content folder delivered",
+        ],
+        ctaLabel: "Plan a content shoot",
+        ctaHref: "/contact?tier=Content%20Day",
+        footnote:
+          "Best for new website builds and credible social proof",
+      },
+      {
+        label: "Drone + web",
+        name: "Drone + Website Media",
+        subtitle:
+          "For contractors, auto dealers, gyms, real estate, and local service brands.",
+        price: "$1,250",
+        priceSuffix: "+",
+        cadence: "Drone + ground capture · web + social ready",
+        features: [
+          "Drone flyover footage",
+          "Ground camera footage",
+          "Hero video/background clips",
+          "Website-ready image set",
+          "Google Business Profile media",
+          "Social media reels/clips",
+          "Best paired with a new website build",
+        ],
+        ctaLabel: "Plan a content shoot",
+        ctaHref: "/contact?tier=Drone%20%2B%20Website%20Media",
+        footnote:
+          "Pairs perfectly with a Foundation or Growth website",
+        featured: true,
+        badgeLabel: "Best Add-On",
+      },
+      {
+        label: "Visual proof",
+        name: "Full Visual Proof System",
+        subtitle:
+          "A full media package built around trust, proof, and conversion.",
+        price: "$2,500",
+        priceSuffix: "+",
+        cadence: "Full media system · ongoing strategy optional",
+        features: [
+          "Full content capture session",
+          "Drone + camera coverage",
+          "Before/after project visuals",
+          "Client/job-site proof shots",
+          "Edited reels and website assets",
+          "Landing page proof section",
+          "Monthly content strategy optional",
+        ],
+        ctaLabel: "Plan a content shoot",
+        ctaHref: "/contact?tier=Full%20Visual%20Proof%20System",
+        footnote:
+          "Best for businesses that want trust-driven media built into their funnel",
+      },
+    ],
+    benefitsBlock: {
+      title: "Why this beats hiring a regular freelancer",
+      items: [
+        {
+          icon: Camera,
+          title: "Real visuals, not stock photos",
+          copy: "Your website feels instantly more trustworthy when visitors see your real trucks, team, property, projects, and workspace.",
+        },
+        {
+          icon: Sparkles,
+          title: "One shoot, multiple assets",
+          copy: "A single visit can create website images, hero video, reels, ads, Google posts, gallery content, and follow-up material.",
+        },
+        {
+          icon: Video,
+          title: "Built directly into your funnel",
+          copy: "We don't just hand you files. We turn the content into web sections, ads, landing pages, and local SEO assets.",
+        },
+        {
+          icon: Plane,
+          title: "Stronger local credibility",
+          copy: "Drone footage and professional media help small businesses look established, premium, and easier to trust.",
+        },
+      ],
+    },
   },
 ];
 
@@ -743,6 +868,7 @@ export function PricingTiers() {
   const tabRefs = useRef<Record<TabId, HTMLButtonElement | null>>({
     websites: null,
     marketing: null,
+    drone: null,
   });
 
   const activePanel = useMemo(
@@ -795,7 +921,7 @@ export function PricingTiers() {
             <div
               role="tablist"
               aria-label="Pricing categories"
-              className="inline-flex w-full max-w-[360px] rounded-full border border-white/[0.06] bg-white/[0.02] p-1"
+              className="inline-flex w-full max-w-[460px] rounded-full border border-white/[0.06] bg-white/[0.02] p-1"
             >
               {TABS.map((tab) => {
                 const isActive = tab.id === activeTab;
@@ -816,7 +942,7 @@ export function PricingTiers() {
                     onClick={() => setActiveTab(tab.id)}
                     onKeyDown={onTabKeyDown}
                     suppressHydrationWarning
-                    className="pricing-tab relative flex-1 rounded-full px-4 py-2.5 font-body text-[12.5px] font-semibold"
+                    className="pricing-tab relative min-w-0 flex-1 rounded-full px-2 py-2.5 font-body text-[11px] font-semibold sm:px-4 sm:text-[12.5px]"
                     style={{
                       color: isActive ? "var(--pricing-accent-dark)" : "rgba(255,255,255,0.55)",
                     }}
@@ -829,12 +955,18 @@ export function PricingTiers() {
                         transition={{ type: "spring", stiffness: 380, damping: 32 }}
                       />
                     )}
-                    <span className="relative z-10">{tab.label}</span>
+                    <span className="relative z-10 whitespace-nowrap">{tab.label}</span>
                   </button>
                 );
               })}
             </div>
           </div>
+
+          {activePanel.note && (
+            <p className="mx-auto -mt-2 mb-6 max-w-[560px] text-center font-body text-[12px] leading-[1.55] text-white/45 sm:-mt-6 sm:mb-10 lg:-mt-8 lg:mb-12">
+              {activePanel.note}
+            </p>
+          )}
 
           <AnimatePresence mode="wait" initial={false}>
             <motion.div
@@ -851,6 +983,16 @@ export function PricingTiers() {
                 tiers={activePanel.tiers}
                 panelId={`${baseId}-panel-${activePanel.id}`}
               />
+
+              {activePanel.microCopy && (
+                <p className="mx-auto mt-8 max-w-[640px] text-center font-body text-[12.5px] leading-[1.6] text-white/50 sm:mt-10">
+                  {activePanel.microCopy}
+                </p>
+              )}
+
+              {activePanel.benefitsBlock && (
+                <BenefitsBlock block={activePanel.benefitsBlock} />
+              )}
             </motion.div>
           </AnimatePresence>
 
@@ -865,6 +1007,47 @@ export function PricingTiers() {
         </div>
       </div>
     </section>
+  );
+}
+
+function BenefitsBlock({ block }: { block: BenefitsBlockContent }) {
+  return (
+    <div className="mt-12 sm:mt-16">
+      <div className="text-center">
+        <h3 className="font-display text-[clamp(22px,3.2vw,30px)] font-extrabold leading-[1.15] tracking-[-0.03em] text-white">
+          {block.title}
+        </h3>
+      </div>
+
+      <div className="mt-8 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
+        {block.items.map((item) => {
+          const Icon = item.icon;
+          return (
+            <div
+              key={item.title}
+              className="flex flex-col rounded-xl border border-white/[0.06] px-5 py-5 transition-colors duration-300 hover:border-white/[0.12]"
+              style={{ background: "var(--pricing-bg-card)" }}
+            >
+              <span
+                aria-hidden="true"
+                className="inline-flex h-9 w-9 items-center justify-center rounded-full bg-accent/[0.12]"
+              >
+                <Icon
+                  className="h-4 w-4 text-accent"
+                  strokeWidth={2.25}
+                />
+              </span>
+              <h4 className="mt-4 font-display text-[15px] font-bold leading-[1.3] tracking-[-0.01em] text-white">
+                {item.title}
+              </h4>
+              <p className="mt-2 font-body text-[12.5px] leading-[1.55] text-white/55">
+                {item.copy}
+              </p>
+            </div>
+          );
+        })}
+      </div>
+    </div>
   );
 }
 
