@@ -50,8 +50,23 @@ export const featuredProjects: FeaturedProject[] = [
     accent: "cyan",
   },
   {
-    slug: "pp-mechanical",
+    slug: "autofivestar",
     index: "03",
+    category: "REPUTATION MANAGEMENT SAAS",
+    title: "AutoFiveStar",
+    description:
+      "Built a review automation platform for dealerships and local businesses — with customer follow-up flows, Google review capture, feedback routing, and subscription-ready SaaS infrastructure.",
+    tags: ["Review Automation", "SaaS Platform", "Google Reviews"],
+    outcome: "Reputation follow-up system built",
+    liveUrl: "https://www.autofivestar.com",
+    caseStudyHref: "/work/autofivestar",
+    mediaType: "image",
+    media: "/work/autofivestar/autofivestar-01.png",
+    accent: "cyan",
+  },
+  {
+    slug: "pp-mechanical",
+    index: "04",
     category: "HVAC WEBSITE + LEAD SYSTEM",
     title: "PP Mechanical",
     description:
@@ -66,7 +81,7 @@ export const featuredProjects: FeaturedProject[] = [
   },
   {
     slug: "jerseypantry",
-    index: "04",
+    index: "05",
     category: "LOCAL E-COMMERCE / FOOD BRAND",
     title: "JerseyPantry.com",
     description:

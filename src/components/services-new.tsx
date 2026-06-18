@@ -7,7 +7,7 @@ const steps = [
   {
     num: "01",
     title: "Web Applications",
-    desc: "SaaS dashboards, internal tools, client portals. Auth, payments, real-time data, and the custom logic that makes your product work.",
+    desc: "SaaS dashboards, internal tools, client portals. Auth, payments, real-time data, and the custom logic that makes your product work — like AutoFiveStar, a reputation-management SaaS we built for dealerships and local businesses.",
     detail: "Next.js · React · Supabase · Stripe",
     icon: Rocket,
   },

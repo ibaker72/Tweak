@@ -1,6 +1,6 @@
 "use client";
 import Link from "next/link";
-import { ArrowRight, CheckCircle2, Wrench, Car, Cpu, ShoppingBag } from "lucide-react";
+import { ArrowRight, CheckCircle2, Wrench, Car, Cpu, ShoppingBag, Star } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import { Reveal } from "@/components/shared";
 import { ProofVault } from "@/components/proof-vault";
@@ -12,6 +12,7 @@ const projectIcons: Record<string, LucideIcon> = {
   "pp-mechanical": Wrench,
   "speedway-motors": Car,
   "tweak-build-os": Cpu,
+  autofivestar: Star,
   jerseypantry: ShoppingBag,
 };
 
@@ -49,6 +50,7 @@ const accentMap = {
 const featuredSlugs = [
   "tweak-build-os",
   "speedway-motors",
+  "autofivestar",
   "pp-mechanical",
   "jerseypantry",
 ] as const;
