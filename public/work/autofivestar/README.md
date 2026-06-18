@@ -7,12 +7,12 @@ pick them up automatically — no code changes needed.
 
 | File                  | Used as                                  | Suggested content              |
 | --------------------- | ---------------------------------------- | ------------------------------ |
-| `autofivestar-01.png` | Case study hero + card cover (first frame) | Landing page / hero            |
-| `autofivestar-02.png` | Gallery                                  | Review request flow            |
-| `autofivestar-03.png` | Gallery                                  | Private feedback routing       |
-| `autofivestar-04.png` | Gallery                                  | Dashboard                      |
-| `autofivestar-05.png` | Gallery                                  | Reputation workflow            |
-| `autofivestar-06.png` | Gallery                                  | Reputation overview            |
+| `autofivestar-01.jpg` | Case study hero + card cover (first frame) | Landing page / hero            |
+| `autofivestar-02.jpg` | Gallery                                  | Review request flow            |
+| `autofivestar-03.jpg` | Gallery                                  | Private feedback routing       |
+| `autofivestar-04.jpg` | Gallery                                  | Dashboard                      |
+| `autofivestar-05.jpg` | Gallery                                  | Reputation workflow            |
+| `autofivestar-06.jpg` | Gallery                                  | Reputation overview            |
 
 Notes:
 - Recommended aspect ratio is roughly **16:9 / 16:10** to match the other

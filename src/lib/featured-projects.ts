@@ -61,7 +61,7 @@ export const featuredProjects: FeaturedProject[] = [
     liveUrl: "https://www.autofivestar.com",
     caseStudyHref: "/work/autofivestar",
     mediaType: "image",
-    media: "/work/autofivestar/autofivestar-01.png",
+    media: "/work/autofivestar/autofivestar-01.jpg",
     accent: "cyan",
   },
   {

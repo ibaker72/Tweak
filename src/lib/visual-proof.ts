@@ -179,12 +179,12 @@ export const visualProofProjects: VisualProofProject[] = [
     liveUrl: "https://www.autofivestar.com",
     caseStudyHref: "/work/autofivestar",
     media: [
-      { src: `${AUTOFIVESTAR_BASE}/autofivestar-01.png`, type: "image", label: "Landing page" },
-      { src: `${AUTOFIVESTAR_BASE}/autofivestar-02.png`, type: "image", label: "Review request" },
-      { src: `${AUTOFIVESTAR_BASE}/autofivestar-03.png`, type: "image", label: "Feedback routing" },
-      { src: `${AUTOFIVESTAR_BASE}/autofivestar-04.png`, type: "image", label: "Dashboard" },
-      { src: `${AUTOFIVESTAR_BASE}/autofivestar-05.png`, type: "image", label: "Workflow" },
-      { src: `${AUTOFIVESTAR_BASE}/autofivestar-06.png`, type: "image", label: "Reputation overview" },
+      { src: `${AUTOFIVESTAR_BASE}/autofivestar-01.jpg`, type: "image", label: "Landing page" },
+      { src: `${AUTOFIVESTAR_BASE}/autofivestar-02.jpg`, type: "image", label: "Review request" },
+      { src: `${AUTOFIVESTAR_BASE}/autofivestar-03.jpg`, type: "image", label: "Feedback routing" },
+      { src: `${AUTOFIVESTAR_BASE}/autofivestar-04.jpg`, type: "image", label: "Dashboard" },
+      { src: `${AUTOFIVESTAR_BASE}/autofivestar-05.jpg`, type: "image", label: "Workflow" },
+      { src: `${AUTOFIVESTAR_BASE}/autofivestar-06.jpg`, type: "image", label: "Reputation overview" },
     ],
   },
   {
