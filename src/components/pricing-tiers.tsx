@@ -36,6 +36,7 @@ type Tier = {
   priceSubline?: string;
   cadence: string;
   cadenceAddOn?: string;
+  bonusNote?: string;
   features: string[];
   ctaLabel: string;
   ctaHref: string;
@@ -158,6 +159,7 @@ const TABS: TabContent[] = [
         price: "$3,500",
         priceSuffix: "",
         cadence: "One-time build · support available",
+        cadenceAddOn: "AutoFiveStar review system available as an add-on",
         features: [
           "Custom business website (not a starter page)",
           "3–5 core pages or equivalent sections",
@@ -180,6 +182,8 @@ const TABS: TabContent[] = [
         price: "$6,500",
         priceSuffix: "",
         cadence: "One-time build · expansion-ready structure",
+        bonusNote:
+          "Review-request workflow setup included for the first 3 months. Continue afterward as an optional monthly add-on.",
         features: [
           "Everything in Foundation",
           "Multi-location or service-area SEO structure",
@@ -188,6 +192,7 @@ const TABS: TabContent[] = [
           "Local SEO architecture & schema markup",
           "Proposal / lead capture flow",
           "Analytics and tracking readiness",
+          "AutoFiveStar Lite included for 3 months",
           "Built to support ongoing growth campaigns",
         ],
         ctaLabel: "Discuss the right package",
@@ -206,12 +211,15 @@ const TABS: TabContent[] = [
         priceSuffix: "+",
         priceSubline: "+ $800/mo growth retainer",
         cadence: "One-time build + ongoing growth retainer",
+        bonusNote:
+          "Keep your website, local SEO, content, and review follow-up system moving together.",
         features: [
           "Everything in Growth Website System",
           "Ongoing technical SEO audits & fixes",
           "Search + AI visibility strategy (GEO)",
           "Conversion & UX continuous improvements",
           "Monthly reporting & strategic iteration",
+          "AutoFiveStar included while on active monthly growth plan",
           "Priority support & dedicated account lead",
         ],
         ctaLabel: "Book a strategy call",
@@ -229,6 +237,8 @@ const TABS: TabContent[] = [
         cadence: "One-time build · $600/mo dealership retainer",
         cadenceAddOn:
           "Retainer covers feed monitoring, inventory sync checks, website support, and ongoing improvements.",
+        bonusNote:
+          "After 6 months, continue AutoFiveStar as an optional dealership reputation add-on.",
         features: [
           "Inventory-ready dealership website",
           "Vehicle listing pages with search & filtering",
@@ -237,6 +247,8 @@ const TABS: TabContent[] = [
           "Supabase / database-backed inventory architecture",
           "Featured inventory sections",
           "SEO-ready vehicle and location structure",
+          "AutoFiveStar dealership reputation system included for 6 months",
+          "Review requests, private feedback routing, and Google review CTA flow",
           "Built for live inventory operations, not static pages",
         ],
         ctaLabel: "Book a strategy call",
@@ -531,6 +543,19 @@ function PricingCard({
         <p className="mt-1 font-body text-[11px] leading-[1.5] text-white/45">
           {tier.cadenceAddOn}
         </p>
+      )}
+
+      {tier.bonusNote && (
+        <div className="mt-3 flex items-start gap-2 rounded-lg border border-accent/[0.18] bg-accent/[0.05] px-3 py-2">
+          <Sparkles
+            aria-hidden="true"
+            className="mt-[1px] h-3 w-3 shrink-0 text-accent"
+            strokeWidth={2.25}
+          />
+          <p className="font-body text-[10.5px] leading-[1.45] text-white/60">
+            {tier.bonusNote}
+          </p>
+        </div>
       )}
 
       <div
@@ -998,6 +1023,8 @@ export function PricingTiers() {
 
           <BundleBanner />
 
+          <ReputationBundleCallout />
+
           <AddOnsSection />
 
           <p className="mx-auto mt-12 max-w-[520px] text-center font-body text-[12px] leading-[1.6] text-white/35">
@@ -1088,6 +1115,93 @@ function BundleBanner() {
   );
 }
 
+const REPUTATION_BUNDLE_INCLUDES = [
+  "AutoFiveStar setup",
+  "Review request workflow",
+  "Private feedback capture",
+  "Google review CTA flow",
+  "Basic dashboard access",
+  "Follow-up messaging structure",
+];
+
+function ReputationBundleCallout() {
+  return (
+    <div
+      className="mt-10 overflow-hidden rounded-2xl border border-white/[0.06] sm:mt-12"
+      style={{
+        background: "var(--brand-surface-2)",
+        borderLeft: "3px solid var(--pricing-accent)",
+      }}
+    >
+      <div className="px-6 py-6 sm:px-8 sm:py-7">
+        <div className="inline-flex items-center gap-2 font-mono text-[11px] font-semibold uppercase tracking-[0.16em] text-accent">
+          <Sparkles aria-hidden="true" className="h-3.5 w-3.5" strokeWidth={2.25} />
+          <span>Website + Reputation System Bundle</span>
+        </div>
+
+        <p className="mt-2 font-display text-[18px] font-extrabold leading-[1.25] tracking-[-0.02em] text-white sm:text-[20px]">
+          The website helps bring people in. AutoFiveStar helps after the job,
+          visit, or sale is complete.
+        </p>
+        <p className="mt-2 max-w-[640px] font-body text-[12.5px] leading-[1.6] text-white/55">
+          Most agencies stop at the website. Tweak &amp; Build can also include
+          AutoFiveStar — a review follow-up system designed to help businesses
+          request reviews, capture private feedback, and build a cleaner
+          reputation workflow after each customer interaction.
+        </p>
+
+        <div className="mt-5 grid grid-cols-1 gap-2.5 sm:grid-cols-2 lg:grid-cols-3">
+          {REPUTATION_BUNDLE_INCLUDES.map((item) => (
+            <div key={item} className="flex items-start gap-2.5">
+              <span
+                aria-hidden="true"
+                className="mt-[3px] inline-flex h-3.5 w-3.5 shrink-0 items-center justify-center rounded-full bg-accent/[0.12]"
+              >
+                <Check className="h-2.5 w-2.5 text-accent" strokeWidth={3} />
+              </span>
+              <span className="font-body text-[12.5px] leading-[1.55] text-white/[0.62]">
+                {item}
+              </span>
+            </div>
+          ))}
+        </div>
+
+        <p className="mt-4 font-mono text-[10px] font-semibold uppercase tracking-[0.16em] text-white/35">
+          Included with Growth and Dealership packages
+        </p>
+
+        <div className="mt-5 flex flex-col gap-2.5 sm:flex-row sm:items-center">
+          <Link
+            href="/contact?tier=Website%20%2B%20Reputation%20Bundle"
+            className="btn-v inline-flex items-center justify-center !gap-2 !px-5 !py-3 !text-[12.5px] sm:w-auto"
+            onClick={() =>
+              trackEvent("pricing_button_click", {
+                tier: "Website + Reputation Bundle",
+                destination: "contact",
+              })
+            }
+          >
+            Start a project <span aria-hidden="true">→</span>
+          </Link>
+          <Link
+            href="/work/autofivestar"
+            className="inline-flex items-center justify-center gap-1.5 px-3 py-2 font-body text-[11.5px] font-medium text-white/55 transition-colors duration-200 hover:text-accent"
+            onClick={() =>
+              trackEvent("pricing_button_click", {
+                tier: "Website + Reputation Bundle",
+                destination: "autofivestar_case_study",
+                secondary: true,
+              })
+            }
+          >
+            View AutoFiveStar case study <span aria-hidden="true">→</span>
+          </Link>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 type AddOn = {
   name: string;
   description: string;
@@ -1131,6 +1245,24 @@ const ADD_ONS: AddOn[] = [
       "Retrofit / add-on for qualifying existing sites. Includes feed connection work only. Does not include the full dealership UX, VDP system, filtering experience, SEO architecture, or ongoing feed monitoring included in the Dealership Website System.",
     price: "from $1,500",
   },
+  {
+    name: "AutoFiveStar Lite",
+    description:
+      "Review-request workflow for small local businesses — request reviews, route unhappy feedback privately, and keep a repeatable follow-up process after each customer interaction.",
+    price: "from $97/mo",
+  },
+  {
+    name: "AutoFiveStar Pro",
+    description:
+      "Higher-volume reputation follow-up with Google review CTA flow, private feedback capture, and dashboard access for businesses running steady customer volume.",
+    price: "from $197/mo",
+  },
+  {
+    name: "AutoFiveStar Dealer",
+    description:
+      "Dealership-grade reputation system built for higher-volume sales and service follow-up, with review requests, private feedback routing, and Google review CTA flow.",
+    price: "from $297/mo",
+  },
 ];
 
 function AddOnsSection() {
@@ -1166,6 +1298,12 @@ function AddOnsSection() {
           </div>
         ))}
       </div>
+
+      <p className="mx-auto mt-6 max-w-[640px] text-center font-body text-[12px] leading-[1.6] text-white/40">
+        AutoFiveStar can be continued after the included period as a monthly
+        add-on. Lite plans are designed for small local businesses; Pro and
+        dealership plans are designed for higher-volume customer follow-up.
+      </p>
     </div>
   );
 }
