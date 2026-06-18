@@ -1,0 +1,350 @@
+"use client";
+import Image from "next/image";
+import Link from "next/link";
+import { ArrowLeft, ArrowRight, ExternalLink, CheckCircle } from "lucide-react";
+import { Reveal } from "@/components/shared";
+import { projects, type Project } from "@/lib/data";
+import { ProjectPrimaryMedia } from "@/components/project-primary-media";
+import { trackEvent } from "@/lib/analytics";
+
+export function CaseStudy({ project }: { project: Project }) {
+  const idx = projects.indexOf(project);
+  const prev = idx > 0 ? projects[idx - 1] : null;
+  const next = idx >= 0 && idx < projects.length - 1 ? projects[idx + 1] : null;
+
+  // AutoFiveStar uses product-build framing; every other case study keeps the
+  // standard "build like this" closing CTA so existing pages are unchanged.
+  const isAutoFiveStar = project.slug === "autofivestar";
+  const cta = isAutoFiveStar
+    ? {
+        heading: "Want a system like this for your business?",
+        copy: "Tweak & Build designs and builds websites, SaaS tools, automations, and internal systems that help businesses capture more opportunities and follow up better.",
+        primaryLabel: "Start a project",
+        secondaryLabel: "View more work",
+        secondaryHref: "/work",
+      }
+    : {
+        heading: "Want a build like this for your business?",
+        copy: "Fixed-price quote within 24 hours. Senior engineers. No lock-in.",
+        primaryLabel: "Get a similar site",
+        secondaryLabel: "Book a 15-min call",
+        secondaryHref: `/contact?ref=${project.slug}#calendly`,
+      };
+
+  return (
+    <div className="pb-24 pt-36 sm:pt-40">
+      <div className="wrap">
+        <Reveal>
+          <Link
+            href="/work"
+            className="mb-10 inline-flex items-center gap-2 text-[13px] text-dim transition-colors duration-200 hover:text-white"
+          >
+            <ArrowLeft size={13} /> All Case Studies
+          </Link>
+        </Reveal>
+
+        <Reveal delay={0.05}>
+          <div className="mb-10">
+            <div className="flex flex-wrap items-center gap-3">
+              <span className="font-mono text-[10px] uppercase tracking-[0.08em] text-accent/70">
+                {project.category}
+              </span>
+              <span className="h-1 w-1 rounded-full bg-white/[0.15]" />
+              <span className="font-mono text-[10px] text-dim">
+                {project.year}
+              </span>
+              {project.live ? (
+                <span className="rounded-md border border-accent/[0.2] bg-accent/[0.06] px-2 py-0.5 text-[9px] font-bold text-accent">
+                  LIVE
+                </span>
+              ) : (
+                <span className="rounded-md border border-amber-400/[0.2] bg-amber-400/[0.06] px-2 py-0.5 text-[9px] font-bold text-amber-400">
+                  IN DEV
+                </span>
+              )}
+            </div>
+
+            <h1 className="mt-3 font-display text-[clamp(32px,5vw,52px)] font-black leading-[1.05] tracking-[-0.04em] text-white">
+              {project.title}
+            </h1>
+
+            <p className="mt-3 max-w-xl text-[17px] leading-[1.6] text-body">
+              {project.tagline}
+            </p>
+
+            {project.url && (
+              <a
+                href={project.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="mt-4 inline-flex items-center gap-2 text-[13px] text-accent/80 transition-colors duration-200 hover:text-accent"
+              >
+                Visit live site <ExternalLink size={13} />
+              </a>
+            )}
+          </div>
+        </Reveal>
+
+        <Reveal delay={0.1}>
+          <div className="mb-14 overflow-hidden rounded-2xl border border-white/[0.06] bg-gradient-to-br from-surface-2 to-surface-3">
+            <ProjectPrimaryMedia
+              project={project}
+              sizes="(max-width: 1024px) 100vw, 1200px"
+              className="relative h-48 sm:h-72 lg:h-[420px]"
+              imageClassName="object-cover object-top"
+              videoClassName="h-full w-full object-cover object-top"
+              priority
+            />
+            <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/55 via-black/10 to-transparent" />
+          </div>
+        </Reveal>
+
+        {project.gallery?.length ? (
+          <Reveal delay={0.12}>
+            <div className="mb-14">
+              <h2 className="font-display text-[17px] font-bold tracking-[-0.01em] text-white">
+                Screenshots
+              </h2>
+
+              <div className="mt-5 grid gap-4 md:grid-cols-2 md:gap-5">
+                {project.gallery.map((src, i) => {
+                  const isVideo = /\.mp4(?:\?|#|$)/i.test(src);
+                  return (
+                    <div
+                      key={src}
+                      className="overflow-hidden rounded-2xl border border-white/[0.06] bg-white/[0.02]"
+                    >
+                      <div className="relative aspect-[16/10] w-full bg-black">
+                        {isVideo ? (
+                          <video
+                            src={src}
+                            muted
+                            loop
+                            playsInline
+                            autoPlay
+                            preload="metadata"
+                            aria-label={`${project.title} demo ${i + 1}`}
+                            className="absolute inset-0 h-full w-full bg-black object-contain object-center p-2 sm:p-3"
+                          />
+                        ) : (
+                          <Image
+                            src={src}
+                            alt={`${project.title} screenshot ${i + 1}`}
+                            fill
+                            className="bg-black object-contain object-center p-2 sm:p-3"
+                          />
+                        )}
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          </Reveal>
+        ) : null}
+
+        <div className="grid gap-12 lg:grid-cols-3">
+          <div className="space-y-12 lg:col-span-2">
+            <Reveal delay={0.14}>
+              <h2 className="font-display text-[17px] font-bold tracking-[-0.01em] text-white">
+                Overview
+              </h2>
+              <p className="mt-3 text-[14px] leading-[1.8] text-body">
+                {project.description}
+              </p>
+            </Reveal>
+
+            <Reveal delay={0.16}>
+              <h2 className="font-display text-[17px] font-bold tracking-[-0.01em] text-white">
+                The Challenge
+              </h2>
+              <p className="mt-3 text-[14px] leading-[1.8] text-body">
+                {project.challenge}
+              </p>
+            </Reveal>
+
+            <Reveal delay={0.18}>
+              <h2 className="font-display text-[17px] font-bold tracking-[-0.01em] text-white">
+                Our Approach
+              </h2>
+              <p className="mt-3 text-[14px] leading-[1.8] text-body">
+                {project.solution}
+              </p>
+            </Reveal>
+
+            <Reveal delay={0.2}>
+              <h2 className="font-display text-[17px] font-bold tracking-[-0.01em] text-white">
+                Results
+              </h2>
+              <div className="mt-4 space-y-2.5">
+                {project.results.map((r) => (
+                  <div
+                    key={r}
+                    className="flex items-start gap-3 rounded-xl border border-accent/[0.1] bg-accent/[0.04] px-5 py-3.5"
+                  >
+                    <CheckCircle
+                      size={16}
+                      className="mt-0.5 flex-shrink-0 text-accent/70"
+                    />
+                    <p className="text-[13px] font-medium text-accent/80">
+                      {r}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            </Reveal>
+          </div>
+
+          <div className="space-y-5">
+            <Reveal delay={0.15}>
+              <div className="card rounded-2xl p-6">
+                <h3 className="font-mono text-[10px] uppercase tracking-[0.1em] text-dim">
+                  Tech Stack
+                </h3>
+                <div className="mt-4 flex flex-wrap gap-2">
+                  {project.stack.map((t) => (
+                    <span key={t} className="tag">
+                      {t}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            </Reveal>
+
+            <Reveal delay={0.2}>
+              <div className="card rounded-2xl p-6">
+                <h3 className="font-display text-[14px] font-bold text-white">
+                  Want a build like this?
+                </h3>
+                <p className="mt-2 text-[12px] leading-[1.7] text-dim">
+                  Get a similar site for your business. Fixed quote within 24 hours.
+                </p>
+                <Link
+                  href={`/contact?ref=${project.slug}`}
+                  className="btn-v mt-5 w-full justify-center"
+                  onClick={() =>
+                    trackEvent("work_case_study_cta_click", {
+                      project: project.slug,
+                      cta: "request_quote",
+                      placement: "sidebar",
+                    })
+                  }
+                >
+                  Request a quote <ArrowRight size={13} />
+                </Link>
+                <Link
+                  href={`/contact?ref=${project.slug}#calendly`}
+                  className="btn-o mt-2 w-full justify-center"
+                  onClick={() =>
+                    trackEvent("book_call_click", {
+                      source: "case_study_sidebar",
+                      project: project.slug,
+                    })
+                  }
+                >
+                  Book a 15-minute call
+                </Link>
+              </div>
+            </Reveal>
+          </div>
+        </div>
+
+        <Reveal delay={0.21}>
+          <div
+            className="mt-16 overflow-hidden rounded-3xl border border-accent/[0.12] px-6 py-9 sm:px-10 sm:py-11"
+            style={{
+              background:
+                "linear-gradient(180deg, rgba(200,255,0,0.04), rgba(255,255,255,0.012))",
+              boxShadow:
+                "0 1px 0 rgba(255,255,255,0.04) inset, 0 24px 60px rgba(0,0,0,0.32)",
+            }}
+          >
+            <div className="flex flex-col items-start gap-6 sm:flex-row sm:items-center sm:justify-between">
+              <div className="max-w-xl">
+                <span className="font-mono text-[10px] uppercase tracking-[0.12em] text-accent/80">
+                  Build like {project.title}
+                </span>
+                <h2 className="mt-2 font-display text-[clamp(22px,3.5vw,30px)] font-extrabold leading-[1.15] tracking-[-0.02em] text-white">
+                  {cta.heading}
+                </h2>
+                <p className="mt-2.5 text-[13.5px] leading-[1.7] text-body">
+                  {cta.copy}
+                </p>
+              </div>
+              <div className="flex flex-col gap-2 sm:flex-row sm:items-center">
+                <Link
+                  href={`/contact?ref=${project.slug}`}
+                  className="btn-v justify-center !px-5 !py-3 !text-[13px]"
+                  onClick={() =>
+                    trackEvent("work_case_study_cta_click", {
+                      project: project.slug,
+                      cta: "request_quote",
+                      placement: "bottom_banner",
+                    })
+                  }
+                >
+                  {cta.primaryLabel} <ArrowRight size={13} />
+                </Link>
+                <Link
+                  href={cta.secondaryHref}
+                  className="btn-o justify-center !px-5 !py-3 !text-[13px]"
+                  onClick={() =>
+                    trackEvent("book_call_click", {
+                      source: "case_study_bottom_banner",
+                      project: project.slug,
+                    })
+                  }
+                >
+                  {cta.secondaryLabel}
+                </Link>
+              </div>
+            </div>
+          </div>
+        </Reveal>
+
+        <Reveal delay={0.22}>
+          <div className="divider mt-16" />
+          <div className="mt-10 grid gap-3 sm:grid-cols-2">
+            {prev ? (
+              <Link
+                href={`/work/${prev.slug}`}
+                className="card group flex items-center gap-3 rounded-2xl p-5 transition-all duration-200 hover:border-accent/[0.12]"
+              >
+                <ArrowLeft
+                  size={14}
+                  className="text-dim transition-transform duration-200 group-hover:-translate-x-1"
+                />
+                <div>
+                  <p className="font-mono text-[10px] text-dim">Previous</p>
+                  <p className="font-display text-[14px] font-bold text-white">
+                    {prev.title}
+                  </p>
+                </div>
+              </Link>
+            ) : (
+              <div />
+            )}
+
+            {next && (
+              <Link
+                href={`/work/${next.slug}`}
+                className="card group flex items-center justify-end gap-3 rounded-2xl p-5 text-right transition-all duration-200 hover:border-accent/[0.12]"
+              >
+                <div>
+                  <p className="font-mono text-[10px] text-dim">Next</p>
+                  <p className="font-display text-[14px] font-bold text-white">
+                    {next.title}
+                  </p>
+                </div>
+                <ArrowRight
+                  size={14}
+                  className="text-dim transition-transform duration-200 group-hover:translate-x-1"
+                />
+              </Link>
+            )}
+          </div>
+        </Reveal>
+      </div>
+    </div>
+  );
+}

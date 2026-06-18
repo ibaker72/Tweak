@@ -158,6 +158,49 @@ export const projects: Project[] = [
     accent: "violet",
   },
   {
+    slug: "autofivestar",
+    title: "AutoFiveStar",
+    category: "Reputation Management SaaS",
+    tagline:
+      "Reputation management SaaS for dealerships and local service businesses.",
+    description:
+      "AutoFiveStar was built as a focused SaaS platform for businesses that need a simple way to turn completed jobs, vehicle sales, and service visits into consistent review opportunities. The system is designed to request reviews, route unhappy feedback privately, and give teams a repeatable workflow for improving online reputation.",
+    challenge:
+      "Local businesses often rely on random review requests, manual follow-up, or staff remembering to ask customers at the right time. That creates missed reviews, inconsistent reputation growth, and no clean system for handling unhappy customers before they post publicly.",
+    solution:
+      "Tweak & Build built AutoFiveStar as a focused review-management SaaS platform — with review request workflows, customer feedback capture, private negative-feedback routing, a Google review CTA flow, a business-facing dashboard foundation, a subscription-ready product structure, and a clean landing page and conversion path.",
+    problem:
+      "Random review requests and manual follow-up. Missed reviews and no system for handling unhappy customers before they post publicly.",
+    solutionShort:
+      "Built a review-automation SaaS with feedback routing, Google review capture, and a dashboard-ready reputation workflow.",
+    impactShort:
+      "Reputation follow-up turned into a repeatable system instead of memory and one-off texts.",
+    impact: "Reputation follow-up system built",
+    results: [
+      "Automated customer review request workflow",
+      "Private negative-feedback routing before public reviews",
+      "Google review capture CTA flow",
+      "Business-facing dashboard foundation",
+      "Subscription-ready SaaS product structure",
+    ],
+    stack: ["Next.js", "Supabase", "TypeScript", "Stripe", "Vercel"],
+    year: "2025",
+    live: true,
+    url: "https://www.autofivestar.com",
+    image: "/work/autofivestar/autofivestar-01.png",
+    gallery: [
+      "/work/autofivestar/autofivestar-01.png",
+      "/work/autofivestar/autofivestar-02.png",
+      "/work/autofivestar/autofivestar-03.png",
+      "/work/autofivestar/autofivestar-04.png",
+      "/work/autofivestar/autofivestar-05.png",
+      "/work/autofivestar/autofivestar-06.png",
+    ],
+    proofBadges: ["Review Automation", "SaaS Platform", "Google Reviews"],
+    metricBadge: "Reputation follow-up system built",
+    accent: "cyan",
+  },
+  {
     slug: "jerseypantry",
     title: "JerseyPantry.com",
     category: "Local E-Commerce / Food Brand",

@@ -25,6 +25,7 @@ const PP_BASE = "/visual-proof/ppmechanical";
 const SPEEDWAY_BASE = "/visual-proof/speedwaymotors";
 const TWEAK_BASE = "/visual-proof/tweak-os";
 const JERSEYPANTRY_BASE = "/visual-proof/jerseypantry";
+const AUTOFIVESTAR_BASE = "/work/autofivestar";
 
 export const visualProofProjects: VisualProofProject[] = [
   {
@@ -154,6 +155,36 @@ export const visualProofProjects: VisualProofProject[] = [
         type: "image",
         label: "Proposal result",
       },
+    ],
+  },
+  {
+    slug: "autofivestar",
+    title: "AutoFiveStar",
+    category: "Reputation Management SaaS",
+    description:
+      "Built a SaaS product that helps businesses request reviews, route unhappy feedback privately, manage follow-ups, and strengthen their online reputation.",
+    tags: [
+      "SaaS Product",
+      "Review Requests",
+      "Reputation Workflow",
+      "Google Review Capture",
+    ],
+    outcomes: [
+      "Automated customer review requests",
+      "Private feedback routing before public reviews",
+      "Dashboard-ready reputation workflow",
+      "Subscription SaaS foundation",
+    ],
+    accent: "cyan",
+    liveUrl: "https://www.autofivestar.com",
+    caseStudyHref: "/work/autofivestar",
+    media: [
+      { src: `${AUTOFIVESTAR_BASE}/autofivestar-01.png`, type: "image", label: "Landing page" },
+      { src: `${AUTOFIVESTAR_BASE}/autofivestar-02.png`, type: "image", label: "Review request" },
+      { src: `${AUTOFIVESTAR_BASE}/autofivestar-03.png`, type: "image", label: "Feedback routing" },
+      { src: `${AUTOFIVESTAR_BASE}/autofivestar-04.png`, type: "image", label: "Dashboard" },
+      { src: `${AUTOFIVESTAR_BASE}/autofivestar-05.png`, type: "image", label: "Workflow" },
+      { src: `${AUTOFIVESTAR_BASE}/autofivestar-06.png`, type: "image", label: "Reputation overview" },
     ],
   },
   {
