@@ -13,6 +13,8 @@ export default function ContactPage() {
   const [tierParam, setTierParam] = useState<string | null>(null);
   const [referralCode, setReferralCode] = useState("");
   const [form, setForm] = useState({ name: "", email: "", phone: "", company: "", budget: "", timeline: "", tier: "", message: "" });
+  const [smsConsent, setSmsConsent] = useState(false);
+  const [consentError, setConsentError] = useState(false);
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     setTierParam(params.get("tier"));
@@ -22,12 +24,17 @@ export default function ContactPage() {
   useEffect(() => { if (tierParam) setForm(p => ({ ...p, tier: tierParam })); }, [tierParam]);
   const s = (k: string) => (e: React.ChangeEvent<HTMLInputElement|HTMLTextAreaElement|HTMLSelectElement>) => setForm(p => ({ ...p, [k]: e.target.value }));
   const submit = async () => {
+    if (!smsConsent) {
+      setConsentError(true);
+      return;
+    }
+    setConsentError(false);
     setStatus("loading");
     try {
       await fetch("/api/contact", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...form, referral: referralCode || undefined }),
+        body: JSON.stringify({ ...form, smsConsent: true, referral: referralCode || undefined }),
       });
     } catch {}
     trackEvent("contact_form_submit", {
@@ -114,7 +121,7 @@ export default function ContactPage() {
                     </div>
                     <p className="font-display text-[17px] font-bold text-white">{tierParam ? "Request received!" : "Inquiry received!"}</p>
                     <p className="mt-1.5 text-[13px] text-dim">Our team will respond within 24 hours.</p>
-                    <button onClick={() => { setStatus("idle"); setForm({ name:"",email:"",phone:"",company:"",budget:"",timeline:"",tier:tierParam||"",message:"" }); }} className="mt-5 inline-flex items-center gap-1.5 text-[13px] font-semibold text-accent transition-colors duration-200 hover:text-white">
+                    <button onClick={() => { setStatus("idle"); setSmsConsent(false); setConsentError(false); setForm({ name:"",email:"",phone:"",company:"",budget:"",timeline:"",tier:tierParam||"",message:"" }); }} className="mt-5 inline-flex items-center gap-1.5 text-[13px] font-semibold text-accent transition-colors duration-200 hover:text-white">
                       Submit another <ArrowRight size={12} />
                     </button>
                   </div>
@@ -168,12 +175,38 @@ export default function ContactPage() {
                       <textarea className="field" rows={4} placeholder={tierParam ? "Describe what you need. Include Figma links, screenshots, or references." : "Describe the problem, your goals, and any requirements."} value={form.message} onChange={s("message")} />
                     </div>
                     <input type="hidden" name="referral" value={referralCode} />
+
+                    {/* SMS consent — Twilio A2P opt-in proof */}
+                    <div className="rounded-xl border border-white/[0.07] bg-white/[0.015] p-3.5">
+                      <label htmlFor="smsConsent" className="flex cursor-pointer items-start gap-3">
+                        <input
+                          id="smsConsent"
+                          name="smsConsent"
+                          type="checkbox"
+                          required
+                          checked={smsConsent}
+                          onChange={(e) => { setSmsConsent(e.target.checked); if (e.target.checked) setConsentError(false); }}
+                          aria-invalid={consentError}
+                          aria-describedby={consentError ? "smsConsent-error" : undefined}
+                          className="mt-0.5 h-4 w-4 flex-shrink-0 cursor-pointer rounded border-white/20 bg-white/[0.04] accent-accent"
+                        />
+                        <span className="text-[12px] leading-[1.65] text-body">
+                          I agree to receive SMS communications from Tweak &amp; Build regarding my inquiry, appointments, proposals, project updates, and support. Message frequency varies. Message and data rates may apply. Reply STOP to opt out and HELP for help. Consent is not a condition of purchase.
+                        </span>
+                      </label>
+                      {consentError && (
+                        <p id="smsConsent-error" className="mt-2 pl-7 text-[11px] font-medium text-red-400">
+                          Please confirm SMS consent before submitting.
+                        </p>
+                      )}
+                    </div>
+
                     <button onClick={submit} disabled={status === "loading"} className="btn-v w-full justify-center disabled:opacity-60">
                       {status === "loading" ? <Loader2 size={15} className="animate-spin" /> : <Send size={13} />}
                       {status === "loading" ? "Sending..." : tierParam ? `Request ${tierParam} Build` : "Submit inquiry"}
                     </button>
                     <p className="mt-1 text-[11px] leading-[1.6] text-dim">
-                      By submitting this form, you agree that Tweak &amp; Build may contact you by email, phone, or SMS about your inquiry. Message frequency varies. Message and data rates may apply. Reply STOP to opt out or HELP for help. See our{" "}
+                      See our{" "}
                       <Link href="/privacy" className="text-accent/80 underline decoration-accent/20 underline-offset-2 transition-colors hover:text-accent hover:decoration-accent/40">Privacy Policy</Link>
                       {" "}and{" "}
                       <Link href="/terms" className="text-accent/80 underline decoration-accent/20 underline-offset-2 transition-colors hover:text-accent hover:decoration-accent/40">Terms</Link>.
