@@ -28,9 +28,8 @@ export const featuredProjects: FeaturedProject[] = [
     outcome: "Sales process centralized",
     liveUrl: "https://app.tweakandbuild.com",
     caseStudyHref: "/work/tweak-build-os",
-    mediaType: "video",
-    media: "/work/tweakbuild-os/demo.mp4",
-    poster: "/work/tweakbuild-os/poster.jpg",
+    mediaType: "image",
+    media: "/visual-proof/tweak-os/dashboard.webp",
     accent: "violet",
   },
   {
@@ -44,9 +43,8 @@ export const featuredProjects: FeaturedProject[] = [
     outcome: "Manual inventory updates reduced",
     liveUrl: "https://speedwaymotorsllc.com",
     caseStudyHref: "/work/speedway-motors",
-    mediaType: "video",
-    media: "/work/speedway/demo.mp4",
-    poster: "/work/speedway/poster.jpg",
+    mediaType: "image",
+    media: "/visual-proof/speedwaymotors/hero.jpg",
     accent: "cyan",
   },
   {
@@ -76,7 +74,7 @@ export const featuredProjects: FeaturedProject[] = [
     liveUrl: "https://ppmechanicalllc.com",
     caseStudyHref: "/work/pp-mechanical",
     mediaType: "image",
-    media: "/work/ppmechanical/screenshot.jpg",
+    media: "/visual-proof/ppmechanical/hero.webp",
     accent: "lime",
   },
   {
@@ -91,7 +89,7 @@ export const featuredProjects: FeaturedProject[] = [
     liveUrl: "https://jerseypantry.com",
     caseStudyHref: "/work/jerseypantry",
     mediaType: "image",
-    media: "/work/jerseypantry/screenshot.jpg",
+    media: "/visual-proof/jerseypantry/hero.jpg",
     accent: "amber",
   },
 ];
