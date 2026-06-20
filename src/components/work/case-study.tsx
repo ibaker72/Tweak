@@ -1,10 +1,10 @@
 "use client";
-import Image from "next/image";
 import Link from "next/link";
 import { ArrowLeft, ArrowRight, ExternalLink, CheckCircle } from "lucide-react";
 import { Reveal } from "@/components/shared";
 import { projects, type Project } from "@/lib/data";
 import { ProjectPrimaryMedia } from "@/components/project-primary-media";
+import { SafeImage } from "@/components/safe-image";
 import { trackEvent } from "@/lib/analytics";
 
 export function CaseStudy({ project }: { project: Project }) {
@@ -127,7 +127,7 @@ export function CaseStudy({ project }: { project: Project }) {
                             className="absolute inset-0 h-full w-full bg-black object-contain object-center p-2 sm:p-3"
                           />
                         ) : (
-                          <Image
+                          <SafeImage
                             src={src}
                             alt={`${project.title} screenshot ${i + 1}`}
                             fill

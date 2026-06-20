@@ -1,8 +1,8 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import Image from "next/image";
 import type { Project } from "@/lib/data";
+import { SafeImage } from "./safe-image";
 
 type ProjectPrimaryMediaProps = {
   project: Pick<Project, "title" | "image" | "video" | "poster" | "gallery">;
@@ -46,7 +46,7 @@ export function ProjectPrimaryMedia({
           <source src={project.video} type="video/mp4" />
         </video>
       ) : fallbackImage ? (
-        <Image
+        <SafeImage
           src={fallbackImage}
           alt={project.title}
           fill

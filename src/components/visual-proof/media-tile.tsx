@@ -2,7 +2,8 @@
 
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
-import { ImageOff, Play } from "lucide-react";
+import { Play } from "lucide-react";
+import { MediaFallback } from "../media-fallback";
 
 type VideoBehavior = "autoplay" | "first-frame";
 
@@ -21,27 +22,6 @@ type Props = {
 const VIDEO_RE = /\.mp4(?:\?|#|$)/i;
 
 export const isVideoSrc = (src: string) => VIDEO_RE.test(src);
-
-function Fallback() {
-  return (
-    <div
-      className="absolute inset-0 flex items-center justify-center"
-      style={{
-        background:
-          "linear-gradient(135deg, rgba(255,255,255,0.04), rgba(255,255,255,0.01) 60%, rgba(255,255,255,0.02))",
-      }}
-    >
-      <div className="flex flex-col items-center gap-2 px-3 text-center">
-        <div className="flex h-9 w-9 items-center justify-center rounded-full border border-white/[0.08] bg-white/[0.02]">
-          <ImageOff size={14} className="text-white/40" strokeWidth={1.5} />
-        </div>
-        <span className="font-mono text-[10px] uppercase tracking-[0.14em] text-white/45">
-          Visual asset coming soon
-        </span>
-      </div>
-    </div>
-  );
-}
 
 export function MediaTile({
   src,
@@ -75,8 +55,8 @@ export function MediaTile({
 
   return (
     <div className={`relative overflow-hidden ${className}`}>
-      {failed ? (
-        <Fallback />
+      {failed || !src ? (
+        <MediaFallback />
       ) : isVideo ? (
         <>
           <video

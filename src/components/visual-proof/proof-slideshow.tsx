@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import Image from "next/image";
+import { MediaFallback } from "../media-fallback";
 
 type Props = {
   sources: string[];
@@ -39,6 +40,16 @@ export function ProofSlideshow({
   const [reduced, setReduced] = useState(false);
   const [hasHover, setHasHover] = useState(false);
   const [hovering, setHovering] = useState(false);
+  // Track failures by src so a changed source set never carries stale state.
+  const [failedSrcs, setFailedSrcs] = useState<Set<string>>(() => new Set());
+
+  const markFailed = (src: string) =>
+    setFailedSrcs((prev) => {
+      if (prev.has(src)) return prev;
+      const next = new Set(prev);
+      next.add(src);
+      return next;
+    });
 
   useEffect(() => {
     if (typeof window === "undefined") return;
@@ -105,13 +116,17 @@ export function ProofSlideshow({
   if (total === 1) {
     return (
       <div className={className}>
+        {/* Placeholder sits behind so a broken/missing frame degrades cleanly. */}
+        <MediaFallback />
         <Image
           src={frames[0]}
           alt={alt}
           fill
           sizes={sizes}
           priority={priority}
-          className="object-cover"
+          className="object-cover transition-opacity"
+          style={{ opacity: failedSrcs.has(frames[0]) ? 0 : 1 }}
+          onError={() => markFailed(frames[0])}
         />
       </div>
     );
@@ -126,19 +141,22 @@ export function ProofSlideshow({
       onMouseEnter={() => setHovering(true)}
       onMouseLeave={() => setHovering(false)}
     >
+      {/* Placeholder sits behind every frame so broken images never show an icon. */}
+      <MediaFallback />
       {frames.map((src, i) => (
         <Image
           key={src}
           src={src}
           alt={i === 0 ? alt : ""}
           aria-hidden={i !== 0}
+          onError={() => markFailed(src)}
           fill
           sizes={sizes}
           priority={priority && i === 0}
           className="object-cover transition-opacity ease-out"
           style={{
             transitionDuration: `${FADE_MS}ms`,
-            opacity: i === visibleIndex ? 1 : 0,
+            opacity: i === visibleIndex && !failedSrcs.has(src) ? 1 : 0,
           }}
         />
       ))}
