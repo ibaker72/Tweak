@@ -96,9 +96,9 @@ export const projects: Project[] = [
     year: "2025",
     live: true,
     url: "https://speedwaymotorsllc.com",
-    image: "/visual-proof/speedwaymotors/hero.jpg",
+    image: "/visual-proof/speedwaymotors/pagespeed.webp",
     gallery: [
-      "/visual-proof/speedwaymotors/hero.jpg",
+      "/visual-proof/speedwaymotors/pagespeed.webp",
       "/visual-proof/speedwaymotors/inventory.jpg",
       "/visual-proof/speedwaymotors/financing.jpg",
       "/visual-proof/speedwaymotors/financing-02.jpg",

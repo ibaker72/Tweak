@@ -44,7 +44,7 @@ export const featuredProjects: FeaturedProject[] = [
     liveUrl: "https://speedwaymotorsllc.com",
     caseStudyHref: "/work/speedway-motors",
     mediaType: "image",
-    media: "/visual-proof/speedwaymotors/hero.jpg",
+    media: "/visual-proof/speedwaymotors/pagespeed.webp",
     accent: "cyan",
   },
   {

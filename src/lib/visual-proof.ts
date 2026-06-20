@@ -74,7 +74,7 @@ export const visualProofProjects: VisualProofProject[] = [
     liveUrl: "https://speedwaymotorsllc.com",
     caseStudyHref: "/work/speedway-motors",
     media: [
-      { src: `${SPEEDWAY_BASE}/hero.jpg`, type: "image", label: "Hero" },
+      { src: `${SPEEDWAY_BASE}/pagespeed.webp`, type: "image", label: "PageSpeed" },
       { src: `${SPEEDWAY_BASE}/inventory.jpg`, type: "image", label: "Inventory" },
       { src: `${SPEEDWAY_BASE}/financing.jpg`, type: "image", label: "Financing" },
       {
