@@ -245,14 +245,14 @@ export function DigitalMarketingLanding() {
                 <Megaphone size={16} className="text-accent" />
               </div>
               <p className="mt-5 font-mono text-[10px] font-semibold uppercase tracking-[0.18em] text-accent/80">
-                Monthly retainer
+                Monthly engagement
               </p>
-              <h3 className="mt-2 font-display text-[clamp(28px,4vw,40px)] font-extrabold tracking-tight text-white">
-                Starting at $1,800/mo
+              <h3 className="mt-2 font-display text-[clamp(26px,3.6vw,36px)] font-extrabold tracking-tight text-white">
+                Built around your market and growth target
               </h3>
               <p className="mx-auto mt-3 max-w-md text-[13px] leading-[1.7] text-white/60 sm:text-[14px]">
-                Plus your ad spend, managed separately and billed direct from each ad platform.
-                Month-to-month after the first 90 days.
+                Management and strategy are scoped to your goals. Ad spend stays separate,
+                billed direct from each ad platform. Month-to-month after the first 90 days.
               </p>
               <div className="mt-7 flex flex-col items-center justify-center gap-3 sm:flex-row">
                 <Link
@@ -265,7 +265,7 @@ export function DigitalMarketingLanding() {
                   href="/#pricing"
                   className="inline-flex items-center gap-2 text-[13px] font-semibold text-white/70 transition-colors hover:text-white"
                 >
-                  See full pricing <ArrowRight size={12} />
+                  See all solutions <ArrowRight size={12} />
                 </Link>
               </div>
             </div>

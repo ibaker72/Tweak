@@ -5,7 +5,7 @@ import { Mail, Clock, Shield, Send, Loader2, Check, ArrowRight } from "lucide-re
 import { cn } from "@/lib/utils";
 import { Reveal } from "@/components/shared";
 import { CalendlyEmbed } from "@/components/calendly-embed";
-import { budgetOptions, timelineOptions, tiers } from "@/lib/data";
+import { budgetOptions, timelineOptions } from "@/lib/data";
 import { getReferralFromCookie } from "@/lib/referral";
 import { trackEvent } from "@/lib/analytics";
 
@@ -106,10 +106,10 @@ export default function ContactPage() {
             <div id="quote" className="scroll-mt-24">
               <div className="mb-5">
                 <h2 className="font-display text-[17px] font-bold tracking-[-0.01em] text-white">
-                  {tierParam ? `Quick Build: ${tierParam}` : "Submit a Project Inquiry"}
+                  {tierParam ? `Project Inquiry: ${tierParam}` : "Submit a Project Inquiry"}
                 </h2>
                 <p className="mt-1 text-[13px] leading-[1.7] text-dim">
-                  {tierParam ? "Confirm your details and we\u2019ll send a project confirmation within 24 hours." : "Share your project details for a tailored proposal within 24 hours."}
+                  {tierParam ? "Tell us about your business and goals and we\u2019ll reply with a recommendation and plan within 24 hours." : "Share your project details for a tailored proposal within 24 hours."}
                 </p>
               </div>
 
@@ -129,7 +129,7 @@ export default function ContactPage() {
                   <div className="space-y-3.5">
                     {tierParam && (
                       <div className="mb-2 rounded-xl border border-accent/[0.12] bg-accent/[0.04] px-4 py-2.5 font-mono text-[11px] text-accent/80">
-                        Selected: {tierParam} ({tiers.find(t => t.name === tierParam)?.price})
+                        Selected: {tierParam}
                       </div>
                     )}
                     <div className="grid grid-cols-2 gap-3">
@@ -146,30 +146,26 @@ export default function ContactPage() {
                       <label className="mb-1.5 block font-mono text-[10px] uppercase tracking-[0.06em] text-dim">Phone (optional)</label>
                       <input className="field" type="tel" inputMode="tel" autoComplete="tel" placeholder="(555) 123-4567" value={form.phone} onChange={s("phone")} />
                     </div>
-                    {!tierParam && (
-                      <>
-                        <div>
-                          <label className="mb-1.5 block font-mono text-[10px] uppercase tracking-[0.06em] text-dim">Company</label>
-                          <input className="field" placeholder="Acme Inc." value={form.company} onChange={s("company")} />
-                        </div>
-                        <div className="grid grid-cols-2 gap-3">
-                          <div>
-                            <label className="mb-1.5 block font-mono text-[10px] uppercase tracking-[0.06em] text-dim">Budget</label>
-                            <select className={cn("field", form.budget ? "text-white" : "text-white/[0.15]")} value={form.budget} onChange={s("budget")}>
-                              <option value="" disabled>Select</option>
-                              {budgetOptions.map(o => <option key={o} value={o}>{o}</option>)}
-                            </select>
-                          </div>
-                          <div>
-                            <label className="mb-1.5 block font-mono text-[10px] uppercase tracking-[0.06em] text-dim">Timeline</label>
-                            <select className={cn("field", form.timeline ? "text-white" : "text-white/[0.15]")} value={form.timeline} onChange={s("timeline")}>
-                              <option value="" disabled>Select</option>
-                              {timelineOptions.map(o => <option key={o} value={o}>{o}</option>)}
-                            </select>
-                          </div>
-                        </div>
-                      </>
-                    )}
+                    <div>
+                      <label className="mb-1.5 block font-mono text-[10px] uppercase tracking-[0.06em] text-dim">Company</label>
+                      <input className="field" placeholder="Acme Inc." value={form.company} onChange={s("company")} />
+                    </div>
+                    <div className="grid grid-cols-2 gap-3">
+                      <div>
+                        <label className="mb-1.5 block font-mono text-[10px] uppercase tracking-[0.06em] text-dim">Expected investment range</label>
+                        <select className={cn("field", form.budget ? "text-white" : "text-white/[0.15]")} value={form.budget} onChange={s("budget")}>
+                          <option value="" disabled>Select</option>
+                          {budgetOptions.map(o => <option key={o} value={o}>{o}</option>)}
+                        </select>
+                      </div>
+                      <div>
+                        <label className="mb-1.5 block font-mono text-[10px] uppercase tracking-[0.06em] text-dim">Timeline</label>
+                        <select className={cn("field", form.timeline ? "text-white" : "text-white/[0.15]")} value={form.timeline} onChange={s("timeline")}>
+                          <option value="" disabled>Select</option>
+                          {timelineOptions.map(o => <option key={o} value={o}>{o}</option>)}
+                        </select>
+                      </div>
+                    </div>
                     <div>
                       <label className="mb-1.5 block font-mono text-[10px] uppercase tracking-[0.06em] text-dim">Project details *</label>
                       <textarea className="field" rows={4} placeholder={tierParam ? "Describe what you need. Include Figma links, screenshots, or references." : "Describe the problem, your goals, and any requirements."} value={form.message} onChange={s("message")} />
@@ -203,7 +199,7 @@ export default function ContactPage() {
 
                     <button onClick={submit} disabled={status === "loading"} className="btn-v w-full justify-center disabled:opacity-60">
                       {status === "loading" ? <Loader2 size={15} className="animate-spin" /> : <Send size={13} />}
-                      {status === "loading" ? "Sending..." : tierParam ? `Request ${tierParam} Build` : "Submit inquiry"}
+                      {status === "loading" ? "Sending..." : tierParam ? "Request a Proposal" : "Submit inquiry"}
                     </button>
                     <p className="mt-1 text-[11px] leading-[1.6] text-dim">
                       See our{" "}

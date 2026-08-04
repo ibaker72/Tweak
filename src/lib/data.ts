@@ -686,11 +686,12 @@ export const faqs = [
 ];
 
 export const budgetOptions = [
-  "Under $5k",
-  "$5k to $10k",
-  "$10k to $25k",
-  "$25k+",
-  "Not sure",
+  "Under $2,500",
+  "$2,500 – $5,000",
+  "$5,000 – $10,000",
+  "$10,000 – $25,000",
+  "$25,000+",
+  "Not sure — recommend something",
 ];
 export const timelineOptions = [
   "ASAP",

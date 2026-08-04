@@ -13,8 +13,8 @@ const actions = [
   },
   {
     icon: HelpCircle,
-    label: "Get pricing help",
-    desc: "Quick Build or Custom?",
+    label: "Explore solutions",
+    desc: "Find the right fit for your business",
     href: "/#pricing",
   },
   {

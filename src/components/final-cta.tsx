@@ -46,7 +46,7 @@ export function FinalCTA() {
                 Start a project <ArrowRight size={14} />
               </Link>
               <Link href="/#pricing" className="btn-o w-full justify-center py-2.5 text-[13px] sm:w-auto sm:px-7 sm:py-3.5 sm:text-[14px]">
-                View pricing
+                Explore solutions
               </Link>
             </div>
 

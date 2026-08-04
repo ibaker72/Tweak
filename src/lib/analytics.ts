@@ -1,7 +1,7 @@
 import { track } from "@vercel/analytics/react";
 
 type EventName =
-  | "pricing_button_click"
+  | "solution_cta_clicked"
   | "contact_form_submit"
   | "book_call_click"
   | "phone_click"
@@ -16,11 +16,4 @@ export function trackEvent(name: EventName, properties?: EventProps) {
   } catch {
     // Analytics is best-effort. Never let a failed track call break a user action.
   }
-}
-
-const STRIPE_PAYMENT_LINK_PREFIX = "https://buy.stripe.com/";
-
-export function isValidStripePaymentLink(url: string | undefined | null): url is string {
-  if (!url || typeof url !== "string") return false;
-  return url.trim().startsWith(STRIPE_PAYMENT_LINK_PREFIX);
 }

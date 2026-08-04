@@ -2,435 +2,269 @@
 
 import Link from "next/link";
 import {
-  useCallback,
-  useEffect,
   useId,
   useMemo,
   useRef,
   useState,
   type KeyboardEvent,
 } from "react";
-import { AnimatePresence, motion } from "framer-motion";
-import {
-  Camera,
-  Check,
-  ChevronLeft,
-  ChevronRight,
-  Plane,
-  Sparkles,
-  Video,
-  Zap,
-} from "lucide-react";
-import type { LucideIcon } from "lucide-react";
+import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
+import { Check } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { isValidStripePaymentLink, trackEvent } from "@/lib/analytics";
+import { trackEvent } from "@/lib/analytics";
 
 type TabId = "websites" | "marketing" | "drone";
 
-type Tier = {
-  label: string;
+type Solution = {
+  /** snake_case identifier used in analytics events */
+  id: string;
+  eyebrow: string;
   name: string;
-  subtitle: string;
-  price: string;
-  priceSuffix: string;
-  priceSubline?: string;
-  cadence: string;
-  cadenceAddOn?: string;
-  bonusNote?: string;
+  description: string;
+  /** Small positioning line shown where a price used to sit — used sparingly */
+  scopeNote?: string;
   features: string[];
   ctaLabel: string;
-  ctaHref: string;
-  checkoutUrl?: string;
-  footnote: string;
+  microcopy: string;
   featured?: boolean;
   badgeLabel?: string;
-  liveExampleHref?: string;
-  monthlyCareNote?: {
-    title: string;
-    description: string;
-  };
-  secondaryCta?: {
+};
+
+type TabFooter = {
+  note: string;
+  subNote?: string;
+  prompt?: string;
+  cta?: {
     label: string;
     href: string;
-    checkoutUrl?: string;
+    solutionId: string;
   };
-};
-
-type BenefitItem = {
-  title: string;
-  copy: string;
-  icon: LucideIcon;
-};
-
-type BenefitsBlockContent = {
-  title: string;
-  items: BenefitItem[];
 };
 
 type TabContent = {
   id: TabId;
   label: string;
-  tiers: Tier[];
-  note?: string;
-  microCopy?: string;
-  benefitsBlock?: BenefitsBlockContent;
+  solutions: Solution[];
+  footer: TabFooter;
 };
-
-// Only accept fully-qualified Stripe Payment Link URLs (https://buy.stripe.com/...).
-// A raw price ID (price_xxx) or any other value resolves to undefined so the card
-// falls back to the contact CTA instead of navigating to a broken /price_xxx URL.
-function sanitizeStripeLink(raw: string | undefined): string | undefined {
-  return isValidStripePaymentLink(raw) ? raw : undefined;
-}
-
-const pricingLinks = {
-  newBusinessLaunchKit: sanitizeStripeLink(
-    process.env.NEXT_PUBLIC_STRIPE_NEW_BUSINESS_LAUNCH_KIT_LINK
-  ),
-  monthlyWebsiteSeoCare: sanitizeStripeLink(
-    process.env.NEXT_PUBLIC_STRIPE_MONTHLY_WEBSITE_SEO_CARE_LINK
-  ),
-  foundationWebsite: sanitizeStripeLink(
-    process.env.NEXT_PUBLIC_STRIPE_FOUNDATION_WEBSITE_LINK
-  ),
-  growthWebsite: sanitizeStripeLink(
-    process.env.NEXT_PUBLIC_STRIPE_GROWTH_WEBSITE_LINK
-  ),
-  premiumGrowth: sanitizeStripeLink(
-    process.env.NEXT_PUBLIC_STRIPE_PREMIUM_GROWTH_LINK
-  ),
-  dealershipWebsite: sanitizeStripeLink(
-    process.env.NEXT_PUBLIC_STRIPE_DEALERSHIP_WEBSITE_LINK
-  ),
-  adsStarter: sanitizeStripeLink(
-    process.env.NEXT_PUBLIC_STRIPE_ADS_STARTER_LINK
-  ),
-  fullFunnelAds: sanitizeStripeLink(
-    process.env.NEXT_PUBLIC_STRIPE_FULL_FUNNEL_ADS_LINK
-  ),
-  growthPartnership: sanitizeStripeLink(
-    process.env.NEXT_PUBLIC_STRIPE_GROWTH_PARTNERSHIP_LINK
-  ),
-} as const;
 
 const TABS: TabContent[] = [
   {
     id: "websites",
     label: "Websites",
-    tiers: [
+    solutions: [
       {
-        label: "New business",
-        name: "New Business Launch Kit",
-        subtitle:
-          "For newly formed businesses that need to look real fast. A lean starter presence — not a full custom multi-page growth system.",
-        price: "$2,500",
-        priceSuffix: "",
-        cadence: "One-time launch setup",
-        cadenceAddOn: "Optional care plan available: +$297/mo",
+        id: "new_business_launch",
+        eyebrow: "Launch",
+        name: "New Business Launch",
+        description:
+          "For new businesses that need to look established, get found locally, and start turning visitors into real inquiries.",
         features: [
-          "Lean mobile-first starter site",
-          "Core offer and message sections",
-          "Contact form or quote request form",
-          "Basic SEO foundation",
+          "Conversion-focused business website",
+          "Mobile-first design",
+          "Core service and company sections",
+          "Quote or contact lead capture",
           "Google Business Profile readiness",
-          "Analytics & form tracking",
-          "Fast launch structure",
+          "Analytics and conversion tracking",
+          "SEO foundation",
+          "Launch-ready technical setup",
         ],
-        ctaLabel: "Request a build estimate",
-        ctaHref: "/contact?tier=New%20Business%20Launch%20Kit",
-        checkoutUrl: pricingLinks.newBusinessLaunchKit,
-        footnote: "Best for new LLCs, solo operators, and brand-new businesses",
-        monthlyCareNote: {
-          title: "Monthly care available",
-          description:
-            "Protects uptime, edits, monitoring, and technical fixes. Includes basic SEO checks, GBP support, analytics checks, and priority support.",
-        },
-        secondaryCta: {
-          label: "Ask about monthly care",
-          href: "/contact?tier=Monthly%20Website%20SEO%20Care%20Plan",
-          checkoutUrl: pricingLinks.monthlyWebsiteSeoCare,
-        },
+        ctaLabel: "Build My Launch Plan",
+        microcopy:
+          "Best for new businesses building their first serious online presence.",
       },
       {
-        label: "Custom",
-        name: "Foundation Website",
-        subtitle:
-          "For established businesses that need a full custom website built to convert — not a starter landing page.",
-        price: "$3,500",
-        priceSuffix: "",
-        cadence: "One-time build · support available",
-        cadenceAddOn: "AutoFiveStar review system available as an add-on",
+        id: "custom_business_website",
+        eyebrow: "Custom",
+        name: "Custom Business Website",
+        description:
+          "For established businesses that need a stronger website built around credibility, conversion, and measurable growth.",
         features: [
-          "Custom business website (not a starter page)",
-          "3–5 core pages or equivalent sections",
-          "Conversion-focused layout & service structure",
+          "Fully custom business website",
+          "Conversion-focused page structure",
           "Service, trust, and proof sections",
-          "Lead capture forms",
-          "SEO basics and analytics setup",
-          "Mobile-first performance",
+          "Lead capture and quote forms",
+          "Stronger conversion copy",
+          "SEO and analytics setup",
+          "Mobile performance optimization",
+          "Expansion-ready architecture",
         ],
-        ctaLabel: "Start a project",
-        ctaHref: "/contact?tier=Foundation%20Website",
-        checkoutUrl: pricingLinks.foundationWebsite,
-        footnote: "Best for established businesses upgrading their web presence",
+        ctaLabel: "See What We'd Recommend",
+        microcopy:
+          "Best for established businesses replacing an outdated or underperforming website.",
       },
       {
-        label: "Growth",
-        name: "Growth Website System",
-        subtitle:
-          "For local service businesses that want a website plus a local lead engine — built to convert more visitors into inquiries.",
-        price: "$6,500",
-        priceSuffix: "",
-        cadence: "One-time build · expansion-ready structure",
-        bonusNote:
-          "Review-request workflow setup included for the first 3 months. Continue afterward as an optional monthly add-on.",
+        id: "local_growth_system",
+        eyebrow: "Growth",
+        name: "Local Growth System",
+        description:
+          "For businesses that don't just need a better website — they need a system designed to generate more local visibility, leads, and opportunities.",
+        scopeNote: "Custom scoped",
         features: [
-          "Everything in Foundation",
-          "Multi-location or service-area SEO structure",
-          "City / service page framework",
-          "Stronger conversion copy throughout",
-          "Local SEO architecture & schema markup",
+          "Everything in Custom Business Website",
+          "Multi-location / service-area SEO architecture",
+          "City and service landing-page framework",
+          "Local SEO structure and schema",
+          "Conversion-focused landing pages",
           "Proposal / lead capture flow",
-          "Analytics and tracking readiness",
-          "AutoFiveStar Lite included for 3 months",
-          "Built to support ongoing growth campaigns",
+          "Analytics and conversion tracking",
+          "Review-growth system integration",
+          "Built to support future SEO and paid campaigns",
         ],
-        ctaLabel: "Discuss the right package",
-        ctaHref: "/contact?tier=Growth%20Website%20System",
-        checkoutUrl: pricingLinks.growthWebsite,
-        footnote: "Best for serious local businesses ready to grow",
+        ctaLabel: "Build My Growth Plan",
+        microcopy:
+          "Best for local service businesses serious about increasing inbound leads.",
         featured: true,
         badgeLabel: "Best Value",
       },
-      {
-        label: "Scale",
-        name: "Premium Growth Package",
-        subtitle:
-          "A full Growth Website System paired with a monthly growth retainer for SEO, content, and continuous improvement.",
-        price: "$8,500",
-        priceSuffix: "+",
-        priceSubline: "+ $800/mo growth retainer",
-        cadence: "One-time build + ongoing growth retainer",
-        bonusNote:
-          "Keep your website, local SEO, content, and review follow-up system moving together.",
-        features: [
-          "Everything in Growth Website System",
-          "Ongoing technical SEO audits & fixes",
-          "Search + AI visibility strategy (GEO)",
-          "Conversion & UX continuous improvements",
-          "Monthly reporting & strategic iteration",
-          "AutoFiveStar included while on active monthly growth plan",
-          "Priority support & dedicated account lead",
-        ],
-        ctaLabel: "Book a strategy call",
-        ctaHref: "/contact?tier=Premium%20Growth%20Package",
-        checkoutUrl: pricingLinks.premiumGrowth,
-        footnote: "Best for multi-location or high-growth businesses",
-      },
-      {
-        label: "Automotive",
-        name: "Dealership Website System",
-        subtitle:
-          "For dealerships that need real inventory infrastructure — not a basic brochure site with a feed bolted on.",
-        price: "$8,500",
-        priceSuffix: "+",
-        cadence: "One-time build · $600/mo dealership retainer",
-        cadenceAddOn:
-          "Retainer covers feed monitoring, inventory sync checks, website support, and ongoing improvements.",
-        bonusNote:
-          "After 6 months, continue AutoFiveStar as an optional dealership reputation add-on.",
-        features: [
-          "Inventory-ready dealership website",
-          "Vehicle listing pages with search & filtering",
-          "Vehicle detail pages (VDPs) with photos",
-          "CSV / SFTP or inventory feed integration",
-          "Supabase / database-backed inventory architecture",
-          "Featured inventory sections",
-          "SEO-ready vehicle and location structure",
-          "AutoFiveStar dealership reputation system included for 6 months",
-          "Review requests, private feedback routing, and Google review CTA flow",
-          "Built for live inventory operations, not static pages",
-        ],
-        ctaLabel: "Book a strategy call",
-        ctaHref: "/contact?tier=Dealership%20Website%20System",
-        checkoutUrl: pricingLinks.dealershipWebsite,
-        footnote:
-          "A full dealership system — not replicable by adding a feed to a standard website.",
-        badgeLabel: "Automotive",
-        liveExampleHref: "https://speedwaymotorsllc.com",
-      },
     ],
+    footer: {
+      note: "Every build is scoped around your goals, market, competition, and required functionality.",
+      prompt: "Not sure which direction fits your business?",
+      cta: {
+        label: "Get a Recommendation",
+        href: "/contact",
+        solutionId: "website_recommendation",
+      },
+    },
   },
   {
     id: "marketing",
     label: "Marketing & Ads",
-    tiers: [
+    solutions: [
       {
-        label: "Starter",
-        name: "Ads Starter",
-        subtitle:
-          "One channel, dialed in. Tracking, creative, and reporting handled.",
-        price: "$1,500",
-        priceSuffix: "/mo",
-        cadence: "Monthly retainer · ad spend separate",
+        id: "search_acquisition",
+        eyebrow: "Get Found",
+        name: "Search Acquisition",
+        description:
+          "Capture people already searching for the services you provide.",
         features: [
-          "One ad channel (Google or Meta)",
-          "Campaign setup & audience targeting",
-          "Conversion tracking + GA4 setup",
-          "Monthly performance report",
-          "Ad creative direction & copy",
+          "Google Search campaigns",
+          "Campaign and keyword strategy",
+          "Audience and location targeting",
+          "Conversion tracking",
+          "Landing-page recommendations",
+          "Ad creative and copy direction",
+          "Performance reporting",
         ],
-        ctaLabel: "Get started",
-        ctaHref: "/contact?tier=Ads%20Starter",
-        checkoutUrl: pricingLinks.adsStarter,
-        footnote: "Best paired with a Foundation Website",
+        ctaLabel: "Build My Ad Plan",
+        microcopy:
+          "Best for businesses that want high-intent leads from search.",
       },
       {
-        label: "Scale",
-        name: "Full-Funnel Ads Management",
-        subtitle:
-          "Multi-channel paid media with weekly iteration and landing page CRO.",
-        price: "$2,500",
-        priceSuffix: "/mo",
-        cadence: "Monthly retainer · ad spend separate",
+        id: "full_funnel_acquisition",
+        eyebrow: "Generate Demand",
+        name: "Full-Funnel Acquisition",
+        description:
+          "A multi-channel advertising system designed to create demand, capture intent, and turn more traffic into qualified leads.",
+        scopeNote: "Built around your goals",
         features: [
-          "Google Ads (Search, PMax, Display)",
-          "Meta Ads (Facebook + Instagram)",
-          "Retargeting campaigns across channels",
-          "Google Local Services Ads (LSA) setup",
-          "Conversion tracking + GA4 / GTM",
-          "Landing page & offer optimization",
-          "Weekly reporting & creative iteration",
+          "Google Ads",
+          "Meta Ads",
+          "Retargeting",
+          "Campaign strategy",
+          "GA4 / GTM conversion tracking",
+          "Landing-page optimization",
+          "Creative testing",
+          "Weekly campaign iteration",
         ],
-        ctaLabel: "Run ads with us",
-        ctaHref: "/contact?tier=Full-Funnel%20Ads",
-        checkoutUrl: pricingLinks.fullFunnelAds,
-        footnote: "Best paired with a Growth Website System",
+        ctaLabel: "Build My Growth Plan",
+        microcopy:
+          "Best for businesses ready to grow beyond a single advertising channel.",
         featured: true,
+        badgeLabel: "Most Popular",
       },
       {
-        label: "Dominate",
+        id: "growth_partnership",
+        eyebrow: "Own Your Market",
         name: "Growth Partnership",
-        subtitle:
-          "Full-stack growth team: paid, SEO, CRO, and a dedicated strategist.",
-        price: "$4,500",
-        priceSuffix: "/mo",
-        cadence: "Monthly retainer · ad spend separate",
+        description:
+          "An ongoing growth system combining customer acquisition, organic visibility, conversion optimization, and strategy.",
         features: [
-          "Everything in Full-Funnel Ads",
-          "SEO + AI visibility strategy (GEO)",
-          "Dedicated growth strategist",
-          "CRO — continuous UX & offer testing",
-          "Bi-weekly strategy calls",
-          "Bi-weekly performance strategy calls",
-          "Priority turnaround on all deliverables",
+          "Paid acquisition strategy",
+          "SEO + AI search visibility strategy",
+          "Conversion rate optimization",
+          "Landing-page strategy",
+          "Performance analysis",
+          "Ongoing experimentation",
+          "Growth strategy calls",
+          "Priority implementation support",
         ],
-        ctaLabel: "Book a strategy call",
-        ctaHref: "/contact?tier=Growth%20Partnership",
-        checkoutUrl: pricingLinks.growthPartnership,
-        footnote: "Best for serious growth investment",
+        ctaLabel: "Talk Growth Strategy",
+        microcopy:
+          "Best for businesses treating marketing as a serious growth channel.",
       },
     ],
+    footer: {
+      note: "Your marketing plan is built around your market, margins, competition, sales cycle, and growth target.",
+      subNote: "Media spend is separate from management and strategy.",
+    },
   },
   {
     id: "drone",
     label: "Drone & Media",
-    note: "Available as a standalone service or add-on to website/marketing packages.",
-    microCopy:
-      "Perfect for contractors, auto dealers, gyms, real estate, restaurants, home services, and any business that needs real visuals instead of stock photos.",
-    tiers: [
+    solutions: [
       {
-        label: "Content",
-        name: "Content Day",
-        subtitle:
-          "Best for websites, Google profiles, and social proof.",
-        price: "$750",
-        priceSuffix: "+",
-        cadence: "On-site session · edited files delivered",
+        id: "business_content_shoot",
+        eyebrow: "Content",
+        name: "Business Content Shoot",
+        description:
+          "Professional photo and video content built for your website, Google profile, social media, and advertising.",
         features: [
           "On-site photo session",
           "Short-form video clips",
-          "Exterior/business shots",
+          "Exterior / business shots",
           "Team, vehicle, or workspace content",
-          "Edited photos for website use",
-          "Content folder delivered",
+          "Edited website-ready photos",
+          "Social-ready content",
         ],
-        ctaLabel: "Plan a content shoot",
-        ctaHref: "/contact?tier=Content%20Day",
-        footnote:
-          "Best for new website builds and credible social proof",
+        ctaLabel: "Plan My Content Shoot",
+        microcopy: "Ideal for businesses that need a stronger visual presence.",
       },
       {
-        label: "Drone + web",
+        id: "drone_website_media",
+        eyebrow: "Drone + Web",
         name: "Drone + Website Media",
-        subtitle:
-          "For contractors, auto dealers, gyms, real estate, and local service brands.",
-        price: "$1,250",
-        priceSuffix: "+",
-        cadence: "Drone + ground capture · web + social ready",
+        description:
+          "Premium aerial and ground content designed specifically for websites, advertising, social media, and digital proof.",
         features: [
           "Drone flyover footage",
           "Ground camera footage",
-          "Hero video/background clips",
+          "Hero video / background clips",
           "Website-ready image set",
           "Google Business Profile media",
-          "Social media reels/clips",
-          "Best paired with a new website build",
+          "Social media clips",
+          "Content formatted for web use",
         ],
-        ctaLabel: "Plan a content shoot",
-        ctaHref: "/contact?tier=Drone%20%2B%20Website%20Media",
-        footnote:
-          "Pairs perfectly with a Foundation or Growth website",
+        ctaLabel: "Plan My Shoot",
+        microcopy:
+          "Pairs naturally with a Custom Business Website or Local Growth System.",
         featured: true,
         badgeLabel: "Best Add-On",
       },
       {
-        label: "Visual proof",
+        id: "full_visual_proof_system",
+        eyebrow: "Visual Proof",
         name: "Full Visual Proof System",
-        subtitle:
-          "A full media package built around trust, proof, and conversion.",
-        price: "$2,500",
-        priceSuffix: "+",
-        cadence: "Full media system · ongoing strategy optional",
+        description:
+          "A complete content system built around trust, proof, projects, people, and the work your business actually performs.",
         features: [
           "Full content capture session",
-          "Drone + camera coverage",
-          "Before/after project visuals",
-          "Client/job-site proof shots",
-          "Edited reels and website assets",
-          "Landing page proof section",
-          "Monthly content strategy optional",
+          "Drone + ground coverage",
+          "Before / after project visuals",
+          "Client or job-site proof content",
+          "Edited short-form video",
+          "Website assets",
+          "Landing-page proof content",
+          "Ongoing content strategy available",
         ],
-        ctaLabel: "Plan a content shoot",
-        ctaHref: "/contact?tier=Full%20Visual%20Proof%20System",
-        footnote:
-          "Best for businesses that want trust-driven media built into their funnel",
+        ctaLabel: "Build My Content Plan",
+        microcopy:
+          "Best for businesses where visual proof directly influences buying decisions.",
       },
     ],
-    benefitsBlock: {
-      title: "Why this beats hiring a regular freelancer",
-      items: [
-        {
-          icon: Camera,
-          title: "Real visuals, not stock photos",
-          copy: "Your website feels instantly more trustworthy when visitors see your real trucks, team, property, projects, and workspace.",
-        },
-        {
-          icon: Sparkles,
-          title: "One shoot, multiple assets",
-          copy: "A single visit can create website images, hero video, reels, ads, Google posts, gallery content, and follow-up material.",
-        },
-        {
-          icon: Video,
-          title: "Built directly into your funnel",
-          copy: "We don't just hand you files. We turn the content into web sections, ads, landing pages, and local SEO assets.",
-        },
-        {
-          icon: Plane,
-          title: "Stronger local credibility",
-          copy: "Drone footage and professional media help small businesses look established, premium, and easier to trust.",
-        },
-      ],
+    footer: {
+      note: "Available as a standalone service or an add-on to any website or marketing engagement.",
     },
   },
 ];
@@ -451,436 +285,217 @@ function FeatureItem({ text }: { text: string }) {
   );
 }
 
-function PricingCard({
-  tier,
+function SolutionCard({
+  solution,
+  category,
   index,
-  panelId,
 }: {
-  tier: Tier;
+  solution: Solution;
+  category: TabId;
   index: number;
-  panelId: string;
 }) {
-  const isFeatured = !!tier.featured;
-  const hasBadge = isFeatured || !!tier.badgeLabel;
-  const secondaryCta = tier.secondaryCta;
-  const monthlyCareNote = tier.monthlyCareNote;
-  const primaryCtaIsFilled = isFeatured || !!secondaryCta;
-  const primaryCtaLabel = tier.checkoutUrl ? "Purchase Now" : tier.ctaLabel;
-  const primaryCtaClassName = cn(
-    "inline-flex w-full items-center justify-center !gap-2 !px-5 !py-3 !text-[12.5px]",
-    primaryCtaIsFilled ? "btn-v" : "btn-o"
-  );
+  const isFeatured = !!solution.featured;
 
   return (
     <article
-      aria-label={`${tier.name} pricing tier`}
+      aria-label={`${solution.name} solution`}
       className={cn(
-        "pricing-card group relative flex h-full flex-col px-6 pb-6 sm:px-6 sm:pb-7 lg:px-6 lg:pb-8",
-        hasBadge ? "pt-8 sm:pt-9 lg:pt-10" : "pt-6 sm:pt-7 lg:pt-8",
-        "transition-colors duration-300"
+        "solution-card relative flex h-full w-full flex-col rounded-2xl border px-6 pb-6 sm:px-6 sm:pb-7",
+        isFeatured
+          ? "solution-card--featured border-accent/[0.22] pt-9 sm:pt-10"
+          : "border-white/[0.07] pt-7 sm:pt-8"
       )}
       style={{
         background: isFeatured
           ? "var(--pricing-bg-card-mid)"
           : "var(--pricing-bg-card)",
-        border: hasBadge ? "1px solid rgba(200, 255, 0, 0.18)" : undefined,
-        animation: `pricing-card-rise 600ms cubic-bezier(0.16,1,0.3,1) both`,
-        animationDelay: `${index * 80}ms`,
+        boxShadow: isFeatured ? "0 0 28px rgba(200,255,0,0.05)" : undefined,
+        animation: "pricing-card-rise 600ms cubic-bezier(0.16,1,0.3,1) both",
+        animationDelay: `${index * 70}ms`,
       }}
     >
-      {hasBadge && (
+      {solution.badgeLabel && (
         <div
           className="pointer-events-none absolute left-1/2 z-10"
           style={{ top: 0, transform: "translate(-50%, -50%)" }}
         >
           <span
-            className="inline-flex items-center rounded-full border-none px-4 py-[5px] font-mono text-[10px] font-semibold uppercase tracking-[0.12em]"
+            className="inline-flex items-center whitespace-nowrap rounded-full px-4 py-[5px] font-mono text-[10px] font-semibold uppercase tracking-[0.12em]"
             style={{
               background: "var(--pricing-accent)",
               color: "var(--pricing-accent-dark)",
               boxShadow: "0 0 0 3px rgba(200, 255, 0, 0.15)",
             }}
           >
-            {tier.badgeLabel ?? "Most popular"}
+            {solution.badgeLabel}
           </span>
         </div>
       )}
 
-      <p className="font-mono text-[10px] font-semibold uppercase tracking-[0.18em] text-white/35">
-        {tier.label}
+      <p
+        className={cn(
+          "font-mono text-[10px] font-semibold uppercase tracking-[0.2em]",
+          isFeatured ? "text-accent/80" : "text-white/35"
+        )}
+      >
+        {solution.eyebrow}
       </p>
 
-      <h3 className="mt-3 font-display text-[22px] font-extrabold leading-[1.15] tracking-[-0.02em] text-white">
-        {tier.name}
+      <h3 className="mt-3 font-display text-[22px] font-extrabold leading-[1.15] tracking-[-0.02em] text-white sm:text-[23px]">
+        {solution.name}
       </h3>
 
-      <p className="mt-1.5 max-w-[34ch] font-body text-[12px] leading-[1.55] text-white/50">
-        {tier.subtitle}
+      <p className="mt-2.5 font-body text-[13px] leading-[1.6] text-white/[0.55]">
+        {solution.description}
       </p>
 
-      <div className="mt-5 flex items-baseline gap-1">
-        <span className="font-display text-[38px] font-extrabold leading-none tracking-[-0.03em] text-white">
-          {tier.price}
-        </span>
-        {tier.priceSuffix && (
-          <span className="font-body text-[14px] text-white/45">
-            {tier.priceSuffix}
-          </span>
-        )}
-      </div>
-
-      {tier.priceSubline && (
-        <p className="mt-1 font-body text-[12px] leading-[1.5] text-white/45">
-          {tier.priceSubline}
+      {solution.scopeNote && (
+        <p className="mt-4 font-mono text-[10px] font-semibold uppercase tracking-[0.18em] text-white/40">
+          {solution.scopeNote}
         </p>
-      )}
-
-      <p className="mt-2 font-body text-[11px] leading-[1.5] text-white/38">
-        {tier.cadence}
-      </p>
-
-      {tier.cadenceAddOn && (
-        <p className="mt-1 font-body text-[11px] leading-[1.5] text-white/45">
-          {tier.cadenceAddOn}
-        </p>
-      )}
-
-      {tier.bonusNote && (
-        <div className="mt-3 flex items-start gap-2 rounded-lg border border-accent/[0.18] bg-accent/[0.05] px-3 py-2">
-          <Sparkles
-            aria-hidden="true"
-            className="mt-[1px] h-3 w-3 shrink-0 text-accent"
-            strokeWidth={2.25}
-          />
-          <p className="font-body text-[10.5px] leading-[1.45] text-white/60">
-            {tier.bonusNote}
-          </p>
-        </div>
       )}
 
       <div
-        className="my-6 h-px w-full"
+        className="my-5 h-px w-full sm:my-6"
         style={{ background: "var(--pricing-border-subtle)" }}
       />
 
       <ul className="flex flex-col gap-2.5">
-        {tier.features.map((feature) => (
+        {solution.features.map((feature) => (
           <FeatureItem key={feature} text={feature} />
         ))}
       </ul>
 
-      {tier.liveExampleHref && (
-        <div className="mt-4">
-          <Link
-            href={tier.liveExampleHref}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-1 font-body text-[12px] font-medium text-accent transition-opacity duration-200 hover:opacity-80"
-          >
-            Live example <span aria-hidden="true">→</span>
-          </Link>
-        </div>
-      )}
-
       <div className="mt-auto pt-7">
-        {monthlyCareNote && (
-          <div className="mb-5 border-t border-white/[0.05] pt-4">
-            <p className="font-mono text-[10px] font-semibold uppercase tracking-[0.18em] text-accent/85">
-              {monthlyCareNote.title}
-            </p>
-            <p className="mt-1.5 font-body text-[11.5px] leading-[1.55] text-white/50">
-              {monthlyCareNote.description}
-            </p>
-          </div>
-        )}
-
-        {tier.checkoutUrl ? (
-          <a
-            href={tier.checkoutUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label={`${primaryCtaLabel} — ${tier.name}`}
-            aria-describedby={`${panelId}-foot-${index}`}
-            className={primaryCtaClassName}
-            onClick={() =>
-              trackEvent("pricing_button_click", {
-                tier: tier.name,
-                destination: "stripe_checkout",
-              })
-            }
-          >
-            {primaryCtaLabel} <span aria-hidden="true">→</span>
-          </a>
-        ) : (
-          <Link
-            href={tier.ctaHref}
-            aria-label={`${primaryCtaLabel} — ${tier.name}`}
-            aria-describedby={`${panelId}-foot-${index}`}
-            className={primaryCtaClassName}
-            onClick={() =>
-              trackEvent("pricing_button_click", {
-                tier: tier.name,
-                destination: "contact",
-              })
-            }
-          >
-            {primaryCtaLabel} <span aria-hidden="true">→</span>
-          </Link>
-        )}
-
-        {secondaryCta &&
-          (secondaryCta.checkoutUrl ? (
-            <a
-              href={secondaryCta.checkoutUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label={`Purchase Now — ${tier.name}`}
-              className="mt-2 inline-flex w-full items-center justify-center gap-1.5 px-3 py-2 font-body text-[11.5px] font-medium text-white/55 transition-colors duration-200 hover:text-accent"
-              onClick={() =>
-                trackEvent("pricing_button_click", {
-                  tier: tier.name,
-                  destination: "stripe_checkout",
-                  secondary: true,
-                })
-              }
-            >
-              Purchase Now <span aria-hidden="true">→</span>
-            </a>
-          ) : (
-            <Link
-              href={secondaryCta.href}
-              aria-label={`${secondaryCta.label} — ${tier.name}`}
-              className="mt-2 inline-flex w-full items-center justify-center gap-1.5 px-3 py-2 font-body text-[11.5px] font-medium text-white/55 transition-colors duration-200 hover:text-accent"
-              onClick={() =>
-                trackEvent("pricing_button_click", {
-                  tier: tier.name,
-                  destination: "contact",
-                  secondary: true,
-                })
-              }
-            >
-              {secondaryCta.label} <span aria-hidden="true">→</span>
-            </Link>
-          ))}
-
-        <p
-          id={`${panelId}-foot-${index}`}
-          className="mt-2.5 text-center font-body text-[11px] leading-[1.5] text-white/30"
+        <Link
+          href={`/contact?tier=${encodeURIComponent(solution.name)}`}
+          aria-label={`${solution.ctaLabel} — ${solution.name}`}
+          className={cn(
+            "group/cta inline-flex w-full items-center justify-center !gap-2 !px-5 !py-3 !text-[12.5px]",
+            isFeatured ? "btn-v" : "btn-o"
+          )}
+          onClick={() =>
+            trackEvent("solution_cta_clicked", {
+              category,
+              solution: solution.id,
+              source: "solutions_section",
+            })
+          }
         >
-          {tier.footnote}
+          {solution.ctaLabel}
+          <span
+            aria-hidden="true"
+            className="transition-transform duration-200 group-hover/cta:translate-x-0.5"
+          >
+            →
+          </span>
+        </Link>
+
+        <p className="mt-3 text-center font-body text-[11px] leading-[1.5] text-white/[0.35]">
+          {solution.microcopy}
         </p>
       </div>
     </article>
   );
 }
 
-function PricingCarousel({
-  tiers,
-  panelId,
+function TabFooterBlock({
+  footer,
+  category,
 }: {
-  tiers: Tier[];
-  panelId: string;
+  footer: TabFooter;
+  category: TabId;
 }) {
-  const railRef = useRef<HTMLDivElement>(null);
-  const [canScrollLeft, setCanScrollLeft] = useState(false);
-  const [canScrollRight, setCanScrollRight] = useState(true);
-  const [activeIndex, setActiveIndex] = useState(0);
-  const [reducedMotion, setReducedMotion] = useState(false);
-
-  useEffect(() => {
-    const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
-    setReducedMotion(mq.matches);
-    const handler = (e: MediaQueryListEvent) => setReducedMotion(e.matches);
-    mq.addEventListener?.("change", handler);
-    return () => mq.removeEventListener?.("change", handler);
-  }, []);
-
-  const updateState = useCallback(() => {
-    const el = railRef.current;
-    if (!el) return;
-    const max = el.scrollWidth - el.clientWidth;
-    setCanScrollLeft(el.scrollLeft > 2);
-    setCanScrollRight(el.scrollLeft < max - 2);
-
-    const cards = el.querySelectorAll<HTMLElement>("[data-pricing-card]");
-    if (cards.length === 0) return;
-    const scrollLeft = el.scrollLeft;
-    let bestIdx = 0;
-    let bestDist = Infinity;
-    cards.forEach((card, i) => {
-      const dist = Math.abs(card.offsetLeft - scrollLeft);
-      if (dist < bestDist) {
-        bestDist = dist;
-        bestIdx = i;
-      }
-    });
-    setActiveIndex(bestIdx);
-  }, []);
-
-  useEffect(() => {
-    updateState();
-    const el = railRef.current;
-    if (!el) return;
-    const onScroll = () => updateState();
-    el.addEventListener("scroll", onScroll, { passive: true });
-    window.addEventListener("resize", updateState);
-    return () => {
-      el.removeEventListener("scroll", onScroll);
-      window.removeEventListener("resize", updateState);
-    };
-  }, [updateState]);
-
-  const scrollByCard = useCallback(
-    (dir: 1 | -1) => {
-      const el = railRef.current;
-      if (!el) return;
-      const card = el.querySelector<HTMLElement>("[data-pricing-card]");
-      const cardWidth = card?.offsetWidth ?? el.clientWidth * 0.85;
-      el.scrollBy({
-        left: dir * (cardWidth + 1),
-        behavior: reducedMotion ? "auto" : "smooth",
-      });
-    },
-    [reducedMotion]
-  );
-
-  const scrollToIndex = useCallback(
-    (idx: number) => {
-      const el = railRef.current;
-      if (!el) return;
-      const cards = el.querySelectorAll<HTMLElement>("[data-pricing-card]");
-      const target = cards[idx];
-      if (!target) return;
-      el.scrollTo({
-        left: target.offsetLeft,
-        behavior: reducedMotion ? "auto" : "smooth",
-      });
-    },
-    [reducedMotion]
-  );
-
-  const onRailKeyDown = (e: KeyboardEvent<HTMLDivElement>) => {
-    if (e.key === "ArrowRight") {
-      e.preventDefault();
-      scrollByCard(1);
-    } else if (e.key === "ArrowLeft") {
-      e.preventDefault();
-      scrollByCard(-1);
-    }
-  };
-
-  const canScroll = canScrollLeft || canScrollRight;
-
   return (
-    <div>
-      {/* Mobile + tablet controls: prev arrow · dot indicators · next arrow, above the rail */}
-      <div className="mb-3 flex items-center justify-between gap-3 lg:hidden">
-        <button
-          type="button"
-          aria-label="Previous pricing tiers"
-          onClick={() => scrollByCard(-1)}
-          disabled={!canScrollLeft}
-          className="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-white/[0.08] bg-white/[0.02] text-white/70 transition-all duration-200 hover:border-white/[0.18] hover:bg-white/[0.04] hover:text-white disabled:cursor-not-allowed disabled:opacity-30 disabled:hover:border-white/[0.08] disabled:hover:bg-white/[0.02]"
+    <div className="mt-10 text-center sm:mt-12">
+      <p className="mx-auto max-w-[560px] font-body text-[12.5px] leading-[1.6] text-white/45">
+        {footer.note}
+      </p>
+      {footer.subNote && (
+        <p className="mx-auto mt-2 max-w-[560px] font-body text-[11.5px] leading-[1.6] text-white/35">
+          {footer.subNote}
+        </p>
+      )}
+      {footer.prompt && (
+        <p className="mt-5 font-body text-[13.5px] font-medium text-white/75">
+          {footer.prompt}
+        </p>
+      )}
+      {footer.cta && (
+        <Link
+          href={footer.cta.href}
+          className="group/cta mt-3 inline-flex min-h-[44px] items-center gap-1.5 px-3 font-body text-[13px] font-semibold text-accent transition-colors duration-200 hover:text-white"
+          onClick={() =>
+            trackEvent("solution_cta_clicked", {
+              category,
+              solution: footer.cta?.solutionId ?? "recommendation",
+              source: "solutions_section",
+            })
+          }
         >
-          <ChevronLeft size={14} />
-        </button>
-        <div className="flex flex-1 items-center justify-center gap-1.5">
-          {tiers.map((tier, i) => {
-            const isActive = activeIndex === i;
-            return (
-              <button
-                key={`dot-${panelId}-${tier.name}`}
-                type="button"
-                aria-label={`Go to ${tier.name}`}
-                aria-current={isActive}
-                onClick={() => scrollToIndex(i)}
-                className={cn(
-                  "h-1.5 rounded-full transition-all duration-200",
-                  isActive ? "w-6 bg-accent" : "w-1.5 bg-white/20 hover:bg-white/40"
-                )}
-              />
-            );
-          })}
+          {footer.cta.label}
+          <span
+            aria-hidden="true"
+            className="transition-transform duration-200 group-hover/cta:translate-x-0.5"
+          >
+            →
+          </span>
+        </Link>
+      )}
+    </div>
+  );
+}
+
+function StartingPointPanel() {
+  return (
+    <div
+      className="mt-12 overflow-hidden rounded-2xl border border-white/[0.06] sm:mt-16"
+      style={{
+        background: "var(--brand-surface-2)",
+        borderLeft: "3px solid var(--pricing-accent)",
+      }}
+    >
+      <div className="flex flex-col gap-6 px-6 py-7 sm:px-8 sm:py-8 lg:flex-row lg:items-center lg:justify-between">
+        <div className="max-w-[560px]">
+          <p className="font-mono text-[11px] font-semibold uppercase tracking-[0.16em] text-accent">
+            Not sure where to start?
+          </p>
+          <h3 className="mt-2 font-display text-[19px] font-extrabold leading-[1.25] tracking-[-0.02em] text-white sm:text-[22px]">
+            Tell us where your business is now. We&apos;ll show you what we&apos;d
+            fix first.
+          </h3>
+          <p className="mt-2 font-body text-[12.5px] leading-[1.6] text-white/50">
+            We&apos;ll look at your website, local visibility, competition, and
+            customer journey and recommend the highest-impact next step.
+          </p>
         </div>
-        <button
-          type="button"
-          aria-label="Next pricing tiers"
-          onClick={() => scrollByCard(1)}
-          disabled={!canScrollRight}
-          className="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-white/[0.08] bg-white/[0.02] text-white/70 transition-all duration-200 hover:border-white/[0.18] hover:bg-white/[0.04] hover:text-white disabled:cursor-not-allowed disabled:opacity-30 disabled:hover:border-white/[0.08] disabled:hover:bg-white/[0.02]"
-        >
-          <ChevronRight size={14} />
-        </button>
-      </div>
-
-      {/* Desktop arrow controls, top-right */}
-      <div
-        className={cn(
-          "mb-3 hidden justify-end gap-2 lg:flex",
-          !canScroll && "lg:hidden"
-        )}
-      >
-        <button
-          type="button"
-          aria-label="Previous pricing tiers"
-          onClick={() => scrollByCard(-1)}
-          disabled={!canScrollLeft}
-          className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-white/[0.08] bg-white/[0.02] text-white/70 transition-all duration-200 hover:border-white/[0.18] hover:bg-white/[0.04] hover:text-white disabled:cursor-not-allowed disabled:opacity-30 disabled:hover:border-white/[0.08] disabled:hover:bg-white/[0.02]"
-        >
-          <ChevronLeft size={16} />
-        </button>
-        <button
-          type="button"
-          aria-label="Next pricing tiers"
-          onClick={() => scrollByCard(1)}
-          disabled={!canScrollRight}
-          className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-white/[0.08] bg-white/[0.02] text-white/70 transition-all duration-200 hover:border-white/[0.18] hover:bg-white/[0.04] hover:text-white disabled:cursor-not-allowed disabled:opacity-30 disabled:hover:border-white/[0.08] disabled:hover:bg-white/[0.02]"
-        >
-          <ChevronRight size={16} />
-        </button>
-      </div>
-
-      {/* Bordered wrapper + scroll rail */}
-      <div
-        className="relative overflow-hidden rounded-2xl border border-white/[0.06]"
-        style={{ background: "var(--pricing-border-subtle)" }}
-      >
-        {/* Edge fade — left */}
-        <div
-          aria-hidden="true"
-          className="pointer-events-none absolute inset-y-0 left-0 z-10 w-12 bg-gradient-to-r from-[var(--brand-surface-3)] to-transparent transition-opacity duration-200"
-          style={{ opacity: canScrollLeft ? 1 : 0 }}
-        />
-        {/* Edge fade — right */}
-        <div
-          aria-hidden="true"
-          className="pointer-events-none absolute inset-y-0 right-0 z-10 w-12 bg-gradient-to-l from-[var(--brand-surface-3)] to-transparent transition-opacity duration-200"
-          style={{ opacity: canScrollRight ? 1 : 0 }}
-        />
-
-        <div
-          ref={railRef}
-          role="region"
-          aria-label="Pricing tiers — horizontal scroll"
-          tabIndex={0}
-          onKeyDown={onRailKeyDown}
-          className="no-scrollbar flex snap-x snap-mandatory gap-px overflow-x-auto px-4 pb-3 pt-10 outline-none focus-visible:ring-2 focus-visible:ring-accent/40 sm:px-6"
-          style={{
-            scrollBehavior: reducedMotion ? "auto" : "smooth",
-            WebkitOverflowScrolling: "touch",
-          }}
-        >
-          {tiers.map((tier, i) => (
-            <div
-              key={`${panelId}-${tier.name}`}
-              data-pricing-card
-              className="flex shrink-0 snap-start flex-col w-[85vw] max-w-[340px] md:w-[clamp(280px,46vw,360px)] lg:w-[clamp(280px,30vw,360px)]"
-            >
-              <PricingCard tier={tier} index={i} panelId={panelId} />
-            </div>
-          ))}
-          {/* Tail spacer so the last card's right edge can snap-start fully */}
-          <div className="shrink-0" aria-hidden="true" style={{ width: 1 }} />
+        <div className="flex flex-col gap-2.5 sm:flex-row sm:items-center lg:shrink-0">
+          <Link
+            href="/audit"
+            className="btn-v inline-flex items-center justify-center !gap-2 !px-5 !py-3 !text-[12.5px]"
+            onClick={() =>
+              trackEvent("solution_cta_clicked", {
+                category: "general",
+                solution: "free_business_audit",
+                source: "solutions_section",
+              })
+            }
+          >
+            Get a Free Business Audit <span aria-hidden="true">→</span>
+          </Link>
+          <Link
+            href="/contact"
+            className="btn-o inline-flex items-center justify-center !gap-2 !px-5 !py-3 !text-[12.5px]"
+            onClick={() =>
+              trackEvent("solution_cta_clicked", {
+                category: "general",
+                solution: "start_project",
+                source: "solutions_section",
+              })
+            }
+          >
+            Start a Project
+          </Link>
         </div>
       </div>
     </div>
@@ -890,6 +505,7 @@ function PricingCarousel({
 export function PricingTiers() {
   const [activeTab, setActiveTab] = useState<TabId>("websites");
   const baseId = useId();
+  const reducedMotion = useReducedMotion();
   const tabRefs = useRef<Record<TabId, HTMLButtonElement | null>>({
     websites: null,
     marketing: null,
@@ -916,36 +532,63 @@ export function PricingTiers() {
   };
 
   return (
-    <section id="pricing" className="relative pb-16 pt-20 sm:pb-20 sm:pt-24 lg:pb-24 lg:pt-28">
+    <section
+      id="pricing"
+      aria-label="Solutions"
+      className="relative pb-16 pt-20 sm:pb-20 sm:pt-24 lg:pb-24 lg:pt-28"
+    >
+      {/* Alias anchor so both /#pricing and /#solutions resolve here */}
+      <span id="solutions" aria-hidden="true" className="absolute top-0" />
+
       <style>{`
-        .pricing-card { transition: background-color 300ms ease, border-color 300ms ease; }
-        .pricing-card:hover { background: var(--brand-surface-3) !important; }
+        .solution-card {
+          transition: transform 200ms ease, background-color 200ms ease, border-color 200ms ease, box-shadow 200ms ease;
+        }
+        .solution-card:hover {
+          transform: translateY(-3px);
+          background: var(--brand-surface-3) !important;
+          border-color: rgba(255,255,255,0.14);
+        }
+        .solution-card--featured:hover {
+          border-color: rgba(200,255,0,0.34);
+          box-shadow: 0 0 34px rgba(200,255,0,0.09);
+        }
+        @media (prefers-reduced-motion: reduce) {
+          .solution-card { animation: none !important; }
+          .solution-card:hover { transform: none; }
+        }
         .pricing-tab {
           transition: background-color 200ms ease, color 200ms ease;
         }
         .pricing-tab[aria-selected="false"]:hover {
           color: rgba(255,255,255,0.85);
         }
-        .pricing-panel { animation: pricing-panel-fade 150ms ease-out both; }
       `}</style>
 
       <div className="wrap relative z-10">
         <div className="mx-auto max-w-6xl">
-          <div className="mb-8 text-center sm:mb-10">
-            <span className="section-label">Pricing</span>
-            <h2 className="mt-4 font-display text-[clamp(28px,4.5vw,46px)] font-extrabold leading-[1.06] tracking-[-0.04em] text-white">
-              Plans for every stage of growth
+          <div className="mb-9 text-center sm:mb-11">
+            <span className="section-label">Ways to work with us</span>
+            <h2 className="mt-4 font-display text-[clamp(28px,4.5vw,46px)] font-extrabold leading-[1.08] tracking-[-0.04em] text-white">
+              Built Around Your Business.
+              <span className="block">Not a Template Package.</span>
             </h2>
-            <p className="mx-auto mt-3 max-w-[520px] font-body text-[13px] leading-[1.6] text-white/50">
-              Pick the website foundation or the marketing engine — or run both
-              together for compounding results.
+            <p className="mx-auto mt-4 max-w-[580px] font-body text-[13.5px] leading-[1.65] text-white/55">
+              Every business has a different market, competition level, sales
+              process, and growth goal. We build the right system around what
+              you actually need — from a high-converting website to full
+              customer acquisition.
+            </p>
+            <p className="mx-auto mt-3 max-w-[520px] font-body text-[12.5px] leading-[1.6] text-white/40">
+              Choose what you&apos;re trying to accomplish and we&apos;ll
+              recommend the right approach.
             </p>
           </div>
 
-          <div className="mb-6 flex justify-center sm:mb-10 lg:mb-12">
+          <div className="mb-8 flex justify-center sm:mb-10 lg:mb-12">
             <div
               role="tablist"
-              aria-label="Pricing categories"
+              aria-label="Solution categories"
               className="inline-flex w-full max-w-[460px] rounded-full border border-white/[0.06] bg-white/[0.02] p-1"
             >
               {TABS.map((tab) => {
@@ -977,7 +620,11 @@ export function PricingTiers() {
                         layoutId="pricing-tab-active"
                         className="absolute inset-0 -z-0 rounded-full"
                         style={{ background: "var(--pricing-accent)" }}
-                        transition={{ type: "spring", stiffness: 380, damping: 32 }}
+                        transition={
+                          reducedMotion
+                            ? { duration: 0 }
+                            : { type: "spring", stiffness: 380, damping: 32 }
+                        }
                       />
                     )}
                     <span className="relative z-10 whitespace-nowrap">{tab.label}</span>
@@ -987,45 +634,37 @@ export function PricingTiers() {
             </div>
           </div>
 
-          {activePanel.note && (
-            <p className="mx-auto -mt-2 mb-6 max-w-[560px] text-center font-body text-[12px] leading-[1.55] text-white/45 sm:-mt-6 sm:mb-10 lg:-mt-8 lg:mb-12">
-              {activePanel.note}
-            </p>
-          )}
-
           <AnimatePresence mode="wait" initial={false}>
             <motion.div
               key={activePanel.id}
               id={`${baseId}-panel-${activePanel.id}`}
               role="tabpanel"
               aria-labelledby={`${baseId}-tab-${activePanel.id}`}
-              initial={{ opacity: 0, y: 6 }}
+              initial={reducedMotion ? { opacity: 1 } : { opacity: 0, y: 6 }}
               animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -6 }}
-              transition={{ duration: 0.15, ease: "easeOut" }}
+              exit={reducedMotion ? { opacity: 1 } : { opacity: 0, y: -6 }}
+              transition={{ duration: reducedMotion ? 0 : 0.15, ease: "easeOut" }}
             >
-              <PricingCarousel
-                tiers={activePanel.tiers}
-                panelId={`${baseId}-panel-${activePanel.id}`}
-              />
+              <div className="flex flex-wrap items-stretch justify-center gap-5 pt-4 lg:gap-5">
+                {activePanel.solutions.map((solution, i) => (
+                  <div
+                    key={`${activePanel.id}-${solution.id}`}
+                    className="flex w-full max-w-[420px] md:w-[calc(50%-10px)] lg:w-[calc(33.333%-14px)] lg:max-w-none"
+                  >
+                    <SolutionCard
+                      solution={solution}
+                      category={activePanel.id}
+                      index={i}
+                    />
+                  </div>
+                ))}
+              </div>
 
-              {activePanel.microCopy && (
-                <p className="mx-auto mt-8 max-w-[640px] text-center font-body text-[12.5px] leading-[1.6] text-white/50 sm:mt-10">
-                  {activePanel.microCopy}
-                </p>
-              )}
-
-              {activePanel.benefitsBlock && (
-                <BenefitsBlock block={activePanel.benefitsBlock} />
-              )}
+              <TabFooterBlock footer={activePanel.footer} category={activePanel.id} />
             </motion.div>
           </AnimatePresence>
 
-          <BundleBanner />
-
-          <ReputationBundleCallout />
-
-          <AddOnsSection />
+          <StartingPointPanel />
 
           <p className="mx-auto mt-12 max-w-[520px] text-center font-body text-[12px] leading-[1.6] text-white/35">
             All projects include direct access to senior engineers, clear scope
@@ -1034,276 +673,5 @@ export function PricingTiers() {
         </div>
       </div>
     </section>
-  );
-}
-
-function BenefitsBlock({ block }: { block: BenefitsBlockContent }) {
-  return (
-    <div className="mt-12 sm:mt-16">
-      <div className="text-center">
-        <h3 className="font-display text-[clamp(22px,3.2vw,30px)] font-extrabold leading-[1.15] tracking-[-0.03em] text-white">
-          {block.title}
-        </h3>
-      </div>
-
-      <div className="mt-8 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
-        {block.items.map((item) => {
-          const Icon = item.icon;
-          return (
-            <div
-              key={item.title}
-              className="flex flex-col rounded-xl border border-white/[0.06] px-5 py-5 transition-colors duration-300 hover:border-white/[0.12]"
-              style={{ background: "var(--pricing-bg-card)" }}
-            >
-              <span
-                aria-hidden="true"
-                className="inline-flex h-9 w-9 items-center justify-center rounded-full bg-accent/[0.12]"
-              >
-                <Icon
-                  className="h-4 w-4 text-accent"
-                  strokeWidth={2.25}
-                />
-              </span>
-              <h4 className="mt-4 font-display text-[15px] font-bold leading-[1.3] tracking-[-0.01em] text-white">
-                {item.title}
-              </h4>
-              <p className="mt-2 font-body text-[12.5px] leading-[1.55] text-white/55">
-                {item.copy}
-              </p>
-            </div>
-          );
-        })}
-      </div>
-    </div>
-  );
-}
-
-function BundleBanner() {
-  return (
-    <div
-      className="mt-10 overflow-hidden rounded-2xl border border-white/[0.06] sm:mt-12"
-      style={{
-        background: "var(--brand-surface-2)",
-        borderLeft: "3px solid var(--pricing-accent)",
-      }}
-    >
-      <div className="flex flex-col items-start gap-5 px-6 py-6 sm:flex-row sm:items-center sm:justify-between sm:px-8 sm:py-7">
-        <div className="flex-1">
-          <div className="inline-flex items-center gap-2 font-mono text-[11px] font-semibold uppercase tracking-[0.16em] text-accent">
-            <Zap aria-hidden="true" className="h-3.5 w-3.5" strokeWidth={2.25} />
-            <span>Bundle &amp; Save</span>
-          </div>
-          <p className="mt-2 font-display text-[18px] font-extrabold leading-[1.25] tracking-[-0.02em] text-white sm:text-[20px]">
-            Combine a website build with ads management and get $500 off your
-            first month of ads.
-          </p>
-          <p className="mt-1.5 font-body text-[12.5px] leading-[1.55] text-white/50">
-            Most clients run both — the website converts, the ads drive traffic.
-          </p>
-        </div>
-        <Link
-          href="/contact?tier=Bundle"
-          className="btn-v inline-flex shrink-0 items-center justify-center !gap-2 !px-5 !py-3 !text-[12.5px]"
-          onClick={() =>
-            trackEvent("book_call_click", { source: "pricing_bundle_banner" })
-          }
-        >
-          Book a strategy call <span aria-hidden="true">→</span>
-        </Link>
-      </div>
-    </div>
-  );
-}
-
-const REPUTATION_BUNDLE_INCLUDES = [
-  "AutoFiveStar setup",
-  "Review request workflow",
-  "Private feedback capture",
-  "Google review CTA flow",
-  "Basic dashboard access",
-  "Follow-up messaging structure",
-];
-
-function ReputationBundleCallout() {
-  return (
-    <div
-      className="mt-10 overflow-hidden rounded-2xl border border-white/[0.06] sm:mt-12"
-      style={{
-        background: "var(--brand-surface-2)",
-        borderLeft: "3px solid var(--pricing-accent)",
-      }}
-    >
-      <div className="px-6 py-6 sm:px-8 sm:py-7">
-        <div className="inline-flex items-center gap-2 font-mono text-[11px] font-semibold uppercase tracking-[0.16em] text-accent">
-          <Sparkles aria-hidden="true" className="h-3.5 w-3.5" strokeWidth={2.25} />
-          <span>Website + Reputation System Bundle</span>
-        </div>
-
-        <p className="mt-2 font-display text-[18px] font-extrabold leading-[1.25] tracking-[-0.02em] text-white sm:text-[20px]">
-          The website helps bring people in. AutoFiveStar helps after the job,
-          visit, or sale is complete.
-        </p>
-        <p className="mt-2 max-w-[640px] font-body text-[12.5px] leading-[1.6] text-white/55">
-          Most agencies stop at the website. Tweak &amp; Build can also include
-          AutoFiveStar — a review follow-up system designed to help businesses
-          request reviews, capture private feedback, and build a cleaner
-          reputation workflow after each customer interaction.
-        </p>
-
-        <div className="mt-5 grid grid-cols-1 gap-2.5 sm:grid-cols-2 lg:grid-cols-3">
-          {REPUTATION_BUNDLE_INCLUDES.map((item) => (
-            <div key={item} className="flex items-start gap-2.5">
-              <span
-                aria-hidden="true"
-                className="mt-[3px] inline-flex h-3.5 w-3.5 shrink-0 items-center justify-center rounded-full bg-accent/[0.12]"
-              >
-                <Check className="h-2.5 w-2.5 text-accent" strokeWidth={3} />
-              </span>
-              <span className="font-body text-[12.5px] leading-[1.55] text-white/[0.62]">
-                {item}
-              </span>
-            </div>
-          ))}
-        </div>
-
-        <p className="mt-4 font-mono text-[10px] font-semibold uppercase tracking-[0.16em] text-white/35">
-          Included with Growth and Dealership packages
-        </p>
-
-        <div className="mt-5 flex flex-col gap-2.5 sm:flex-row sm:items-center">
-          <Link
-            href="/contact?tier=Website%20%2B%20Reputation%20Bundle"
-            className="btn-v inline-flex items-center justify-center !gap-2 !px-5 !py-3 !text-[12.5px] sm:w-auto"
-            onClick={() =>
-              trackEvent("pricing_button_click", {
-                tier: "Website + Reputation Bundle",
-                destination: "contact",
-              })
-            }
-          >
-            Start a project <span aria-hidden="true">→</span>
-          </Link>
-          <Link
-            href="/work/autofivestar"
-            className="inline-flex items-center justify-center gap-1.5 px-3 py-2 font-body text-[11.5px] font-medium text-white/55 transition-colors duration-200 hover:text-accent"
-            onClick={() =>
-              trackEvent("pricing_button_click", {
-                tier: "Website + Reputation Bundle",
-                destination: "autofivestar_case_study",
-                secondary: true,
-              })
-            }
-          >
-            View AutoFiveStar case study <span aria-hidden="true">→</span>
-          </Link>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-type AddOn = {
-  name: string;
-  description: string;
-  price: string;
-};
-
-const ADD_ONS: AddOn[] = [
-  {
-    name: "Programmatic Local SEO Page",
-    description:
-      "AI-assisted city or service page using an approved layout and SEO structure. Best for scalable local expansion.",
-    price: "$200 per page",
-  },
-  {
-    name: "Custom Location or Service Page",
-    description:
-      "Individually written and structured page for priority cities, services, or campaigns that need stronger copy, proof, FAQs, and conversion sections.",
-    price: "from $300",
-  },
-  {
-    name: "Monthly SEO Maintenance",
-    description:
-      "Ongoing technical SEO checks, fixes, and content updates to keep the site improving month over month.",
-    price: "$400/mo",
-  },
-  {
-    name: "GA4 + Conversion Tracking Setup",
-    description:
-      "Full Google Analytics 4 and conversion event configuration.",
-    price: "$350 one-time",
-  },
-  {
-    name: "CRO Audit",
-    description:
-      "Full conversion rate audit with prioritized recommendations.",
-    price: "$500 one-time",
-  },
-  {
-    name: "Inventory Feed Integration",
-    description:
-      "Retrofit / add-on for qualifying existing sites. Includes feed connection work only. Does not include the full dealership UX, VDP system, filtering experience, SEO architecture, or ongoing feed monitoring included in the Dealership Website System.",
-    price: "from $1,500",
-  },
-  {
-    name: "AutoFiveStar Lite",
-    description:
-      "Review-request workflow for small local businesses — request reviews, route unhappy feedback privately, and keep a repeatable follow-up process after each customer interaction.",
-    price: "from $97/mo",
-  },
-  {
-    name: "AutoFiveStar Pro",
-    description:
-      "Higher-volume reputation follow-up with Google review CTA flow, private feedback capture, and dashboard access for businesses running steady customer volume.",
-    price: "from $197/mo",
-  },
-  {
-    name: "AutoFiveStar Dealer",
-    description:
-      "Dealership-grade reputation system built for higher-volume sales and service follow-up, with review requests, private feedback routing, and Google review CTA flow.",
-    price: "from $297/mo",
-  },
-];
-
-function AddOnsSection() {
-  return (
-    <div className="mt-12 sm:mt-16">
-      <div className="text-center">
-        <h3 className="font-display text-[clamp(24px,3.4vw,32px)] font-extrabold leading-[1.15] tracking-[-0.03em] text-white">
-          Enhance your project
-        </h3>
-        <p className="mx-auto mt-2 font-body text-[13px] leading-[1.55] text-white/50">
-          Add-ons available with any package
-        </p>
-      </div>
-
-      <div className="mt-8 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
-        {ADD_ONS.map((addOn) => (
-          <div
-            key={addOn.name}
-            className="flex flex-col rounded-xl border border-white/[0.06] px-5 py-5 transition-colors duration-300 hover:border-white/[0.12]"
-            style={{ background: "var(--pricing-bg-card)" }}
-          >
-            <div className="flex items-start justify-between gap-3">
-              <h4 className="font-display text-[15px] font-bold leading-[1.3] tracking-[-0.01em] text-white">
-                {addOn.name}
-              </h4>
-              <span className="shrink-0 font-mono text-[12px] font-semibold text-accent">
-                {addOn.price}
-              </span>
-            </div>
-            <p className="mt-2 font-body text-[12.5px] leading-[1.55] text-white/55">
-              {addOn.description}
-            </p>
-          </div>
-        ))}
-      </div>
-
-      <p className="mx-auto mt-6 max-w-[640px] text-center font-body text-[12px] leading-[1.6] text-white/40">
-        AutoFiveStar can be continued after the included period as a monthly
-        add-on. Lite plans are designed for small local businesses; Pro and
-        dealership plans are designed for higher-volume customer follow-up.
-      </p>
-    </div>
   );
 }
