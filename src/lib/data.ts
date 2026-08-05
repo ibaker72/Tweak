@@ -242,6 +242,49 @@ export const projects: Project[] = [
     accent: "amber",
   },
   {
+    slug: "gardenstatewater",
+    title: "Garden State Water",
+    category: "Local Water Delivery Platform",
+    tagline:
+      "Subscription water delivery storefront backed by a full operations system.",
+    description:
+      "Built a customer-facing water delivery platform — subscription plans, ZIP-gated signup, and a tokenized customer portal — backed by routing, inventory, and invoicing operations.",
+    challenge:
+      "A local delivery business needs more than a brochure website. Customers have to understand the service, pick the right plan, and get through signup with minimal friction — and the operator needs the delivery day to run itself.",
+    solution:
+      "We built a subscription storefront with plan selection and ZIP-based availability checks, a tokenized customer portal for bills, extra deliveries, and pauses, and an admin system covering orders, route optimization, inventory, invoicing, and customer records.",
+    problem:
+      "A delivery business needs ordering, coverage, and operations — not a brochure site.",
+    solutionShort:
+      "Subscription storefront with ZIP coverage and a customer portal, backed by routing, inventory, and invoicing operations.",
+    impactShort:
+      "Storefront and delivery operations run on one platform.",
+    impact: "Storefront and operations on one platform",
+    results: [
+      "Subscription plans with a one-time delivery option",
+      "ZIP-based service-area checks gate signup",
+      "Tokenized customer portal for bills, requests, and pauses",
+      "Route optimization, inventory, and invoicing behind the delivery day",
+    ],
+    stack: ["Next.js", "TypeScript", "Prisma", "Supabase", "Stripe", "Tailwind CSS"],
+    year: "2026",
+    live: true,
+    url: "https://gardenstatewater.com",
+    image: "/visual-proof/gardenstatewater/hero.webp",
+    gallery: [
+      "/visual-proof/gardenstatewater/hero.webp",
+      "/visual-proof/gardenstatewater/plans.webp",
+      "/visual-proof/gardenstatewater/service-area.webp",
+      "/visual-proof/gardenstatewater/signup.webp",
+      "/visual-proof/gardenstatewater/portal.webp",
+      "/visual-proof/gardenstatewater/dashboard.webp",
+      "/visual-proof/gardenstatewater/routes.webp",
+    ],
+    proofBadges: ["Subscription Ordering", "Customer Portal", "Route Optimization"],
+    metricBadge: "Storefront + operations on one platform",
+    accent: "cyan",
+  },
+  {
     slug: "create3dparts",
     title: "Create3DParts.com",
     category: "E-Commerce Platform",

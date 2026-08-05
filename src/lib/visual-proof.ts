@@ -26,6 +26,7 @@ const SPEEDWAY_BASE = "/visual-proof/speedwaymotors";
 const TWEAK_BASE = "/visual-proof/tweak-os";
 const JERSEYPANTRY_BASE = "/visual-proof/jerseypantry";
 const AUTOFIVESTAR_BASE = "/work/autofivestar";
+const GSW_BASE = "/visual-proof/gardenstatewater";
 
 export const visualProofProjects: VisualProofProject[] = [
   {
@@ -235,6 +236,58 @@ export const visualProofProjects: VisualProofProject[] = [
         src: `${JERSEYPANTRY_BASE}/footer.jpg`,
         type: "image",
         label: "Footer",
+      },
+    ],
+  },
+  {
+    slug: "gardenstatewater",
+    title: "Garden State Water",
+    category: "Local Water Delivery Platform",
+    description:
+      "Built a full water delivery platform — subscription plans, ZIP-based coverage checks, a tokenized customer portal, and the routing, inventory, and invoicing operations that run the business.",
+    tags: [
+      "Water Delivery",
+      "Recurring Service",
+      "Customer Portal",
+      "Route Operations",
+    ],
+    outcomes: [
+      "Subscription plans plus one-time delivery",
+      "ZIP-based service-area coverage checks",
+      "Tokenized customer portal — bills, requests, pauses",
+      "Route optimization for delivery days",
+      "Inventory, invoicing, and CRM operations",
+    ],
+    accent: "cyan",
+    liveUrl: "https://gardenstatewater.com",
+    caseStudyHref: "/work/gardenstatewater",
+    media: [
+      { src: `${GSW_BASE}/hero.webp`, type: "image", label: "Homepage" },
+      {
+        src: `${GSW_BASE}/plans.webp`,
+        type: "image",
+        label: "Subscription plans",
+      },
+      {
+        src: `${GSW_BASE}/service-area.webp`,
+        type: "image",
+        label: "Service area",
+      },
+      { src: `${GSW_BASE}/signup.webp`, type: "image", label: "Signup flow" },
+      {
+        src: `${GSW_BASE}/portal.webp`,
+        type: "image",
+        label: "Customer portal",
+      },
+      {
+        src: `${GSW_BASE}/dashboard.webp`,
+        type: "image",
+        label: "Operations dashboard",
+      },
+      {
+        src: `${GSW_BASE}/routes.webp`,
+        type: "image",
+        label: "Route optimization",
       },
     ],
   },

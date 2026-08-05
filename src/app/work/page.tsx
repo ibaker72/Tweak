@@ -53,6 +53,7 @@ const featuredSlugs = [
   "autofivestar",
   "pp-mechanical",
   "jerseypantry",
+  "gardenstatewater",
 ] as const;
 
 const featuredFirst = featuredSlugs
