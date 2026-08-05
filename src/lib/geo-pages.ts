@@ -461,7 +461,7 @@ export const GEO_SERVICES: GeoService[] = [
     faqs: [
       {
         q: "How much does a website cost in {city}, NJ?",
-        a: "Most {city} small-business websites land between $4,500 and $18,000 depending on page count, integrations, and content. We send a fixed quote within 24 hours — no hourly billing.",
+        a: "It depends on scope — page count, functionality, integrations, content, and how competitive your {city} market is. Every project is custom scoped, and we send a fixed quote within 24 hours — no hourly billing. Our website planning calculator can show you a rough investment level in about two minutes.",
       },
       {
         q: "How long does a {city} website take to build?",
@@ -609,7 +609,7 @@ export const GEO_SERVICES: GeoService[] = [
       },
       {
         q: "What does ongoing local SEO cost?",
-        a: "Monthly retainers typically run $1,500 to $4,000 depending on scope and content cadence. One-time audits and technical fixes are scoped per project.",
+        a: "Local SEO engagements are scoped around your market competition, service-area coverage, and content cadence — then billed as a flat monthly rate you approve upfront. One-time audits and technical fixes are scoped per project.",
       },
     ],
     related: ["google-business-profile-optimization", "web-design", "lead-generation", "website-redesign"],

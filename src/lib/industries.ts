@@ -131,7 +131,7 @@ export const industries: Industry[] = [
       },
       {
         q: "How much does a dealership website cost?",
-        a: "Our builds start at $2,997 for a focused inventory + lead capture site and go up to $5,997+ for full multi-rooftop builds with advanced CRM integration and booking systems. Every project gets a fixed quote upfront.",
+        a: "Every dealership build is scoped around your inventory size, feed integrations, number of rooftops, and lead-handling workflow — not picked from a package menu. Tell us what you're working with and you'll get a fixed, no-surprises quote before any work starts.",
       },
     ],
     ctaHeadline: "See what your current site is leaving on the table",
@@ -230,7 +230,7 @@ export const industries: Industry[] = [
       },
       {
         q: "What does an insurance agency website cost?",
-        a: "A standard agency site with quote forms and trust-forward design starts at $2,997. A full build with client portal and automation integration is typically $5,997. All pricing is fixed — no hourly billing.",
+        a: "Agency sites are scoped around the lines you write, the quote and lead-capture flows you need, and any portal or automation integrations. Every project gets a fixed quote upfront — no hourly billing, no scope surprises.",
       },
     ],
     ctaHeadline: "Find out what your website is costing you in leads",
@@ -329,7 +329,7 @@ export const industries: Industry[] = [
       },
       {
         q: "What does a service business website cost?",
-        a: "A focused single-location site with booking and local SEO starts at $1,497. A multi-service, multi-location site with estimate tools and review integration is typically $2,997–$5,997. Fixed pricing, always.",
+        a: "It depends on your service-area coverage, the number of services, booking and estimate tools, and how aggressively you want to rank locally. We scope each build around those factors and send a fixed quote upfront — no hourly billing.",
       },
     ],
     ctaHeadline: "See how many jobs your website is losing",

@@ -1,203 +1,287 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useRef, useState } from "react";
 import Link from "next/link";
 import {
   ArrowRight,
   ArrowLeft,
-  Globe,
-  Layers,
-  ShoppingCart,
-  AppWindow,
-  Cloud,
-  FileText,
-  Users,
-  CreditCard,
-  Plug,
-  Bot,
-  LayoutDashboard,
-  ClipboardList,
-  BarChart3,
-  Palette,
-  Pencil,
-  Clock,
-  Send,
   Check,
   Loader2,
+  Send,
   Shield,
   Zap,
   MessageSquare,
 } from "lucide-react";
-import type { LucideIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Reveal } from "@/components/shared";
+import { trackEvent } from "@/lib/analytics";
 
-interface Step1Option {
+type SolutionKey = "launch" | "custom" | "growth";
+
+type AnswerOption = {
   id: string;
   label: string;
-  icon: LucideIcon;
-  baseMin: number;
-  baseMax: number;
-}
+  /** Contribution to the overall scope/complexity score that drives the investment band */
+  complexity: number;
+  /** Points toward each website solution recommendation */
+  points?: Partial<Record<SolutionKey, number>>;
+};
 
-interface Step2Option {
+type Question = {
   id: string;
-  label: string;
-  icon: LucideIcon;
-  addMin: number;
-  addMax: number;
-}
+  title: string;
+  subtitle?: string;
+  multi?: boolean;
+  options: AnswerOption[];
+};
 
-interface Step3Option {
-  id: string;
-  label: string;
-  multiplier: number;
-}
-
-interface Step4Option {
-  id: string;
-  label: string;
-}
-
-const projectTypes: Step1Option[] = [
-  { id: "single", label: "Single Page", icon: FileText, baseMin: 997, baseMax: 1997 },
-  { id: "multi", label: "Multi-Page Site", icon: Layers, baseMin: 2497, baseMax: 4497 },
-  { id: "ecommerce", label: "E-Commerce Store", icon: ShoppingCart, baseMin: 3997, baseMax: 7997 },
-  { id: "webapp", label: "Web Application", icon: AppWindow, baseMin: 4997, baseMax: 11997 },
-  { id: "saas", label: "SaaS Product", icon: Cloud, baseMin: 7997, baseMax: 19997 },
+const QUESTIONS: Question[] = [
+  {
+    id: "stage",
+    title: "Where is your business right now?",
+    options: [
+      { id: "new", label: "New business / launching", complexity: 1, points: { launch: 3 } },
+      { id: "established", label: "Established business", complexity: 2, points: { custom: 2 } },
+      { id: "rebrand", label: "Rebranding or rebuilding", complexity: 2, points: { custom: 2 } },
+      { id: "expanding", label: "Expanding locations or service areas", complexity: 3, points: { growth: 3 } },
+    ],
+  },
+  {
+    id: "site",
+    title: "What's your current website situation?",
+    options: [
+      { id: "none", label: "No website yet", complexity: 1, points: { launch: 2 } },
+      { id: "basic", label: "Basic website", complexity: 1, points: { launch: 1, custom: 1 } },
+      { id: "outdated", label: "Outdated website", complexity: 2, points: { custom: 3 } },
+      { id: "underperforming", label: "Decent website, not generating enough leads", complexity: 2, points: { custom: 1, growth: 2 } },
+    ],
+  },
+  {
+    id: "size",
+    title: "How large does the site need to be?",
+    subtitle: "A rough page count is fine — service and city pages included.",
+    options: [
+      { id: "1-3", label: "1–3 pages", complexity: 1, points: { launch: 2 } },
+      { id: "4-6", label: "4–6 pages", complexity: 2, points: { custom: 2 } },
+      { id: "7-12", label: "7–12 pages", complexity: 3, points: { custom: 2, growth: 1 } },
+      { id: "13+", label: "13+ pages", complexity: 4, points: { growth: 3 } },
+    ],
+  },
+  {
+    id: "reach",
+    title: "How far does your local reach go?",
+    options: [
+      { id: "single", label: "One core service area", complexity: 1, points: { launch: 2 } },
+      { id: "services", label: "Multiple services, one area", complexity: 2, points: { custom: 2 } },
+      { id: "cities", label: "Multiple cities / service areas", complexity: 3, points: { growth: 3 } },
+      { id: "multi-location", label: "Multiple locations / regional SEO", complexity: 4, points: { growth: 4 } },
+    ],
+  },
+  {
+    id: "functionality",
+    title: "What should the website handle?",
+    subtitle: "Select all that apply. A standard contact form is always included.",
+    multi: true,
+    options: [
+      { id: "quote", label: "Quote request forms", complexity: 1, points: { custom: 1 } },
+      { id: "booking", label: "Online booking / scheduling", complexity: 1, points: { custom: 1 } },
+      { id: "payments", label: "Payment processing", complexity: 1, points: { custom: 1 } },
+      { id: "crm", label: "CRM integration", complexity: 2, points: { growth: 2 } },
+      { id: "followup", label: "Automated lead follow-up", complexity: 2, points: { growth: 2 } },
+      { id: "portal", label: "Customer portal / custom functionality", complexity: 2, points: { growth: 1 } },
+    ],
+  },
+  {
+    id: "content",
+    title: "Where does your content stand?",
+    options: [
+      { id: "own", label: "I have my own copy and photos", complexity: 0 },
+      { id: "copy", label: "Need copywriting help", complexity: 1, points: { custom: 1 } },
+      { id: "media", label: "Need photo / drone / video content", complexity: 1, points: { custom: 1 } },
+      { id: "full", label: "Need copy plus a full content system", complexity: 2, points: { growth: 2 } },
+    ],
+  },
+  {
+    id: "marketing",
+    title: "Any marketing planned beyond the website?",
+    options: [
+      { id: "none", label: "Website only for now", complexity: 0 },
+      { id: "seo", label: "Local SEO", complexity: 1, points: { growth: 2 } },
+      { id: "ads", label: "Google or Meta ads", complexity: 1, points: { growth: 2 } },
+      { id: "full-acquisition", label: "Full acquisition strategy", complexity: 2, points: { growth: 4 } },
+    ],
+  },
+  {
+    id: "goal",
+    title: "What's the primary goal?",
+    options: [
+      { id: "credibility", label: "Establish credibility", complexity: 0, points: { launch: 3 } },
+      { id: "replace", label: "Replace an outdated site", complexity: 1, points: { custom: 3 } },
+      { id: "leads", label: "Get more calls and form submissions", complexity: 1, points: { custom: 2, growth: 1 } },
+      { id: "rank", label: "Rank in more locations", complexity: 2, points: { growth: 3 } },
+      { id: "scale", label: "Scale lead generation aggressively", complexity: 2, points: { growth: 4 } },
+    ],
+  },
 ];
 
-const features: Step2Option[] = [
-  { id: "cms", label: "CMS / Blog", icon: FileText, addMin: 300, addMax: 800 },
-  { id: "auth", label: "User Authentication", icon: Users, addMin: 500, addMax: 1500 },
-  { id: "payments", label: "Payments / Checkout", icon: CreditCard, addMin: 400, addMax: 1200 },
-  { id: "api", label: "API Integrations", icon: Plug, addMin: 300, addMax: 1000 },
-  { id: "ai", label: "AI / Automation", icon: Bot, addMin: 800, addMax: 2500 },
-  { id: "dashboard", label: "Admin Dashboard", icon: LayoutDashboard, addMin: 600, addMax: 2000 },
-  { id: "forms", label: "Custom Forms", icon: ClipboardList, addMin: 200, addMax: 600 },
-  { id: "analytics", label: "Analytics", icon: BarChart3, addMin: 100, addMax: 400 },
-];
+const INVESTMENT_BANDS = [
+  { id: "under_2500", label: "Under $2,500" },
+  { id: "2500_5000", label: "$2,500 – $5,000" },
+  { id: "5000_10000", label: "$5,000 – $10,000" },
+  { id: "10000_25000", label: "$10,000 – $25,000" },
+  { id: "25000_plus", label: "$25,000+" },
+] as const;
 
-const designOptions: Step3Option[] = [
-  { id: "figma", label: "Yes — Figma / design files ready", multiplier: 1.0 },
-  { id: "wireframes", label: "Rough wireframes only", multiplier: 1.15 },
-  { id: "none", label: "No — need design too", multiplier: 1.35 },
-];
+const SOLUTIONS: Record<
+  SolutionKey,
+  { name: string; analyticsId: string; reason: string; needs: string[] }
+> = {
+  launch: {
+    name: "New Business Launch",
+    analyticsId: "new_business_launch",
+    reason:
+      "Your priority is getting a credible, conversion-ready presence online without overbuilding. A focused launch build covers what your business needs right now — and leaves room to expand as you grow.",
+    needs: [
+      "Conversion-focused business website",
+      "Mobile-first design",
+      "Core service and company sections",
+      "Quote or contact lead capture",
+      "Google Business Profile readiness",
+      "SEO foundation",
+      "Analytics and conversion tracking",
+    ],
+  },
+  custom: {
+    name: "Custom Business Website",
+    analyticsId: "custom_business_website",
+    reason:
+      "Your business needs a stronger conversion platform, not just a visual refresh. Your answers point to a fully custom build focused on credibility, a clearer service structure, and measurably better lead capture.",
+    needs: [
+      "Fully custom business website",
+      "Conversion-focused page structure",
+      "Service, trust, and proof sections",
+      "Stronger conversion copy",
+      "Lead capture and quote forms",
+      "SEO and analytics setup",
+      "Expansion-ready architecture",
+    ],
+  },
+  growth: {
+    name: "Local Growth System",
+    analyticsId: "local_growth_system",
+    reason:
+      "Your project needs to support acquisition and expansion, not simply serve as an online brochure. Your answers point to a website built as a local growth platform — visibility, conversion paths, and campaign-ready infrastructure.",
+    needs: [
+      "Conversion-focused custom website",
+      "Expanded service architecture",
+      "Local SEO structure and schema",
+      "City / service landing-page framework",
+      "Lead and conversion tracking",
+      "Review-growth integration",
+      "Campaign-ready landing pages",
+    ],
+  },
+};
 
-const timelineOptions: Step4Option[] = [
-  { id: "asap", label: "ASAP" },
-  { id: "1-2months", label: "1–2 months" },
-  { id: "2-4months", label: "2–4 months" },
-  { id: "flexible", label: "Flexible" },
-];
+function computeResult(answers: Record<string, string[]>) {
+  const scores: Record<SolutionKey, number> = { launch: 0, custom: 0, growth: 0 };
+  let complexity = 0;
 
-function AnimatedNumber({ target, prefix = "$" }: { target: number; prefix?: string }) {
-  const [current, setCurrent] = useState(0);
+  for (const question of QUESTIONS) {
+    for (const id of answers[question.id] ?? []) {
+      const option = question.options.find((o) => o.id === id);
+      if (!option) continue;
+      complexity += option.complexity;
+      for (const [key, value] of Object.entries(option.points ?? {})) {
+        scores[key as SolutionKey] += value ?? 0;
+      }
+    }
+  }
 
-  useEffect(() => {
-    let frame: number;
-    const start = performance.now();
-    const duration = 1200;
+  let recommendation: SolutionKey;
+  if (scores.growth > 0 && scores.growth >= scores.custom && scores.growth >= scores.launch) {
+    recommendation = "growth";
+  } else if (scores.custom >= scores.launch) {
+    recommendation = "custom";
+  } else {
+    recommendation = "launch";
+  }
 
-    const animate = (now: number) => {
-      const elapsed = now - start;
-      const progress = Math.min(elapsed / duration, 1);
-      const eased = 1 - Math.pow(1 - progress, 3);
-      setCurrent(Math.round(eased * target));
-      if (progress < 1) frame = requestAnimationFrame(animate);
-    };
+  let bandIndex =
+    complexity <= 4 ? 0 : complexity <= 10 ? 1 : complexity <= 17 ? 2 : complexity <= 22 ? 3 : 4;
+  // Guardrails so band and recommendation stay logically consistent
+  if (recommendation === "growth") bandIndex = Math.max(bandIndex, 2);
+  if (recommendation === "custom") bandIndex = Math.max(bandIndex, 1);
+  if (recommendation === "launch") bandIndex = Math.min(bandIndex, 2);
 
-    frame = requestAnimationFrame(animate);
-    return () => cancelAnimationFrame(frame);
-  }, [target]);
-
-  return (
-    <span>
-      {prefix}
-      {current.toLocaleString()}
-    </span>
-  );
+  return { recommendation, band: INVESTMENT_BANDS[bandIndex], complexity, scores };
 }
 
 export function CostCalculator() {
   const [step, setStep] = useState(1);
-  const [projectType, setProjectType] = useState<string | null>(null);
-  const [selectedFeatures, setSelectedFeatures] = useState<string[]>([]);
-  const [designReady, setDesignReady] = useState<string | null>(null);
-  const [timeline, setTimeline] = useState<string | null>(null);
+  const [answers, setAnswers] = useState<Record<string, string[]>>({});
   const [email, setEmail] = useState("");
-  const [name, setName] = useState("");
   const [emailStatus, setEmailStatus] = useState<"idle" | "loading" | "success">("idle");
+  const startedRef = useRef(false);
 
-  const toggleFeature = (id: string) => {
-    setSelectedFeatures((prev) =>
-      prev.includes(id) ? prev.filter((f) => f !== id) : [...prev, id],
-    );
+  const totalSteps = QUESTIONS.length;
+  const currentQuestion = QUESTIONS[step - 1];
+  const onResults = step > totalSteps;
+
+  const markStarted = () => {
+    if (startedRef.current) return;
+    startedRef.current = true;
+    trackEvent("website_calculator_started", { source: "website_cost_calculator" });
+  };
+
+  const selectSingle = (questionId: string, optionId: string) => {
+    markStarted();
+    setAnswers((prev) => ({ ...prev, [questionId]: [optionId] }));
+  };
+
+  const toggleMulti = (questionId: string, optionId: string) => {
+    markStarted();
+    setAnswers((prev) => {
+      const current = prev[questionId] ?? [];
+      return {
+        ...prev,
+        [questionId]: current.includes(optionId)
+          ? current.filter((id) => id !== optionId)
+          : [...current, optionId],
+      };
+    });
   };
 
   const canProceed = () => {
-    if (step === 1) return projectType !== null;
-    if (step === 2) return true; // features are optional
-    if (step === 3) return designReady !== null;
-    if (step === 4) return timeline !== null;
-    return true;
+    if (!currentQuestion) return true;
+    if (currentQuestion.multi) return true; // multi-selects are optional
+    return (answers[currentQuestion.id] ?? []).length > 0;
   };
 
-  const calculateEstimate = () => {
-    const type = projectTypes.find((t) => t.id === projectType);
-    if (!type) return { min: 0, max: 0 };
+  const result = computeResult(answers);
+  const solution = SOLUTIONS[result.recommendation];
 
-    let min = type.baseMin;
-    let max = type.baseMax;
-
-    selectedFeatures.forEach((fId) => {
-      const feat = features.find((f) => f.id === fId);
-      if (feat) {
-        min += feat.addMin;
-        max += feat.addMax;
-      }
+  const finish = () => {
+    trackEvent("website_calculator_completed", {
+      recommended_solution: solution.analyticsId,
+      investment_band: result.band.id,
+      primary_goal: answers.goal?.[0] ?? null,
+      source: "website_cost_calculator",
     });
-
-    const design = designOptions.find((d) => d.id === designReady);
-    if (design) {
-      min = Math.round(min * design.multiplier);
-      max = Math.round(max * design.multiplier);
-    }
-
-    // Round to nearest nice number
-    min = Math.round(min / 100) * 100 - 3;
-    max = Math.round(max / 100) * 100 - 3;
-
-    return { min, max };
+    setStep(totalSteps + 1);
   };
 
-  const getRelevantCaseStudy = () => {
-    if (projectType === "ecommerce") return { slug: "voltgrid", label: "voltgrid" };
-    if (projectType === "saas" || projectType === "webapp")
-      return { slug: "leadsandsaas", label: "LeadsAndSaaS" };
-    return { slug: "create3dparts", label: "Create3DParts" };
+  const trackCta = (cta: string) => {
+    trackEvent("website_calculator_cta_clicked", {
+      recommended_solution: solution.analyticsId,
+      investment_band: result.band.id,
+      cta,
+      source: "website_cost_calculator",
+    });
   };
 
-  const buildContactParams = () => {
-    const type = projectTypes.find((t) => t.id === projectType);
-    const featureLabels = selectedFeatures
-      .map((id) => features.find((f) => f.id === id)?.label)
-      .filter(Boolean)
-      .join(", ");
-    const design = designOptions.find((d) => d.id === designReady);
-    const est = calculateEstimate();
-
-    const params = new URLSearchParams();
-    if (type) params.set("project", type.label);
-    if (featureLabels) params.set("features", featureLabels);
-    if (design) params.set("design", design.label);
-    if (timeline) params.set("timeline", timeline);
-    params.set("estimate", `$${est.min.toLocaleString()} – $${est.max.toLocaleString()}`);
-    return params.toString();
-  };
-
-  const sendEstimate = async (e: React.FormEvent) => {
+  const sendResult = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!email || !name) return;
+    if (!email) return;
     setEmailStatus("loading");
     try {
       await fetch("/api/subscribe", {
@@ -211,132 +295,120 @@ export function CostCalculator() {
     setEmailStatus("success");
   };
 
-  const totalSteps = 4;
-  const estimate = calculateEstimate();
-  const caseStudy = getRelevantCaseStudy();
+  const answerLabel = (questionId: string) => {
+    const question = QUESTIONS.find((q) => q.id === questionId);
+    const selected = answers[questionId] ?? [];
+    if (!question || selected.length === 0) return null;
+    return selected
+      .map((id) => question.options.find((o) => o.id === id)?.label)
+      .filter(Boolean)
+      .join(", ");
+  };
+
+  const profile = [
+    { label: "Business stage", value: answerLabel("stage") },
+    { label: "Current website", value: answerLabel("site") },
+    { label: "Local reach", value: answerLabel("reach") },
+    { label: "Functionality", value: answerLabel("functionality") ?? "Standard contact form" },
+    { label: "Content", value: answerLabel("content") },
+    { label: "Primary goal", value: answerLabel("goal") },
+  ].filter((row) => Boolean(row.value));
+
+  const contactHref = `/contact?tier=${encodeURIComponent(solution.name)}&source=calculator`;
 
   return (
     <div className="flex min-h-[100dvh] flex-col pb-24 pt-36 sm:pt-40">
       <div className="wrap flex flex-1 flex-col">
-        {step <= totalSteps && (
+        {!onResults && (
           <Reveal>
-            <div className="mx-auto mb-10 max-w-[600px] text-center">
-              <span className="section-label">Cost Calculator</span>
-              <h1 className="section-title mt-4">Estimate your project</h1>
-              <p className="mx-auto mt-3 max-w-[400px] text-[14px] leading-[1.7] text-body">
-                Answer {totalSteps} quick questions for an instant price range.
+            <div className="mx-auto mb-8 max-w-[640px] text-center">
+              <span className="section-label">Free Website Planning Tool</span>
+              <h1 className="section-title mt-4">
+                What kind of website does your business actually need?
+              </h1>
+              <p className="mx-auto mt-3 max-w-[480px] text-[14px] leading-[1.7] text-body">
+                Answer a few questions about your business, goals, market, and
+                functionality. We&apos;ll estimate the level of build your project
+                likely requires and show you the best next step.
+              </p>
+              <p className="mx-auto mt-2 max-w-[440px] text-[12px] leading-[1.6] text-dim">
+                No generic package picker. No obligation. Just a clearer picture
+                of what your project involves.
               </p>
             </div>
           </Reveal>
         )}
 
         {/* Progress bar */}
-        {step <= totalSteps && (
-          <div className="mx-auto mb-10 flex max-w-[400px] items-center gap-2">
+        {!onResults && (
+          <div className="mx-auto mb-10 flex w-full max-w-[400px] items-center gap-2">
             {Array.from({ length: totalSteps }, (_, i) => (
-              <div key={i} className="h-1 flex-1 rounded-full bg-white/[0.06] overflow-hidden">
+              <div key={i} className="h-1 flex-1 overflow-hidden rounded-full bg-white/[0.06]" aria-hidden="true">
                 <div
                   className="h-full rounded-full bg-accent transition-all duration-500"
                   style={{ width: step > i ? "100%" : "0%" }}
                 />
               </div>
             ))}
-            <span className="ml-2 font-mono text-[11px] text-dim">
-              {step}/{totalSteps}
+            <span className="ml-2 whitespace-nowrap font-mono text-[11px] text-dim">
+              Step {step} of {totalSteps}
             </span>
           </div>
         )}
 
-        {/* Step 1: Project Type */}
-        {step === 1 && (
-          <Reveal delay={0.05}>
-            <div className="mx-auto max-w-[600px]">
-              <h2 className="mb-6 text-center font-display text-[20px] font-bold text-white">
-                What are you building?
-              </h2>
-              <div className="grid gap-3 sm:grid-cols-2">
-                {projectTypes.map((type) => (
-                  <button
-                    key={type.id}
-                    onClick={() => setProjectType(type.id)}
-                    className={cn(
-                      "flex items-center gap-3.5 rounded-xl border p-4 text-left transition-all duration-200",
-                      projectType === type.id
-                        ? "border-accent/30 bg-accent/[0.06]"
-                        : "border-white/[0.06] bg-white/[0.015] hover:border-white/[0.12]",
-                    )}
-                  >
-                    <div
-                      className={cn(
-                        "flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl border",
-                        projectType === type.id
-                          ? "border-accent/20 bg-accent/[0.08] text-accent"
-                          : "border-white/[0.08] bg-white/[0.03] text-dim",
-                      )}
-                    >
-                      <type.icon size={18} />
-                    </div>
-                    <span
-                      className={cn(
-                        "text-[14px] font-semibold",
-                        projectType === type.id ? "text-white" : "text-gray-300",
-                      )}
-                    >
-                      {type.label}
-                    </span>
-                  </button>
-                ))}
-              </div>
-            </div>
-          </Reveal>
-        )}
-
-        {/* Step 2: Features */}
-        {step === 2 && (
-          <Reveal delay={0.05}>
-            <div className="mx-auto max-w-[600px]">
+        {/* Question steps */}
+        {!onResults && currentQuestion && (
+          <Reveal key={currentQuestion.id} delay={0.05}>
+            <div className="mx-auto w-full max-w-[600px]">
               <h2 className="mb-2 text-center font-display text-[20px] font-bold text-white">
-                What features do you need?
+                {currentQuestion.title}
               </h2>
-              <p className="mb-6 text-center text-[13px] text-body">Select all that apply</p>
+              {currentQuestion.subtitle && (
+                <p className="mb-6 text-center text-[13px] leading-[1.6] text-body">
+                  {currentQuestion.subtitle}
+                </p>
+              )}
+              {!currentQuestion.subtitle && <div className="mb-6" />}
               <div className="grid gap-2.5 sm:grid-cols-2">
-                {features.map((feat) => {
-                  const selected = selectedFeatures.includes(feat.id);
+                {currentQuestion.options.map((option) => {
+                  const selected = (answers[currentQuestion.id] ?? []).includes(option.id);
                   return (
                     <button
-                      key={feat.id}
-                      onClick={() => toggleFeature(feat.id)}
+                      key={option.id}
+                      type="button"
+                      aria-pressed={selected}
+                      onClick={() =>
+                        currentQuestion.multi
+                          ? toggleMulti(currentQuestion.id, option.id)
+                          : selectSingle(currentQuestion.id, option.id)
+                      }
                       className={cn(
-                        "flex items-center gap-3 rounded-xl border p-3.5 text-left transition-all duration-200",
+                        "flex min-h-[52px] items-center gap-3 rounded-xl border p-4 text-left transition-all duration-200",
                         selected
                           ? "border-accent/30 bg-accent/[0.06]"
                           : "border-white/[0.06] bg-white/[0.015] hover:border-white/[0.12]",
                       )}
                     >
-                      <div
+                      <span
+                        aria-hidden="true"
                         className={cn(
-                          "flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-md border",
+                          "flex h-5 w-5 flex-shrink-0 items-center justify-center border",
+                          currentQuestion.multi ? "rounded-md" : "rounded-full",
                           selected
                             ? "border-accent/40 bg-accent text-surface-0"
                             : "border-white/[0.12] bg-white/[0.03]",
                         )}
                       >
                         {selected && <Check size={10} />}
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <feat.icon
-                          size={14}
-                          className={selected ? "text-accent" : "text-dim"}
-                        />
-                        <span
-                          className={cn(
-                            "text-[13px] font-medium",
-                            selected ? "text-white" : "text-gray-400",
-                          )}
-                        >
-                          {feat.label}
-                        </span>
-                      </div>
+                      </span>
+                      <span
+                        className={cn(
+                          "text-[13.5px] font-medium leading-[1.4]",
+                          selected ? "text-white" : "text-gray-300",
+                        )}
+                      >
+                        {option.label}
+                      </span>
                     </button>
                   );
                 })}
@@ -345,196 +417,135 @@ export function CostCalculator() {
           </Reveal>
         )}
 
-        {/* Step 3: Design Ready */}
-        {step === 3 && (
-          <Reveal delay={0.05}>
-            <div className="mx-auto max-w-[480px]">
-              <h2 className="mb-6 text-center font-display text-[20px] font-bold text-white">
-                Do you have designs ready?
-              </h2>
-              <div className="space-y-3">
-                {designOptions.map((opt) => (
-                  <button
-                    key={opt.id}
-                    onClick={() => setDesignReady(opt.id)}
-                    className={cn(
-                      "flex w-full items-center gap-3.5 rounded-xl border p-4 text-left transition-all duration-200",
-                      designReady === opt.id
-                        ? "border-accent/30 bg-accent/[0.06]"
-                        : "border-white/[0.06] bg-white/[0.015] hover:border-white/[0.12]",
-                    )}
-                  >
-                    <div
-                      className={cn(
-                        "flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl border",
-                        designReady === opt.id
-                          ? "border-accent/20 bg-accent/[0.08] text-accent"
-                          : "border-white/[0.08] bg-white/[0.03] text-dim",
-                      )}
-                    >
-                      {opt.id === "figma" && <Palette size={18} />}
-                      {opt.id === "wireframes" && <Pencil size={18} />}
-                      {opt.id === "none" && <Globe size={18} />}
-                    </div>
-                    <span
-                      className={cn(
-                        "text-[14px] font-medium",
-                        designReady === opt.id ? "text-white" : "text-gray-300",
-                      )}
-                    >
-                      {opt.label}
-                    </span>
-                  </button>
-                ))}
-              </div>
-            </div>
-          </Reveal>
-        )}
-
-        {/* Step 4: Timeline */}
-        {step === 4 && (
-          <Reveal delay={0.05}>
-            <div className="mx-auto max-w-[480px]">
-              <h2 className="mb-6 text-center font-display text-[20px] font-bold text-white">
-                What&apos;s your timeline?
-              </h2>
-              <div className="grid grid-cols-2 gap-3">
-                {timelineOptions.map((opt) => (
-                  <button
-                    key={opt.id}
-                    onClick={() => setTimeline(opt.id)}
-                    className={cn(
-                      "flex items-center justify-center gap-2 rounded-xl border p-4 text-center transition-all duration-200",
-                      timeline === opt.id
-                        ? "border-accent/30 bg-accent/[0.06]"
-                        : "border-white/[0.06] bg-white/[0.015] hover:border-white/[0.12]",
-                    )}
-                  >
-                    <Clock
-                      size={14}
-                      className={timeline === opt.id ? "text-accent" : "text-dim"}
-                    />
-                    <span
-                      className={cn(
-                        "text-[14px] font-medium",
-                        timeline === opt.id ? "text-white" : "text-gray-300",
-                      )}
-                    >
-                      {opt.label}
-                    </span>
-                  </button>
-                ))}
-              </div>
-            </div>
-          </Reveal>
-        )}
-
         {/* Results */}
-        {step === 5 && (
+        {onResults && (
           <Reveal delay={0.05}>
-            <div className="mx-auto max-w-[560px]">
+            <div className="mx-auto w-full max-w-[620px]">
               <div className="text-center">
-                <span className="section-label">Your Estimate</span>
-                <div className="mt-8 font-display text-[clamp(36px,8vw,56px)] font-black tracking-[-0.04em] text-white">
-                  <AnimatedNumber target={estimate.min} /> –{" "}
-                  <AnimatedNumber target={estimate.max} />
-                </div>
-                <p className="mt-3 text-[14px] text-body">
-                  Based on similar projects we&apos;ve delivered
+                <span className="section-label">Your Recommended Approach</span>
+                <h1 className="mt-5 font-display text-[clamp(30px,6vw,44px)] font-black leading-[1.1] tracking-[-0.03em] text-white">
+                  {solution.name}
+                </h1>
+                <p className="mx-auto mt-4 max-w-[500px] text-[14px] leading-[1.7] text-body">
+                  {solution.reason}
                 </p>
               </div>
 
-              {/* Breakdown */}
+              {/* What the project likely needs */}
               <div className="mt-8 rounded-2xl border border-white/[0.06] bg-white/[0.015] p-6">
-                <h3 className="mb-4 font-mono text-[10px] uppercase tracking-[0.1em] text-dim">
-                  Your Selections
-                </h3>
-                <div className="space-y-2.5">
-                  <div className="flex items-center justify-between text-[13px]">
-                    <span className="text-body">Project type</span>
-                    <span className="font-medium text-white">
-                      {projectTypes.find((t) => t.id === projectType)?.label}
-                    </span>
-                  </div>
-                  {selectedFeatures.length > 0 && (
-                    <div className="flex items-start justify-between text-[13px]">
-                      <span className="text-body">Features</span>
-                      <span className="max-w-[200px] text-right font-medium text-white">
-                        {selectedFeatures
-                          .map((id) => features.find((f) => f.id === id)?.label)
-                          .join(", ")}
+                <h2 className="mb-4 font-mono text-[10px] font-semibold uppercase tracking-[0.14em] text-dim">
+                  What your project likely needs
+                </h2>
+                <ul className="grid gap-2.5 sm:grid-cols-2">
+                  {solution.needs.map((item) => (
+                    <li key={item} className="flex items-start gap-2.5">
+                      <span
+                        aria-hidden="true"
+                        className="mt-[3px] inline-flex h-3.5 w-3.5 shrink-0 items-center justify-center rounded-full bg-accent/[0.12]"
+                      >
+                        <Check className="h-2.5 w-2.5 text-accent" strokeWidth={3} />
                       </span>
+                      <span className="text-[12.5px] leading-[1.55] text-white/[0.62]">{item}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              {/* Project profile */}
+              <div className="mt-4 rounded-2xl border border-white/[0.06] bg-white/[0.015] p-6">
+                <h2 className="mb-4 font-mono text-[10px] font-semibold uppercase tracking-[0.14em] text-dim">
+                  Your project profile
+                </h2>
+                <div className="space-y-2.5">
+                  {profile.map((row) => (
+                    <div key={row.label} className="flex items-start justify-between gap-4 text-[13px]">
+                      <span className="shrink-0 text-body">{row.label}</span>
+                      <span className="text-right font-medium text-white">{row.value}</span>
                     </div>
-                  )}
-                  <div className="flex items-center justify-between text-[13px]">
-                    <span className="text-body">Design status</span>
-                    <span className="font-medium text-white">
-                      {designOptions.find((d) => d.id === designReady)?.label.split("—")[0].trim()}
-                    </span>
-                  </div>
-                  <div className="flex items-center justify-between text-[13px]">
-                    <span className="text-body">Timeline</span>
-                    <span className="font-medium text-white">
-                      {timelineOptions.find((t) => t.id === timeline)?.label}
-                    </span>
-                  </div>
+                  ))}
                 </div>
+              </div>
+
+              {/* Investment level */}
+              <div className="mt-4 rounded-2xl border border-accent/[0.16] bg-accent/[0.03] p-6">
+                <h2 className="font-mono text-[10px] font-semibold uppercase tracking-[0.14em] text-accent/85">
+                  Estimated investment level
+                </h2>
+                <p className="mt-2 font-display text-[26px] font-extrabold tracking-[-0.02em] text-white sm:text-[30px]">
+                  {result.band.label}
+                </p>
+                <p className="mt-2 text-[12.5px] leading-[1.65] text-body">
+                  Planning estimate only. Final scope and investment are confirmed
+                  after reviewing your business, requirements, market, content, and
+                  integrations.
+                </p>
+                <p className="mt-2 text-[12px] leading-[1.6] text-dim">
+                  Scope typically moves with functionality depth, content
+                  production, integrations, number of service areas, and how
+                  aggressive your growth targets are.
+                </p>
               </div>
 
               {/* CTAs */}
               <div className="mt-6 grid gap-3 sm:grid-cols-2">
                 <Link
-                  href={`/contact?${buildContactParams()}`}
+                  href={contactHref}
                   className="btn-v justify-center"
+                  onClick={() => trackCta("contact")}
                 >
-                  Get an exact quote <ArrowRight size={13} />
+                  Get My Exact Recommendation <ArrowRight size={13} />
                 </Link>
                 <Link
-                  href={`/work/${caseStudy.slug}`}
+                  href="/audit"
                   className="btn-o justify-center"
+                  onClick={() => trackCta("audit")}
                 >
-                  See similar work
+                  Get a Free Business Audit
                 </Link>
               </div>
 
+              <div className="mt-4 text-center">
+                <button
+                  type="button"
+                  onClick={() => setStep(totalSteps)}
+                  className="inline-flex min-h-[44px] items-center gap-2 px-3 text-[13px] text-dim transition-colors hover:text-white"
+                >
+                  <ArrowLeft size={13} /> Adjust my answers
+                </button>
+              </div>
+
               {/* Email capture */}
-              <div className="mt-8 rounded-2xl border border-white/[0.06] bg-white/[0.015] p-6">
-                <h3 className="font-display text-[15px] font-bold text-white">
-                  Want this estimate sent to your inbox?
-                </h3>
+              <div className="mt-6 rounded-2xl border border-white/[0.06] bg-white/[0.015] p-6">
+                <h2 className="font-display text-[15px] font-bold text-white">
+                  Want this plan sent to your inbox?
+                </h2>
                 {emailStatus === "success" ? (
                   <div className="mt-3 flex items-center gap-2">
                     <Check size={14} className="text-accent" />
                     <span className="text-[13px] text-accent">Sent! Check your inbox.</span>
                   </div>
                 ) : (
-                  <form onSubmit={sendEstimate} className="mt-3 flex gap-2.5">
-                    <input
-                      type="text"
-                      value={name}
-                      onChange={(e) => setName(e.target.value)}
-                      placeholder="Name"
-                      className="field w-28 flex-shrink-0"
-                      required
-                    />
+                  <form onSubmit={sendResult} className="mt-3 flex flex-col gap-2.5 sm:flex-row">
                     <input
                       type="email"
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
                       placeholder="you@company.com"
+                      aria-label="Email address"
                       className="field flex-1"
                       required
                     />
                     <button
                       type="submit"
                       disabled={emailStatus === "loading"}
-                      className="btn-v flex-shrink-0 !px-4 disabled:opacity-60"
+                      className="btn-v justify-center sm:flex-shrink-0 sm:!px-4 disabled:opacity-60"
                     >
                       {emailStatus === "loading" ? (
                         <Loader2 size={14} className="animate-spin" />
                       ) : (
                         <Send size={14} />
                       )}
+                      <span className="sm:hidden">Send my plan</span>
                     </button>
                   </form>
                 )}
@@ -543,7 +554,7 @@ export function CostCalculator() {
               {/* Trust badges */}
               <div className="mt-6 flex flex-wrap justify-center gap-4">
                 {[
-                  { icon: Shield, text: "Fixed pricing guaranteed" },
+                  { icon: Shield, text: "Clear scope before you commit" },
                   { icon: Zap, text: "No hourly billing" },
                   { icon: MessageSquare, text: "Response in <4hrs" },
                 ].map((badge) => (
@@ -561,12 +572,13 @@ export function CostCalculator() {
         )}
 
         {/* Navigation buttons */}
-        {step <= totalSteps && (
-          <div className="mx-auto mt-10 flex max-w-[600px] items-center justify-between">
+        {!onResults && (
+          <div className="mx-auto mt-10 flex w-full max-w-[600px] items-center justify-between">
             {step > 1 ? (
               <button
+                type="button"
                 onClick={() => setStep((s) => s - 1)}
-                className="flex items-center gap-2 text-[13px] text-dim transition-colors hover:text-white"
+                className="flex min-h-[44px] items-center gap-2 px-2 text-[13px] text-dim transition-colors hover:text-white"
               >
                 <ArrowLeft size={14} /> Back
               </button>
@@ -574,11 +586,12 @@ export function CostCalculator() {
               <div />
             )}
             <button
-              onClick={() => setStep((s) => s + 1)}
+              type="button"
+              onClick={() => (step === totalSteps ? finish() : setStep((s) => s + 1))}
               disabled={!canProceed()}
               className="btn-v disabled:opacity-40"
             >
-              {step === totalSteps ? "See estimate" : "Continue"} <ArrowRight size={13} />
+              {step === totalSteps ? "See my recommendation" : "Continue"} <ArrowRight size={13} />
             </button>
           </div>
         )}

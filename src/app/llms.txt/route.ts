@@ -38,10 +38,29 @@ export function GET() {
 - URL: ${SITE_URL}
 - Contact: hello@tweakandbuild.com
 - Service area: ${REGION_NAME} (service-area business — no physical storefront)
-- Engagement types: full website rebuild, targeted "Tweak" engagement (fix specific pages or flows), monthly SEO + marketing retainer, AI automation systems, custom internal tools and web apps.
-- Typical project cost: $4,500 – $18,000 for sites, $1,500 – $4,000/mo for SEO retainers
+- Engagement types: custom website builds, targeted "Tweak" engagements (fix specific pages or flows), monthly SEO + marketing engagements, drone/media content, AI automation systems, custom internal tools and web apps.
+- Pricing: projects are custom scoped around business goals, market competition, required functionality, geographic reach, lead-generation needs, content requirements, integrations, and ongoing growth requirements — there is no fixed public price menu.
 - Typical timeline: 2 – 6 weeks
 - Performance targets: 90+ Lighthouse, sub-2s LCP, accessible by default.
+
+## Solutions
+
+Website solutions:
+- New Business Launch — conversion-ready first website for new businesses
+- Custom Business Website — fully custom rebuild for established businesses
+- Local Growth System — website plus local SEO architecture, landing-page framework, and campaign-ready infrastructure (flagship website engagement)
+
+Marketing solutions:
+- Search Acquisition — Google Search campaigns for high-intent leads
+- Full-Funnel Acquisition — multi-channel paid acquisition (Google, Meta, retargeting)
+- Growth Partnership — ongoing acquisition, SEO/AI visibility, CRO, and strategy
+
+Media solutions:
+- Business Content Shoot — professional photo and video content
+- Drone + Website Media — aerial and ground content for web and ads
+- Full Visual Proof System — complete trust/proof content system
+
+Prospective clients can request a recommendation or start a project inquiry at ${SITE_URL}/contact, run a free business audit at ${SITE_URL}/audit, or estimate project scope at ${SITE_URL}/tools/website-cost-calculator.
 
 ## North Jersey GEO + Local SEO
 
@@ -75,7 +94,8 @@ Master index: ${SITE_URL}/seo
 - Home: ${SITE_URL}
 - About: ${SITE_URL}/about
 - North Jersey SEO hub: ${SITE_URL}/seo
-- Pricing context: ${SITE_URL}/tools/website-cost-calculator
+- Solutions overview: ${SITE_URL}/#pricing
+- Website planning calculator: ${SITE_URL}/tools/website-cost-calculator
 - Free site audit tool: ${SITE_URL}/audit
 - Industries hub: ${SITE_URL}/industries
 - Case studies: ${SITE_URL}/work

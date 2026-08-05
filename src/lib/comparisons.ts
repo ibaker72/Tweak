@@ -45,7 +45,7 @@ export const comparisons: ComparisonPage[] = [
       "100% code ownership and documented handoff",
     ],
     rows: [
-      { category: "Cost", them: "$1K–$8K (hourly, varies widely)", us: "$1,497–$5,997 (fixed, published)" },
+      { category: "Cost", them: "$1K–$8K (hourly, varies widely)", us: "Custom scoped — fixed quote before work starts" },
       { category: "Timeline", them: "Unpredictable — depends on availability", us: "1–5 weeks, scoped upfront" },
       { category: "Quality", them: "Depends entirely on the individual", us: "Consistent — same team, same standards" },
       { category: "Communication", them: "Direct but unstructured", us: "Direct + weekly demos and milestones" },
@@ -83,7 +83,7 @@ export const comparisons: ComparisonPage[] = [
       "Same quality, dramatically less overhead",
     ],
     rows: [
-      { category: "Cost", them: "$15K–$50K+ (often hourly or retainer)", us: "$1,497–$5,997 (fixed, published)" },
+      { category: "Cost", them: "$15K–$50K+ (often hourly or retainer)", us: "Custom scoped — fixed quote before work starts" },
       { category: "Timeline", them: "2–6 months typical", us: "1–5 weeks" },
       { category: "Quality", them: "Varies — senior leads, junior builds", us: "Senior engineers build your project" },
       { category: "Communication", them: "Through project/account managers", us: "Direct to the person building" },
@@ -121,7 +121,7 @@ export const comparisons: ComparisonPage[] = [
       "Transition to in-house later with full code ownership",
     ],
     rows: [
-      { category: "Cost", them: "$80K–$150K+/year (salary + overhead)", us: "$1,497–$25K per project" },
+      { category: "Cost", them: "$80K–$150K+/year (salary + overhead)", us: "Per project — custom scoped, fixed quote" },
       { category: "Timeline", them: "2–4 months to hire, then build starts", us: "Build starts in 48 hours" },
       { category: "Quality", them: "Depends on who you hire", us: "Proven track record with live projects" },
       { category: "Communication", them: "Daily standups, full integration", us: "Weekly demos, async updates" },

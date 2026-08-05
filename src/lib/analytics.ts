@@ -2,6 +2,9 @@ import { track } from "@vercel/analytics/react";
 
 type EventName =
   | "solution_cta_clicked"
+  | "website_calculator_started"
+  | "website_calculator_completed"
+  | "website_calculator_cta_clicked"
   | "contact_form_submit"
   | "book_call_click"
   | "phone_click"
