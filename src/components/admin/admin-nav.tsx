@@ -11,6 +11,7 @@ import {
   MessageSquare,
   FileText,
   CheckSquare,
+  Handshake,
   Crosshair,
   Menu,
   X,
@@ -24,6 +25,7 @@ const links = [
   { href: "/admin/updates", label: "Updates", icon: MessageSquare },
   { href: "/admin/files", label: "Files", icon: FileText },
   { href: "/admin/approvals", label: "Approvals", icon: CheckSquare },
+  { href: "/admin/partners", label: "Partners", icon: Handshake },
   { href: "/admin/openclaw", label: "OpenClaw", icon: Crosshair },
 ];
 

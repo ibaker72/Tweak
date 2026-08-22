@@ -12,6 +12,10 @@ import type {
   InviteStatus,
 } from "@/lib/portal/types";
 import { sendNotification } from "@/lib/email/notifications";
+import {
+  PARTNER_APPLICATION_STATUSES,
+  type PartnerApplicationStatus,
+} from "@/lib/partners/types";
 
 /* ─── Helpers ─── */
 
@@ -599,4 +603,54 @@ export async function deleteFile(fileId: string, projectId: string) {
   revalidateProject(projectId);
   revalidatePath("/admin/files");
   revalidatePath("/client-portal/files");
+}
+
+/* ─── Partner Application Mutations ─── */
+
+/**
+ * Triage actions for the Partner Program CRM.
+ *
+ * Both mutations go through requireAdmin(), so they run with the caller's
+ * own Supabase session — RLS on partner_applications then enforces
+ * is_admin_or_team() a second time at the database. A leaked action
+ * endpoint alone is not enough to read or edit applicant data.
+ */
+
+export async function updatePartnerApplicationStatus(
+  applicationId: string,
+  status: PartnerApplicationStatus,
+) {
+  const { supabase } = await requireAdmin();
+
+  if (!PARTNER_APPLICATION_STATUSES.includes(status)) {
+    throw new Error("Invalid status");
+  }
+
+  const { error } = await supabase
+    .from("partner_applications")
+    .update({ status })
+    .eq("id", applicationId);
+
+  if (error) throw new Error(error.message);
+
+  revalidatePath(`/admin/partners/${applicationId}`);
+  revalidatePath("/admin/partners");
+}
+
+export async function updatePartnerApplicationNotes(
+  applicationId: string,
+  notes: string,
+) {
+  const { supabase } = await requireAdmin();
+
+  const trimmed = notes.trim();
+
+  const { error } = await supabase
+    .from("partner_applications")
+    .update({ internal_notes: trimmed || null })
+    .eq("id", applicationId);
+
+  if (error) throw new Error(error.message);
+
+  revalidatePath(`/admin/partners/${applicationId}`);
 }

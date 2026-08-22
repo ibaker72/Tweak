@@ -10,6 +10,7 @@ import type {
   ProjectApproval,
   ProjectInvite,
 } from "@/lib/portal/types";
+import type { PartnerApplication } from "@/lib/partners/types";
 
 /* ─── Dashboard Aggregates ─── */
 
@@ -297,4 +298,49 @@ export async function getAllInvites(): Promise<(ProjectInvite & { project?: Pick
     .order("created_at", { ascending: false });
 
   return (data ?? []) as (ProjectInvite & { project?: Pick<Project, "id" | "name"> | null })[];
+}
+
+/* ─── Partner Applications ─── */
+
+export interface PartnerApplicationStats {
+  total: number;
+  newCount: number;
+  reviewing: number;
+  approved: number;
+}
+
+export async function getPartnerApplications(): Promise<PartnerApplication[]> {
+  const supabase = await createClient();
+  const { data } = await supabase
+    .from("partner_applications")
+    .select("*")
+    .order("created_at", { ascending: false });
+
+  return (data ?? []) as PartnerApplication[];
+}
+
+export async function getPartnerApplicationById(
+  id: string,
+): Promise<PartnerApplication | null> {
+  const supabase = await createClient();
+  const { data } = await supabase
+    .from("partner_applications")
+    .select("*")
+    .eq("id", id)
+    .single();
+
+  return (data as PartnerApplication | null) ?? null;
+}
+
+export async function getPartnerApplicationStats(): Promise<PartnerApplicationStats> {
+  const supabase = await createClient();
+  const { data } = await supabase.from("partner_applications").select("status");
+  const rows = (data ?? []) as { status: string }[];
+
+  return {
+    total: rows.length,
+    newCount: rows.filter((r) => r.status === "new").length,
+    reviewing: rows.filter((r) => r.status === "reviewing").length,
+    approved: rows.filter((r) => r.status === "approved").length,
+  };
 }

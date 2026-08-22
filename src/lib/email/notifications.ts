@@ -1,16 +1,50 @@
+/**
+ * Escape a user-supplied string for safe interpolation into email HTML.
+ *
+ * Notification bodies are assembled as HTML strings, so any value that
+ * originated from a form MUST pass through here first. Without it an
+ * applicant can inject markup — or a phishing link — into an email that
+ * arrives looking like it came from us.
+ */
+export function escapeHtml(value: string): string {
+  return value
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+}
+
+/**
+ * Escape a string and convert newlines to <br> so multi-line answers keep
+ * their shape in the rendered email. Escaping happens first, so the <br>
+ * tags we add are the only markup that survives.
+ */
+export function escapeHtmlMultiline(value: string): string {
+  return escapeHtml(value).replace(/\r?\n/g, "<br>");
+}
+
 interface NotificationParams {
   to: string;
   subject: string;
   heading: string;
+  /**
+   * Trusted HTML. Any interpolated user input must already be passed
+   * through escapeHtml / escapeHtmlMultiline by the caller.
+   */
   body: string;
   ctaLabel?: string;
   ctaUrl?: string;
+  /** Optional Reply-To, so replying reaches the person who wrote in. */
+  replyTo?: string;
 }
 
 export async function sendNotification(params: NotificationParams): Promise<boolean> {
   const key = process.env.RESEND_API_KEY;
   if (!key || key === "re_xxxxxxxxxxxx") {
-    console.log(`\n📧 NOTIFICATION (dev mode)\nTo: ${params.to}\nSubject: ${params.subject}\n${params.body}\n`);
+    // Body is deliberately omitted: it can contain applicant PII and this
+    // branch also runs if RESEND_API_KEY is ever missing in production.
+    console.log(`\n📧 NOTIFICATION (dev mode) → ${params.to} · ${params.subject}\n`);
     return false;
   }
 
@@ -23,6 +57,7 @@ export async function sendNotification(params: NotificationParams): Promise<bool
       to: [params.to],
       subject: params.subject,
       html: buildHtml(params),
+      ...(params.replyTo ? { replyTo: params.replyTo } : {}),
     });
     return true;
   } catch (err) {

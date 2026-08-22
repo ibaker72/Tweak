@@ -29,6 +29,7 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Reveal } from "@/components/shared";
+import { ESTIMATED_REFERRAL_OPTIONS, HONEYPOT_FIELD } from "@/lib/partners/types";
 
 /* ─── Partner Personas ─── */
 const personas = [
@@ -113,7 +114,23 @@ const partnerFaqs = [
 ];
 
 /* ─── Referral Estimate Options ─── */
-const referralOptions = ["1-2", "3-5", "5-10", "10+"];
+/**
+ * Referral buckets come from the shared constant so the form, the server
+ * schema, and the database CHECK constraint can never drift apart.
+ */
+const referralOptions = ESTIMATED_REFERRAL_OPTIONS;
+
+const EMPTY_APPLICATION = {
+  name: "",
+  email: "",
+  company: "",
+  website: "",
+  description: "",
+  howYouMeet: "",
+  estimatedReferrals: "",
+  /** Honeypot — must stay empty. See HONEYPOT_FIELD. */
+  [HONEYPOT_FIELD]: "",
+};
 
 /* ─── Service configs for calculator ─── */
 type ServiceKey = "rapid" | "custom" | "retainer";
@@ -274,36 +291,62 @@ function CommissionCalculator() {
 ═══════════════════════════════════════════════════════ */
 export default function PartnersPage() {
   const [faqOpen, setFaqOpen] = useState<number | null>(null);
-  const [form, setForm] = useState({
-    name: "",
-    email: "",
-    company: "",
-    website: "",
-    description: "",
-    howYouMeet: "",
-    estimatedReferrals: "",
-  });
+  const [form, setForm] = useState(EMPTY_APPLICATION);
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [errorField, setErrorField] = useState<string | null>(null);
 
-  const s = (k: string) => (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) =>
-    setForm((p) => ({ ...p, [k]: e.target.value }));
+  const s = (k: string) => (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+    const { value } = e.target;
+    setForm((p) => ({ ...p, [k]: value }));
+    // Clear the inline error as soon as the offending field is edited.
+    if (errorField === k) {
+      setErrorField(null);
+      setErrorMessage(null);
+    }
+  };
 
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!form.name || !form.email || !form.description || !form.howYouMeet || !form.estimatedReferrals) return;
+    if (status === "loading") return; // guard against double submits
     setStatus("loading");
+    setErrorMessage(null);
+    setErrorField(null);
+
     try {
       const res = await fetch("/api/partner-apply", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(form),
       });
-      if (res.ok) setStatus("success");
-      else setStatus("error");
+      const data = (await res.json().catch(() => ({}))) as {
+        success?: boolean;
+        error?: string;
+        field?: string;
+      };
+
+      if (res.ok && data.success) {
+        // Only clear the form once the application is genuinely persisted.
+        setForm(EMPTY_APPLICATION);
+        setStatus("success");
+        return;
+      }
+
+      setErrorMessage(data.error || "Something went wrong. Please try again.");
+      setErrorField(data.field ?? null);
+      setStatus("error");
     } catch {
+      setErrorMessage(
+        "We couldn't reach the server. Please check your connection and try again.",
+      );
       setStatus("error");
     }
   };
+
+  const fieldError = (k: string) =>
+    errorField === k && errorMessage ? (
+      <p className="mt-1.5 text-[12px] text-red-400">{errorMessage}</p>
+    ) : null;
 
   return (
     <div className="pb-24 pt-36 sm:pt-40">
@@ -769,33 +812,52 @@ export default function PartnersPage() {
                   </div>
                 ) : (
                   <form onSubmit={submit} className="space-y-3.5">
+                    {/* Honeypot: hidden from people and screen readers, irresistible to naive bots. */}
+                    <div aria-hidden="true" className="pointer-events-none absolute h-0 w-0 overflow-hidden opacity-0">
+                      <label htmlFor={HONEYPOT_FIELD}>Do not fill this in</label>
+                      <input
+                        id={HONEYPOT_FIELD}
+                        name={HONEYPOT_FIELD}
+                        type="text"
+                        tabIndex={-1}
+                        autoComplete="off"
+                        value={form[HONEYPOT_FIELD]}
+                        onChange={s(HONEYPOT_FIELD)}
+                      />
+                    </div>
                     <div className="grid grid-cols-2 gap-3">
                       <div>
                         <label className="mb-1.5 block font-mono text-[10px] uppercase tracking-[0.06em] text-dim">Full name *</label>
                         <input className="field" placeholder="Jane Smith" value={form.name} onChange={s("name")} required />
+                        {fieldError("name")}
                       </div>
                       <div>
                         <label className="mb-1.5 block font-mono text-[10px] uppercase tracking-[0.06em] text-dim">Email *</label>
                         <input className="field" type="email" placeholder="jane@company.com" value={form.email} onChange={s("email")} required />
+                        {fieldError("email")}
                       </div>
                     </div>
                     <div className="grid grid-cols-2 gap-3">
                       <div>
                         <label className="mb-1.5 block font-mono text-[10px] uppercase tracking-[0.06em] text-dim">Company / brand</label>
                         <input className="field" placeholder="Acme Inc." value={form.company} onChange={s("company")} />
+                        {fieldError("company")}
                       </div>
                       <div>
                         <label className="mb-1.5 block font-mono text-[10px] uppercase tracking-[0.06em] text-dim">Website or LinkedIn</label>
-                        <input className="field" type="url" placeholder="https://" value={form.website} onChange={s("website")} />
+                        <input className="field" placeholder="linkedin.com/in/jane" value={form.website} onChange={s("website")} />
+                        {fieldError("website")}
                       </div>
                     </div>
                     <div>
                       <label className="mb-1.5 block font-mono text-[10px] uppercase tracking-[0.06em] text-dim">How would you describe what you do? *</label>
                       <textarea className="field" rows={2} placeholder="Brand designer, marketing consultant, startup advisor..." value={form.description} onChange={s("description")} required />
+                      {fieldError("description")}
                     </div>
                     <div>
                       <label className="mb-1.5 block font-mono text-[10px] uppercase tracking-[0.06em] text-dim">How do you typically meet potential clients for us? *</label>
                       <textarea className="field" rows={2} placeholder="Through my design clients, startup community events..." value={form.howYouMeet} onChange={s("howYouMeet")} required />
+                      {fieldError("howYouMeet")}
                     </div>
                     <div>
                       <label className="mb-1.5 block font-mono text-[10px] uppercase tracking-[0.06em] text-dim">Estimated referrals per quarter *</label>
@@ -814,9 +876,14 @@ export default function PartnersPage() {
                           </option>
                         ))}
                       </select>
+                      {fieldError("estimatedReferrals")}
                     </div>
-                    {status === "error" && (
-                      <p className="text-[13px] text-red-400">Something went wrong. Please try again.</p>
+                    {/* Form-level error: shown when the failure isn't tied to one field
+                        (server/database failure, network failure, rate limit). */}
+                    {status === "error" && !errorField && (
+                      <p role="alert" className="rounded-lg border border-red-400/20 bg-red-400/[0.06] px-3 py-2.5 text-[13px] text-red-400">
+                        {errorMessage || "Something went wrong. Please try again."}
+                      </p>
                     )}
                     <button type="submit" disabled={status === "loading"} className="btn-v w-full justify-center disabled:opacity-60">
                       {status === "loading" ? <Loader2 size={15} className="animate-spin" /> : <Send size={13} />}
